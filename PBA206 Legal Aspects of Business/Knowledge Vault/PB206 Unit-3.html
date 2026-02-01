@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - Syllabrix</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .message-content,
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+
+    /* Table Styling */
+    table {
+      width: 100% !important;
+      max-width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    
+    body.dark-mode table {
+      background: #2d2d2d;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    thead {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    body.dark-mode thead {
+      background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    }
+    
+    th, td {
+      padding: 12px 15px !important;
+      text-align: left;
+      border: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    
+    body.dark-mode th,
+    body.dark-mode td {
+      border-color: #404040;
+    }
+    
+    th {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    
+    tbody tr {
+      transition: background-color 0.2s ease;
+    }
+    
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+    
+    body.dark-mode tbody tr:nth-child(even) {
+      background: #1f2937;
+    }
+    
+    tbody tr:hover {
+      background: #f3f4f6;
+    }
+    
+    body.dark-mode tbody tr:hover {
+      background: #374151;
+    }
+    
+    /* Responsive table styling */
+    @media screen and (max-width: 768px) {
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      th, td {
+        padding: 10px 12px !important;
+        font-size: 13px;
+      }
+    }
+
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon,
+    .message-role svg.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    .theme-toggle,
+    .back-to-top {
+      position: fixed;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      color: #111827;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle {
+      bottom: 20px;
+      right: 20px;
+    }
+    .back-to-top {
+      bottom: 80px;
+      right: 20px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .theme-toggle:hover,
+    .back-to-top:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle,
+    body.dark-mode .back-to-top {
+      background: #2d2d2d;
+      border-color: #404040;
+      color: #f9fafb;
+    }
+
+    .awlist1 {
+      list-style: none;
+      counter-reset: awlistcounter18_0
+    }
+
+    .awlist1>li:before {
+      content: counter(awlistcounter18_0) '.';
+      counter-increment: awlistcounter18_0
+    }
+
+    .awlist2 {
+      list-style: none;
+      counter-reset: awlistcounter62_0
+    }
+
+    .awlist2>li:before {
+      content: counter(awlistcounter62_0) ')';
+      counter-increment: awlistcounter62_0
+    }
+
+    .awlist3 {
+      list-style: none;
+      counter-reset: awlistcounter62_0 1
+    }
+
+    .awlist3>li:before {
+      content: counter(awlistcounter62_0) ')';
+      counter-increment: awlistcounter62_0
+    }
+
+    .awlist4 {
+      list-style: none;
+      counter-reset: awlistcounter62_0 2
+    }
+
+    .awlist4>li:before {
+      content: counter(awlistcounter62_0) ')';
+      counter-increment: awlistcounter62_0
+    }
+
+    .awlist5 {
+      list-style: none;
+      counter-reset: awlistcounter18_1 4
+    }
+
+    .awlist5>li:before {
+      content: '3.' counter(awlistcounter18_1);
+      counter-increment: awlistcounter18_1
+    }
+
+    .awlist6 {
+      list-style: none;
+      counter-reset: awlistcounter96_1
+    }
+
+    .awlist6>li:before {
+      content: '4.' counter(awlistcounter96_1);
+      counter-increment: awlistcounter96_1
+    }
+
+    .awlist7 {
+      list-style: none;
+      counter-reset: awlistcounter96_1 1
+    }
+
+    .awlist7>li:before {
+      content: '4.' counter(awlistcounter96_1);
+      counter-increment: awlistcounter96_1
+    }
+
+    .awlist8 {
+      list-style: none;
+      counter-reset: awlistcounter97_1 2
+    }
+
+    .awlist8>li:before {
+      content: '5.' counter(awlistcounter97_1);
+      counter-increment: awlistcounter97_1
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Legal Aspects of Business (PB206)</h1>
+  </div>
+
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">
+        <svg class="chatgpt-icon" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M37.5324 16.8707C37.9808 15.5241 38.1363 14.0974 37.9886 12.6859C37.8409 11.2744 37.3934 9.91076 36.676 8.68622C35.6126 6.83404 33.9882 5.3676 32.0373 4.4985C30.0864 3.62941 27.9098 3.40259 25.8215 3.85078C24.8796 2.7893 23.7219 1.94125 22.4257 1.36341C21.1295 0.785575 19.7249 0.491269 18.3058 0.500197C16.1708 0.495044 14.0893 1.16803 12.3614 2.42214C10.6335 3.67624 9.34853 5.44666 8.6917 7.47815C7.30085 7.76286 5.98686 8.3414 4.8377 9.17505C3.68854 10.0087 2.73073 11.0782 2.02839 12.312C0.956464 14.1591 0.498905 16.2988 0.721698 18.4228C0.944492 20.5467 1.83612 22.5449 3.268 24.1293C2.81966 25.4759 2.66413 26.9026 2.81182 28.3141C2.95951 29.7256 3.40701 31.0892 4.12437 32.3138C5.18791 34.1659 6.8123 35.6322 8.76321 36.5013C10.7141 37.3704 12.8907 37.5973 14.9789 37.1492C15.9208 38.2107 17.0786 39.0587 18.3747 39.6366C19.6709 40.2144 21.0755 40.5087 22.4946 40.4998C24.6307 40.5054 26.7133 39.8321 28.4418 38.5772C30.1704 37.3223 31.4556 35.5506 32.1119 33.5179C33.5027 33.2332 34.8167 32.6547 35.9659 31.821C37.115 30.9874 38.0728 29.9178 38.7752 28.684C39.8458 26.8371 40.3023 24.6979 40.0789 22.5748C39.8556 20.4517 38.9639 18.4544 37.5324 16.8707ZM22.4978 37.8849C20.7443 37.8874 19.0459 37.2733 17.6994 36.1501C17.7601 36.117 17.8666 36.0586 17.936 36.0161L25.9004 31.4156C26.1003 31.3019 26.2663 31.137 26.3813 30.9378C26.4964 30.7386 26.5563 30.5124 26.5549 30.2825V19.0542L29.9213 20.998C29.9389 21.0068 29.9541 21.0198 29.9656 21.0359C29.977 21.052 29.9842 21.0707 29.9867 21.0902V30.3889C29.9842 32.375 29.1946 34.2791 27.7909 35.6841C26.3872 37.0892 24.4838 37.8806 22.4978 37.8849ZM6.39227 31.0064C5.51397 29.4888 5.19742 27.7107 5.49804 25.9832C5.55718 26.0187 5.66048 26.0818 5.73461 26.1244L13.699 30.7248C13.8975 30.8408 14.1233 30.902 14.3532 30.902C14.583 30.902 14.8088 30.8408 15.0073 30.7248L24.731 25.1103V28.9979C24.7321 29.0177 24.7283 29.0376 24.7199 29.0556C24.7115 29.0736 24.6988 29.0893 24.6829 29.1012L16.6317 33.7497C14.9096 34.7416 12.8643 35.0097 10.9447 34.4954C9.02506 33.9811 7.38785 32.7263 6.39227 31.0064ZM4.29707 13.6194C5.17156 12.0998 6.55279 10.9364 8.19885 10.3327C8.19885 10.4013 8.19491 10.5228 8.19491 10.6071V19.808C8.19351 20.0378 8.25334 20.2638 8.36823 20.4629C8.48312 20.6619 8.64893 20.8267 8.84863 20.9404L18.5723 26.5542L15.206 28.4979C15.1894 28.5089 15.1703 28.5155 15.1505 28.5173C15.1307 28.5191 15.1107 28.516 15.0924 28.5082L7.04046 23.8557C5.32135 22.8601 4.06716 21.2235 3.55289 19.3046C3.03862 17.3858 3.30624 15.3413 4.29707 13.6194ZM31.955 20.0556L22.2312 14.4411L25.5976 12.4981C25.6142 12.4872 25.6333 12.4805 25.6531 12.4787C25.6729 12.4769 25.6928 12.4801 25.7111 12.4879L33.7631 17.1364C34.9967 17.849 36.0017 18.8982 36.6606 20.1613C37.3194 21.4244 37.6047 22.849 37.4832 24.2684C37.3617 25.6878 36.8382 27.0432 35.9743 28.1759C35.1103 29.3086 33.9415 30.1717 32.6047 30.6641C32.6047 30.5947 32.6047 30.4733 32.6047 30.3889V21.188C32.6066 20.9586 32.5474 20.7328 32.4332 20.5338C32.319 20.3348 32.154 20.1698 31.955 20.0556ZM35.3055 15.0128C35.2464 14.9765 35.1431 14.9142 35.069 14.8717L27.1045 10.2712C26.906 10.1554 26.6803 10.0943 26.4504 10.0943C26.2206 10.0943 25.9948 10.1554 25.7963 10.2712L16.0726 15.8858V11.9982C16.0715 11.9783 16.0753 11.9585 16.0837 11.9405C16.0921 11.9225 16.1048 11.9068 16.1207 11.8949L24.1719 7.25025C25.4053 6.53903 26.8158 6.19376 28.2383 6.25482C29.6608 6.31589 31.0364 6.78077 32.2044 7.59508C33.3723 8.40939 34.2842 9.53945 34.8334 10.8531C35.3826 12.1667 35.5464 13.6095 35.3055 15.0128ZM14.2424 21.9419L10.8752 19.9981C10.8576 19.9893 10.8423 19.9763 10.8309 19.9602C10.8195 19.9441 10.8122 19.9254 10.8098 19.9058V10.6071C10.8107 9.18295 11.2173 7.78848 11.9819 6.58696C12.7466 5.38544 13.8377 4.42659 15.1275 3.82264C16.4173 3.21869 17.8524 2.99464 19.2649 3.1767C20.6775 3.35876 22.0089 3.93941 23.1034 4.85067C23.0427 4.88379 22.937 4.94215 22.8668 4.98473L14.9024 9.58517C14.7025 9.69878 14.5366 9.86356 14.4215 10.0626C14.3065 10.2616 14.2466 10.4877 14.2479 10.7175L14.2424 21.9419ZM16.071 17.9991L20.4018 15.4978L24.7325 17.9975V22.9985L20.4018 25.4983L16.071 22.9985V17.9991Z" fill="currentColor"></path></svg> ChatGPT
+      </div>
+      <div class="message-content">
+        <div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:18pt;"><strong><span style="font-family:'Times New Roman';">Unit III &ndash; </span></strong><strong><em><span style="font-family:'Times New Roman';">Company Law (Indian Companies Act, 1956)</span></em></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:18pt;"><strong><span style="font-family:'Times New Roman';">&nbsp;</span></strong><strong><span style="font-family:'Times New Roman';">Introduction to Company Law</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Concept:</span></strong><span style="font-family:'Times New Roman';">&nbsp;A company is created to solve the limitations of sole proprietorship and partnership (like limited capital and unlimited liability). It is a legal device used for large-scale business.</span><strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:12pt;"> </span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Definition:</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&quot;A company is a voluntary association of persons formed for a lawful purpose, having a separate legal existence, perpetual succession, and a common seal.&quot;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Key Features (Characteristics):</span></strong></p>
+    <ol type="1" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Separate Legal Entity:</strong>The company is a distinct &quot;legal person&quot; separate from its members. It can own property and sue in its own name.<ul type="circle" style="margin-right:0pt; margin-left:0pt; padding-left:0pt;">
+                <li style="margin-left:29pt; margin-bottom:10pt; line-height:115%; padding-left:7pt; font-family:serif; font-size:10pt;"><em><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">Note:</span></em><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">&nbsp;Shareholders are owners, but they do not own the company&apos;s assets directly.</span></li>
+            </ul>
+        </li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Limited Liability:</strong> A shareholder&rsquo;s liability is limited to the unpaid amount on their shares. Personal assets are safe.</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Perpetual Succession:</strong> Members may come and go (death, insanity, or sale of shares), but the company continues forever until dissolved by law.</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Common Seal:</strong> The official signature of the company (since it has no physical hands).</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Transferability of Shares:</strong> In a public company, shares are freely transferable.</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>&nbsp;</strong><strong>Separation of Ownership and Management:</strong> Shareholders are owners, Directors manage affairs.</li>
+    </ol>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">Types of Companies</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Introduction: </span></strong><span style="font-family:'Times New Roman';">Companies can be classified on various bases such as&nbsp;</span><strong><span style="font-family:'Times New Roman';">liability, number of members, and control</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <ol type="1" class="awlist2" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:18pt; text-indent:-18pt; line-height:115%; font-family:'Times New Roman'; font-size:14pt; font-weight:bold;"><span style="width:6.34pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;</span>Classification Based on Liability</li>
+    </ol>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Limited by Shares:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Liability limited to unpaid share value (Most common).</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Limited by Guarantee:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Liability limited to a promised amount (usually non-profits).</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Unlimited Company:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Members have unlimited liability (Rare).</span></p>
+    <ol start="2" type="1" class="awlist3" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:18pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-family:'Times New Roman'; font-size:14pt; font-weight:bold;"><span style="width:6.34pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;</span> Classification Based on Number of Members</li>
+    </ol>
+    <table cellspacing="0" cellpadding="0" style="width:478.7pt; border:0.75pt solid #000000; border-collapse:collapse;">
+        <thead>
+            <tr style="height:22.7pt;">
+                <td style="border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Basis</span></strong></p>
+                </td>
+                <td style="border-right-style:solid; border-right-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Private Company</span></strong></p>
+                </td>
+                <td style="border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Public Company</span></strong></p>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="height:22.25pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Members</span></strong></p>
+                </td>
+                <td style="border-style:solid; border-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Min: 2, Max: 200</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Min: 7, Max: Unlimited</span></p>
+                </td>
+            </tr>
+            <tr style="height:37.55pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Transfer of Shares</span></strong></p>
+                </td>
+                <td style="border-style:solid; border-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Restricted</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Freely Transferable</span></p>
+                </td>
+            </tr>
+            <tr style="height:37.55pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Public Invitation</span></strong></p>
+                </td>
+                <td style="border-style:solid; border-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Cannot invite public</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Can invite public (Prospectus)</span></p>
+                </td>
+            </tr>
+            <tr style="height:38pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Name</span></strong></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Ends with &quot;Private Limited&quot;</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; padding:6pt 8.62pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Ends with &quot;Limited&quot;</span></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&nbsp;</span></p>
+    <ol start="3" type="1" class="awlist4" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:18pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-family:'Times New Roman'; font-size:14pt; font-weight:bold;"><span style="width:6.34pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;</span>Other Types of Companies</li>
+    </ol>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Government Company, Foreign Company, Holding Company, Subsidiary Company</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">Formation of a Company&nbsp;</span></strong></p>
+    <p style="margin-top:14pt; margin-bottom:14pt; line-height:normal; font-size:14pt;"><span style="font-family:'Times New Roman';">The life of a company begins in stages:</span></p>
+    <ol type="1" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-top:14pt; margin-left:47.15pt; line-height:normal; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Promotion:</strong> The &quot;idea&quot; stage.</li>
+    </ol>
+    <p style="margin-top:0pt; margin-left:108pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">▪</span><span style="width:14.46pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Promoter:</span></strong><span style="font-family:'Times New Roman';">&nbsp;The person who conceives the idea and takes steps to form the company. They stand in a&nbsp;</span><strong><span style="font-family:'Times New Roman';">fiduciary position</span></strong><span style="font-family:'Times New Roman';">&nbsp;(position of trust) and must not make secret profits.</span></p>
+    <ol start="2" type="1" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:47.15pt; line-height:normal; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Incorporation (Registration):</strong> The birth of the company.</li>
+    </ol>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:14pt;"><span style="font-family:'Noto Sans Symbols';">●</span><span style="width:9.54pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Documents (MOA, AOA) are filed with the Registrar of Companies (ROC).</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:12pt;">●</span><span style="width:10.75pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Certificate of Incorporation:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Conclusive proof that the company exists legally</span><span style="font-family:'Times New Roman'; font-size:12pt;">.</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:0pt; line-height:normal; font-size:14pt;"><span style="font-family:'Times New Roman';">&nbsp;</span></p>
+    <ol start="3" type="1" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:47.15pt; line-height:normal; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Commencement of Business:</strong> Public companies need a separate certificate to start business; Private companies can start immediately after incorporation.</li>
+    </ol>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">&nbsp;</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:18pt;"><strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">&nbsp;</span></strong><strong><span style="font-family:'Times New Roman';">Promotion of a Company</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Before a company is legally formed, certain preliminary activities are required. These activities are known as&nbsp;</span><strong><span style="font-family:'Times New Roman';">promotion</span></strong><span style="font-family:'Times New Roman';">. Promotion involves the idea, planning, and taking necessary steps to bring a company into existence.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Promoter</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Meaning: </span></strong><span style="font-family:'Times New Roman';">A&nbsp;</span><strong><span style="font-family:'Times New Roman';">promoter</span></strong><span style="font-family:'Times New Roman';">&nbsp;is a person who:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Conceives the idea of forming a company</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Takes steps to incorporate it</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Sets it going</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;A promoter is neither an agent nor a trustee, but stands in a&nbsp;</span><strong><span style="font-family:'Times New Roman';">fiduciary position</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Promotion is a&nbsp;</span><strong><span style="font-family:'Times New Roman';">pre-incorporation stage</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Functions of Promoters</span></strong></p>
+    <ol type="1" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Identification of business opportunity</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Preparation of documents</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Appointment of professionals</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Arrangement of capital</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Negotiation of preliminary contracts</li>
+    </ol>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Legal Position of Promoters</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Promoters must:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Make&nbsp;</span><strong><span style="font-family:'Times New Roman';">full disclosure</span></strong><span style="font-family:'Times New Roman';">&nbsp;of profits</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Avoid&nbsp;</span><strong><span style="font-family:'Times New Roman';">secret profits</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Act in&nbsp;</span><strong><span style="font-family:'Times New Roman';">good faith</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Company can rescind contracts if promoters are guilty of fraud.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">&nbsp;</span></strong><strong><span style="font-family:'Times New Roman';">Incorporation of a Company</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Incorporation is the process by which a company becomes a&nbsp;</span><strong><span style="font-family:'Times New Roman';">separate legal entity</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Meaning</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Incorporation refers to: Registration of the company with the Registrar of Companies; Grant of&nbsp;</span><strong><span style="font-family:'Times New Roman';">Certificate of Incorporation</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;On incorporation, company acquires legal personality.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Documents Required for Incorporation</span></strong></p>
+    <ol type="1" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Memorandum of Association</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Articles of Association</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Declaration of compliance</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Address of registered office</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">Details of directors</li>
+    </ol>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Certificate of Incorporation</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Issued by Registrar</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Conclusive evidence of existence</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Company comes into existence from date mentioned</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">Memorandum of Association (MOA)</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Nature: It is the Charter or Constitution of the company. It defines the relationship with the outside world.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">6 Clauses:</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">1.</span><span style="width:7.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Name Clause: Company name, (Must end with &ldquo;Limited&rdquo; or &ldquo;Private Limited)</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">2.</span><span style="width:7.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Registered Office Clause: State location of a office.</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">3.</span><span style="width:7.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Objects Clause: What the company will do. (Acts beyond this are&nbsp;</span><em><span style="font-family:'Times New Roman';">Ultra Vires</span></em><span style="font-family:'Times New Roman';">&nbsp;and void).</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">4.</span><span style="width:7.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Liability Clause: States liability is limited.</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">5.</span><span style="width:7.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Capital Clause: Max capital authorized.</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">6.</span><span style="width:7.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Subscription Clause: Signatures of first members.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">9. Articles of Association (AOA)</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Nature</span></strong><span style="font-family:'Times New Roman';">: The By-laws or internal rules. It governs the relationship between the company and its members (internal management).</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Content:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Rules regarding meetings, director rights, share transfers, etc.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><em><span style="font-family:'Times New Roman';">Note:</span></em></strong><span style="font-family:'Times New Roman';">&nbsp;AOA is subordinate to MOA.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Alteration of Articles</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Articles can be altered by&nbsp;</span><strong><span style="font-family:'Times New Roman';">special resolution</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Alteration must be lawful and bona fide</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Distinction Between MOA and AOA</span></strong></p>
+    <table cellspacing="0" cellpadding="0" style="width:397.9pt; border:0.75pt solid #000000; border-collapse:collapse;">
+        <thead>
+            <tr style="height:19.3pt;">
+                <td style="border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Basis</span></strong></p>
+                </td>
+                <td style="border-right-style:solid; border-right-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">MOA</span></strong></p>
+                </td>
+                <td style="border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">AOA</span></strong></p>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="height:18.9pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Nature</span></p>
+                </td>
+                <td style="border-style:solid; border-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Charter</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Internal rules</span></p>
+                </td>
+            </tr>
+            <tr style="height:19.3pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Scope</span></p>
+                </td>
+                <td style="border-style:solid; border-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">External</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Internal</span></p>
+                </td>
+            </tr>
+            <tr style="height:18.9pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Subordination</span></p>
+                </td>
+                <td style="border-style:solid; border-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Supreme</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Subordinate</span></p>
+                </td>
+            </tr>
+            <tr style="height:19.3pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Alteration</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Difficult</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Easier</span></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">10. Prospectus</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Meaning of Prospectus</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Under the Companies Act, 1956, a&nbsp;</span><strong><span style="font-family:'Times New Roman';">prospectus</span></strong><span style="font-family:'Times New Roman';">&nbsp;means:</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&ldquo;Any document described or issued as a prospectus, including any notice, circular, advertisement or other document inviting deposits or offering shares or debentures to the public.&rdquo;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;It is an&nbsp;</span><strong><span style="font-family:'Times New Roman';">invitation to offer</span></strong><span style="font-family:'Times New Roman';">, not an offer itself.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Rule:</span></strong><span style="font-family:'Times New Roman';">&nbsp;It must contain full and true disclosures.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Liability:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Misstatements lead to Civil (Compensation) and Criminal (Jail/Fine) liability</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">11. Share Allotment</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Meaning of Allotment</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Allotment means: Acceptance of an offer to purchase shares and Creates binding contract between company and applicant</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">12. Shares and Share Capital</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Introduction: </span></strong><span style="font-family:'Times New Roman';">Share capital represents the&nbsp;</span><strong><span style="font-family:'Times New Roman';">ownership structure</span></strong><span style="font-family:'Times New Roman';">&nbsp;of a company. It is divided into shares which are purchased by investors.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Meaning of Share</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">A&nbsp;</span><strong><span style="font-family:'Times New Roman';">share</span></strong><span style="font-family:'Times New Roman';">&nbsp;represents: Interest in company capital, Right to profits, Right to vote</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Types of Share Capital</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Authorized Capital: </span></strong><span style="font-family:'Times New Roman';">Max capital mentioned in MOA.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Issued Capital: </span></strong><span style="font-family:'Times New Roman';">Part of authorized capital offered to the public.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Subscribed Capital: </span></strong><span style="font-family:'Times New Roman';">Part actually bought by the public.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Paid-up Capital:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Amount actually paid by shareholders.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Types of Shares</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">1. Equity Shares: </span></strong><span style="font-family:'Times New Roman';">Voting rights</span><strong><span style="font-family:'Times New Roman';">, </span></strong><span style="font-family:'Times New Roman';">Variable dividend</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">2. Preference Shares: </span></strong><span style="font-family:'Times New Roman';">Preferential dividend</span><strong><span style="font-family:'Times New Roman';">, </span></strong><span style="font-family:'Times New Roman';">Priority in repayment</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">13. Membership of a Company</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Introduction: </span></strong><span style="font-family:'Times New Roman';">A&nbsp;</span><strong><span style="font-family:'Times New Roman';">member</span></strong><span style="font-family:'Times New Roman';">&nbsp;of a company is a person whose name is entered in the register of members. Membership gives legal rights and obligations.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Meaning of Member</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">A person becomes a member:</span></p>
+    <ol type="1" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">By subscribing to MOA</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">By allotment or transfer of shares</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;">By transmission of shares</li>
+    </ol>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Shareholder and member are usually the same, but not always.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">14. Company Meetings and Proceedings</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Meaning of Meeting</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">A meeting is: An assembly of members or directors; Convened for lawful discussion and decision-making</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Types of Company Meetings</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">1. Shareholders&rsquo; Meetings</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">(a) Statutory Meeting</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Held only by public companies</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Held within&nbsp;</span><strong><span style="font-family:'Times New Roman';">6 months</span></strong><span style="font-family:'Times New Roman';">&nbsp;of commencement of business</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Statutory report is presented</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">(b) Annual General Meeting (AGM)</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Held every year</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Not more than&nbsp;</span><strong><span style="font-family:'Times New Roman';">15 months</span></strong><span style="font-family:'Times New Roman';">&nbsp;gap between two AGMs</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Discusses accounts, dividends, appointment of directors</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">(c) Extraordinary General Meeting (EGM)</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Called for urgent matters</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Held between two AGMs</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">2. Board Meetings</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Meeting of directors</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Concerned with policy and management</span></p>
+    <div align="center" style="margin-left:18pt;">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Company Secretary:</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Role:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Principal officer ensuring compliance with laws, conducting meetings, and maintaining records.</span></p>
+    <div align="center" style="margin-left:18pt;">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Meetings:</span></strong></p>
+    <ol type="1" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Statutory Meeting:</strong> Held once in the lifetime of a public company (within 6 months).</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Annual General Meeting (AGM):</strong> Mandatory yearly meeting to discuss accounts and dividends.</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Extraordinary General Meeting (EGM):</strong> For urgent matters between two AGMs.</li>
+        <li style="margin-left:33.5pt; margin-bottom:10pt; line-height:115%; padding-left:2.5pt; font-family:'Times New Roman'; font-size:14pt;"><strong>Board Meetings:</strong> Meetings of Directors.</li>
+    </ol>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">7. Winding Up (Dissolution)</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The legal process of ending a company&apos;s life. Assets are sold, debts paid, and surplus distributed to members.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Modes:</span></strong></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">1.</span><span style="width:7.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Compulsory:</span></strong><span style="font-family:'Times New Roman';">&nbsp;By Court order (e.g., inability to pay debts).</span></p>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">2.</span><span style="width:7.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Voluntary:</span></strong><span style="font-family:'Times New Roman';">&nbsp;By members or creditors without court interference.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+
+  <script>
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - Syllabrix</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .message-content,
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+
+    /* Table Styling */
+    table {
+      width: 100% !important;
+      max-width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    
+    body.dark-mode table {
+      background: #2d2d2d;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    thead {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    body.dark-mode thead {
+      background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    }
+    
+    th, td {
+      padding: 12px 15px !important;
+      text-align: left;
+      border: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    
+    body.dark-mode th,
+    body.dark-mode td {
+      border-color: #404040;
+    }
+    
+    th {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    
+    tbody tr {
+      transition: background-color 0.2s ease;
+    }
+    
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+    
+    body.dark-mode tbody tr:nth-child(even) {
+      background: #1f2937;
+    }
+    
+    tbody tr:hover {
+      background: #f3f4f6;
+    }
+    
+    body.dark-mode tbody tr:hover {
+      background: #374151;
+    }
+    
+    /* Responsive table styling */
+    @media screen and (max-width: 768px) {
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      th, td {
+        padding: 10px 12px !important;
+        font-size: 13px;
+      }
+    }
+
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon,
+    .message-role svg.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    .theme-toggle,
+    .back-to-top {
+      position: fixed;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      color: #111827;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle {
+      bottom: 20px;
+      right: 20px;
+    }
+    .back-to-top {
+      bottom: 80px;
+      right: 20px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .theme-toggle:hover,
+    .back-to-top:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle,
+    body.dark-mode .back-to-top {
+      background: #2d2d2d;
+      border-color: #404040;
+      color: #f9fafb;
+    }
+
+    .awlist1 {
+      list-style: none;
+      counter-reset: awlistcounter18_0
+    }
+
+    .awlist1>li:before {
+      content: counter(awlistcounter18_0) '.';
+      counter-increment: awlistcounter18_0
+    }
+
+    .awlist2 {
+      list-style: none;
+      counter-reset: awlistcounter62_0
+    }
+
+    .awlist2>li:before {
+      content: counter(awlistcounter62_0) ')';
+      counter-increment: awlistcounter62_0
+    }
+
+    .awlist3 {
+      list-style: none;
+      counter-reset: awlistcounter62_0 1
+    }
+
+    .awlist3>li:before {
+      content: counter(awlistcounter62_0) ')';
+      counter-increment: awlistcounter62_0
+    }
+
+    .awlist4 {
+      list-style: none;
+      counter-reset: awlistcounter62_0 2
+    }
+
+    .awlist4>li:before {
+      content: counter(awlistcounter62_0) ')';
+      counter-increment: awlistcounter62_0
+    }
+
+    .awlist5 {
+      list-style: none;
+      counter-reset: awlistcounter18_1 4
+    }
+
+    .awlist5>li:before {
+      content: '3.' counter(awlistcounter18_1);
+      counter-increment: awlistcounter18_1
+    }
+
+    .awlist6 {
+      list-style: none;
+      counter-reset: awlistcounter96_1
+    }
+
+    .awlist6>li:before {
+      content: '4.' counter(awlistcounter96_1);
+      counter-increment: awlistcounter96_1
+    }
+
+    .awlist7 {
+      list-style: none;
+      counter-reset: awlistcounter96_1 1
+    }
+
+    .awlist7>li:before {
+      content: '4.' counter(awlistcounter96_1);
+      counter-increment: awlistcounter96_1
+    }
+
+    .awlist8 {
+      list-style: none;
+      counter-reset: awlistcounter97_1 2
+    }
+
+    .awlist8>li:before {
+      content: '5.' counter(awlistcounter97_1);
+      counter-increment: awlistcounter97_1
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Legal Aspects of Business (PB206)</h1>
+  </div>
+
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">
+        <svg class="chatgpt-icon" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M37.5324 16.8707C37.9808 15.5241 38.1363 14.0974 37.9886 12.6859C37.8409 11.2744 37.3934 9.91076 36.676 8.68622C35.6126 6.83404 33.9882 5.3676 32.0373 4.4985C30.0864 3.62941 27.9098 3.40259 25.8215 3.85078C24.8796 2.7893 23.7219 1.94125 22.4257 1.36341C21.1295 0.785575 19.7249 0.491269 18.3058 0.500197C16.1708 0.495044 14.0893 1.16803 12.3614 2.42214C10.6335 3.67624 9.34853 5.44666 8.6917 7.47815C7.30085 7.76286 5.98686 8.3414 4.8377 9.17505C3.68854 10.0087 2.73073 11.0782 2.02839 12.312C0.956464 14.1591 0.498905 16.2988 0.721698 18.4228C0.944492 20.5467 1.83612 22.5449 3.268 24.1293C2.81966 25.4759 2.66413 26.9026 2.81182 28.3141C2.95951 29.7256 3.40701 31.0892 4.12437 32.3138C5.18791 34.1659 6.8123 35.6322 8.76321 36.5013C10.7141 37.3704 12.8907 37.5973 14.9789 37.1492C15.9208 38.2107 17.0786 39.0587 18.3747 39.6366C19.6709 40.2144 21.0755 40.5087 22.4946 40.4998C24.6307 40.5054 26.7133 39.8321 28.4418 38.5772C30.1704 37.3223 31.4556 35.5506 32.1119 33.5179C33.5027 33.2332 34.8167 32.6547 35.9659 31.821C37.115 30.9874 38.0728 29.9178 38.7752 28.684C39.8458 26.8371 40.3023 24.6979 40.0789 22.5748C39.8556 20.4517 38.9639 18.4544 37.5324 16.8707ZM22.4978 37.8849C20.7443 37.8874 19.0459 37.2733 17.6994 36.1501C17.7601 36.117 17.8666 36.0586 17.936 36.0161L25.9004 31.4156C26.1003 31.3019 26.2663 31.137 26.3813 30.9378C26.4964 30.7386 26.5563 30.5124 26.5549 30.2825V19.0542L29.9213 20.998C29.9389 21.0068 29.9541 21.0198 29.9656 21.0359C29.977 21.052 29.9842 21.0707 29.9867 21.0902V30.3889C29.9842 32.375 29.1946 34.2791 27.7909 35.6841C26.3872 37.0892 24.4838 37.8806 22.4978 37.8849ZM6.39227 31.0064C5.51397 29.4888 5.19742 27.7107 5.49804 25.9832C5.55718 26.0187 5.66048 26.0818 5.73461 26.1244L13.699 30.7248C13.8975 30.8408 14.1233 30.902 14.3532 30.902C14.583 30.902 14.8088 30.8408 15.0073 30.7248L24.731 25.1103V28.9979C24.7321 29.0177 24.7283 29.0376 24.7199 29.0556C24.7115 29.0736 24.6988 29.0893 24.6829 29.1012L16.6317 33.7497C14.9096 34.7416 12.8643 35.0097 10.9447 34.4954C9.02506 33.9811 7.38785 32.7263 6.39227 31.0064ZM4.29707 13.6194C5.17156 12.0998 6.55279 10.9364 8.19885 10.3327C8.19885 10.4013 8.19491 10.5228 8.19491 10.6071V19.808C8.19351 20.0378 8.25334 20.2638 8.36823 20.4629C8.48312 20.6619 8.64893 20.8267 8.84863 20.9404L18.5723 26.5542L15.206 28.4979C15.1894 28.5089 15.1703 28.5155 15.1505 28.5173C15.1307 28.5191 15.1107 28.516 15.0924 28.5082L7.04046 23.8557C5.32135 22.8601 4.06716 21.2235 3.55289 19.3046C3.03862 17.3858 3.30624 15.3413 4.29707 13.6194ZM31.955 20.0556L22.2312 14.4411L25.5976 12.4981C25.6142 12.4872 25.6333 12.4805 25.6531 12.4787C25.6729 12.4769 25.6928 12.4801 25.7111 12.4879L33.7631 17.1364C34.9967 17.849 36.0017 18.8982 36.6606 20.1613C37.3194 21.4244 37.6047 22.849 37.4832 24.2684C37.3617 25.6878 36.8382 27.0432 35.9743 28.1759C35.1103 29.3086 33.9415 30.1717 32.6047 30.6641C32.6047 30.5947 32.6047 30.4733 32.6047 30.3889V21.188C32.6066 20.9586 32.5474 20.7328 32.4332 20.5338C32.319 20.3348 32.154 20.1698 31.955 20.0556ZM35.3055 15.0128C35.2464 14.9765 35.1431 14.9142 35.069 14.8717L27.1045 10.2712C26.906 10.1554 26.6803 10.0943 26.4504 10.0943C26.2206 10.0943 25.9948 10.1554 25.7963 10.2712L16.0726 15.8858V11.9982C16.0715 11.9783 16.0753 11.9585 16.0837 11.9405C16.0921 11.9225 16.1048 11.9068 16.1207 11.8949L24.1719 7.25025C25.4053 6.53903 26.8158 6.19376 28.2383 6.25482C29.6608 6.31589 31.0364 6.78077 32.2044 7.59508C33.3723 8.40939 34.2842 9.53945 34.8334 10.8531C35.3826 12.1667 35.5464 13.6095 35.3055 15.0128ZM14.2424 21.9419L10.8752 19.9981C10.8576 19.9893 10.8423 19.9763 10.8309 19.9602C10.8195 19.9441 10.8122 19.9254 10.8098 19.9058V10.6071C10.8107 9.18295 11.2173 7.78848 11.9819 6.58696C12.7466 5.38544 13.8377 4.42659 15.1275 3.82264C16.4173 3.21869 17.8524 2.99464 19.2649 3.1767C20.6775 3.35876 22.0089 3.93941 23.1034 4.85067C23.0427 4.88379 22.937 4.94215 22.8668 4.98473L14.9024 9.58517C14.7025 9.69878 14.5366 9.86356 14.4215 10.0626C14.3065 10.2616 14.2466 10.4877 14.2479 10.7175L14.2424 21.9419ZM16.071 17.9991L20.4018 15.4978L24.7325 17.9975V22.9985L20.4018 25.4983L16.071 22.9985V17.9991Z" fill="currentColor"></path></svg> ChatGPT
+      </div>
+      <div class="message-content">
+        <div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:18pt;"><strong><span style="font-family:'Times New Roman';">UNIT V: MISCELLANEOUS LAWS</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">&nbsp;</span></strong><strong><span style="font-family:'Times New Roman';">The Essential Commodities Act, 1955</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">1.1 Introduction</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The&nbsp;</span><strong><span style="font-family:'Times New Roman';">Essential Commodities Act, 1955</span></strong><span style="font-family:'Times New Roman';">&nbsp;was enacted to ensure the&nbsp;</span><strong><span style="font-family:'Times New Roman';">availability of essential goods to the public at fair prices</span></strong><span style="font-family:'Times New Roman';">. The main concern behind this law is to&nbsp;</span><strong><span style="font-family:'Times New Roman';">prevent hoarding, black marketing, and artificial scarcity</span></strong><span style="font-family:'Times New Roman';">&nbsp;of goods that are necessary for daily life.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">1</span></strong><strong><span style="font-family:'Times New Roman';">.2 Meaning of Essential Commodities</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Essential commodities</span></strong><span style="font-family:'Times New Roman';">&nbsp;are goods that are&nbsp;</span><strong><span style="font-family:'Times New Roman';">necessary for the survival and well-being of people</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Examples:</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Food grains (rice, wheat), Pulses, Sugar, Edible oils, Petroleum products, Fertilizers, Drugs and medicines</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">👉</span><span style="font-family:'Times New Roman';">&nbsp;The Central Government has the authority to&nbsp;</span><strong><span style="font-family:'Times New Roman';">add or remove items</span></strong><span style="font-family:'Times New Roman';">&nbsp;from the list as per economic conditions.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">1.3 Objectives of the Act</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The main objectives of the Essential Commodities Act are:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To&nbsp;</span><strong><span style="font-family:'Times New Roman';">maintain or increase supplies</span></strong><span style="font-family:'Times New Roman';">&nbsp;of essential goods</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To ensure&nbsp;</span><strong><span style="font-family:'Times New Roman';">equitable (fair) distribution</span></strong><span style="font-family:'Times New Roman';">&nbsp;of commodities</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To&nbsp;</span><strong><span style="font-family:'Times New Roman';">control prices</span></strong><span style="font-family:'Times New Roman';">&nbsp;and prevent exploitation of consumers</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To curb&nbsp;</span><strong><span style="font-family:'Times New Roman';">hoarding, profiteering, and black marketing</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">1.4 Powers of the Government</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The Act empowers the&nbsp;</span><strong><span style="font-family:'Times New Roman';">Central Government</span></strong><span style="font-family:'Times New Roman';">&nbsp;(and State Governments under delegation) to issue&nbsp;</span><strong><span style="font-family:'Times New Roman';">control orders</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Key Powers Include:</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Regulate production and manufacturing processes.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Fix&nbsp;</span><strong><span style="font-family:'Times New Roman';">maximum retail prices (MRP)</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Control storage limits (stock limits) and transport.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Regulate distribution channels.</span></p>
+    <div align="center" style="margin-left:18pt;">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">Flow of Control:</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Essential Commodity</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&darr;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Government Control Order</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&darr;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Regulation of Price / Supply / Storage</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&darr;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Protection of Consumer Interest</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">1</span></strong><strong><span style="font-family:'Times New Roman';">.5 Prohibition of Hoarding and Black Marketing</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Hoarding: Storing large quantities of goods to create artificial scarcity, intending to sell them later at higher prices.</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Black Marketing: Selling essential goods illegally at prices higher than the government-fixed rates.</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;</span><strong><span style="font-family:'Times New Roman';">Both are punishable offences</span></strong><span style="font-family:'Times New Roman';">&nbsp;under this Act.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">1.6 Penalties and Punishment</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Violation of provisions of the Act can result in:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Imprisonment, Fine, Seizure and confiscation of goods, Cancellation of licenses</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The severity of punishment depends on:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Nature of commodity, Quantity involved, Intent of the offender</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">1.7 Importance of the Act in Business</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">For businesses dealing in essential goods, this Act:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Imposes&nbsp;</span><strong><span style="font-family:'Times New Roman';">legal responsibility</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Requires&nbsp;</span><strong><span style="font-family:'Times New Roman';">strict compliance</span></strong><span style="font-family:'Times New Roman';">&nbsp;with price and stock regulations</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Prevents unethical trade practices</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Protects long-term market stability</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-left:72pt; margin-bottom:10pt; line-height:115%; font-size:18pt;"><strong><span style="font-family:'Times New Roman';">The Consumer Protection Act, 1986</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">2.1 Introduction</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The&nbsp;</span><strong><span style="font-family:'Times New Roman';">Consumer Protection Act, 1986</span></strong><span style="font-family:'Times New Roman';">&nbsp;: This Act provides &quot;simple, speedy, and inexpensive&quot; justice to consumers. It recognizes that consumers are often the weaker party in transactions and need legal protection against defective goods and deficient services.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">2.2 Meaning of Consumer</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Who IS a Consumer:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Any person who buys goods or hires services for a &quot;consideration&quot; (payment).</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';"></span><strong><span style="font-family:'Times New Roman';">Who is NOT a Consumer:</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Someone buying goods for&nbsp;</span><strong><span style="font-family:'Times New Roman';">resale</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Someone buying goods for&nbsp;</span><strong><span style="font-family:'Times New Roman';">commercial purposes</span></strong><span style="font-family:'Times New Roman';">&nbsp;(Exception: buying for self-employment/livelihood is covered).</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Exception: Self-employment for livelihood&nbsp;</span><strong><span style="font-family:'Times New Roman';">is included</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">2.3 Objectives of the Act</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The Consumer Protection Act aims to:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Protect consumers against&nbsp;</span><strong><span style="font-family:'Times New Roman';">defective goods</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Protect consumers against&nbsp;</span><strong><span style="font-family:'Times New Roman';">deficient services</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Safeguard consumers from&nbsp;</span><strong><span style="font-family:'Times New Roman';">unfair trade practices</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Provide an effective&nbsp;</span><strong><span style="font-family:'Times New Roman';">dispute redressal mechanism</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">2.4 Rights of Consumers</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The Act recognizes&nbsp;</span><strong><span style="font-family:'Times New Roman';">six basic consumer rights</span></strong><span style="font-family:'Times New Roman';">:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Right to Safety:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Protection against hazardous goods (e.g., unsafe electronics).</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Right to Information:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Right to know quality, quantity, potency, purity, standard, and price.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Right to Choice:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Access to a variety of goods at competitive prices.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Right to be Heard:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Right to be represented in government and other forums.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Right to Redressal:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Right to get compensation for unfair trade practices.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Right to Education:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Right to acquire knowledge and skill to be an informed consumer.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">2.5 Consumer Disputes Redressal Agencies</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The Act establishes a&nbsp;</span><strong><span style="font-family:'Times New Roman';">three-tier redressal system</span></strong><span style="font-family:'Times New Roman';">:</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">1. District Consumer Forum: </span></strong><span style="font-family:'Times New Roman';">For small-value claims (Located at district level)</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">2. State Consumer Commission: For medium-value claims and appeals against District Forum orders (State level).</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">3. National Consumer Commission: For high-value claims and appeals against State Commission orders (National level).</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center;"><span style="font-family:'Times New Roman';">Consumer Complaint</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center;"><span style="font-family:'Times New Roman';">&darr;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center;"><span style="font-family:'Times New Roman';">District Forum</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center;"><span style="font-family:'Times New Roman';">&darr;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center;"><span style="font-family:'Times New Roman';">State Commission</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center;"><span style="font-family:'Times New Roman';">&darr;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center;"><span style="font-family:'Times New Roman';">National Commission</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">2.6 Types of Complaints</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">A consumer can file a complaint for:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Defective goods</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Deficiency in services</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Excessive pricing</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Unfair or restrictive trade practices</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Hazardous goods or services</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">2.7 Unfair Trade Practices</span></strong><strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">: Businesses are punished for practices such as:</span></strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">False advertisements</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Misleading price offers, Sale of substandard goods, False claims about quality or benefits</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Businesses found guilty may be ordered to:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Refund money,</span><span style="font-family:'Times New Roman';">&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Replace goods, Pay compensation</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">2.8 Importance of Consumer Protection Law</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">For Consumers:</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Legal empowerment, Protection against exploitation, Easy access to justice</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">For Businesses:</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Encourages ethical practices, Builds consumer trust, Improves quality standards</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:18pt;"><strong><span style="font-family:'Times New Roman';">The Co-operative Societies Act, 1912</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">3.1 </span></strong><strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:14pt;">The Co-operative Societies Act, 1912 : </span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Concept</span></strong><span style="font-family:'Times New Roman';">&nbsp;A Co-operative society is a voluntary association of persons with common economic needs who join hands for&nbsp;</span><strong><span style="font-family:'Times New Roman';">mutual help</span></strong><span style="font-family:'Times New Roman';">&nbsp;rather than profit. It operates on the principle of&nbsp;</span><strong><span style="font-family:'Times New Roman';">&quot;One Member, One Vote.&quot;</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">3.2 Meaning of Co-operative Society</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">A&nbsp;</span><strong><span style="font-family:'Times New Roman';">co-operative society</span></strong><span style="font-family:'Times New Roman';">&nbsp;is an association of persons:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Formed&nbsp;</span><strong><span style="font-family:'Times New Roman';">voluntarily</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">With&nbsp;</span><strong><span style="font-family:'Times New Roman';">common economic objectives</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Operated on the principle of&nbsp;</span><strong><span style="font-family:'Times New Roman';">one member, one vote</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Aimed at&nbsp;</span><strong><span style="font-family:'Times New Roman';">service rather than profit</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Examples:</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Consumer co-operatives; Credit co-operative societies; Housing co-operatives; Agricultural co-operatives</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">3.3 Objectives of the Act</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The Act aims to:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Promote&nbsp;</span><strong><span style="font-family:'Times New Roman';">self-help and mutual assistance</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Encourage&nbsp;</span><strong><span style="font-family:'Times New Roman';">democratic management</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Protect the interests of members</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Regulate registration and functioning of societies</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">3.4 Registration &amp; Legal Status</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Registration</span></strong><span style="font-family:'Times New Roman';">: Must submit an application to the Registrar of Co-operative Societies.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Effect</span></strong><span style="font-family:'Times New Roman';">: Once registered, the society becomes a Body Corporate. It has perpetual succession (continues even if members die), can own property, and can sue or be sued in its own name.</span></p>
+    <ol start="5" type="1" class="awlist5" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:39pt; margin-bottom:10pt; text-indent:-21pt; line-height:115%; font-family:'Times New Roman'; font-size:16pt;"><span style="width:1pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;</span><strong>&nbsp;</strong><strong>Management of Co-operative Societies</strong></li>
+    </ol>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&nbsp;</span><span style="font-family:'Times New Roman';">Managed by&nbsp;</span><strong><span style="font-family:'Times New Roman';">a Managing Committee</span></strong><span style="font-family:'Times New Roman';">&nbsp;elected by members democratically.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Surplus Utilization</span></strong><span style="font-family:'Times New Roman';">: Profits are not fully distributed as dividends. They are used for:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Member welfare, Reserve funds, Community development.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">3.6 Importance of Co-operative Societies</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Promotes economic equality</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Helps small producers and consumers</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Reduces exploitation by middlemen</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Encourages collective growth</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:18pt;"><strong><span style="font-family:'Times New Roman';">The Multi-State Co-operative Societies Act, 1984</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The&nbsp;</span><strong><span style="font-family:'Times New Roman';">Multi-State Co-operative Societies Act, 1984</span></strong><span style="font-family:'Times New Roman';">&nbsp;governs co-operative societies whose&nbsp;</span><strong><span style="font-family:'Times New Roman';">operations extend across more than one state</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <ol type="1" class="awlist6" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:21pt; margin-bottom:10pt; text-indent:-21pt; line-height:115%; font-family:'Times New Roman'; font-size:16pt; font-weight:bold;"><span style="width:1pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;</span>Meaning of Multi-State Co-operative Society</li>
+    </ol>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">A&nbsp;</span><strong><span style="font-family:'Times New Roman';">multi-state co-operative society</span></strong><span style="font-family:'Times New Roman';">&nbsp;is one: Whose objects are&nbsp;</span><strong><span style="font-family:'Times New Roman';">not confined to a single state;</span></strong><span style="font-family:'Times New Roman';">&nbsp;Whose members belong to&nbsp;</span><strong><span style="font-family:'Times New Roman';">more than one state</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Examples: </span></strong><span style="font-family:'Times New Roman';">National-level credit societies; Inter-state marketing co-operatives</span></p>
+    <ol start="2" type="1" class="awlist7" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:21pt; margin-bottom:10pt; text-indent:-21pt; line-height:115%; font-family:'Times New Roman'; font-size:16pt; font-weight:bold;"><span style="width:1pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;</span>Objectives of the Act</li>
+    </ol>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Provide legal framework for inter-state co-operatives; Ensure democratic functioning; Protect members&rsquo; interests; Facilitate economic integration across states</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">4.4 Registration and Regulation</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Registration is done by the&nbsp;</span><strong><span style="font-family:'Times New Roman';">Central Registrar</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">The society acquires&nbsp;</span><strong><span style="font-family:'Times New Roman';">corporate status</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Subject to&nbsp;</span><strong><span style="font-family:'Times New Roman';">central government supervision</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">4.5 Management and Control</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Managed by an elected Board</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Subject to statutory audits</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Required to maintain proper accounts and records</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;</span><strong><span style="font-family:'Times New Roman';">Government intervention is minimal</span></strong><span style="font-family:'Times New Roman';">, except where public interest is involved.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">4.6 Dissolution and Winding Up</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">A multi-state co-operative may be wound up due to:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Insolvency</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Failure to achieve objectives</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Decision by members</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Order of the Central Registrar</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">The Foreign Exchange Management Act (FEMA), 1999</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The&nbsp;</span><strong><span style="font-family:'Times New Roman';">Foreign Exchange Management Act (FEMA), 1999</span></strong><span style="font-family:'Times New Roman';">&nbsp;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">FEMA replaced the stricter FERA (Foreign Exchange Regulation Act). The shift was from&nbsp;</span><strong><span style="font-family:'Times New Roman';">&quot;Control&quot;</span></strong><span style="font-family:'Times New Roman';">&nbsp;to&nbsp;</span><strong><span style="font-family:'Times New Roman';">&quot;Management&quot;</span></strong><span style="font-family:'Times New Roman';">&nbsp;to facilitate external trade and payments in a liberalized economy.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">5.2 Objectives of FEMA</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">FEMA aims to:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Facilitate&nbsp;</span><strong><span style="font-family:'Times New Roman';">external trade and payments</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Promote orderly development of the&nbsp;</span><strong><span style="font-family:'Times New Roman';">foreign exchange market</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Regulate foreign exchange transactions</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Encourage foreign investment</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <ol start="3" type="1" class="awlist8" style="margin:0pt; padding-left:0pt;">
+        <li style="margin-left:18pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-family:'Times New Roman'; font-size:14pt; font-weight:bold;"><span style="width:0.5pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;</span>Key Concepts under FEMA</li>
+    </ol>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Foreign Exchange: </span></strong><span style="font-family:'Times New Roman';">Includes foreign currency, deposits, credits, and instruments payable in foreign currency</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Capital Account Transactions: </span></strong><span style="font-family:'Times New Roman';">Transactions affecting&nbsp;</span><strong><span style="font-family:'Times New Roman';">assets or liabilities</span></strong><span style="font-family:'Times New Roman';">&nbsp;outside India</span><strong><span style="font-family:'Times New Roman';"> (</span></strong><span style="font-family:'Times New Roman';">Example: Foreign Direct Investment (FDI))</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Current Account Transactions:</span></strong><strong><span style="font-family:'Times New Roman';">&nbsp; </span></strong><strong><span style="font-family:'Times New Roman';">Short- term, </span></strong><span style="font-family:'Times New Roman';">Day-to-day trade transactions (Example: Import/export payments, travel expenses)</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">5.4 Regulation under FEMA</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">FEMA regulates:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Foreign investments, Export and import of currency, Foreign exchange dealings, Transfer of immovable property outside India</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;</span><strong><span style="font-family:'Times New Roman';">Authorized Dealers</span></strong><span style="font-family:'Times New Roman';">&nbsp;(like banks) play a key role in FEMA compliance.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">5.5 Penalties and Enforcement</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">FEMA violations are&nbsp;</span><strong><span style="font-family:'Times New Roman';">civil offences</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Penalties include: Monetary fines, Confiscation of currency</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">No imprisonment for simple contravention</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">👉</span><span style="font-family:'Times New Roman';">&nbsp;This reflects FEMA&rsquo;s&nbsp;</span><strong><span style="font-family:'Times New Roman';">business-friendly approach</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">5.6 Importance of FEMA for Business</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Facilitates international trade</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Encourages foreign investment</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Simplifies compliance procedures</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Enhances global integration of Indian economy</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">The MRTP Act (Monopolies and Restrictive Trade Practices Act)</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The&nbsp;</span><strong><span style="font-family:'Times New Roman';">MRTP Act</span></strong><span style="font-family:'Times New Roman';">&nbsp;was enacted to ensure that&nbsp;</span><strong><span style="font-family:'Times New Roman';">economic power is not concentrated</span></strong><span style="font-family:'Times New Roman';">&nbsp;in the hands of a few business entities and that&nbsp;</span><strong><span style="font-family:'Times New Roman';">free and fair competition</span></strong><span style="font-family:'Times New Roman';">&nbsp;is maintained in the market.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">6.2 Objectives of the MRTP Act:</span></strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:11pt;">&nbsp;</span><span style="font-family:'Times New Roman';">To prevent the concentration of economic power in a few hands and ensure free competition.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To prevent&nbsp;</span><strong><span style="font-family:'Times New Roman';">concentration of economic power</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To prohibit&nbsp;</span><strong><span style="font-family:'Times New Roman';">monopolistic trade practices</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To control&nbsp;</span><strong><span style="font-family:'Times New Roman';">restrictive trade practices</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To eliminate&nbsp;</span><strong><span style="font-family:'Times New Roman';">unfair trade practices</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">To protect&nbsp;</span><strong><span style="font-family:'Times New Roman';">consumer interests</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">6.3 Key Concepts under MRTP Act</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">(a) Monopolistic Trade Practices:</span></strong><span style="line-height:115%; font-family:'Times New Roman'; font-size:11pt;">&nbsp;</span><span style="font-family:'Times New Roman';">Misusing dominant market position to limit supply or unreasonably hike prices.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Example: A dominant firm deliberately reducing supply to increase prices.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">(b) Restrictive Trade Practices</span></strong><span style="font-family:'Times New Roman';">: Practices that block competition flow (e.g., forcing a retailer to sell&nbsp;</span><em><span style="font-family:'Times New Roman';">only</span></em><span style="font-family:'Times New Roman';">&nbsp;your brand).</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Example: Tie-in sales, exclusive dealing agreements.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">(c) Unfair Trade Practices: </span></strong><span style="font-family:'Times New Roman';">Deception, false guarantees, and misleading ads.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Example: False claims about product quality or discounts.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:16pt;"><strong><span style="font-family:'Times New Roman';">6.4 MRTP Commission</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">The Act established the&nbsp;</span><strong><span style="font-family:'Times New Roman';">MRTP Commission</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">The Commission investigated complaints and passed orders</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Could issue&nbsp;</span><strong><span style="font-family:'Times New Roman';">cease and desist orders</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Although later replaced by the&nbsp;</span><strong><span style="font-family:'Times New Roman';">Competition Act</span></strong><span style="font-family:'Times New Roman';">, the MRTP Act remains important for&nbsp;</span><strong><span style="font-family:'Times New Roman';">conceptual understanding and exams</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">6.5 Importance of MRTP Act</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Promotes healthy competition</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Prevents market domination</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Protects consumers from exploitation</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Encourages ethical business conduct</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; text-align:center; line-height:115%; font-size:18pt;"><strong><span style="font-family:'Times New Roman';">The Information Technology Act, 2000</span></strong></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">7.1 Introduction</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The&nbsp;</span><strong><span style="font-family:'Times New Roman';">Information Technology Act, 2000</span></strong><span style="font-family:'Times New Roman';">&nbsp;was enacted to give&nbsp;</span><strong><span style="font-family:'Times New Roman';">legal recognition to electronic transactions</span></strong><span style="font-family:'Times New Roman';">&nbsp;and facilitate&nbsp;</span><strong><span style="font-family:'Times New Roman';">e-commerce and digital governance</span></strong><span style="font-family:'Times New Roman';">&nbsp;in India.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">This Act is the backbone of&nbsp;</span><strong><span style="font-family:'Times New Roman';">cyber law in India</span></strong><span style="font-family:'Times New Roman';">.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">7.2 Objectives of the IT Act</span></strong></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">The Act aims to:</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Legalize&nbsp;</span><strong><span style="font-family:'Times New Roman';">electronic records and digital signatures</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Facilitate&nbsp;</span><strong><span style="font-family:'Times New Roman';">e-commerce</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Prevent&nbsp;</span><strong><span style="font-family:'Times New Roman';">cyber crimes</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Ensure&nbsp;</span><strong><span style="font-family:'Times New Roman';">data security</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Promote e-governance</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">7.3 Key Provisions of the IT Act</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Electronic Records:</span></strong><span style="font-family:'Times New Roman';">&nbsp;Digital documents are legally treated the same as paper documents.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:0pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Digital Signatures:</span></strong><span style="font-family:'Times New Roman';">&nbsp;A mathematical technique used to validate the authenticity and integrity of a message/document.</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong><span style="font-family:'Times New Roman';">Certifying Authorities:</span></strong><span style="font-family:'Times New Roman';">&nbsp;The Act established the&nbsp;</span><strong><span style="font-family:'Times New Roman';">Controller of Certifying Authorities (CCA)</span></strong><span style="font-family:'Times New Roman';">&nbsp;to license and regulate issuers of digital signatures.</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Quattrocento Sans';">📌</span><span style="font-family:'Times New Roman';">&nbsp;Punishments include&nbsp;</span><strong><span style="font-family:'Times New Roman';">fines and imprisonment</span></strong><span style="font-family:'Times New Roman';">, depending on severity.</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">7.4 Role of the Controller of Certifying Authorities</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Supervises digital signature certification</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Licenses Certifying Authorities</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Ensures trust in electronic transactions</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">7.5 Importance of IT Act for Business</span></strong></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Enables online contracts</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Facilitates digital payments</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Protects business data</span></p>
+    <p style="margin-top:0pt; margin-left:36pt; margin-bottom:10pt; text-indent:-18pt; line-height:115%; font-size:14pt;"><span style="font-family:'Noto Sans Symbols'; font-size:10pt;">●</span><span style="width:11.96pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:'Times New Roman';">Supports e-commerce growth</span></p>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">&nbsp;</span></strong></p>
+    <table cellspacing="0" cellpadding="0" style="width:484.4pt; border:0.75pt solid #000000; border-collapse:collapse;">
+        <thead>
+            <tr style="height:29.65pt;">
+                <td style="border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Law</span></strong></p>
+                </td>
+                <td style="border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Core Purpose</span></strong></p>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="height:28.15pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Essential Commodities Act, 1955</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><strong><span style="font-family:'Times New Roman';">Control prices &amp; prevent</span></strong><span style="font-family:'Times New Roman';">&nbsp;hoarding</span></p>
+                </td>
+            </tr>
+            <tr style="height:28.9pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Consumer Protection Act, 1986</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Protect&nbsp;</span><strong><span style="font-family:'Times New Roman';">consumer rights</span></strong></p>
+                </td>
+            </tr>
+            <tr style="height:28.9pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Co-operative Societies Act, 1912</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Promote&nbsp;</span><strong><span style="font-family:'Times New Roman';">mutual economic help</span></strong></p>
+                </td>
+            </tr>
+            <tr style="height:28.9pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Multi-State Co-operatives Act, 1984</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Regulate&nbsp;</span><strong><span style="font-family:'Times New Roman';">inter-state societies</span></strong></p>
+                </td>
+            </tr>
+            <tr style="height:28.9pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">FEMA, 1999</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Manage&nbsp;</span><strong><span style="font-family:'Times New Roman';">foreign exchange</span></strong></p>
+                </td>
+            </tr>
+            <tr style="height:28.9pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">MRTP Act, 1969</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Prevent&nbsp;</span><strong><span style="font-family:'Times New Roman';">monopolies</span></strong></p>
+                </td>
+            </tr>
+            <tr style="height:28.9pt;">
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-right-style:solid; border-right-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">IT Act, 2000</span></p>
+                </td>
+                <td style="border-top-style:solid; border-top-width:0.75pt; border-left-style:solid; border-left-width:0.75pt; padding:0.75pt 0.38pt;">
+                    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">Enable&nbsp;</span><strong><span style="font-family:'Times New Roman';">digital transactions</span></strong></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div align="center">
+        <hr size="2" align="center" style="width:100%;">
+    </div>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&nbsp;</span></p>
+    <p style="margin-top:0pt; margin-bottom:10pt; line-height:115%; font-size:14pt;"><span style="font-family:'Times New Roman';">&nbsp;</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+
+  <script>
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
