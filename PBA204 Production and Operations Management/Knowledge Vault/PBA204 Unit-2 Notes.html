@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="65ac0a0f-ac26-4251-b372-aa281f2adb17" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="86">
+<p data-start="2" data-end="86"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="55">Unit II – Productivity and Work Study</strong><br data-start="55" data-end="58">
+<strong data-start="60" data-end="86">Part 1 of ~3 (Approx.)</strong></p>
+</blockquote>
+<hr data-start="88" data-end="91">
+<h2 data-start="93" data-end="145"><strong data-start="96" data-end="145">UNIT II: PRODUCTIVITY AND WORK STUDY – PART 1</strong></h2>
+<p data-start="147" data-end="399">Unit II is <strong data-start="158" data-end="209">highly important for both theory and numericals</strong>.<br data-start="210" data-end="213">
+In this part, we will clearly understand <strong data-start="254" data-end="270">Productivity</strong> and the <strong data-start="279" data-end="304">concept of Work Study</strong>, including its <strong data-start="320" data-end="351">objectives, scope, and uses</strong>.<br data-start="352" data-end="355">
+This section frequently appears in exams as:</p>
+<ul data-start="400" data-end="498">
+<li data-start="400" data-end="454">
+<p data-start="402" data-end="454"><em data-start="402" data-end="452">“Define productivity and explain its importance”</em></p>
+</li>
+<li data-start="455" data-end="498">
+<p data-start="457" data-end="498"><em data-start="457" data-end="498">“Explain work study and its objectives”</em></p>
+</li>
+</ul>
+<hr data-start="500" data-end="503">
+<h2 data-start="505" data-end="527"><strong data-start="508" data-end="527">1. Productivity</strong></h2>
+<h3 data-start="529" data-end="549"><strong data-start="533" data-end="549">Introduction</strong></h3>
+<p data-start="550" data-end="790">Productivity is a <strong data-start="568" data-end="593">measure of efficiency</strong> with which resources are converted into outputs.<br data-start="642" data-end="645">
+In Operations Management, improving productivity is a <strong data-start="699" data-end="715">primary goal</strong>, because it directly affects <strong data-start="745" data-end="789">cost, profitability, and competitiveness</strong>.</p>
+<hr data-start="792" data-end="795">
+<h3 data-start="797" data-end="817"><strong data-start="801" data-end="817">Key Concepts</strong></h3>
+<ul data-start="818" data-end="928">
+<li data-start="818" data-end="832">
+<p data-start="820" data-end="832">Efficiency</p>
+</li>
+<li data-start="833" data-end="850">
+<p data-start="835" data-end="850">Effectiveness</p>
+</li>
+<li data-start="851" data-end="880">
+<p data-start="853" data-end="880">Input–Output relationship</p>
+</li>
+<li data-start="881" data-end="905">
+<p data-start="883" data-end="905">Partial productivity</p>
+</li>
+<li data-start="906" data-end="928">
+<p data-start="908" data-end="928">Total productivity</p>
+</li>
+</ul>
+<hr data-start="930" data-end="933">
+<h3 data-start="935" data-end="969"><strong data-start="939" data-end="969">Definition of Productivity</strong></h3>
+<blockquote data-start="970" data-end="1005">
+<p data-start="972" data-end="1005"><strong data-start="972" data-end="1005">Productivity = Output / Input</strong></p>
+</blockquote>
+<p data-start="1007" data-end="1052">It shows <strong data-start="1016" data-end="1051">how well resources are utilized</strong>.</p>
+<hr data-start="1054" data-end="1057">
+<h3 data-start="1059" data-end="1088"><strong data-start="1063" data-end="1088">Types of Productivity</strong></h3>
+<hr data-start="1090" data-end="1093">
+<h3 data-start="1095" data-end="1126"><strong data-start="1099" data-end="1126">1. Partial Productivity</strong></h3>
+<p data-start="1127" data-end="1179">Productivity measured with respect to <strong data-start="1165" data-end="1178">one input</strong>.</p>
+<p data-start="1181" data-end="1194"><strong data-start="1181" data-end="1194">Examples:</strong></p>
+<ul data-start="1195" data-end="1288">
+<li data-start="1195" data-end="1240">
+<p data-start="1197" data-end="1240">Labour productivity = Output / Labour hours</p>
+</li>
+<li data-start="1241" data-end="1288">
+<p data-start="1243" data-end="1288">Machine productivity = Output / Machine hours</p>
+</li>
+</ul>
+<hr data-start="1290" data-end="1293">
+<h3 data-start="1295" data-end="1324"><strong data-start="1299" data-end="1324">2. Total Productivity</strong></h3>
+<p data-start="1325" data-end="1377">Productivity measured using <strong data-start="1353" data-end="1376">all inputs together</strong>.</p>
+<pre class="overflow-visible! px-0!" data-start="1379" data-end="1461"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">mathematica</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-built_in">Total</span></span><span> </span><span><span class="hljs-variable">Productivity</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> </span><span><span class="hljs-built_in">Total</span></span><span> </span><span><span class="hljs-variable">Output</span></span><span> </span><span><span class="hljs-operator">/</span></span><span> </span><span><span class="hljs-punctuation">(</span></span><span><span class="hljs-variable">Labour</span></span><span> </span><span><span class="hljs-operator">+</span></span><span> </span><span><span class="hljs-built_in">Material</span></span><span> </span><span><span class="hljs-operator">+</span></span><span> </span><span><span class="hljs-variable">Capital</span></span><span> </span><span><span class="hljs-operator">+</span></span><span> </span><span><span class="hljs-variable">Energy</span></span><span><span class="hljs-punctuation">)</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="1463" data-end="1466">
+<h3 data-start="1468" data-end="1483"><strong data-start="1472" data-end="1483">Example</strong></h3>
+<p data-start="1484" data-end="1526">If a factory produces <strong data-start="1506" data-end="1519">100 units</strong> using:</p>
+<ul data-start="1527" data-end="1571">
+<li data-start="1527" data-end="1547">
+<p data-start="1529" data-end="1547">Labour cost = ₹500</p>
+</li>
+<li data-start="1548" data-end="1571">
+<p data-start="1550" data-end="1571">Material cost = ₹1000</p>
+</li>
+</ul>
+<pre class="overflow-visible! px-0!" data-start="1573" data-end="1638"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">ini</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-attr">Productivity</span></span><span> = </span><span><span class="hljs-number">100</span></span><span> / (</span><span><span class="hljs-number">500</span></span><span> + </span><span><span class="hljs-number">1000</span></span><span>) = </span><span><span class="hljs-number">0.066</span></span><span> units per rupee
+</span></span></code></div></div></pre>
+<hr data-start="1640" data-end="1643">
+<h3 data-start="1645" data-end="1679"><strong data-start="1649" data-end="1679">Importance of Productivity</strong></h3>
+<ol data-start="1681" data-end="2040">
+<li data-start="1681" data-end="1750">
+<p data-start="1684" data-end="1714"><strong data-start="1684" data-end="1714">Reduces Cost of Production</strong></p>
+<ul data-start="1718" data-end="1750">
+<li data-start="1718" data-end="1750">
+<p data-start="1720" data-end="1750">Same output with fewer inputs.</p>
+</li>
+</ul>
+</li>
+<li data-start="1752" data-end="1815">
+<p data-start="1755" data-end="1781"><strong data-start="1755" data-end="1781">Improves Profitability</strong></p>
+<ul data-start="1785" data-end="1815">
+<li data-start="1785" data-end="1815">
+<p data-start="1787" data-end="1815">Lower cost → higher margins.</p>
+</li>
+</ul>
+</li>
+<li data-start="1817" data-end="1879">
+<p data-start="1820" data-end="1848"><strong data-start="1820" data-end="1848">Enhances Competitiveness</strong></p>
+<ul data-start="1852" data-end="1879">
+<li data-start="1852" data-end="1879">
+<p data-start="1854" data-end="1879">Better price and quality.</p>
+</li>
+</ul>
+</li>
+<li data-start="1881" data-end="1964">
+<p data-start="1884" data-end="1903"><strong data-start="1884" data-end="1903">Economic Growth</strong></p>
+<ul data-start="1907" data-end="1964">
+<li data-start="1907" data-end="1964">
+<p data-start="1909" data-end="1964">Higher national productivity improves living standards.</p>
+</li>
+</ul>
+</li>
+<li data-start="1966" data-end="2040">
+<p data-start="1969" data-end="2000"><strong data-start="1969" data-end="2000">Better Resource Utilization</strong></p>
+<ul data-start="2004" data-end="2040">
+<li data-start="2004" data-end="2040">
+<p data-start="2006" data-end="2040">Minimizes waste and idle capacity.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="2042" data-end="2045">
+<h3 data-start="2047" data-end="2085"><strong data-start="2051" data-end="2085">Factors Affecting Productivity</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2087" data-end="2365" class="w-fit min-w-(--thread-content-width)"><thead data-start="2087" data-end="2111"><tr data-start="2087" data-end="2111"><th data-start="2087" data-end="2096" data-col-size="sm">Factor</th><th data-start="2096" data-end="2111" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="2124" data-end="2365"><tr data-start="2124" data-end="2171"><td data-start="2124" data-end="2137" data-col-size="sm">Technology</td><td data-col-size="sm" data-start="2137" data-end="2171">Modern machines improve output</td></tr><tr data-start="2172" data-end="2229"><td data-start="2172" data-end="2190" data-col-size="sm">Workforce skill</td><td data-col-size="sm" data-start="2190" data-end="2229">Skilled workers perform efficiently</td></tr><tr data-start="2230" data-end="2274"><td data-start="2230" data-end="2243" data-col-size="sm">Management</td><td data-col-size="sm" data-start="2243" data-end="2274">Better planning and control</td></tr><tr data-start="2275" data-end="2316"><td data-start="2275" data-end="2298" data-col-size="sm">Quality of materials</td><td data-col-size="sm" data-start="2298" data-end="2316">Reduces rework</td></tr><tr data-start="2317" data-end="2365"><td data-start="2317" data-end="2332" data-col-size="sm">Work methods</td><td data-col-size="sm" data-start="2332" data-end="2365">Efficient processes save time</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2367" data-end="2370">
+<h3 data-start="2372" data-end="2401"><strong data-start="2376" data-end="2401">Summary: Productivity</strong></h3>
+<ul data-start="2402" data-end="2532">
+<li data-start="2402" data-end="2443">
+<p data-start="2404" data-end="2443">Productivity = <strong data-start="2419" data-end="2443">Efficiency indicator</strong></p>
+</li>
+<li data-start="2444" data-end="2490">
+<p data-start="2446" data-end="2490">Applies to <strong data-start="2457" data-end="2490">labour, machines, and systems</strong></p>
+</li>
+<li data-start="2491" data-end="2532">
+<p data-start="2493" data-end="2532">Core objective of Operations Management</p>
+</li>
+</ul>
+<hr data-start="2534" data-end="2537">
+<h2 data-start="2539" data-end="2559"><strong data-start="2542" data-end="2559">2. Work Study</strong></h2>
+<h3 data-start="2561" data-end="2581"><strong data-start="2565" data-end="2581">Introduction</strong></h3>
+<p data-start="2582" data-end="2751">Work Study is a <strong data-start="2598" data-end="2619">systematic method</strong> of analyzing work to improve <strong data-start="2649" data-end="2680">efficiency and productivity</strong>.<br data-start="2681" data-end="2684">
+It focuses on <strong data-start="2698" data-end="2718">how work is done</strong> and <strong data-start="2723" data-end="2750">how long it should take</strong>.</p>
+<hr data-start="2753" data-end="2756">
+<h3 data-start="2758" data-end="2778"><strong data-start="2762" data-end="2778">Key Concepts</strong></h3>
+<ul data-start="2779" data-end="2871">
+<li data-start="2779" data-end="2801">
+<p data-start="2781" data-end="2801">Method improvement</p>
+</li>
+<li data-start="2802" data-end="2822">
+<p data-start="2804" data-end="2822">Time measurement</p>
+</li>
+<li data-start="2823" data-end="2842">
+<p data-start="2825" data-end="2842">Standardization</p>
+</li>
+<li data-start="2843" data-end="2871">
+<p data-start="2845" data-end="2871">Productivity improvement</p>
+</li>
+</ul>
+<hr data-start="2873" data-end="2876">
+<h3 data-start="2878" data-end="2910"><strong data-start="2882" data-end="2910">Definition of Work Study</strong></h3>
+<blockquote data-start="2911" data-end="3080">
+<p data-start="2913" data-end="3080"><strong data-start="2913" data-end="3080">Work Study is the systematic examination of methods of carrying out activities so as to improve the effective use of resources and to set standards of performance.</strong></p>
+</blockquote>
+<hr data-start="3082" data-end="3085">
+<h3 data-start="3087" data-end="3119"><strong data-start="3091" data-end="3119">Components of Work Study</strong></h3>
+<p data-start="3121" data-end="3168">Work Study consists of <strong data-start="3144" data-end="3167">two main techniques</strong>:</p>
+<pre class="overflow-visible! px-0!" data-start="3170" data-end="3233"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Work</span></span><span> Study
+   ├── Methods Study
+   └── </span><span><span class="hljs-keyword">Work</span></span><span> Measurement
+</span></span></code></div></div></pre>
+<hr data-start="3235" data-end="3238">
+<h3 data-start="3240" data-end="3264"><strong data-start="3244" data-end="3264">1. Methods Study</strong></h3>
+<ul data-start="3265" data-end="3355">
+<li data-start="3265" data-end="3302">
+<p data-start="3267" data-end="3302">Concerned with <strong data-start="3282" data-end="3302">how work is done</strong></p>
+</li>
+<li data-start="3303" data-end="3355">
+<p data-start="3305" data-end="3355">Objective: Find the <strong data-start="3325" data-end="3340">best method</strong> of doing a job</p>
+</li>
+</ul>
+<hr data-start="3357" data-end="3360">
+<h3 data-start="3362" data-end="3389"><strong data-start="3366" data-end="3389">2. Work Measurement</strong></h3>
+<ul data-start="3390" data-end="3478">
+<li data-start="3390" data-end="3437">
+<p data-start="3392" data-end="3437">Concerned with <strong data-start="3407" data-end="3437">how long a job should take</strong></p>
+</li>
+<li data-start="3438" data-end="3478">
+<p data-start="3440" data-end="3478">Objective: Establish <strong data-start="3461" data-end="3478">standard time</strong></p>
+</li>
+</ul>
+<hr data-start="3480" data-end="3483">
+<h3 data-start="3485" data-end="3506"><strong data-start="3489" data-end="3506">Summary Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3508" data-end="3689" class="w-fit min-w-(--thread-content-width)"><thead data-start="3508" data-end="3553"><tr data-start="3508" data-end="3553"><th data-start="3508" data-end="3517" data-col-size="sm">Aspect</th><th data-start="3517" data-end="3533" data-col-size="sm">Methods Study</th><th data-start="3533" data-end="3553" data-col-size="sm">Work Measurement</th></tr></thead><tbody data-start="3568" data-end="3689"><tr data-start="3568" data-end="3610"><td data-start="3568" data-end="3576" data-col-size="sm">Focus</td><td data-col-size="sm" data-start="3576" data-end="3593">Method of work</td><td data-col-size="sm" data-start="3593" data-end="3610">Time required</td></tr><tr data-start="3611" data-end="3648"><td data-start="3611" data-end="3622" data-col-size="sm">Question</td><td data-col-size="sm" data-start="3622" data-end="3635">How to do?</td><td data-col-size="sm" data-start="3635" data-end="3648">How long?</td></tr><tr data-start="3649" data-end="3689"><td data-start="3649" data-end="3658" data-col-size="sm">Output</td><td data-col-size="sm" data-start="3658" data-end="3672">Best method</td><td data-col-size="sm" data-start="3672" data-end="3689">Standard time</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3691" data-end="3694">
+<h2 data-start="3696" data-end="3730"><strong data-start="3699" data-end="3730">3. Objectives of Work Study</strong></h2>
+<h3 data-start="3732" data-end="3752"><strong data-start="3736" data-end="3752">Introduction</strong></h3>
+<p data-start="3753" data-end="3862">The main objective of work study is to <strong data-start="3792" data-end="3861">increase productivity by improving work methods and reducing time</strong>.</p>
+<hr data-start="3864" data-end="3867">
+<h3 data-start="3869" data-end="3893"><strong data-start="3873" data-end="3893">Major Objectives</strong></h3>
+<ol data-start="3895" data-end="4315">
+<li data-start="3895" data-end="3966">
+<p data-start="3898" data-end="3922"><strong data-start="3898" data-end="3922">Improve Productivity</strong></p>
+<ul data-start="3926" data-end="3966">
+<li data-start="3926" data-end="3966">
+<p data-start="3928" data-end="3966">Reduce unnecessary motions and delays.</p>
+</li>
+</ul>
+</li>
+<li data-start="3968" data-end="4028">
+<p data-start="3971" data-end="3986"><strong data-start="3971" data-end="3986">Reduce Cost</strong></p>
+<ul data-start="3990" data-end="4028">
+<li data-start="3990" data-end="4028">
+<p data-start="3992" data-end="4028">Efficient use of labor and machines.</p>
+</li>
+</ul>
+</li>
+<li data-start="4030" data-end="4091">
+<p data-start="4033" data-end="4053"><strong data-start="4033" data-end="4053">Standardize Work</strong></p>
+<ul data-start="4057" data-end="4091">
+<li data-start="4057" data-end="4091">
+<p data-start="4059" data-end="4091">Uniform methods for consistency.</p>
+</li>
+</ul>
+</li>
+<li data-start="4093" data-end="4167">
+<p data-start="4096" data-end="4132"><strong data-start="4096" data-end="4132">Improve Utilization of Resources</strong></p>
+<ul data-start="4136" data-end="4167">
+<li data-start="4136" data-end="4167">
+<p data-start="4138" data-end="4167">Men, machines, and materials.</p>
+</li>
+</ul>
+</li>
+<li data-start="4169" data-end="4234">
+<p data-start="4172" data-end="4202"><strong data-start="4172" data-end="4202">Improve Working Conditions</strong></p>
+<ul data-start="4206" data-end="4234">
+<li data-start="4206" data-end="4234">
+<p data-start="4208" data-end="4234">Reduce fatigue and strain.</p>
+</li>
+</ul>
+</li>
+<li data-start="4236" data-end="4315">
+<p data-start="4239" data-end="4267"><strong data-start="4239" data-end="4267">Establish Fair Standards</strong></p>
+<ul data-start="4271" data-end="4315">
+<li data-start="4271" data-end="4315">
+<p data-start="4273" data-end="4315">Scientific basis for wages and incentives.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="4317" data-end="4320">
+<h3 data-start="4322" data-end="4337"><strong data-start="4326" data-end="4337">Summary</strong></h3>
+<ul data-start="4338" data-end="4434">
+<li data-start="4338" data-end="4388">
+<p data-start="4340" data-end="4388">Work study improves both <strong data-start="4365" data-end="4375">method</strong> and <strong data-start="4380" data-end="4388">time</strong></p>
+</li>
+<li data-start="4389" data-end="4434">
+<p data-start="4391" data-end="4434">Benefits management, workers, and customers</p>
+</li>
+</ul>
+<hr data-start="4436" data-end="4439">
+<h2 data-start="4441" data-end="4470"><strong data-start="4444" data-end="4470">4. Scope of Work Study</strong></h2>
+<h3 data-start="4472" data-end="4492"><strong data-start="4476" data-end="4492">Introduction</strong></h3>
+<p data-start="4493" data-end="4564">Work study can be applied to <strong data-start="4522" data-end="4538">any activity</strong>—manufacturing or service.</p>
+<hr data-start="4566" data-end="4569">
+<h3 data-start="4571" data-end="4592"><strong data-start="4575" data-end="4592">Areas Covered</strong></h3>
+<ol data-start="4594" data-end="4709">
+<li data-start="4594" data-end="4623">
+<p data-start="4597" data-end="4623">Manufacturing operations</p>
+</li>
+<li data-start="4624" data-end="4640">
+<p data-start="4627" data-end="4640">Office work</p>
+</li>
+<li data-start="4641" data-end="4664">
+<p data-start="4644" data-end="4664">Service activities</p>
+</li>
+<li data-start="4665" data-end="4686">
+<p data-start="4668" data-end="4686">Maintenance work</p>
+</li>
+<li data-start="4687" data-end="4709">
+<p data-start="4690" data-end="4709">Material handling</p>
+</li>
+</ol>
+<hr data-start="4711" data-end="4714">
+<h3 data-start="4716" data-end="4735"><strong data-start="4720" data-end="4735">Scope Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4737" data-end="4896" class="w-fit min-w-(--thread-content-width)"><thead data-start="4737" data-end="4759"><tr data-start="4737" data-end="4759"><th data-start="4737" data-end="4744" data-col-size="sm">Area</th><th data-start="4744" data-end="4759" data-col-size="sm">Application</th></tr></thead><tbody data-start="4772" data-end="4896"><tr data-start="4772" data-end="4805"><td data-start="4772" data-end="4782" data-col-size="sm">Factory</td><td data-col-size="sm" data-start="4782" data-end="4805">Assembly, machining</td></tr><tr data-start="4806" data-end="4834"><td data-start="4806" data-end="4815" data-col-size="sm">Office</td><td data-col-size="sm" data-start="4815" data-end="4834">Filing, billing</td></tr><tr data-start="4835" data-end="4868"><td data-start="4835" data-end="4846" data-col-size="sm">Services</td><td data-col-size="sm" data-start="4846" data-end="4868">Banking, hospitals</td></tr><tr data-start="4869" data-end="4896"><td data-start="4869" data-end="4881" data-col-size="sm">Logistics</td><td data-col-size="sm" data-start="4881" data-end="4896">Warehousing</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4898" data-end="4901">
+<h3 data-start="4903" data-end="4918"><strong data-start="4907" data-end="4918">Summary</strong></h3>
+<ul data-start="4919" data-end="4988">
+<li data-start="4919" data-end="4961">
+<p data-start="4921" data-end="4961">Work study is <strong data-start="4935" data-end="4961">universally applicable</strong></p>
+</li>
+<li data-start="4962" data-end="4988">
+<p data-start="4964" data-end="4988">Not limited to factories</p>
+</li>
+</ul>
+<hr data-start="4990" data-end="4993">
+<h2 data-start="4995" data-end="5023"><strong data-start="4998" data-end="5023">5. Uses of Work Study</strong></h2>
+<h3 data-start="5025" data-end="5045"><strong data-start="5029" data-end="5045">Introduction</strong></h3>
+<p data-start="5046" data-end="5106">Work study is used as a <strong data-start="5070" data-end="5089">management tool</strong> for improvement.</p>
+<hr data-start="5108" data-end="5111">
+<h3 data-start="5113" data-end="5131"><strong data-start="5117" data-end="5131">Major Uses</strong></h3>
+<ol data-start="5133" data-end="5257">
+<li data-start="5133" data-end="5169">
+<p data-start="5136" data-end="5169">Production planning and control</p>
+</li>
+<li data-start="5170" data-end="5192">
+<p data-start="5173" data-end="5192">Manpower planning</p>
+</li>
+<li data-start="5193" data-end="5210">
+<p data-start="5196" data-end="5210">Cost control</p>
+</li>
+<li data-start="5211" data-end="5233">
+<p data-start="5214" data-end="5233">Incentive schemes</p>
+</li>
+<li data-start="5234" data-end="5257">
+<p data-start="5237" data-end="5257">Layout improvement</p>
+</li>
+</ol>
+<hr data-start="5259" data-end="5262">
+<h3 data-start="5264" data-end="5279"><strong data-start="5268" data-end="5279">Summary</strong></h3>
+<ul data-start="5280" data-end="5368">
+<li data-start="5280" data-end="5322">
+<p data-start="5282" data-end="5322">Work study supports <strong data-start="5302" data-end="5322">better decisions</strong></p>
+</li>
+<li data-start="5323" data-end="5368">
+<p data-start="5325" data-end="5368">Leads to sustained productivity improvement</p>
+</li>
+</ul>
+<hr data-start="5370" data-end="5373">
+<h2 data-start="5375" data-end="5407"><strong data-start="5378" data-end="5407">Overall Summary of Part 1</strong></h2>
+<ul data-start="5408" data-end="5666">
+<li data-start="5408" data-end="5470">
+<p data-start="5410" data-end="5470">Productivity measures <strong data-start="5432" data-end="5470">efficiency of resource utilization</strong></p>
+</li>
+<li data-start="5471" data-end="5536">
+<p data-start="5473" data-end="5536">Work study is a <strong data-start="5489" data-end="5512">systematic approach</strong> to improve productivity</p>
+</li>
+<li data-start="5537" data-end="5592">
+<p data-start="5539" data-end="5592">It consists of <strong data-start="5554" data-end="5592">Methods Study and Work Measurement</strong></p>
+</li>
+<li data-start="5593" data-end="5666">
+<p data-start="5595" data-end="5666">Objectives focus on <strong data-start="5615" data-end="5666">efficiency, cost reduction, and standardization</strong></p>
+</li>
+</ul>
+<hr data-start="5668" data-end="5671">
+<h3 data-start="5673" data-end="5709"><strong data-start="5677" data-end="5707"><em data-start="5679" data-end="5705">End of Unit II – Part 1.</em></strong></h3>
+<p data-start="5710" data-end="5813" data-is-last-node="" data-is-only-node=""><strong data-start="5710" data-end="5813" data-is-last-node="">Continue to <em data-start="5724" data-end="5742">Unit II – Part 2</em> (Methods Study: Flow Process Chart, Flow Diagram &amp; Process Mapping)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="eb647ebc-83c2-475b-afc8-fef356ff726a" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="86">
+<p data-start="2" data-end="86"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="55">Unit II – Productivity and Work Study</strong><br data-start="55" data-end="58">
+<strong data-start="60" data-end="86">Part 2 of ~3 (Approx.)</strong></p>
+</blockquote>
+<hr data-start="88" data-end="91">
+<h2 data-start="93" data-end="145"><strong data-start="96" data-end="145">UNIT II: PRODUCTIVITY AND WORK STUDY – PART 2</strong></h2>
+<p data-start="147" data-end="279">This part focuses on <strong data-start="168" data-end="185">Methods Study</strong>, which answers the question:<br data-start="214" data-end="217">
+👉 <strong data-start="220" data-end="279">“How should the work be done in the best possible way?”</strong></p>
+<p data-start="281" data-end="328">This section is <strong data-start="297" data-end="315">highly scoring</strong>, especially:</p>
+<ul data-start="329" data-end="388">
+<li data-start="329" data-end="351">
+<p data-start="331" data-end="351">Flow Process Chart</p>
+</li>
+<li data-start="352" data-end="368">
+<p data-start="354" data-end="368">Flow Diagram</p>
+</li>
+<li data-start="369" data-end="388">
+<p data-start="371" data-end="388">Process Mapping</p>
+</li>
+</ul>
+<p data-start="390" data-end="435">Diagram-based questions are very common here.</p>
+<hr data-start="437" data-end="440">
+<h2 data-start="442" data-end="465"><strong data-start="445" data-end="465">6. Methods Study</strong></h2>
+<h3 data-start="467" data-end="487"><strong data-start="471" data-end="487">Introduction</strong></h3>
+<p data-start="488" data-end="651">Methods Study is a <strong data-start="507" data-end="531">systematic technique</strong> used to analyze <strong data-start="548" data-end="582">existing methods of doing work</strong> and develop <strong data-start="595" data-end="615">improved methods</strong> that reduce cost, time, and effort.</p>
+<p data-start="653" data-end="667">It focuses on:</p>
+<ul data-start="668" data-end="743">
+<li data-start="668" data-end="701">
+<p data-start="670" data-end="701">Eliminating unnecessary motions</p>
+</li>
+<li data-start="702" data-end="720">
+<p data-start="704" data-end="720">Simplifying work</p>
+</li>
+<li data-start="721" data-end="743">
+<p data-start="723" data-end="743">Improving efficiency</p>
+</li>
+</ul>
+<hr data-start="745" data-end="748">
+<h3 data-start="750" data-end="770"><strong data-start="754" data-end="770">Key Concepts</strong></h3>
+<ul data-start="771" data-end="864">
+<li data-start="771" data-end="793">
+<p data-start="773" data-end="793">Method improvement</p>
+</li>
+<li data-start="794" data-end="817">
+<p data-start="796" data-end="817">Work simplification</p>
+</li>
+<li data-start="818" data-end="836">
+<p data-start="820" data-end="836">Motion economy</p>
+</li>
+<li data-start="837" data-end="864">
+<p data-start="839" data-end="864">Standardized procedures</p>
+</li>
+</ul>
+<hr data-start="866" data-end="869">
+<h3 data-start="871" data-end="889"><strong data-start="875" data-end="889">Definition</strong></h3>
+<blockquote data-start="890" data-end="1075">
+<p data-start="892" data-end="1075"><strong data-start="892" data-end="1075">Methods Study is the systematic recording and critical examination of existing and proposed ways of doing work, in order to develop easier, more effective, and economical methods.</strong></p>
+</blockquote>
+<hr data-start="1077" data-end="1080">
+<h3 data-start="1082" data-end="1117"><strong data-start="1086" data-end="1117">Objectives of Methods Study</strong></h3>
+<ol data-start="1119" data-end="1301">
+<li data-start="1119" data-end="1156">
+<p data-start="1122" data-end="1156">Eliminate unnecessary operations</p>
+</li>
+<li data-start="1157" data-end="1185">
+<p data-start="1160" data-end="1185">Simplify work processes</p>
+</li>
+<li data-start="1186" data-end="1216">
+<p data-start="1189" data-end="1216">Reduce fatigue and effort</p>
+</li>
+<li data-start="1217" data-end="1273">
+<p data-start="1220" data-end="1273">Improve utilization of men, machines, and materials</p>
+</li>
+<li data-start="1274" data-end="1301">
+<p data-start="1277" data-end="1301">Reduce production cost</p>
+</li>
+</ol>
+<hr data-start="1303" data-end="1306">
+<h2 data-start="1308" data-end="1349"><strong data-start="1311" data-end="1349">7. Steps in Methods Study (SREDIM)</strong></h2>
+<p data-start="1351" data-end="1437">Methods Study follows a <strong data-start="1375" data-end="1404">logical sequence of steps</strong>, often remembered as <strong data-start="1426" data-end="1436">SREDIM</strong>:</p>
+<pre class="overflow-visible! px-0!" data-start="1439" data-end="1503"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">mathematica</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-built_in">Select</span></span><span> → </span><span><span class="hljs-built_in">Record</span></span><span> → </span><span><span class="hljs-variable">Examine</span></span><span> → </span><span><span class="hljs-variable">Develop</span></span><span> → </span><span><span class="hljs-built_in">Install</span></span><span> → </span><span><span class="hljs-variable">Maintain</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="1505" data-end="1508">
+<h3 data-start="1510" data-end="1527"><strong data-start="1514" data-end="1527">1. Select</strong></h3>
+<ul data-start="1528" data-end="1651">
+<li data-start="1528" data-end="1569">
+<p data-start="1530" data-end="1569">Select the job or process to be studied</p>
+</li>
+<li data-start="1570" data-end="1651">
+<p data-start="1572" data-end="1590">Priority given to:</p>
+<ul data-start="1593" data-end="1651">
+<li data-start="1593" data-end="1606">
+<p data-start="1595" data-end="1606">Bottlenecks</p>
+</li>
+<li data-start="1609" data-end="1631">
+<p data-start="1611" data-end="1631">High-cost operations</p>
+</li>
+<li data-start="1634" data-end="1651">
+<p data-start="1636" data-end="1651">Repetitive work</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="1653" data-end="1656">
+<h3 data-start="1658" data-end="1675"><strong data-start="1662" data-end="1675">2. Record</strong></h3>
+<ul data-start="1676" data-end="1751">
+<li data-start="1676" data-end="1725">
+<p data-start="1678" data-end="1725">Record all relevant facts of the present method</p>
+</li>
+<li data-start="1726" data-end="1751">
+<p data-start="1728" data-end="1751">Use charts and diagrams</p>
+</li>
+</ul>
+<hr data-start="1753" data-end="1756">
+<h3 data-start="1758" data-end="1776"><strong data-start="1762" data-end="1776">3. Examine</strong></h3>
+<ul data-start="1777" data-end="1940">
+<li data-start="1777" data-end="1940">
+<p data-start="1779" data-end="1844">Critically analyze each activity using <strong data-start="1818" data-end="1843">questioning technique</strong>:</p>
+<ul data-start="1847" data-end="1940">
+<li data-start="1847" data-end="1862">
+<p data-start="1849" data-end="1862">What is done?</p>
+</li>
+<li data-start="1865" data-end="1882">
+<p data-start="1867" data-end="1882">Why is it done?</p>
+</li>
+<li data-start="1885" data-end="1893">
+<p data-start="1887" data-end="1893">Where?</p>
+</li>
+<li data-start="1896" data-end="1903">
+<p data-start="1898" data-end="1903">When?</p>
+</li>
+<li data-start="1906" data-end="1920">
+<p data-start="1908" data-end="1920">Who does it?</p>
+</li>
+<li data-start="1923" data-end="1940">
+<p data-start="1925" data-end="1940">How is it done?</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="1942" data-end="1945">
+<h3 data-start="1947" data-end="1965"><strong data-start="1951" data-end="1965">4. Develop</strong></h3>
+<ul data-start="1966" data-end="2061">
+<li data-start="1966" data-end="1994">
+<p data-start="1968" data-end="1994">Develop an improved method</p>
+</li>
+<li data-start="1995" data-end="2061">
+<p data-start="1997" data-end="2006">Consider:</p>
+<ul data-start="2009" data-end="2061">
+<li data-start="2009" data-end="2024">
+<p data-start="2011" data-end="2024">Better layout</p>
+</li>
+<li data-start="2027" data-end="2042">
+<p data-start="2029" data-end="2042">Mechanization</p>
+</li>
+<li data-start="2045" data-end="2061">
+<p data-start="2047" data-end="2061">Improved tools</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="2063" data-end="2066">
+<h3 data-start="2068" data-end="2086"><strong data-start="2072" data-end="2086">5. Install</strong></h3>
+<ul data-start="2087" data-end="2129">
+<li data-start="2087" data-end="2113">
+<p data-start="2089" data-end="2113">Implement the new method</p>
+</li>
+<li data-start="2114" data-end="2129">
+<p data-start="2116" data-end="2129">Train workers</p>
+</li>
+</ul>
+<hr data-start="2131" data-end="2134">
+<h3 data-start="2136" data-end="2155"><strong data-start="2140" data-end="2155">6. Maintain</strong></h3>
+<ul data-start="2156" data-end="2221">
+<li data-start="2156" data-end="2187">
+<p data-start="2158" data-end="2187">Ensure the method is followed</p>
+</li>
+<li data-start="2188" data-end="2221">
+<p data-start="2190" data-end="2221">Periodic review and improvement</p>
+</li>
+</ul>
+<hr data-start="2223" data-end="2226">
+<h3 data-start="2228" data-end="2257"><strong data-start="2232" data-end="2257">Summary Table: SREDIM</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2259" data-end="2467" class="w-fit min-w-(--thread-content-width)"><thead data-start="2259" data-end="2277"><tr data-start="2259" data-end="2277"><th data-start="2259" data-end="2266" data-col-size="sm">Step</th><th data-start="2266" data-end="2277" data-col-size="sm">Purpose</th></tr></thead><tbody data-start="2290" data-end="2467"><tr data-start="2290" data-end="2313"><td data-start="2290" data-end="2299" data-col-size="sm">Select</td><td data-col-size="sm" data-start="2299" data-end="2313">Choose job</td></tr><tr data-start="2314" data-end="2340"><td data-start="2314" data-end="2323" data-col-size="sm">Record</td><td data-start="2323" data-end="2340" data-col-size="sm">Capture facts</td></tr><tr data-start="2341" data-end="2373"><td data-start="2341" data-end="2351" data-col-size="sm">Examine</td><td data-start="2351" data-end="2373" data-col-size="sm">Analyze critically</td></tr><tr data-start="2374" data-end="2408"><td data-start="2374" data-end="2384" data-col-size="sm">Develop</td><td data-col-size="sm" data-start="2384" data-end="2408">Create better method</td></tr><tr data-start="2409" data-end="2432"><td data-start="2409" data-end="2419" data-col-size="sm">Install</td><td data-start="2419" data-end="2432" data-col-size="sm">Implement</td></tr><tr data-start="2433" data-end="2467"><td data-start="2433" data-end="2444" data-col-size="sm">Maintain</td><td data-start="2444" data-end="2467" data-col-size="sm">Sustain improvement</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2469" data-end="2472">
+<h2 data-start="2474" data-end="2502"><strong data-start="2477" data-end="2502">8. Flow Process Chart</strong></h2>
+<h3 data-start="2504" data-end="2524"><strong data-start="2508" data-end="2524">Introduction</strong></h3>
+<p data-start="2525" data-end="2632">A Flow Process Chart is a <strong data-start="2551" data-end="2579">graphical representation</strong> of the sequence of activities involved in a process.</p>
+<p data-start="2634" data-end="2646">It helps to:</p>
+<ul data-start="2647" data-end="2710">
+<li data-start="2647" data-end="2663">
+<p data-start="2649" data-end="2663">Visualize work</p>
+</li>
+<li data-start="2664" data-end="2692">
+<p data-start="2666" data-end="2692">Identify unnecessary steps</p>
+</li>
+<li data-start="2693" data-end="2710">
+<p data-start="2695" data-end="2710">Improve methods</p>
+</li>
+</ul>
+<hr data-start="2712" data-end="2715">
+<h3 data-start="2717" data-end="2746"><strong data-start="2721" data-end="2746">Standard Symbols Used</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2748" data-end="2876" class="w-fit min-w-(--thread-content-width)"><thead data-start="2748" data-end="2768"><tr data-start="2748" data-end="2768"><th data-start="2748" data-end="2757" data-col-size="sm">Symbol</th><th data-start="2757" data-end="2768" data-col-size="sm">Meaning</th></tr></thead><tbody data-start="2787" data-end="2876"><tr data-start="2787" data-end="2804"><td data-start="2787" data-end="2791" data-col-size="sm">○</td><td data-start="2791" data-end="2804" data-col-size="sm">Operation</td></tr><tr data-start="2805" data-end="2823"><td data-start="2805" data-end="2809" data-col-size="sm">□</td><td data-col-size="sm" data-start="2809" data-end="2823">Inspection</td></tr><tr data-start="2824" data-end="2846"><td data-start="2824" data-end="2828" data-col-size="sm">→</td><td data-start="2828" data-end="2846" data-col-size="sm">Transportation</td></tr><tr data-start="2847" data-end="2860"><td data-start="2847" data-end="2851" data-col-size="sm">D</td><td data-start="2851" data-end="2860" data-col-size="sm">Delay</td></tr><tr data-start="2861" data-end="2876"><td data-start="2861" data-end="2865" data-col-size="sm">▽</td><td data-start="2865" data-end="2876" data-col-size="sm">Storage</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2878" data-end="2881">
+<h3 data-start="2883" data-end="2919"><strong data-start="2887" data-end="2919">Types of Flow Process Charts</strong></h3>
+<ol data-start="2921" data-end="3036">
+<li data-start="2921" data-end="2955">
+<p data-start="2924" data-end="2955"><strong data-start="2924" data-end="2955">Man-Type Flow Process Chart</strong></p>
+</li>
+<li data-start="2956" data-end="2995">
+<p data-start="2959" data-end="2995"><strong data-start="2959" data-end="2995">Material-Type Flow Process Chart</strong></p>
+</li>
+<li data-start="2996" data-end="3036">
+<p data-start="2999" data-end="3036"><strong data-start="2999" data-end="3036">Equipment-Type Flow Process Chart</strong></p>
+</li>
+</ol>
+<hr data-start="3038" data-end="3041">
+<h3 data-start="3043" data-end="3071"><strong data-start="3047" data-end="3071">Example (Text-Based)</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="3073" data-end="3216"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>○ Operation – Machining
+→ Transport – </span><span><span class="hljs-keyword">Move</span></span><span> </span><span><span class="hljs-keyword">to</span></span><span> inspection
+□ Inspection – Quality </span><span><span class="hljs-keyword">check</span></span><span>
+D Delay – Waiting
+▽ </span><span><span class="hljs-keyword">Storage</span></span><span> – Store finished part
+</span></span></code></div></div></pre>
+<hr data-start="3218" data-end="3221">
+<h3 data-start="3223" data-end="3241"><strong data-start="3227" data-end="3241">Advantages</strong></h3>
+<ul data-start="3242" data-end="3315">
+<li data-start="3242" data-end="3264">
+<p data-start="3244" data-end="3264">Simple to understand</p>
+</li>
+<li data-start="3265" data-end="3283">
+<p data-start="3267" data-end="3283">Highlights waste</p>
+</li>
+<li data-start="3284" data-end="3315">
+<p data-start="3286" data-end="3315">Useful for method improvement</p>
+</li>
+</ul>
+<hr data-start="3317" data-end="3320">
+<h3 data-start="3322" data-end="3341"><strong data-start="3326" data-end="3341">Limitations</strong></h3>
+<ul data-start="3342" data-end="3413">
+<li data-start="3342" data-end="3373">
+<p data-start="3344" data-end="3373">Does not show physical layout</p>
+</li>
+<li data-start="3374" data-end="3413">
+<p data-start="3376" data-end="3413">Becomes lengthy for complex processes</p>
+</li>
+</ul>
+<hr data-start="3415" data-end="3418">
+<h2 data-start="3420" data-end="3442"><strong data-start="3423" data-end="3442">9. Flow Diagram</strong></h2>
+<h3 data-start="3444" data-end="3464"><strong data-start="3448" data-end="3464">Introduction</strong></h3>
+<p data-start="3465" data-end="3562">A Flow Diagram is a <strong data-start="3485" data-end="3520">drawing of the workplace layout</strong> showing the movement of men or materials.</p>
+<hr data-start="3564" data-end="3567">
+<h3 data-start="3569" data-end="3589"><strong data-start="3573" data-end="3589">Key Concepts</strong></h3>
+<ul data-start="3590" data-end="3649">
+<li data-start="3590" data-end="3609">
+<p data-start="3592" data-end="3609">Physical movement</p>
+</li>
+<li data-start="3610" data-end="3629">
+<p data-start="3612" data-end="3629">Distance traveled</p>
+</li>
+<li data-start="3630" data-end="3649">
+<p data-start="3632" data-end="3649">Layout efficiency</p>
+</li>
+</ul>
+<hr data-start="3651" data-end="3654">
+<h3 data-start="3656" data-end="3687"><strong data-start="3660" data-end="3687">Purpose of Flow Diagram</strong></h3>
+<ol data-start="3689" data-end="3782">
+<li data-start="3689" data-end="3721">
+<p data-start="3692" data-end="3721">Reduce unnecessary movement</p>
+</li>
+<li data-start="3722" data-end="3747">
+<p data-start="3725" data-end="3747">Improve plant layout</p>
+</li>
+<li data-start="3748" data-end="3782">
+<p data-start="3751" data-end="3782">Reduce material handling cost</p>
+</li>
+</ol>
+<hr data-start="3784" data-end="3787">
+<h3 data-start="3789" data-end="3822"><strong data-start="3793" data-end="3822">Text-Based Representation</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="3824" data-end="3882"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">css</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Store → Machine </span><span><span class="hljs-selector-tag">A</span></span><span> → Machine </span><span><span class="hljs-selector-tag">B</span></span><span> → Inspection → Store
+</span></span></code></div></div></pre>
+<p data-start="3884" data-end="3929">(Actual flow diagram is drawn on layout plan)</p>
+<hr data-start="3931" data-end="3934">
+<h3 data-start="3936" data-end="3954"><strong data-start="3940" data-end="3954">Advantages</strong></h3>
+<ul data-start="3955" data-end="4024">
+<li data-start="3955" data-end="3978">
+<p data-start="3957" data-end="3978">Shows actual movement</p>
+</li>
+<li data-start="3979" data-end="4001">
+<p data-start="3981" data-end="4001">Helps improve layout</p>
+</li>
+<li data-start="4002" data-end="4024">
+<p data-start="4004" data-end="4024">Reduces backtracking</p>
+</li>
+</ul>
+<hr data-start="4026" data-end="4029">
+<h3 data-start="4031" data-end="4085"><strong data-start="4035" data-end="4085">Difference: Flow Process Chart vs Flow Diagram</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4087" data-end="4280" class="w-fit min-w-(--thread-content-width)"><thead data-start="4087" data-end="4124"><tr data-start="4087" data-end="4124"><th data-start="4087" data-end="4108" data-col-size="sm">Flow Process Chart</th><th data-start="4108" data-end="4124" data-col-size="sm">Flow Diagram</th></tr></thead><tbody data-start="4160" data-end="4280"><tr data-start="4160" data-end="4206"><td data-start="4160" data-end="4185" data-col-size="sm">Sequence of activities</td><td data-col-size="sm" data-start="4185" data-end="4206">Physical movement</td></tr><tr data-start="4207" data-end="4245"><td data-start="4207" data-end="4222" data-col-size="sm">Uses symbols</td><td data-start="4222" data-end="4245" data-col-size="sm">Uses layout drawing</td></tr><tr data-start="4246" data-end="4280"><td data-start="4246" data-end="4262" data-col-size="sm">Time-oriented</td><td data-start="4262" data-end="4280" data-col-size="sm">Space-oriented</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4282" data-end="4285">
+<h2 data-start="4287" data-end="4313"><strong data-start="4290" data-end="4313">10. Process Mapping</strong></h2>
+<h3 data-start="4315" data-end="4335"><strong data-start="4319" data-end="4335">Introduction</strong></h3>
+<p data-start="4336" data-end="4404">Process Mapping is a <strong data-start="4357" data-end="4382">visual representation</strong> of a process showing:</p>
+<ul data-start="4405" data-end="4450">
+<li data-start="4405" data-end="4417">
+<p data-start="4407" data-end="4417">Activities</p>
+</li>
+<li data-start="4418" data-end="4435">
+<p data-start="4420" data-end="4435">Decision points</p>
+</li>
+<li data-start="4436" data-end="4450">
+<p data-start="4438" data-end="4450">Flow of work</p>
+</li>
+</ul>
+<p data-start="4452" data-end="4508">It is widely used in <strong data-start="4473" data-end="4507">modern operations and services</strong>.</p>
+<hr data-start="4510" data-end="4513">
+<h3 data-start="4515" data-end="4535"><strong data-start="4519" data-end="4535">Key Concepts</strong></h3>
+<ul data-start="4536" data-end="4607">
+<li data-start="4536" data-end="4563">
+<p data-start="4538" data-end="4563">End-to-end process view</p>
+</li>
+<li data-start="4564" data-end="4582">
+<p data-start="4566" data-end="4582">Customer focus</p>
+</li>
+<li data-start="4583" data-end="4607">
+<p data-start="4585" data-end="4607">Value-added analysis</p>
+</li>
+</ul>
+<hr data-start="4609" data-end="4612">
+<h3 data-start="4614" data-end="4648"><strong data-start="4618" data-end="4648">Basic Process Mapping Flow</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="4650" data-end="4742"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Start</span></span><span>
+  ↓
+Activity
+  ↓
+Decision?
+  ├── Yes → Next Activity
+  └── </span><span><span class="hljs-keyword">No</span></span><span> → Rework
+  ↓
+</span><span><span class="hljs-keyword">End</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4744" data-end="4747">
+<h3 data-start="4749" data-end="4780"><strong data-start="4753" data-end="4780">Uses of Process Mapping</strong></h3>
+<ol data-start="4782" data-end="4924">
+<li data-start="4782" data-end="4822">
+<p data-start="4785" data-end="4822">Identify non-value-added activities</p>
+</li>
+<li data-start="4823" data-end="4853">
+<p data-start="4826" data-end="4853">Improve service processes</p>
+</li>
+<li data-start="4854" data-end="4888">
+<p data-start="4857" data-end="4888">Enhance customer satisfaction</p>
+</li>
+<li data-start="4889" data-end="4924">
+<p data-start="4892" data-end="4924">Support continuous improvement</p>
+</li>
+</ol>
+<hr data-start="4926" data-end="4929">
+<h3 data-start="4931" data-end="4949"><strong data-start="4935" data-end="4949">Advantages</strong></h3>
+<ul data-start="4950" data-end="5017">
+<li data-start="4950" data-end="4968">
+<p data-start="4952" data-end="4968">Simple and clear</p>
+</li>
+<li data-start="4969" data-end="4993">
+<p data-start="4971" data-end="4993">Improves communication</p>
+</li>
+<li data-start="4994" data-end="5017">
+<p data-start="4996" data-end="5017">Helps standardization</p>
+</li>
+</ul>
+<hr data-start="5019" data-end="5022">
+<h3 data-start="5024" data-end="5039"><strong data-start="5028" data-end="5039">Summary</strong></h3>
+<ul data-start="5040" data-end="5124">
+<li data-start="5040" data-end="5089">
+<p data-start="5042" data-end="5089">Process mapping provides a <strong data-start="5069" data-end="5089">big-picture view</strong></p>
+</li>
+<li data-start="5090" data-end="5124">
+<p data-start="5092" data-end="5124">Essential for service operations</p>
+</li>
+</ul>
+<hr data-start="5126" data-end="5129">
+<h2 data-start="5131" data-end="5163"><strong data-start="5134" data-end="5163">Overall Summary of Part 2</strong></h2>
+<ul data-start="5164" data-end="5381">
+<li data-start="5164" data-end="5209">
+<p data-start="5166" data-end="5209">Methods Study improves <strong data-start="5189" data-end="5209">how work is done</strong></p>
+</li>
+<li data-start="5210" data-end="5244">
+<p data-start="5212" data-end="5244">SREDIM is the standard procedure</p>
+</li>
+<li data-start="5245" data-end="5298">
+<p data-start="5247" data-end="5298">Flow Process Chart shows <strong data-start="5272" data-end="5298">sequence of activities</strong></p>
+</li>
+<li data-start="5299" data-end="5332">
+<p data-start="5301" data-end="5332">Flow Diagram shows <strong data-start="5320" data-end="5332">movement</strong></p>
+</li>
+<li data-start="5333" data-end="5381">
+<p data-start="5335" data-end="5381">Process Mapping shows <strong data-start="5357" data-end="5381">end-to-end processes</strong></p>
+</li>
+</ul>
+<hr data-start="5383" data-end="5386">
+<h3 data-start="5388" data-end="5424"><strong data-start="5392" data-end="5422"><em data-start="5394" data-end="5420">End of Unit II – Part 2.</em></strong></h3>
+<p data-start="5425" data-end="5545" data-is-last-node="" data-is-only-node=""><strong data-start="5425" data-end="5545" data-is-last-node="">Continue to <em data-start="5439" data-end="5457">Unit II – Part 3</em> (Work Measurement, Performance Rating, Allowances &amp; Standard Time – with Numericals)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="608fde7e-bd1f-4913-a905-34ea1f7fa597" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="89">
+<p data-start="2" data-end="89"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="55">Unit II – Productivity and Work Study</strong><br data-start="55" data-end="58">
+<strong data-start="60" data-end="89">Part 3 of ~3 (Final Part)</strong></p>
+</blockquote>
+<hr data-start="91" data-end="94">
+<h2 data-start="96" data-end="148"><strong data-start="99" data-end="148">UNIT II: PRODUCTIVITY AND WORK STUDY – PART 3</strong></h2>
+<p data-start="150" data-end="268">This part deals with <strong data-start="171" data-end="191">Work Measurement</strong>, which is the <strong data-start="206" data-end="228">numerical backbone</strong> of Unit II.<br data-start="240" data-end="243">
+Examiners frequently ask:</p>
+<ul data-start="269" data-end="368">
+<li data-start="269" data-end="324">
+<p data-start="271" data-end="324"><em data-start="271" data-end="322">“Define standard time and explain its components”</em></p>
+</li>
+<li data-start="325" data-end="368">
+<p data-start="327" data-end="368"><em data-start="327" data-end="366">“Numerical problems on standard time”</em></p>
+</li>
+</ul>
+<p data-start="370" data-end="419">So read this part <strong data-start="388" data-end="418">carefully and conceptually</strong>.</p>
+<hr data-start="421" data-end="424">
+<h2 data-start="426" data-end="453"><strong data-start="429" data-end="453">11. Work Measurement</strong></h2>
+<h3 data-start="455" data-end="475"><strong data-start="459" data-end="475">Introduction</strong></h3>
+<p data-start="476" data-end="649">Work Measurement is concerned with <strong data-start="511" data-end="544">determining the time required</strong> to perform a task by a <strong data-start="568" data-end="588">qualified worker</strong>, using a <strong data-start="598" data-end="618">specified method</strong>, working at a <strong data-start="633" data-end="648">normal pace</strong>.</p>
+<hr data-start="651" data-end="654">
+<h3 data-start="656" data-end="676"><strong data-start="660" data-end="676">Key Concepts</strong></h3>
+<ul data-start="677" data-end="763">
+<li data-start="677" data-end="691">
+<p data-start="679" data-end="691">Time study</p>
+</li>
+<li data-start="692" data-end="709">
+<p data-start="694" data-end="709">Standard time</p>
+</li>
+<li data-start="710" data-end="732">
+<p data-start="712" data-end="732">Performance rating</p>
+</li>
+<li data-start="733" data-end="747">
+<p data-start="735" data-end="747">Allowances</p>
+</li>
+<li data-start="748" data-end="763">
+<p data-start="750" data-end="763">Normal time</p>
+</li>
+</ul>
+<hr data-start="765" data-end="768">
+<h3 data-start="770" data-end="788"><strong data-start="774" data-end="788">Definition</strong></h3>
+<blockquote data-start="789" data-end="943">
+<p data-start="791" data-end="943"><strong data-start="791" data-end="943">Work Measurement is the application of techniques to determine the time required for a worker to carry out a task at a defined level of performance.</strong></p>
+</blockquote>
+<hr data-start="945" data-end="948">
+<h3 data-start="950" data-end="988"><strong data-start="954" data-end="988">Objectives of Work Measurement</strong></h3>
+<ol data-start="990" data-end="1145">
+<li data-start="990" data-end="1020">
+<p data-start="993" data-end="1020">Determine <strong data-start="1003" data-end="1020">standard time</strong></p>
+</li>
+<li data-start="1021" data-end="1057">
+<p data-start="1024" data-end="1057">Fix <strong data-start="1028" data-end="1057">fair wages and incentives</strong></p>
+</li>
+<li data-start="1058" data-end="1096">
+<p data-start="1061" data-end="1096">Improve <strong data-start="1069" data-end="1096">planning and scheduling</strong></p>
+</li>
+<li data-start="1097" data-end="1117">
+<p data-start="1100" data-end="1117">Balance workloads</p>
+</li>
+<li data-start="1118" data-end="1145">
+<p data-start="1121" data-end="1145">Control production costs</p>
+</li>
+</ol>
+<hr data-start="1147" data-end="1150">
+<h2 data-start="1152" data-end="1191"><strong data-start="1155" data-end="1191">12. Elements of Work Measurement</strong></h2>
+<h3 data-start="1193" data-end="1213"><strong data-start="1197" data-end="1213">Introduction</strong></h3>
+<p data-start="1214" data-end="1309">Before measuring time, the job is divided into <strong data-start="1261" data-end="1288">small, manageable parts</strong> called <strong data-start="1296" data-end="1308">elements</strong>.</p>
+<hr data-start="1311" data-end="1314">
+<h3 data-start="1316" data-end="1343"><strong data-start="1320" data-end="1343">What is an Element?</strong></h3>
+<p data-start="1344" data-end="1433">An <strong data-start="1347" data-end="1358">element</strong> is a <strong data-start="1364" data-end="1390">distinct part of a job</strong> that can be observed, measured, and timed.</p>
+<hr data-start="1435" data-end="1438">
+<h3 data-start="1440" data-end="1465"><strong data-start="1444" data-end="1465">Types of Elements</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1467" data-end="1701" class="w-fit min-w-(--thread-content-width)"><thead data-start="1467" data-end="1489"><tr data-start="1467" data-end="1489"><th data-start="1467" data-end="1474" data-col-size="sm">Type</th><th data-start="1474" data-end="1489" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="1502" data-end="1701"><tr data-start="1502" data-end="1534"><td data-start="1502" data-end="1511" data-col-size="sm">Manual</td><td data-start="1511" data-end="1534" data-col-size="sm">Performed by worker</td></tr><tr data-start="1535" data-end="1569"><td data-start="1535" data-end="1545" data-col-size="sm">Machine</td><td data-col-size="sm" data-start="1545" data-end="1569">Performed by machine</td></tr><tr data-start="1570" data-end="1605"><td data-start="1570" data-end="1581" data-col-size="sm">Constant</td><td data-col-size="sm" data-start="1581" data-end="1605">Same time each cycle</td></tr><tr data-start="1606" data-end="1632"><td data-start="1606" data-end="1617" data-col-size="sm">Variable</td><td data-start="1617" data-end="1632" data-col-size="sm">Time varies</td></tr><tr data-start="1633" data-end="1665"><td data-start="1633" data-end="1643" data-col-size="sm">Regular</td><td data-start="1643" data-end="1665" data-col-size="sm">Occurs every cycle</td></tr><tr data-start="1666" data-end="1701"><td data-start="1666" data-end="1679" data-col-size="sm">Occasional</td><td data-start="1679" data-end="1701" data-col-size="sm">Occurs irregularly</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1703" data-end="1706">
+<h3 data-start="1708" data-end="1726"><strong data-start="1712" data-end="1726">Importance</strong></h3>
+<ul data-start="1727" data-end="1786">
+<li data-start="1727" data-end="1754">
+<p data-start="1729" data-end="1754">Accurate time measurement</p>
+</li>
+<li data-start="1755" data-end="1786">
+<p data-start="1757" data-end="1786">Easy analysis and improvement</p>
+</li>
+</ul>
+<hr data-start="1788" data-end="1791">
+<h2 data-start="1793" data-end="1814"><strong data-start="1796" data-end="1814">13. Time Study</strong></h2>
+<h3 data-start="1816" data-end="1836"><strong data-start="1820" data-end="1836">Introduction</strong></h3>
+<p data-start="1837" data-end="1908">Time Study is the <strong data-start="1855" data-end="1887">most commonly used technique</strong> of work measurement.</p>
+<hr data-start="1910" data-end="1913">
+<h3 data-start="1915" data-end="1942"><strong data-start="1919" data-end="1942">Steps in Time Study</strong></h3>
+<ol data-start="1944" data-end="2099">
+<li data-start="1944" data-end="1963">
+<p data-start="1947" data-end="1963">Select the job</p>
+</li>
+<li data-start="1964" data-end="1992">
+<p data-start="1967" data-end="1992">Break job into elements</p>
+</li>
+<li data-start="1993" data-end="2021">
+<p data-start="1996" data-end="2021">Observe and record time</p>
+</li>
+<li data-start="2022" data-end="2050">
+<p data-start="2025" data-end="2050">Rate worker performance</p>
+</li>
+<li data-start="2051" data-end="2070">
+<p data-start="2054" data-end="2070">Add allowances</p>
+</li>
+<li data-start="2071" data-end="2099">
+<p data-start="2074" data-end="2099">Determine standard time</p>
+</li>
+</ol>
+<hr data-start="2101" data-end="2104">
+<h2 data-start="2106" data-end="2135"><strong data-start="2109" data-end="2135">14. Performance Rating</strong></h2>
+<h3 data-start="2137" data-end="2157"><strong data-start="2141" data-end="2157">Introduction</strong></h3>
+<p data-start="2158" data-end="2269">Workers do not work at the same speed.<br data-start="2196" data-end="2199">
+Performance rating adjusts the <strong data-start="2230" data-end="2247">observed time</strong> to a <strong data-start="2253" data-end="2268">normal pace</strong>.</p>
+<hr data-start="2271" data-end="2274">
+<h3 data-start="2276" data-end="2294"><strong data-start="2280" data-end="2294">Definition</strong></h3>
+<blockquote data-start="2295" data-end="2420">
+<p data-start="2297" data-end="2420"><strong data-start="2297" data-end="2420">Performance Rating is the assessment of the worker’s speed or efficiency relative to the standard (normal) performance.</strong></p>
+</blockquote>
+<hr data-start="2422" data-end="2425">
+<h3 data-start="2427" data-end="2453"><strong data-start="2431" data-end="2453">Normal Performance</strong></h3>
+<ul data-start="2454" data-end="2511">
+<li data-start="2454" data-end="2487">
+<p data-start="2456" data-end="2487">Defined as <strong data-start="2467" data-end="2487">100% performance</strong></p>
+</li>
+<li data-start="2488" data-end="2511">
+<p data-start="2490" data-end="2511">Neither fast nor slow</p>
+</li>
+</ul>
+<hr data-start="2513" data-end="2516">
+<h3 data-start="2518" data-end="2540"><strong data-start="2522" data-end="2540">Rating Formula</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="2542" data-end="2606"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Normal </span><span><span class="hljs-type">Time</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> Observed </span><span><span class="hljs-type">Time</span></span><span> × (Performance Rating </span><span><span class="hljs-operator">/</span></span><span> </span><span><span class="hljs-number">100</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="2608" data-end="2611">
+<h3 data-start="2613" data-end="2628"><strong data-start="2617" data-end="2628">Example</strong></h3>
+<p data-start="2629" data-end="2671">Observed time = 10 minutes<br data-start="2655" data-end="2658">
+Rating = 120%</p>
+<pre class="overflow-visible! px-0!" data-start="2673" data-end="2722"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Normal</span></span><span> </span><span><span class="hljs-variable">Time</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> </span><span><span class="hljs-number">10</span></span><span> × (</span><span><span class="hljs-number">120</span></span><span>/</span><span><span class="hljs-number">100</span></span><span>) = </span><span><span class="hljs-number">12</span></span><span> minutes
+</span></span></code></div></div></pre>
+<hr data-start="2724" data-end="2727">
+<h3 data-start="2729" data-end="2744"><strong data-start="2733" data-end="2744">Summary</strong></h3>
+<ul data-start="2745" data-end="2808">
+<li data-start="2745" data-end="2776">
+<p data-start="2747" data-end="2776">Rating corrects observed time</p>
+</li>
+<li data-start="2777" data-end="2808">
+<p data-start="2779" data-end="2808">Makes time fair and realistic</p>
+</li>
+</ul>
+<hr data-start="2810" data-end="2813">
+<h2 data-start="2815" data-end="2836"><strong data-start="2818" data-end="2836">15. Allowances</strong></h2>
+<h3 data-start="2838" data-end="2858"><strong data-start="2842" data-end="2858">Introduction</strong></h3>
+<p data-start="2859" data-end="2962">Workers cannot work continuously without breaks.<br data-start="2907" data-end="2910">
+Allowances are <strong data-start="2925" data-end="2946">extra times added</strong> to normal time.</p>
+<hr data-start="2964" data-end="2967">
+<h3 data-start="2969" data-end="2996"><strong data-start="2973" data-end="2996">Types of Allowances</strong></h3>
+<hr data-start="2998" data-end="3001">
+<h3 data-start="3003" data-end="3034"><strong data-start="3007" data-end="3034">1. Relaxation Allowance</strong></h3>
+<ul data-start="3035" data-end="3123">
+<li data-start="3035" data-end="3067">
+<p data-start="3037" data-end="3067">For fatigue and personal needs</p>
+</li>
+<li data-start="3068" data-end="3123">
+<p data-start="3070" data-end="3081">Depends on:</p>
+<ul data-start="3084" data-end="3123">
+<li data-start="3084" data-end="3100">
+<p data-start="3086" data-end="3100">Nature of work</p>
+</li>
+<li data-start="3103" data-end="3123">
+<p data-start="3105" data-end="3123">Working conditions</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="3125" data-end="3128">
+<h3 data-start="3130" data-end="3162"><strong data-start="3134" data-end="3162">2. Contingency Allowance</strong></h3>
+<ul data-start="3163" data-end="3244">
+<li data-start="3163" data-end="3187">
+<p data-start="3165" data-end="3187">For unavoidable delays</p>
+</li>
+<li data-start="3188" data-end="3244">
+<p data-start="3190" data-end="3199">Examples:</p>
+<ul data-start="3202" data-end="3244">
+<li data-start="3202" data-end="3220">
+<p data-start="3204" data-end="3220">Tool adjustments</p>
+</li>
+<li data-start="3223" data-end="3244">
+<p data-start="3225" data-end="3244">Minor interruptions</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="3246" data-end="3249">
+<h3 data-start="3251" data-end="3279"><strong data-start="3255" data-end="3279">3. Special Allowance</strong></h3>
+<ul data-start="3280" data-end="3352">
+<li data-start="3280" data-end="3304">
+<p data-start="3282" data-end="3304">For special conditions</p>
+</li>
+<li data-start="3305" data-end="3352">
+<p data-start="3307" data-end="3316">Examples:</p>
+<ul data-start="3319" data-end="3352">
+<li data-start="3319" data-end="3334">
+<p data-start="3321" data-end="3334">Start-up time</p>
+</li>
+<li data-start="3337" data-end="3352">
+<p data-start="3339" data-end="3352">Learning time</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="3354" data-end="3357">
+<h3 data-start="3359" data-end="3384"><strong data-start="3363" data-end="3384">Allowance Formula</strong></h3>
+<p data-start="3385" data-end="3453">Allowances are usually expressed as a <strong data-start="3423" data-end="3452">percentage of normal time</strong>.</p>
+<hr data-start="3455" data-end="3458">
+<h2 data-start="3460" data-end="3484"><strong data-start="3463" data-end="3484">16. Standard Time</strong></h2>
+<h3 data-start="3486" data-end="3506"><strong data-start="3490" data-end="3506">Introduction</strong></h3>
+<p data-start="3507" data-end="3569">Standard Time is the <strong data-start="3528" data-end="3550">final time allowed</strong> to complete a job.</p>
+<hr data-start="3571" data-end="3574">
+<h3 data-start="3576" data-end="3594"><strong data-start="3580" data-end="3594">Definition</strong></h3>
+<blockquote data-start="3595" data-end="3698">
+<p data-start="3597" data-end="3698"><strong data-start="3597" data-end="3698">Standard Time is the time allowed to perform a job at standard performance, including allowances.</strong></p>
+</blockquote>
+<hr data-start="3700" data-end="3703">
+<h3 data-start="3705" data-end="3738"><strong data-start="3709" data-end="3738">Formula for Standard Time</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="3740" data-end="3795"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Standard </span><span><span class="hljs-type">Time</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> Normal </span><span><span class="hljs-type">Time</span></span><span> × (</span><span><span class="hljs-number">1</span></span><span> </span><span><span class="hljs-operator">+</span></span><span> Allowance </span><span><span class="hljs-operator">%</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="3797" data-end="3800">
+<h3 data-start="3802" data-end="3827"><strong data-start="3806" data-end="3827">Numerical Example</strong></h3>
+<p data-start="3829" data-end="3900">Observed time = 8 minutes<br data-start="3854" data-end="3857">
+Performance rating = 125%<br data-start="3882" data-end="3885">
+Allowance = 20%</p>
+<hr data-start="3902" data-end="3905">
+<p data-start="3907" data-end="3930"><strong data-start="3907" data-end="3930">Step 1: Normal Time</strong></p>
+<pre class="overflow-visible! px-0!" data-start="3931" data-end="3979"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Normal</span></span><span> </span><span><span class="hljs-variable">Time</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> </span><span><span class="hljs-number">8</span></span><span> × (</span><span><span class="hljs-number">125</span></span><span>/</span><span><span class="hljs-number">100</span></span><span>) = </span><span><span class="hljs-number">10</span></span><span> minutes
+</span></span></code></div></div></pre>
+<p data-start="3981" data-end="4006"><strong data-start="3981" data-end="4006">Step 2: Standard Time</strong></p>
+<pre class="overflow-visible! px-0!" data-start="4007" data-end="4099"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Standard</span></span><span> </span><span><span class="hljs-variable">Time</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> </span><span><span class="hljs-number">10</span></span><span> × (</span><span><span class="hljs-number">1</span></span><span> + </span><span><span class="hljs-number">0.20</span></span><span>)
+              = </span><span><span class="hljs-number">10</span></span><span> × </span><span><span class="hljs-number">1.20</span></span><span>
+              = </span><span><span class="hljs-number">12</span></span><span> minutes
+</span></span></code></div></div></pre>
+<hr data-start="4101" data-end="4104">
+<h3 data-start="4106" data-end="4141"><strong data-start="4110" data-end="4141">Importance of Standard Time</strong></h3>
+<ol data-start="4143" data-end="4243">
+<li data-start="4143" data-end="4167">
+<p data-start="4146" data-end="4167">Production planning</p>
+</li>
+<li data-start="4168" data-end="4183">
+<p data-start="4171" data-end="4183">Scheduling</p>
+</li>
+<li data-start="4184" data-end="4202">
+<p data-start="4187" data-end="4202">Wage fixation</p>
+</li>
+<li data-start="4203" data-end="4223">
+<p data-start="4206" data-end="4223">Cost estimation</p>
+</li>
+<li data-start="4224" data-end="4243">
+<p data-start="4227" data-end="4243">Line balancing</p>
+</li>
+</ol>
+<hr data-start="4245" data-end="4248">
+<h2 data-start="4250" data-end="4285"><strong data-start="4253" data-end="4285">17. Synthetic Time Standards</strong></h2>
+<h3 data-start="4287" data-end="4307"><strong data-start="4291" data-end="4307">Introduction</strong></h3>
+<p data-start="4308" data-end="4382">Synthetic time standards are used when <strong data-start="4347" data-end="4381">direct time study is difficult</strong>.</p>
+<hr data-start="4384" data-end="4387">
+<h3 data-start="4389" data-end="4404"><strong data-start="4393" data-end="4404">Concept</strong></h3>
+<ul data-start="4405" data-end="4463">
+<li data-start="4405" data-end="4442">
+<p data-start="4407" data-end="4442">Uses <strong data-start="4412" data-end="4442">pre-determined time values</strong></p>
+</li>
+<li data-start="4443" data-end="4463">
+<p data-start="4445" data-end="4463">Based on past data</p>
+</li>
+</ul>
+<hr data-start="4465" data-end="4468">
+<h3 data-start="4470" data-end="4485"><strong data-start="4474" data-end="4485">Example</strong></h3>
+<p data-start="4486" data-end="4489">If:</p>
+<ul data-start="4490" data-end="4537">
+<li data-start="4490" data-end="4513">
+<p data-start="4492" data-end="4513">Operation A = 2 min</p>
+</li>
+<li data-start="4514" data-end="4537">
+<p data-start="4516" data-end="4537">Operation B = 3 min</p>
+</li>
+</ul>
+<p data-start="4539" data-end="4569">Synthetic time = <strong data-start="4556" data-end="4569">5 minutes</strong></p>
+<hr data-start="4571" data-end="4574">
+<h3 data-start="4576" data-end="4594"><strong data-start="4580" data-end="4594">Advantages</strong></h3>
+<ul data-start="4595" data-end="4636">
+<li data-start="4595" data-end="4607">
+<p data-start="4597" data-end="4607">Saves time</p>
+</li>
+<li data-start="4608" data-end="4636">
+<p data-start="4610" data-end="4636">Useful for repetitive work</p>
+</li>
+</ul>
+<hr data-start="4638" data-end="4641">
+<h3 data-start="4643" data-end="4662"><strong data-start="4647" data-end="4662">Limitations</strong></h3>
+<ul data-start="4663" data-end="4723">
+<li data-start="4663" data-end="4694">
+<p data-start="4665" data-end="4694">Less accurate than time study</p>
+</li>
+<li data-start="4695" data-end="4723">
+<p data-start="4697" data-end="4723">Depends on historical data</p>
+</li>
+</ul>
+<hr data-start="4725" data-end="4728">
+<h2 data-start="4730" data-end="4754"><strong data-start="4733" data-end="4754">18. Work Sampling</strong></h2>
+<h3 data-start="4756" data-end="4776"><strong data-start="4760" data-end="4776">Introduction</strong></h3>
+<p data-start="4777" data-end="4895">Work Sampling is a <strong data-start="4796" data-end="4821">statistical technique</strong> used to measure the <strong data-start="4842" data-end="4870">proportion of time spent</strong> on different activities.</p>
+<hr data-start="4897" data-end="4900">
+<h3 data-start="4902" data-end="4922"><strong data-start="4906" data-end="4922">Key Concepts</strong></h3>
+<ul data-start="4923" data-end="4994">
+<li data-start="4923" data-end="4946">
+<p data-start="4925" data-end="4946">Random observations</p>
+</li>
+<li data-start="4947" data-end="4968">
+<p data-start="4949" data-end="4968">Probability-based</p>
+</li>
+<li data-start="4969" data-end="4994">
+<p data-start="4971" data-end="4994">Activity distribution</p>
+</li>
+</ul>
+<hr data-start="4996" data-end="4999">
+<h3 data-start="5001" data-end="5013"><strong data-start="5005" data-end="5013">Uses</strong></h3>
+<ul data-start="5014" data-end="5096">
+<li data-start="5014" data-end="5043">
+<p data-start="5016" data-end="5043">Measure machine utilization</p>
+</li>
+<li data-start="5044" data-end="5070">
+<p data-start="5046" data-end="5070">Measure worker idle time</p>
+</li>
+<li data-start="5071" data-end="5096">
+<p data-start="5073" data-end="5096">Service sector analysis</p>
+</li>
+</ul>
+<hr data-start="5098" data-end="5101">
+<h3 data-start="5103" data-end="5121"><strong data-start="5107" data-end="5121">Advantages</strong></h3>
+<ul data-start="5122" data-end="5166">
+<li data-start="5122" data-end="5135">
+<p data-start="5124" data-end="5135">Less costly</p>
+</li>
+<li data-start="5136" data-end="5166">
+<p data-start="5138" data-end="5166">Suitable for long-cycle jobs</p>
+</li>
+</ul>
+<hr data-start="5168" data-end="5171">
+<h3 data-start="5173" data-end="5192"><strong data-start="5177" data-end="5192">Limitations</strong></h3>
+<ul data-start="5193" data-end="5255">
+<li data-start="5193" data-end="5225">
+<p data-start="5195" data-end="5225">Less accurate for short cycles</p>
+</li>
+<li data-start="5226" data-end="5255">
+<p data-start="5228" data-end="5255">Requires large observations</p>
+</li>
+</ul>
+<hr data-start="5257" data-end="5260">
+<h2 data-start="5262" data-end="5308"><strong data-start="5265" data-end="5308">Comparison: Time Study vs Work Sampling</strong></h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5310" data-end="5498" class="w-fit min-w-(--thread-content-width)"><thead data-start="5310" data-end="5349"><tr data-start="5310" data-end="5349"><th data-start="5310" data-end="5319" data-col-size="sm">Aspect</th><th data-start="5319" data-end="5332" data-col-size="sm">Time Study</th><th data-start="5332" data-end="5349" data-col-size="sm">Work Sampling</th></tr></thead><tbody data-start="5367" data-end="5498"><tr data-start="5367" data-end="5399"><td data-start="5367" data-end="5376" data-col-size="sm">Nature</td><td data-start="5376" data-end="5389" data-col-size="sm">Continuous</td><td data-col-size="sm" data-start="5389" data-end="5399">Random</td></tr><tr data-start="5400" data-end="5430"><td data-start="5400" data-end="5411" data-col-size="sm">Accuracy</td><td data-start="5411" data-end="5418" data-col-size="sm">High</td><td data-start="5418" data-end="5430" data-col-size="sm">Moderate</td></tr><tr data-start="5431" data-end="5452"><td data-start="5431" data-end="5438" data-col-size="sm">Cost</td><td data-col-size="sm" data-start="5438" data-end="5445">High</td><td data-col-size="sm" data-start="5445" data-end="5452">Low</td></tr><tr data-start="5453" data-end="5498"><td data-start="5453" data-end="5468" data-col-size="sm">Suitable for</td><td data-start="5468" data-end="5483" data-col-size="sm">Short cycles</td><td data-start="5483" data-end="5498" data-col-size="sm">Long cycles</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5500" data-end="5503">
+<h2 data-start="5505" data-end="5535"><strong data-start="5508" data-end="5535">UNIT II – FINAL SUMMARY</strong></h2>
+<ul data-start="5537" data-end="5779">
+<li data-start="5537" data-end="5596">
+<p data-start="5539" data-end="5596">Work Measurement determines <strong data-start="5567" data-end="5596">how long work should take</strong></p>
+</li>
+<li data-start="5597" data-end="5638">
+<p data-start="5599" data-end="5638">Performance rating adjusts worker speed</p>
+</li>
+<li data-start="5639" data-end="5682">
+<p data-start="5641" data-end="5682">Allowances account for fatigue and delays</p>
+</li>
+<li data-start="5683" data-end="5729">
+<p data-start="5685" data-end="5729">Standard Time is the <strong data-start="5706" data-end="5729">basis of numericals</strong></p>
+</li>
+<li data-start="5730" data-end="5779">
+<p data-start="5732" data-end="5779">Synthetic time &amp; work sampling support analysis</p>
+</li>
+</ul>
+<hr data-start="5781" data-end="5784">
+<h2 data-start="5786" data-end="5811"><strong data-start="5789" data-end="5811">UNIT II COMPLETE ✅</strong></h2>
+<h3 data-start="5813" data-end="5845"><strong data-start="5817" data-end="5845">Exam-Oriented Numericals</strong></h3>
+<ol data-start="5846" data-end="6002">
+<li data-start="5846" data-end="5917">
+<p data-start="5849" data-end="5917">Calculate standard time given observed time, rating, and allowance</p>
+</li>
+<li data-start="5918" data-end="5959">
+<p data-start="5921" data-end="5959">Compare time study and work sampling</p>
+</li>
+<li data-start="5960" data-end="6002">
+<p data-start="5963" data-end="6002">Define and explain performance rating</p>
+</li>
+</ol>
+<hr data-start="6004" data-end="6007">
+<h3 data-start="6009" data-end="6026"><strong data-start="6013" data-end="6026">Next Step</strong></h3>
+<p data-start="6027" data-end="6101">👉 <strong data-start="6030" data-end="6101">Shall I move to <em data-start="6048" data-end="6098">Unit III – Facilities Location &amp; Layout (Part 1)</em>?</strong></p>
+<p data-start="6103" data-end="6198" data-is-last-node="" data-is-only-node="">(You can also ask for <strong data-start="6125" data-end="6171">numerical practice problems with solutions</strong> from Unit II if you want.)</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBA204 One-Page Formula Sheet – Unit II, III & V</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --user-bg: #f0f0f0;
+            --assistant-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --header-bg: #2c3e50;
+            --code-bg: #f4f4f4;
+            --formula-border: #3498db;
+            --solution-border: #27ae60;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1e1e1e;
+            --text-color: #d4d4d4;
+            --user-bg: #2d2d2d;
+            --assistant-bg: #1a1a1a;
+            --border-color: #404040;
+            --header-bg: #1a252f;
+            --code-bg: #262626;
+            --formula-border: #4a9eff;
+            --solution-border: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--assistant-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .message {
+            padding: 30px;
+            margin: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .message:last-child {
+            margin-bottom: 30px;
+        }
+
+        .message.user {
+            background: var(--user-bg);
+        }
+
+        .message.assistant {
+            background: var(--assistant-bg);
+        }
+
+        .role {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .content h2 {
+            color: var(--text-color);
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-size: 1.6em;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .content h3 {
+            color: var(--text-color);
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .content h4 {
+            color: var(--text-color);
+            margin-top: 16px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .content p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .content ul, .content ol {
+            margin-left: 30px;
+            margin-bottom: 16px;
+        }
+
+        .content li {
+            margin-bottom: 8px;
+        }
+
+        .content strong {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .content em {
+            font-style: italic;
+        }
+
+        .content code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .content pre {
+            background: var(--code-bg);
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--assistant-bg);
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: var(--user-bg);
+            font-weight: 600;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 24px 0;
+        }
+
+        .math {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+
+        .formula {
+            background: var(--code-bg);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+            border-left: 4px solid var(--formula-border);
+            font-family: 'Cambria Math', 'Times New Roman', 'Courier New', monospace;
+            font-size: 1.05em;
+            letter-spacing: 0.5px;
+        }
+
+        .solution {
+            background: var(--code-bg);
+            padding: 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            border-left: 4px solid var(--solution-border);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--header-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--header-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-size: 1.2em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            transform: scale(1.1);
+        }
+
+        .back-to-top.visible {
+            display: flex;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .message {
+                padding: 20px;
+            }
+
+            .content h2 {
+                font-size: 1.4em;
+            }
+
+            .content h3 {
+                font-size: 1.2em;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>ONE‑PAGE FORMULA SHEETS (QUICK REVISION)</h1>
+            <p>PBA204 – Production & Operations Management</p>
+        </div>
+
+        <div class="message user">
+            <div class="role">Unit II – Productivity & Work Measurement</div>
+            <div class="content">
+                <h2>Productivity</h2>
+                <div class="formula">Productivity = Output / Input</div>
+                <div class="formula">Labour Productivity = Output / Labour hours</div>
+                <div class="formula">Machine Productivity = Output / Machine hours</div>
+
+                <h2>Time Study & Work Measurement</h2>
+                <div class="formula">Normal Time (NT) = Observed Time × (Performance Rating / 100)</div>
+                <div class="formula">Standard Time (ST) = Normal Time × (1 + Allowance %)</div>
+                <div class="formula">Total Allowance = Relaxation + Contingency + Special allowances</div>
+
+                <h2>Work Sampling</h2>
+                <div class="formula">Utilization (%) = (Working observations / Total observations) × 100</div>
+                <div class="formula">Idle Time (%) = (Idle observations / Total observations) × 100</div>
+            </div>
+        </div>
+
+        <div class="message user">
+            <div class="role">Unit III – Facility Location (Cost Analysis)</div>
+            <div class="content">
+                <div class="formula">Total Cost (TC) = Fixed Cost + (Variable Cost × Quantity)</div>
+                <div class="formula">Break‑Even Quantity (Q) between two locations:<br>Q = (Fixed Cost₂ − Fixed Cost₁) / (Variable Cost₁ − Variable Cost₂)</div>
+            </div>
+        </div>
+
+        <div class="message user">
+            <div class="role">Unit V – Statistical Quality Control (VERY IMPORTANT)</div>
+            <div class="content">
+                <h2>General Control Chart Terms</h2>
+                <ul>
+                    <li>CL = Central Line</li>
+                    <li>UCL = Upper Control Limit</li>
+                    <li>LCL = Lower Control Limit</li>
+                </ul>
+
+                <h2>X̄ Chart (Mean Chart)</h2>
+                <div class="formula">UCL = X̄̄ + A₂R̄</div>
+                <div class="formula">CL = X̄̄</div>
+                <div class="formula">LCL = X̄̄ − A₂R̄</div>
+
+                <h2>R Chart (Range Chart)</h2>
+                <div class="formula">UCL = D₄R̄</div>
+                <div class="formula">CL = R̄</div>
+                <div class="formula">LCL = D₃R̄</div>
+
+                <h2>p‑Chart (Fraction Defective)</h2>
+                <div class="formula">p̄ = Total defectives / Total inspected</div>
+                <div class="formula">UCL = p̄ + 3√[p̄(1 − p̄) / n]</div>
+                <div class="formula">CL = p̄</div>
+                <div class="formula">LCL = p̄ − 3√[p̄(1 − p̄) / n]</div>
+
+                <h2>np‑Chart (Number of Defectives)</h2>
+                <div class="formula">CL = np̄</div>
+                <div class="formula">UCL = np̄ + 3√[np̄(1 − p̄)]</div>
+                <div class="formula">LCL = np̄ − 3√[np̄(1 − p̄)]</div>
+
+                <h2>c‑Chart (Number of Defects)</h2>
+                <div class="formula">CL = c̄</div>
+                <div class="formula">UCL = c̄ + 3√c̄</div>
+                <div class="formula">LCL = c̄ − 3√c̄</div>
+            </div>
+        </div>
+
+        <div class="message assistant">
+            <div class="role">EXAM MEMORY TIPS (LAST‑DAY USE)</div>
+            <div class="content">
+                <ul>
+                    <li>If LCL &lt; 0, take LCL = 0</li>
+                    <li>Always draw R chart before X̄ chart</li>
+                    <li>Write Formula → Substitution → Answer</li>
+                    <li>Label axes clearly in control‑chart numericals</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Back to top button functionality
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
