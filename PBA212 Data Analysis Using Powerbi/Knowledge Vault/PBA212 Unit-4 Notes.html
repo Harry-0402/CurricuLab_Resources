@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="90938356-d10b-4fb2-b734-e7129995d529" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h2 data-start="0" data-end="34">📘 Data Analysis using Power BI</h2>
+<hr data-start="36" data-end="39">
+<h3 data-start="41" data-end="121"><strong data-start="45" data-end="56">STATUS:</strong> <strong data-start="57" data-end="102">Unit IV – DAX (Data Analysis Expressions)</strong> | <strong data-start="105" data-end="121">Part 1 of ~3</strong></h3>
+<hr data-start="123" data-end="126">
+<h2 data-start="128" data-end="150"><strong data-start="131" data-end="150">1. What is DAX?</strong></h2>
+<h3 data-start="152" data-end="172"><strong data-start="156" data-end="172">Introduction</strong></h3>
+<p data-start="173" data-end="394">DAX (Data Analysis Expressions) is a <strong data-start="210" data-end="230">formula language</strong> used in Power BI to create <strong data-start="258" data-end="281">custom calculations</strong> for data analysis. DAX is mainly used to create <strong data-start="330" data-end="352">Calculated Columns</strong>, <strong data-start="354" data-end="366">Measures</strong>, and <strong data-start="372" data-end="393">Calculated Tables</strong>.</p>
+<p data-start="396" data-end="456">If Power Query prepares the data, <strong data-start="430" data-end="455">DAX analyzes the data</strong>.</p>
+<hr data-start="458" data-end="461">
+<h3 data-start="463" data-end="483"><strong data-start="467" data-end="483">Key Concepts</strong></h3>
+<ul data-start="484" data-end="552">
+<li data-start="484" data-end="491">
+<p data-start="486" data-end="491">DAX</p>
+</li>
+<li data-start="492" data-end="512">
+<p data-start="494" data-end="512">Formula Language</p>
+</li>
+<li data-start="513" data-end="529">
+<p data-start="515" data-end="529">Calculations</p>
+</li>
+<li data-start="530" data-end="552">
+<p data-start="532" data-end="552">Evaluation Context</p>
+</li>
+</ul>
+<hr data-start="554" data-end="557">
+<h3 data-start="559" data-end="587"><strong data-start="563" data-end="587">Detailed Explanation</strong></h3>
+<p data-start="588" data-end="617">DAX is designed to work with:</p>
+<ul data-start="618" data-end="670">
+<li data-start="618" data-end="626">
+<p data-start="620" data-end="626">Tables</p>
+</li>
+<li data-start="627" data-end="636">
+<p data-start="629" data-end="636">Columns</p>
+</li>
+<li data-start="637" data-end="670">
+<p data-start="639" data-end="670">Relationships in the data model</p>
+</li>
+</ul>
+<p data-start="672" data-end="745">DAX formulas look similar to Excel formulas but work differently because:</p>
+<ul data-start="746" data-end="899">
+<li data-start="746" data-end="792">
+<p data-start="748" data-end="792">They operate on <strong data-start="764" data-end="792">entire columns or tables</strong></p>
+</li>
+<li data-start="793" data-end="843">
+<p data-start="795" data-end="843">They respect <strong data-start="808" data-end="825">relationships</strong> in the data model</p>
+</li>
+<li data-start="844" data-end="899">
+<p data-start="846" data-end="899">They use <strong data-start="855" data-end="866">context</strong> (row context and filter context)</p>
+</li>
+</ul>
+<p data-start="901" data-end="925"><strong data-start="901" data-end="925">Example DAX Formula:</strong></p>
+<pre class="overflow-visible! px-0!" data-start="926" data-end="971"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Total</span></span><span> </span><span><span class="hljs-variable">Sales</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> SUM(Sales[SalesAmount])
+</span></span></code></div></div></pre>
+<p data-start="973" data-end="1074">This formula calculates total sales across the entire dataset, respecting filters applied in reports.</p>
+<hr data-start="1076" data-end="1079">
+<h3 data-start="1081" data-end="1096"><strong data-start="1085" data-end="1096">Summary</strong></h3>
+<p data-start="1097" data-end="1197">DAX is the analytical engine of Power BI, enabling advanced calculations beyond simple aggregations.</p>
+<hr data-start="1199" data-end="1202">
+<h2 data-start="1204" data-end="1231"><strong data-start="1207" data-end="1231">2. Calculated Column</strong></h2>
+<h3 data-start="1233" data-end="1253"><strong data-start="1237" data-end="1253">Introduction</strong></h3>
+<p data-start="1254" data-end="1387">A Calculated Column is a new column created using a DAX formula. The value is calculated <strong data-start="1343" data-end="1357">row by row</strong> and stored in the data model.</p>
+<hr data-start="1389" data-end="1392">
+<h3 data-start="1394" data-end="1414"><strong data-start="1398" data-end="1414">Key Concepts</strong></h3>
+<ul data-start="1415" data-end="1477">
+<li data-start="1415" data-end="1430">
+<p data-start="1417" data-end="1430">Row Context</p>
+</li>
+<li data-start="1431" data-end="1448">
+<p data-start="1433" data-end="1448">Stored Values</p>
+</li>
+<li data-start="1449" data-end="1477">
+<p data-start="1451" data-end="1477">Column-Level Calculation</p>
+</li>
+</ul>
+<hr data-start="1479" data-end="1482">
+<h3 data-start="1484" data-end="1512"><strong data-start="1488" data-end="1512">Detailed Explanation</strong></h3>
+<p data-start="1513" data-end="1532">Calculated Columns:</p>
+<ul data-start="1533" data-end="1651">
+<li data-start="1533" data-end="1565">
+<p data-start="1535" data-end="1565">Are evaluated for <strong data-start="1553" data-end="1565">each row</strong></p>
+</li>
+<li data-start="1566" data-end="1606">
+<p data-start="1568" data-end="1606">Increase model size (stored in memory)</p>
+</li>
+<li data-start="1607" data-end="1651">
+<p data-start="1609" data-end="1651">Are useful for categorization and labeling</p>
+</li>
+</ul>
+<p data-start="1653" data-end="1665"><strong data-start="1653" data-end="1665">Example:</strong></p>
+<pre class="overflow-visible! px-0!" data-start="1666" data-end="1715"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">ini</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-attr">Profit</span></span><span> = Sales[SalesAmount] - Sales[Cost]
+</span></span></code></div></div></pre>
+<p data-start="1717" data-end="1772">This creates a Profit value for each sales transaction.</p>
+<p data-start="1774" data-end="1787"><strong data-start="1774" data-end="1787">Use Cases</strong></p>
+<ul data-start="1788" data-end="1876">
+<li data-start="1788" data-end="1813">
+<p data-start="1790" data-end="1813">Creating profit per row</p>
+</li>
+<li data-start="1814" data-end="1846">
+<p data-start="1816" data-end="1846">Creating year or month columns</p>
+</li>
+<li data-start="1847" data-end="1876">
+<p data-start="1849" data-end="1876">Creating conditional labels</p>
+</li>
+</ul>
+<hr data-start="1878" data-end="1881">
+<h3 data-start="1883" data-end="1898"><strong data-start="1887" data-end="1898">Summary</strong></h3>
+<p data-start="1899" data-end="1981">Calculated Columns are best suited for row-level calculations and data enrichment.</p>
+<hr data-start="1983" data-end="1986">
+<h2 data-start="1988" data-end="2006"><strong data-start="1991" data-end="2006">3. Measures</strong></h2>
+<h3 data-start="2008" data-end="2028"><strong data-start="2012" data-end="2028">Introduction</strong></h3>
+<p data-start="2029" data-end="2126">Measures are DAX calculations that are evaluated <strong data-start="2078" data-end="2095">at query time</strong>, not stored in the data model.</p>
+<hr data-start="2128" data-end="2131">
+<h3 data-start="2133" data-end="2153"><strong data-start="2137" data-end="2153">Key Concepts</strong></h3>
+<ul data-start="2154" data-end="2212">
+<li data-start="2154" data-end="2172">
+<p data-start="2156" data-end="2172">Filter Context</p>
+</li>
+<li data-start="2173" data-end="2196">
+<p data-start="2175" data-end="2196">Dynamic Calculation</p>
+</li>
+<li data-start="2197" data-end="2212">
+<p data-start="2199" data-end="2212">Aggregation</p>
+</li>
+</ul>
+<hr data-start="2214" data-end="2217">
+<h3 data-start="2219" data-end="2247"><strong data-start="2223" data-end="2247">Detailed Explanation</strong></h3>
+<p data-start="2248" data-end="2257">Measures:</p>
+<ul data-start="2258" data-end="2368">
+<li data-start="2258" data-end="2303">
+<p data-start="2260" data-end="2303">Are calculated dynamically based on filters</p>
+</li>
+<li data-start="2304" data-end="2331">
+<p data-start="2306" data-end="2331">Do not increase data size</p>
+</li>
+<li data-start="2332" data-end="2368">
+<p data-start="2334" data-end="2368">Change values depending on visuals</p>
+</li>
+</ul>
+<p data-start="2370" data-end="2382"><strong data-start="2370" data-end="2382">Example:</strong></p>
+<pre class="overflow-visible! px-0!" data-start="2383" data-end="2424"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Total</span></span><span> </span><span><span class="hljs-variable">Profit</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> SUM(Sales[Profit])
+</span></span></code></div></div></pre>
+<p data-start="2426" data-end="2508">If a report is filtered by Year or Region, the measure recalculates automatically.</p>
+<p data-start="2510" data-end="2530"><strong data-start="2510" data-end="2530">Common Use Cases</strong></p>
+<ul data-start="2531" data-end="2587">
+<li data-start="2531" data-end="2544">
+<p data-start="2533" data-end="2544">Total Sales</p>
+</li>
+<li data-start="2545" data-end="2560">
+<p data-start="2547" data-end="2560">Average Sales</p>
+</li>
+<li data-start="2561" data-end="2580">
+<p data-start="2563" data-end="2580">Growth Percentage</p>
+</li>
+<li data-start="2581" data-end="2587">
+<p data-start="2583" data-end="2587">KPIs</p>
+</li>
+</ul>
+<hr data-start="2589" data-end="2592">
+<h3 data-start="2594" data-end="2609"><strong data-start="2598" data-end="2609">Summary</strong></h3>
+<p data-start="2610" data-end="2705">Measures are the preferred way to perform aggregations and analytical calculations in Power BI.</p>
+<hr data-start="2707" data-end="2710">
+<h2 data-start="2712" data-end="2752"><strong data-start="2715" data-end="2752">4. Calculated Columns vs Measures</strong></h2>
+<h3 data-start="2754" data-end="2778"><strong data-start="2758" data-end="2778">Comparison Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2780" data-end="3028" class="w-fit min-w-(--thread-content-width)"><thead data-start="2780" data-end="2821"><tr data-start="2780" data-end="2821"><th data-start="2780" data-end="2790" data-col-size="sm">Feature</th><th data-start="2790" data-end="2810" data-col-size="sm">Calculated Column</th><th data-start="2810" data-end="2821" data-col-size="sm">Measure</th></tr></thead><tbody data-start="2859" data-end="3028"><tr data-start="2859" data-end="2898"><td data-start="2859" data-end="2872" data-col-size="sm">Evaluation</td><td data-start="2872" data-end="2885" data-col-size="sm">Row by row</td><td data-col-size="sm" data-start="2885" data-end="2898">On demand</td></tr><tr data-start="2899" data-end="2941"><td data-start="2899" data-end="2909" data-col-size="sm">Storage</td><td data-start="2909" data-end="2927" data-col-size="sm">Stored in model</td><td data-col-size="sm" data-start="2927" data-end="2941">Not stored</td></tr><tr data-start="2942" data-end="2984"><td data-start="2942" data-end="2952" data-col-size="sm">Context</td><td data-start="2952" data-end="2966" data-col-size="sm">Row context</td><td data-col-size="sm" data-start="2966" data-end="2984">Filter context</td></tr><tr data-start="2985" data-end="3028"><td data-start="2985" data-end="2996" data-col-size="sm">Use Case</td><td data-start="2996" data-end="3013" data-col-size="sm">Categorization</td><td data-start="3013" data-end="3028" data-col-size="sm">Aggregation</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3030" data-end="3033">
+<h3 data-start="3035" data-end="3054"><strong data-start="3039" data-end="3054">Explanation</strong></h3>
+<ul data-start="3055" data-end="3162">
+<li data-start="3055" data-end="3112">
+<p data-start="3057" data-end="3112">Use <strong data-start="3061" data-end="3083">Calculated Columns</strong> when you need row-level data</p>
+</li>
+<li data-start="3113" data-end="3162">
+<p data-start="3115" data-end="3162">Use <strong data-start="3119" data-end="3131">Measures</strong> for totals, averages, and KPIs</p>
+</li>
+</ul>
+<hr data-start="3164" data-end="3167">
+<h3 data-start="3169" data-end="3184"><strong data-start="3173" data-end="3184">Summary</strong></h3>
+<p data-start="3185" data-end="3257">Choosing the correct calculation type improves performance and accuracy.</p>
+<hr data-start="3259" data-end="3262">
+<h2 data-start="3264" data-end="3306"><strong data-start="3267" data-end="3306">5. DAX Table and Column Name Syntax</strong></h2>
+<h3 data-start="3308" data-end="3328"><strong data-start="3312" data-end="3328">Introduction</strong></h3>
+<p data-start="3329" data-end="3388">DAX uses a specific syntax to reference tables and columns.</p>
+<hr data-start="3390" data-end="3393">
+<h3 data-start="3395" data-end="3415"><strong data-start="3399" data-end="3415">Syntax Rules</strong></h3>
+<ul data-start="3416" data-end="3531">
+<li data-start="3416" data-end="3482">
+<p data-start="3418" data-end="3482">Table names are enclosed in single quotes if they contain spaces</p>
+</li>
+<li data-start="3483" data-end="3531">
+<p data-start="3485" data-end="3531">Column names are always inside square brackets</p>
+</li>
+</ul>
+<p data-start="3533" data-end="3545"><strong data-start="3533" data-end="3545">Examples</strong></p>
+<pre class="overflow-visible! px-0!" data-start="3546" data-end="3597"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Sales[SalesAmount]
+</span><span><span class="hljs-string">'Sales Data'</span></span><span>[</span><span><span class="hljs-keyword">Order</span></span><span> </span><span><span class="hljs-type">Date</span></span><span>]
+</span></span></code></div></div></pre>
+<hr data-start="3599" data-end="3602">
+<h3 data-start="3604" data-end="3619"><strong data-start="3608" data-end="3619">Summary</strong></h3>
+<p data-start="3620" data-end="3667">Correct syntax ensures error-free DAX formulas.</p>
+<hr data-start="3669" data-end="3672">
+<h2 data-start="3674" data-end="3711"><strong data-start="3677" data-end="3711">6. Creating Calculated Columns</strong></h2>
+<h3 data-start="3713" data-end="3726"><strong data-start="3717" data-end="3726">Steps</strong></h3>
+<ol data-start="3727" data-end="3825">
+<li data-start="3727" data-end="3749">
+<p data-start="3730" data-end="3749">Go to <strong data-start="3736" data-end="3749">Data View</strong></p>
+</li>
+<li data-start="3750" data-end="3765">
+<p data-start="3753" data-end="3765">Select table</p>
+</li>
+<li data-start="3766" data-end="3789">
+<p data-start="3769" data-end="3789">Click <strong data-start="3775" data-end="3789">New Column</strong></p>
+</li>
+<li data-start="3790" data-end="3810">
+<p data-start="3793" data-end="3810">Write DAX formula</p>
+</li>
+<li data-start="3811" data-end="3825">
+<p data-start="3814" data-end="3825">Press Enter</p>
+</li>
+</ol>
+<hr data-start="3827" data-end="3830">
+<h3 data-start="3832" data-end="3847"><strong data-start="3836" data-end="3847">Example</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="3848" data-end="3918"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Sales</span></span><span> </span><span><span class="hljs-variable">Category</span></span><span> </span><span><span class="hljs-operator">=</span></span><span>
+IF(Sales[SalesAmount] &gt; </span><span><span class="hljs-number">50000</span></span><span>, </span><span><span class="hljs-string">"High"</span></span><span>, </span><span><span class="hljs-string">"Low"</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="3920" data-end="3923">
+<h3 data-start="3925" data-end="3940"><strong data-start="3929" data-end="3940">Summary</strong></h3>
+<p data-start="3941" data-end="4018">Calculated Columns are created directly inside the table for row-level logic.</p>
+<hr data-start="4020" data-end="4023">
+<h2 data-start="4025" data-end="4052"><strong data-start="4028" data-end="4052">7. Creating Measures</strong></h2>
+<h3 data-start="4054" data-end="4067"><strong data-start="4058" data-end="4067">Steps</strong></h3>
+<ol data-start="4068" data-end="4171">
+<li data-start="4068" data-end="4109">
+<p data-start="4071" data-end="4109">Go to <strong data-start="4077" data-end="4092">Report View</strong> or <strong data-start="4096" data-end="4109">Data View</strong></p>
+</li>
+<li data-start="4110" data-end="4125">
+<p data-start="4113" data-end="4125">Select table</p>
+</li>
+<li data-start="4126" data-end="4150">
+<p data-start="4129" data-end="4150">Click <strong data-start="4135" data-end="4150">New Measure</strong></p>
+</li>
+<li data-start="4151" data-end="4171">
+<p data-start="4154" data-end="4171">Write DAX formula</p>
+</li>
+</ol>
+<hr data-start="4173" data-end="4176">
+<h3 data-start="4178" data-end="4193"><strong data-start="4182" data-end="4193">Example</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="4194" data-end="4239"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Total</span></span><span> </span><span><span class="hljs-variable">Sales</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> SUM(Sales[SalesAmount])
+</span></span></code></div></div></pre>
+<hr data-start="4241" data-end="4244">
+<h3 data-start="4246" data-end="4261"><strong data-start="4250" data-end="4261">Summary</strong></h3>
+<p data-start="4262" data-end="4310">Measures provide flexible and dynamic analytics.</p>
+<hr data-start="4312" data-end="4315">
+<h3 data-start="4317" data-end="4353"><strong data-start="4321" data-end="4351"><em data-start="4323" data-end="4349">End of Unit IV – Part 1.</em></strong></h3>
+<p data-start="4354" data-end="4434" data-is-last-node="" data-is-only-node="">👉 <strong data-start="4357" data-end="4434" data-is-last-node="">Continue to Unit IV – Part 2 (DAX Syntax, Operators, and Operator Types)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="4fe98efc-e76a-44e9-b13d-1cbfcbb86158" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h2 data-start="0" data-end="34">📘 Data Analysis using Power BI</h2>
+<hr data-start="36" data-end="39">
+<h3 data-start="41" data-end="121"><strong data-start="45" data-end="56">STATUS:</strong> <strong data-start="57" data-end="102">Unit IV – DAX (Data Analysis Expressions)</strong> | <strong data-start="105" data-end="121">Part 2 of ~3</strong></h3>
+<hr data-start="123" data-end="126">
+<h2 data-start="128" data-end="160"><strong data-start="131" data-end="160">8. DAX Syntax &amp; Operators</strong></h2>
+<h3 data-start="162" data-end="182"><strong data-start="166" data-end="182">Introduction</strong></h3>
+<p data-start="183" data-end="350">DAX syntax defines the <strong data-start="206" data-end="229">rules and structure</strong> used to write DAX formulas. Understanding syntax and operators is essential to build correct and efficient calculations.</p>
+<hr data-start="352" data-end="355">
+<h3 data-start="357" data-end="377"><strong data-start="361" data-end="377">Key Concepts</strong></h3>
+<ul data-start="378" data-end="433">
+<li data-start="378" data-end="403">
+<p data-start="380" data-end="403">DAX Formula Structure</p>
+</li>
+<li data-start="404" data-end="417">
+<p data-start="406" data-end="417">Operators</p>
+</li>
+<li data-start="418" data-end="433">
+<p data-start="420" data-end="433">Expressions</p>
+</li>
+</ul>
+<hr data-start="435" data-end="438">
+<h3 data-start="440" data-end="475"><strong data-start="444" data-end="475">Basic DAX Formula Structure</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="476" data-end="509"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Measure</span></span><span> </span><span><span class="hljs-variable">Name</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> Expression
+</span></span></code></div></div></pre>
+<p data-start="511" data-end="523"><strong data-start="511" data-end="523">Example:</strong></p>
+<pre class="overflow-visible! px-0!" data-start="524" data-end="569"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Total</span></span><span> </span><span><span class="hljs-variable">Sales</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> SUM(Sales[SalesAmount])
+</span></span></code></div></div></pre>
+<p data-start="571" data-end="582">Components:</p>
+<ul data-start="583" data-end="707">
+<li data-start="583" data-end="621">
+<p data-start="585" data-end="621"><strong data-start="585" data-end="601">Measure Name</strong> → User-defined name</p>
+</li>
+<li data-start="622" data-end="660">
+<p data-start="624" data-end="660"><strong data-start="624" data-end="638">= (Equals)</strong> → Assignment operator</p>
+</li>
+<li data-start="661" data-end="707">
+<p data-start="663" data-end="707"><strong data-start="663" data-end="677">Expression</strong> → Function + column reference</p>
+</li>
+</ul>
+<hr data-start="709" data-end="712">
+<h3 data-start="714" data-end="729"><strong data-start="718" data-end="729">Summary</strong></h3>
+<p data-start="730" data-end="811">Correct syntax ensures DAX formulas execute properly and return accurate results.</p>
+<hr data-start="813" data-end="816">
+<h2 data-start="818" data-end="852"><strong data-start="821" data-end="852">9. DAX Operators – Overview</strong></h2>
+<h3 data-start="854" data-end="874"><strong data-start="858" data-end="874">Introduction</strong></h3>
+<p data-start="875" data-end="960">Operators are symbols used to perform calculations or comparisons in DAX expressions.</p>
+<hr data-start="962" data-end="965">
+<h3 data-start="967" data-end="997"><strong data-start="971" data-end="997">Types of DAX Operators</strong></h3>
+<ol data-start="998" data-end="1105">
+<li data-start="998" data-end="1023">
+<p data-start="1001" data-end="1023">Arithmetic Operators</p>
+</li>
+<li data-start="1024" data-end="1049">
+<p data-start="1027" data-end="1049">Comparison Operators</p>
+</li>
+<li data-start="1050" data-end="1082">
+<p data-start="1053" data-end="1082">Text Concatenation Operator</p>
+</li>
+<li data-start="1083" data-end="1105">
+<p data-start="1086" data-end="1105">Logical Operators</p>
+</li>
+</ol>
+<hr data-start="1107" data-end="1110">
+<h3 data-start="1112" data-end="1127"><strong data-start="1116" data-end="1127">Summary</strong></h3>
+<p data-start="1128" data-end="1214">Operators allow DAX to perform mathematical, logical, and comparison-based operations.</p>
+<hr data-start="1216" data-end="1219">
+<h2 data-start="1221" data-end="1252"><strong data-start="1224" data-end="1252">10. Arithmetic Operators</strong></h2>
+<h3 data-start="1254" data-end="1274"><strong data-start="1258" data-end="1274">Introduction</strong></h3>
+<p data-start="1275" data-end="1342">Arithmetic operators are used to perform mathematical calculations.</p>
+<hr data-start="1344" data-end="1347">
+<h3 data-start="1349" data-end="1383"><strong data-start="1353" data-end="1383">Arithmetic Operators Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1385" data-end="1589" class="w-fit min-w-(--thread-content-width)"><thead data-start="1385" data-end="1421"><tr data-start="1385" data-end="1421"><th data-start="1385" data-end="1396" data-col-size="sm">Operator</th><th data-start="1396" data-end="1410" data-col-size="sm">Description</th><th data-start="1410" data-end="1421" data-col-size="sm">Example</th></tr></thead><tbody data-start="1456" data-end="1589"><tr data-start="1456" data-end="1480"><td data-start="1456" data-end="1460" data-col-size="sm">+</td><td data-start="1460" data-end="1471" data-col-size="sm">Addition</td><td data-start="1471" data-end="1480" data-col-size="sm">A + B</td></tr><tr data-start="1481" data-end="1508"><td data-start="1481" data-end="1485" data-col-size="sm">-</td><td data-col-size="sm" data-start="1485" data-end="1499">Subtraction</td><td data-col-size="sm" data-start="1499" data-end="1508">A - B</td></tr><tr data-start="1509" data-end="1539"><td data-start="1509" data-end="1513" data-col-size="sm">*</td><td data-start="1513" data-end="1530" data-col-size="sm">Multiplication</td><td data-col-size="sm" data-start="1530" data-end="1539">A * B</td></tr><tr data-start="1540" data-end="1564"><td data-start="1540" data-end="1544" data-col-size="sm">/</td><td data-start="1544" data-end="1555" data-col-size="sm">Division</td><td data-start="1555" data-end="1564" data-col-size="sm">A / B</td></tr><tr data-start="1565" data-end="1589"><td data-start="1565" data-end="1569" data-col-size="sm">^</td><td data-start="1569" data-end="1580" data-col-size="sm">Exponent</td><td data-start="1580" data-end="1589" data-col-size="sm">A ^ B</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1591" data-end="1594">
+<h3 data-start="1596" data-end="1611"><strong data-start="1600" data-end="1611">Example</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="1612" data-end="1661"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">ini</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-attr">Profit</span></span><span> = Sales[SalesAmount] - Sales[Cost]
+</span></span></code></div></div></pre>
+<hr data-start="1663" data-end="1666">
+<h3 data-start="1668" data-end="1683"><strong data-start="1672" data-end="1683">Summary</strong></h3>
+<p data-start="1684" data-end="1774">Arithmetic operators are used for numeric calculations such as totals, profit, and ratios.</p>
+<hr data-start="1776" data-end="1779">
+<h2 data-start="1781" data-end="1812"><strong data-start="1784" data-end="1812">11. Comparison Operators</strong></h2>
+<h3 data-start="1814" data-end="1834"><strong data-start="1818" data-end="1834">Introduction</strong></h3>
+<p data-start="1835" data-end="1904">Comparison operators compare two values and return <strong data-start="1886" data-end="1903">TRUE or FALSE</strong>.</p>
+<hr data-start="1906" data-end="1909">
+<h3 data-start="1911" data-end="1945"><strong data-start="1915" data-end="1945">Comparison Operators Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1947" data-end="2132" class="w-fit min-w-(--thread-content-width)"><thead data-start="1947" data-end="1969"><tr data-start="1947" data-end="1969"><th data-start="1947" data-end="1958" data-col-size="sm">Operator</th><th data-start="1958" data-end="1969" data-col-size="sm">Meaning</th></tr></thead><tbody data-start="1990" data-end="2132"><tr data-start="1990" data-end="2006"><td data-start="1990" data-end="1994" data-col-size="sm">=</td><td data-start="1994" data-end="2006" data-col-size="sm">Equal to</td></tr><tr data-start="2007" data-end="2028"><td data-start="2007" data-end="2012" data-col-size="sm">&lt;&gt;</td><td data-start="2012" data-end="2028" data-col-size="sm">Not equal to</td></tr><tr data-start="2029" data-end="2049"><td data-start="2029" data-end="2033" data-col-size="sm">&gt;</td><td data-start="2033" data-end="2049" data-col-size="sm">Greater than</td></tr><tr data-start="2050" data-end="2067"><td data-start="2050" data-end="2054" data-col-size="sm">&lt;</td><td data-start="2054" data-end="2067" data-col-size="sm">Less than</td></tr><tr data-start="2068" data-end="2101"><td data-start="2068" data-end="2073" data-col-size="sm">&gt;=</td><td data-col-size="sm" data-start="2073" data-end="2101">Greater than or equal to</td></tr><tr data-start="2102" data-end="2132"><td data-start="2102" data-end="2107" data-col-size="sm">&lt;=</td><td data-start="2107" data-end="2132" data-col-size="sm">Less than or equal to</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2134" data-end="2137">
+<h3 data-start="2139" data-end="2154"><strong data-start="2143" data-end="2154">Example</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="2155" data-end="2219"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">High</span></span><span> </span><span><span class="hljs-variable">Sales</span></span><span> </span><span><span class="hljs-operator">=</span></span><span>
+IF(Sales[SalesAmount] &gt; </span><span><span class="hljs-number">50000</span></span><span>, </span><span><span class="hljs-string">"Yes"</span></span><span>, </span><span><span class="hljs-string">"No"</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="2221" data-end="2224">
+<h3 data-start="2226" data-end="2241"><strong data-start="2230" data-end="2241">Summary</strong></h3>
+<p data-start="2242" data-end="2314">Comparison operators are widely used in conditional logic and filtering.</p>
+<hr data-start="2316" data-end="2319">
+<h2 data-start="2321" data-end="2359"><strong data-start="2324" data-end="2359">12. Text Concatenation Operator</strong></h2>
+<h3 data-start="2361" data-end="2381"><strong data-start="2365" data-end="2381">Introduction</strong></h3>
+<p data-start="2382" data-end="2446">The text concatenation operator is used to <strong data-start="2425" data-end="2445">join text values</strong>.</p>
+<hr data-start="2448" data-end="2451">
+<h3 data-start="2453" data-end="2469"><strong data-start="2457" data-end="2469">Operator</strong></h3>
+<ul data-start="2470" data-end="2489">
+<li data-start="2470" data-end="2489">
+<p data-start="2472" data-end="2489"><strong data-start="2472" data-end="2477">&amp;</strong> (Ampersand)</p>
+</li>
+</ul>
+<hr data-start="2491" data-end="2494">
+<h3 data-start="2496" data-end="2511"><strong data-start="2500" data-end="2511">Example</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="2512" data-end="2572"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Full</span></span><span> </span><span><span class="hljs-type">Name</span></span><span> = Sales[FirstName] &amp; " " &amp; Sales[LastName]
+</span></span></code></div></div></pre>
+<hr data-start="2574" data-end="2577">
+<h3 data-start="2579" data-end="2594"><strong data-start="2583" data-end="2594">Summary</strong></h3>
+<p data-start="2595" data-end="2662">Text concatenation helps create meaningful labels and descriptions.</p>
+<hr data-start="2664" data-end="2667">
+<h2 data-start="2669" data-end="2697"><strong data-start="2672" data-end="2697">13. Logical Operators</strong></h2>
+<h3 data-start="2699" data-end="2719"><strong data-start="2703" data-end="2719">Introduction</strong></h3>
+<p data-start="2720" data-end="2778">Logical operators are used to combine multiple conditions.</p>
+<hr data-start="2780" data-end="2783">
+<h3 data-start="2785" data-end="2816"><strong data-start="2789" data-end="2816">Logical Operators Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2818" data-end="2899" class="w-fit min-w-(--thread-content-width)"><thead data-start="2818" data-end="2840"><tr data-start="2818" data-end="2840"><th data-start="2818" data-end="2829" data-col-size="sm">Operator</th><th data-start="2829" data-end="2840" data-col-size="sm">Meaning</th></tr></thead><tbody data-start="2861" data-end="2899"><tr data-start="2861" data-end="2873"><td data-start="2861" data-end="2866" data-col-size="sm">&amp;&amp;</td><td data-start="2866" data-end="2873" data-col-size="sm">AND</td></tr><tr data-start="2874" data-end="2885"><td data-start="2874" data-end="2876" data-col-size="sm"></td><td data-start="2876" data-end="2877" data-col-size="sm"></td></tr><tr data-start="2886" data-end="2899"><td data-start="2886" data-end="2892" data-col-size="sm">NOT</td><td data-start="2892" data-end="2899" data-col-size="sm">NOT</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2901" data-end="2904">
+<h3 data-start="2906" data-end="2921"><strong data-start="2910" data-end="2921">Example</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="2922" data-end="3010"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">makefile</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Eligible =
+IF(Sales[SalesAmount] &gt; 50000 &amp;&amp; Sales[Region] = </span><span><span class="hljs-string">"West"</span></span><span>, </span><span><span class="hljs-string">"Yes"</span></span><span>, </span><span><span class="hljs-string">"No"</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="3012" data-end="3015">
+<h3 data-start="3017" data-end="3032"><strong data-start="3021" data-end="3032">Summary</strong></h3>
+<p data-start="3033" data-end="3092">Logical operators help build complex decision-making logic.</p>
+<hr data-start="3094" data-end="3097">
+<h2 data-start="3099" data-end="3146"><strong data-start="3102" data-end="3146">14. Types of DAX Operators – Recap Table</strong></h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3148" data-end="3346" class="w-fit min-w-(--thread-content-width)"><thead data-start="3148" data-end="3175"><tr data-start="3148" data-end="3175"><th data-start="3148" data-end="3164" data-col-size="sm">Operator Type</th><th data-start="3164" data-end="3175" data-col-size="sm">Purpose</th></tr></thead><tbody data-start="3201" data-end="3346"><tr data-start="3201" data-end="3243"><td data-start="3201" data-end="3214" data-col-size="sm">Arithmetic</td><td data-start="3214" data-end="3243" data-col-size="sm">Mathematical calculations</td></tr><tr data-start="3244" data-end="3279"><td data-start="3244" data-end="3257" data-col-size="sm">Comparison</td><td data-start="3257" data-end="3279" data-col-size="sm">Condition checking</td></tr><tr data-start="3280" data-end="3312"><td data-start="3280" data-end="3296" data-col-size="sm">Concatenation</td><td data-start="3296" data-end="3312" data-col-size="sm">Text joining</td></tr><tr data-start="3313" data-end="3346"><td data-start="3313" data-end="3323" data-col-size="sm">Logical</td><td data-start="3323" data-end="3346" data-col-size="sm">Multiple conditions</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3348" data-end="3351">
+<h2 data-start="3353" data-end="3399"><strong data-start="3356" data-end="3399">15. DAX Operators in Real-Time Analysis</strong></h2>
+<h3 data-start="3401" data-end="3418"><strong data-start="3405" data-end="3418">Use Cases</strong></h3>
+<ul data-start="3419" data-end="3538">
+<li data-start="3419" data-end="3449">
+<p data-start="3421" data-end="3449">Calculating profit margins</p>
+</li>
+<li data-start="3450" data-end="3484">
+<p data-start="3452" data-end="3484">Categorizing sales performance</p>
+</li>
+<li data-start="3485" data-end="3520">
+<p data-start="3487" data-end="3520">Applying conditional formatting</p>
+</li>
+<li data-start="3521" data-end="3538">
+<p data-start="3523" data-end="3538">Building KPIs</p>
+</li>
+</ul>
+<hr data-start="3540" data-end="3543">
+<h3 data-start="3545" data-end="3560"><strong data-start="3549" data-end="3560">Summary</strong></h3>
+<p data-start="3561" data-end="3635">DAX operators are the building blocks of all analytical logic in Power BI.</p>
+<hr data-start="3637" data-end="3640">
+<h3 data-start="3642" data-end="3678"><strong data-start="3646" data-end="3676"><em data-start="3648" data-end="3674">End of Unit IV – Part 2.</em></strong></h3>
+<p data-start="3679" data-end="3784" data-is-last-node="" data-is-only-node="">👉 <strong data-start="3682" data-end="3784" data-is-last-node="">Continue to Unit IV – Part 3 (DAX Functions: Date &amp; Time, Text, Logical, Math &amp; Filter Functions)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="fd3d2df0-87e5-4952-b469-536e4f5c2f8f" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h2 data-start="0" data-end="34">📘 Data Analysis using Power BI</h2>
+<hr data-start="36" data-end="39">
+<h3 data-start="41" data-end="121"><strong data-start="45" data-end="56">STATUS:</strong> <strong data-start="57" data-end="102">Unit IV – DAX (Data Analysis Expressions)</strong> | <strong data-start="105" data-end="121">Part 3 of ~3</strong></h3>
+<hr data-start="123" data-end="126">
+<h2 data-start="128" data-end="167"><strong data-start="131" data-end="167">16. DAX Functions – Introduction</strong></h2>
+<h3 data-start="169" data-end="189"><strong data-start="173" data-end="189">Introduction</strong></h3>
+<p data-start="190" data-end="433">DAX provides a rich library of <strong data-start="221" data-end="243">built-in functions</strong> that simplify complex calculations. These functions are categorized based on their purpose, such as <strong data-start="344" data-end="359">Date &amp; Time</strong>, <strong data-start="361" data-end="369">Text</strong>, <strong data-start="371" data-end="382">Logical</strong>, <strong data-start="384" data-end="406">Math &amp; Statistical</strong>, and <strong data-start="412" data-end="422">Filter</strong> functions.</p>
+<hr data-start="435" data-end="438">
+<h3 data-start="440" data-end="460"><strong data-start="444" data-end="460">Key Concepts</strong></h3>
+<ul data-start="461" data-end="521">
+<li data-start="461" data-end="478">
+<p data-start="463" data-end="478">DAX Functions</p>
+</li>
+<li data-start="479" data-end="502">
+<p data-start="481" data-end="502">Function Categories</p>
+</li>
+<li data-start="503" data-end="521">
+<p data-start="505" data-end="521">Reusable Logic</p>
+</li>
+</ul>
+<hr data-start="523" data-end="526">
+<h3 data-start="528" data-end="556"><strong data-start="532" data-end="556">Detailed Explanation</strong></h3>
+<p data-start="557" data-end="614">Instead of writing long formulas manually, DAX functions:</p>
+<ul data-start="615" data-end="681">
+<li data-start="615" data-end="638">
+<p data-start="617" data-end="638">Improve readability</p>
+</li>
+<li data-start="639" data-end="656">
+<p data-start="641" data-end="656">Reduce errors</p>
+</li>
+<li data-start="657" data-end="681">
+<p data-start="659" data-end="681">Increase performance</p>
+</li>
+</ul>
+<p data-start="683" data-end="760">Functions can be nested (one inside another) to create powerful calculations.</p>
+<hr data-start="762" data-end="765">
+<h3 data-start="767" data-end="782"><strong data-start="771" data-end="782">Summary</strong></h3>
+<p data-start="783" data-end="869">DAX functions extend analytical capabilities and make formulas efficient and readable.</p>
+<hr data-start="871" data-end="874">
+<h2 data-start="876" data-end="910"><strong data-start="879" data-end="910">17. Date and Time Functions</strong></h2>
+<h3 data-start="912" data-end="932"><strong data-start="916" data-end="932">Introduction</strong></h3>
+<p data-start="933" data-end="1069">Date and Time functions are used to perform <strong data-start="977" data-end="1000">time-based analysis</strong>, such as year-wise sales, month-wise trends, and growth comparisons.</p>
+<hr data-start="1071" data-end="1074">
+<h3 data-start="1076" data-end="1112"><strong data-start="1080" data-end="1112">Common Date &amp; Time Functions</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1114" data-end="1382" class="w-fit min-w-(--thread-content-width)"><thead data-start="1114" data-end="1136"><tr data-start="1114" data-end="1136"><th data-start="1114" data-end="1125" data-col-size="sm">Function</th><th data-start="1125" data-end="1136" data-col-size="sm">Purpose</th></tr></thead><tbody data-start="1157" data-end="1382"><tr data-start="1157" data-end="1191"><td data-start="1157" data-end="1167" data-col-size="sm">TODAY()</td><td data-col-size="sm" data-start="1167" data-end="1191">Returns current date</td></tr><tr data-start="1192" data-end="1231"><td data-start="1192" data-end="1200" data-col-size="sm">NOW()</td><td data-start="1200" data-end="1231" data-col-size="sm">Returns current date &amp; time</td></tr><tr data-start="1232" data-end="1258"><td data-start="1232" data-end="1241" data-col-size="sm">YEAR()</td><td data-col-size="sm" data-start="1241" data-end="1258">Extracts year</td></tr><tr data-start="1259" data-end="1287"><td data-start="1259" data-end="1269" data-col-size="sm">MONTH()</td><td data-start="1269" data-end="1287" data-col-size="sm">Extracts month</td></tr><tr data-start="1288" data-end="1312"><td data-start="1288" data-end="1296" data-col-size="sm">DAY()</td><td data-col-size="sm" data-start="1296" data-end="1312">Extracts day</td></tr><tr data-start="1313" data-end="1340"><td data-start="1313" data-end="1322" data-col-size="sm">DATE()</td><td data-col-size="sm" data-start="1322" data-end="1340">Creates a date</td></tr><tr data-start="1341" data-end="1382"><td data-start="1341" data-end="1354" data-col-size="sm">DATEDIFF()</td><td data-col-size="sm" data-start="1354" data-end="1382">Difference between dates</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1384" data-end="1387">
+<h3 data-start="1389" data-end="1405"><strong data-start="1393" data-end="1405">Examples</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="1406" data-end="1449"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Order</span></span><span> </span><span><span class="hljs-keyword">Year</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> </span><span><span class="hljs-keyword">YEAR</span></span><span>(Sales[OrderDate])
+</span></span></code></div></div></pre>
+<pre class="overflow-visible! px-0!" data-start="1451" data-end="1520"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Days</span></span><span> </span><span><span class="hljs-variable">Taken</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> DATEDIFF(Sales[OrderDate], Sales[ShipDate], DAY)
+</span></span></code></div></div></pre>
+<hr data-start="1522" data-end="1525">
+<h3 data-start="1527" data-end="1542"><strong data-start="1531" data-end="1542">Summary</strong></h3>
+<p data-start="1543" data-end="1616">Date and Time functions enable trend analysis and period-based reporting.</p>
+<hr data-start="1618" data-end="1621">
+<h2 data-start="1623" data-end="1648"><strong data-start="1626" data-end="1648">18. Text Functions</strong></h2>
+<h3 data-start="1650" data-end="1670"><strong data-start="1654" data-end="1670">Introduction</strong></h3>
+<p data-start="1671" data-end="1731">Text functions are used to manipulate and analyze text data.</p>
+<hr data-start="1733" data-end="1736">
+<h3 data-start="1738" data-end="1767"><strong data-start="1742" data-end="1767">Common Text Functions</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1769" data-end="2065" class="w-fit min-w-(--thread-content-width)"><thead data-start="1769" data-end="1791"><tr data-start="1769" data-end="1791"><th data-start="1769" data-end="1780" data-col-size="sm">Function</th><th data-start="1780" data-end="1791" data-col-size="sm">Purpose</th></tr></thead><tbody data-start="1812" data-end="2065"><tr data-start="1812" data-end="1854"><td data-start="1812" data-end="1821" data-col-size="sm">LEFT()</td><td data-col-size="sm" data-start="1821" data-end="1854">Extracts characters from left</td></tr><tr data-start="1855" data-end="1899"><td data-start="1855" data-end="1865" data-col-size="sm">RIGHT()</td><td data-col-size="sm" data-start="1865" data-end="1899">Extracts characters from right</td></tr><tr data-start="1900" data-end="1932"><td data-start="1900" data-end="1908" data-col-size="sm">MID()</td><td data-col-size="sm" data-start="1908" data-end="1932">Extracts from middle</td></tr><tr data-start="1933" data-end="1962"><td data-start="1933" data-end="1941" data-col-size="sm">LEN()</td><td data-col-size="sm" data-start="1941" data-end="1962">Counts characters</td></tr><tr data-start="1963" data-end="1998"><td data-start="1963" data-end="1973" data-col-size="sm">UPPER()</td><td data-start="1973" data-end="1998" data-col-size="sm">Converts to uppercase</td></tr><tr data-start="1999" data-end="2034"><td data-start="1999" data-end="2009" data-col-size="sm">LOWER()</td><td data-start="2009" data-end="2034" data-col-size="sm">Converts to lowercase</td></tr><tr data-start="2035" data-end="2065"><td data-start="2035" data-end="2051" data-col-size="sm">CONCATENATE()</td><td data-start="2051" data-end="2065" data-col-size="sm">Joins text</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2067" data-end="2070">
+<h3 data-start="2072" data-end="2087"><strong data-start="2076" data-end="2087">Example</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="2088" data-end="2144"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Customer</span></span><span> </span><span><span class="hljs-variable">Code</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> LEFT(Customers[CustomerName], </span><span><span class="hljs-number">3</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="2146" data-end="2149">
+<h3 data-start="2151" data-end="2166"><strong data-start="2155" data-end="2166">Summary</strong></h3>
+<p data-start="2167" data-end="2228">Text functions help clean, format, and standardize text data.</p>
+<hr data-start="2230" data-end="2233">
+<h2 data-start="2235" data-end="2263"><strong data-start="2238" data-end="2263">19. Logical Functions</strong></h2>
+<h3 data-start="2265" data-end="2285"><strong data-start="2269" data-end="2285">Introduction</strong></h3>
+<p data-start="2286" data-end="2375">Logical functions evaluate conditions and return results based on TRUE or FALSE outcomes.</p>
+<hr data-start="2377" data-end="2380">
+<h3 data-start="2382" data-end="2414"><strong data-start="2386" data-end="2414">Common Logical Functions</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2416" data-end="2619" class="w-fit min-w-(--thread-content-width)"><thead data-start="2416" data-end="2438"><tr data-start="2416" data-end="2438"><th data-start="2416" data-end="2427" data-col-size="sm">Function</th><th data-start="2427" data-end="2438" data-col-size="sm">Purpose</th></tr></thead><tbody data-start="2459" data-end="2619"><tr data-start="2459" data-end="2487"><td data-start="2459" data-end="2466" data-col-size="sm">IF()</td><td data-start="2466" data-end="2487" data-col-size="sm">Conditional logic</td></tr><tr data-start="2488" data-end="2522"><td data-start="2488" data-end="2499" data-col-size="sm">SWITCH()</td><td data-start="2499" data-end="2522" data-col-size="sm">Multiple conditions</td></tr><tr data-start="2523" data-end="2556"><td data-start="2523" data-end="2531" data-col-size="sm">AND()</td><td data-start="2531" data-end="2556" data-col-size="sm">Checks all conditions</td></tr><tr data-start="2557" data-end="2588"><td data-start="2557" data-end="2564" data-col-size="sm">OR()</td><td data-start="2564" data-end="2588" data-col-size="sm">Checks any condition</td></tr><tr data-start="2589" data-end="2619"><td data-start="2589" data-end="2597" data-col-size="sm">NOT()</td><td data-start="2597" data-end="2619" data-col-size="sm">Reverses condition</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2621" data-end="2624">
+<h3 data-start="2626" data-end="2642"><strong data-start="2630" data-end="2642">Examples</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="2643" data-end="2713"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Sales</span></span><span> </span><span><span class="hljs-variable">Category</span></span><span> </span><span><span class="hljs-operator">=</span></span><span>
+IF(Sales[SalesAmount] &gt; </span><span><span class="hljs-number">50000</span></span><span>, </span><span><span class="hljs-string">"High"</span></span><span>, </span><span><span class="hljs-string">"Low"</span></span><span>)
+</span></span></code></div></div></pre>
+<pre class="overflow-visible! px-0!" data-start="2715" data-end="2804"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">graphql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Grade </span><span><span class="hljs-punctuation">=</span></span><span>
+SWITCH</span><span><span class="hljs-punctuation">(</span></span><span><span class="hljs-literal">TRUE</span></span><span><span class="hljs-punctuation">(</span></span><span><span class="hljs-punctuation">)</span></span><span>,
+Sales</span><span><span class="hljs-punctuation">[</span></span><span>Marks</span><span><span class="hljs-punctuation">]</span></span><span> &gt;</span><span><span class="hljs-punctuation">=</span></span><span> </span><span><span class="hljs-number">90</span></span><span>, </span><span><span class="hljs-string">"A"</span></span><span>,
+Sales</span><span><span class="hljs-punctuation">[</span></span><span>Marks</span><span><span class="hljs-punctuation">]</span></span><span> &gt;</span><span><span class="hljs-punctuation">=</span></span><span> </span><span><span class="hljs-number">75</span></span><span>, </span><span><span class="hljs-string">"B"</span></span><span>,
+</span><span><span class="hljs-string">"Other"</span></span><span><span class="hljs-punctuation">)</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="2806" data-end="2809">
+<h3 data-start="2811" data-end="2826"><strong data-start="2815" data-end="2826">Summary</strong></h3>
+<p data-start="2827" data-end="2900">Logical functions enable decision-based calculations and classifications.</p>
+<hr data-start="2902" data-end="2905">
+<h2 data-start="2907" data-end="2946"><strong data-start="2910" data-end="2946">20. Math &amp; Statistical Functions</strong></h2>
+<h3 data-start="2948" data-end="2968"><strong data-start="2952" data-end="2968">Introduction</strong></h3>
+<p data-start="2969" data-end="3047">Math &amp; Statistical functions are used for numerical analysis and aggregations.</p>
+<hr data-start="3049" data-end="3052">
+<h3 data-start="3054" data-end="3097"><strong data-start="3058" data-end="3097">Common Math &amp; Statistical Functions</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3099" data-end="3309" class="w-fit min-w-(--thread-content-width)"><thead data-start="3099" data-end="3121"><tr data-start="3099" data-end="3121"><th data-start="3099" data-end="3110" data-col-size="sm">Function</th><th data-start="3110" data-end="3121" data-col-size="sm">Purpose</th></tr></thead><tbody data-start="3142" data-end="3309"><tr data-start="3142" data-end="3165"><td data-start="3142" data-end="3150" data-col-size="sm">SUM()</td><td data-start="3150" data-end="3165" data-col-size="sm">Adds values</td></tr><tr data-start="3166" data-end="3200"><td data-start="3166" data-end="3178" data-col-size="sm">AVERAGE()</td><td data-col-size="sm" data-start="3178" data-end="3200">Calculates average</td></tr><tr data-start="3201" data-end="3226"><td data-start="3201" data-end="3209" data-col-size="sm">MIN()</td><td data-start="3209" data-end="3226" data-col-size="sm">Finds minimum</td></tr><tr data-start="3227" data-end="3252"><td data-start="3227" data-end="3235" data-col-size="sm">MAX()</td><td data-col-size="sm" data-start="3235" data-end="3252">Finds maximum</td></tr><tr data-start="3253" data-end="3280"><td data-start="3253" data-end="3263" data-col-size="sm">COUNT()</td><td data-start="3263" data-end="3280" data-col-size="sm">Counts values</td></tr><tr data-start="3281" data-end="3309"><td data-start="3281" data-end="3291" data-col-size="sm">ROUND()</td><td data-start="3291" data-end="3309" data-col-size="sm">Rounds numbers</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3311" data-end="3314">
+<h3 data-start="3316" data-end="3332"><strong data-start="3320" data-end="3332">Examples</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="3333" data-end="3384"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Average</span></span><span> </span><span><span class="hljs-variable">Sales</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> AVERAGE(Sales[SalesAmount])
+</span></span></code></div></div></pre>
+<pre class="overflow-visible! px-0!" data-start="3386" data-end="3428"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Max</span></span><span> </span><span><span class="hljs-variable">Sale</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> MAX(Sales[SalesAmount])
+</span></span></code></div></div></pre>
+<hr data-start="3430" data-end="3433">
+<h3 data-start="3435" data-end="3450"><strong data-start="3439" data-end="3450">Summary</strong></h3>
+<p data-start="3451" data-end="3524">These functions form the foundation of quantitative analysis in Power BI.</p>
+<hr data-start="3526" data-end="3529">
+<h2 data-start="3531" data-end="3558"><strong data-start="3534" data-end="3558">21. Filter Functions</strong></h2>
+<h3 data-start="3560" data-end="3580"><strong data-start="3564" data-end="3580">Introduction</strong></h3>
+<p data-start="3581" data-end="3675">Filter functions modify <strong data-start="3605" data-end="3623">filter context</strong>, which is one of the most powerful features of DAX.</p>
+<hr data-start="3677" data-end="3680">
+<h3 data-start="3682" data-end="3710"><strong data-start="3686" data-end="3710">Key Filter Functions</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3712" data-end="3907" class="w-fit min-w-(--thread-content-width)"><thead data-start="3712" data-end="3734"><tr data-start="3712" data-end="3734"><th data-start="3712" data-end="3723" data-col-size="sm">Function</th><th data-start="3723" data-end="3734" data-col-size="sm">Purpose</th></tr></thead><tbody data-start="3755" data-end="3907"><tr data-start="3755" data-end="3794"><td data-start="3755" data-end="3766" data-col-size="sm">FILTER()</td><td data-start="3766" data-end="3794" data-col-size="sm">Applies row-level filter</td></tr><tr data-start="3795" data-end="3835"><td data-start="3795" data-end="3809" data-col-size="sm">CALCULATE()</td><td data-col-size="sm" data-start="3809" data-end="3835">Changes filter context</td></tr><tr data-start="3836" data-end="3863"><td data-start="3836" data-end="3844" data-col-size="sm">ALL()</td><td data-start="3844" data-end="3863" data-col-size="sm">Removes filters</td></tr><tr data-start="3864" data-end="3907"><td data-start="3864" data-end="3878" data-col-size="sm">ALLEXCEPT()</td><td data-start="3878" data-end="3907" data-col-size="sm">Removes selective filters</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3909" data-end="3912">
+<h3 data-start="3914" data-end="3930"><strong data-start="3918" data-end="3930">Examples</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="3931" data-end="4016"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">High</span></span><span> </span><span><span class="hljs-variable">Sales</span></span><span> </span><span><span class="hljs-operator">=</span></span><span>
+CALCULATE(
+SUM(Sales[SalesAmount]),
+Sales[SalesAmount] &gt; </span><span><span class="hljs-number">50000</span></span><span>
+)
+</span></span></code></div></div></pre>
+<hr data-start="4018" data-end="4021">
+<h3 data-start="4023" data-end="4038"><strong data-start="4027" data-end="4038">Summary</strong></h3>
+<p data-start="4039" data-end="4116">Filter functions allow precise control over how data is evaluated in reports.</p>
+<hr data-start="4118" data-end="4121">
+<h2 data-start="4123" data-end="4161"><strong data-start="4126" data-end="4161">22. Importance of DAX Functions</strong></h2>
+<h3 data-start="4163" data-end="4195"><strong data-start="4167" data-end="4195">Why DAX Functions Matter</strong></h3>
+<ul data-start="4196" data-end="4319">
+<li data-start="4196" data-end="4225">
+<p data-start="4198" data-end="4225">Enable advanced analytics</p>
+</li>
+<li data-start="4226" data-end="4255">
+<p data-start="4228" data-end="4255">Support dynamic reporting</p>
+</li>
+<li data-start="4256" data-end="4279">
+<p data-start="4258" data-end="4279">Improve performance</p>
+</li>
+<li data-start="4280" data-end="4319">
+<p data-start="4282" data-end="4319">Provide business intelligence logic</p>
+</li>
+</ul>
+<hr data-start="4321" data-end="4324">
+<h3 data-start="4326" data-end="4341"><strong data-start="4330" data-end="4341">Summary</strong></h3>
+<p data-start="4342" data-end="4400">DAX functions transform raw data into actionable insights.</p>
+<hr data-start="4402" data-end="4405">
+<h2 data-start="4407" data-end="4432">✅ <strong data-start="4412" data-end="4432">Unit IV Complete</strong></h2>
+<hr data-start="4434" data-end="4437">
+<h3 data-start="4439" data-end="4459"><strong data-start="4443" data-end="4459">Quick Review</strong></h3>
+<h4 data-start="4461" data-end="4492"><strong data-start="4466" data-end="4492">Short Answer Questions</strong></h4>
+<ol data-start="4493" data-end="4594">
+<li data-start="4493" data-end="4508">
+<p data-start="4496" data-end="4508">What is DAX?</p>
+</li>
+<li data-start="4509" data-end="4561">
+<p data-start="4512" data-end="4561">Difference between calculated column and measure.</p>
+</li>
+<li data-start="4562" data-end="4594">
+<p data-start="4565" data-end="4594">What is CALCULATE() used for?</p>
+</li>
+</ol>
+<h4 data-start="4596" data-end="4626"><strong data-start="4601" data-end="4626">Descriptive Questions</strong></h4>
+<ol data-start="4627" data-end="4771">
+<li data-start="4627" data-end="4676">
+<p data-start="4630" data-end="4676">Explain different categories of DAX functions.</p>
+</li>
+<li data-start="4677" data-end="4725">
+<p data-start="4680" data-end="4725">Describe Date &amp; Time functions with examples.</p>
+</li>
+<li data-start="4726" data-end="4771">
+<p data-start="4729" data-end="4771">Explain filter context and its importance.</p>
+</li>
+</ol>
+<hr data-start="4773" data-end="4776">
+<h3 data-start="4778" data-end="4795"><strong data-start="4782" data-end="4795">Next Step</strong></h3>
+<p data-start="4796" data-end="4864" data-is-last-node="" data-is-only-node="">👉 <strong data-start="4799" data-end="4864" data-is-last-node="">Shall I begin <em data-start="4815" data-end="4853">Unit V – Visualizations &amp; Dashboards</em>, Part 1?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

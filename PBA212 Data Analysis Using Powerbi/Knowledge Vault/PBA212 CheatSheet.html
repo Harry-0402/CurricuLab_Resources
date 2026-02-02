@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="861bff5a-7b07-454e-8b40-101020ffb976" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="206">Perfect 👍<br data-start="10" data-end="13">
+Below is a <strong data-start="24" data-end="79">clean, exam-ready Power BI DAX Formulae Cheat Sheet</strong>, aligned <strong data-start="89" data-end="129">exactly with your syllabus (Unit IV)</strong>.<br data-start="130" data-end="133">
+You can use this for <strong data-start="154" data-end="205">quick revision, exams, interviews, and practice</strong>.</p>
+<hr data-start="208" data-end="211">
+<h1 data-start="213" data-end="257">📌 <strong data-start="218" data-end="257">Power BI – DAX Formulae Cheat Sheet</strong></h1>
+<hr data-start="259" data-end="262">
+<h2 data-start="264" data-end="300">🔹 1. Basic Aggregation Functions</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="302" data-end="732" class="w-fit min-w-(--thread-content-width)"><thead data-start="302" data-end="333"><tr data-start="302" data-end="333"><th data-start="302" data-end="312" data-col-size="sm">Purpose</th><th data-start="312" data-end="322" data-col-size="sm">Formula</th><th data-start="322" data-end="333" data-col-size="sm">Example</th></tr></thead><tbody data-start="360" data-end="732"><tr data-start="360" data-end="419"><td data-start="360" data-end="366" data-col-size="sm">Sum</td><td data-start="366" data-end="376" data-col-size="sm"><code data-start="368" data-end="375">SUM()</code></td><td data-col-size="sm" data-start="376" data-end="419"><code data-start="378" data-end="417">Total Sales = SUM(Sales[SalesAmount])</code></td></tr><tr data-start="420" data-end="489"><td data-start="420" data-end="430" data-col-size="sm">Average</td><td data-start="430" data-end="444" data-col-size="sm"><code data-start="432" data-end="443">AVERAGE()</code></td><td data-start="444" data-end="489" data-col-size="sm"><code data-start="446" data-end="487">Avg Sales = AVERAGE(Sales[SalesAmount])</code></td></tr><tr data-start="490" data-end="551"><td data-start="490" data-end="498" data-col-size="sm">Count</td><td data-start="498" data-end="510" data-col-size="sm"><code data-start="500" data-end="509">COUNT()</code></td><td data-start="510" data-end="551" data-col-size="sm"><code data-start="512" data-end="549">Order Count = COUNT(Sales[OrderID])</code></td></tr><tr data-start="552" data-end="610"><td data-start="552" data-end="565" data-col-size="sm">Count Rows</td><td data-start="565" data-end="581" data-col-size="sm"><code data-start="567" data-end="580">COUNTROWS()</code></td><td data-col-size="sm" data-start="581" data-end="610"><code data-start="583" data-end="608">Rows = COUNTROWS(Sales)</code></td></tr><tr data-start="611" data-end="671"><td data-start="611" data-end="621" data-col-size="sm">Minimum</td><td data-start="621" data-end="631" data-col-size="sm"><code data-start="623" data-end="630">MIN()</code></td><td data-col-size="sm" data-start="631" data-end="671"><code data-start="633" data-end="669">Min Sale = MIN(Sales[SalesAmount])</code></td></tr><tr data-start="672" data-end="732"><td data-start="672" data-end="682" data-col-size="sm">Maximum</td><td data-col-size="sm" data-start="682" data-end="692"><code data-start="684" data-end="691">MAX()</code></td><td data-col-size="sm" data-start="692" data-end="732"><code data-start="694" data-end="730">Max Sale = MAX(Sales[SalesAmount])</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="734" data-end="737">
+<h2 data-start="739" data-end="786">🔹 2. Calculated Column Formulae (Row Level)</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="788" data-end="1076" class="w-fit min-w-(--thread-content-width)"><thead data-start="788" data-end="809"><tr data-start="788" data-end="809"><th data-start="788" data-end="798" data-col-size="sm">Purpose</th><th data-start="798" data-end="809" data-col-size="md">Formula</th></tr></thead><tbody data-start="827" data-end="1076"><tr data-start="827" data-end="883"><td data-start="827" data-end="836" data-col-size="sm">Profit</td><td data-start="836" data-end="883" data-col-size="md"><code data-start="838" data-end="881">Profit = Sales[SalesAmount] - Sales[Cost]</code></td></tr><tr data-start="884" data-end="963"><td data-start="884" data-end="901" data-col-size="sm">Sales Category</td><td data-col-size="md" data-start="901" data-end="963"><code data-start="903" data-end="961">Category = IF(Sales[SalesAmount] &gt; 50000, "High", "Low")</code></td></tr><tr data-start="964" data-end="1016"><td data-start="964" data-end="981" data-col-size="sm">Year from Date</td><td data-start="981" data-end="1016" data-col-size="md"><code data-start="983" data-end="1014">Year = YEAR(Sales[OrderDate])</code></td></tr><tr data-start="1017" data-end="1076"><td data-start="1017" data-end="1030" data-col-size="sm">Month Name</td><td data-start="1030" data-end="1076" data-col-size="md"><code data-start="1032" data-end="1074">Month = FORMAT(Sales[OrderDate], "MMMM")</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="1078" data-end="1129">📌 <strong data-start="1081" data-end="1095">Used when:</strong> value must exist for <strong data-start="1117" data-end="1129">each row</strong></p>
+<hr data-start="1131" data-end="1134">
+<h2 data-start="1136" data-end="1176">🔹 3. Measures (Dynamic Calculations)</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1178" data-end="1448" class="w-fit min-w-(--thread-content-width)"><thead data-start="1178" data-end="1199"><tr data-start="1178" data-end="1199"><th data-start="1178" data-end="1188" data-col-size="sm">Purpose</th><th data-start="1188" data-end="1199" data-col-size="sm">Formula</th></tr></thead><tbody data-start="1217" data-end="1448"><tr data-start="1217" data-end="1274"><td data-start="1217" data-end="1231" data-col-size="sm">Total Sales</td><td data-start="1231" data-end="1274" data-col-size="sm"><code data-start="1233" data-end="1272">Total Sales = SUM(Sales[SalesAmount])</code></td></tr><tr data-start="1275" data-end="1329"><td data-start="1275" data-end="1290" data-col-size="sm">Total Profit</td><td data-col-size="sm" data-start="1290" data-end="1329"><code data-start="1292" data-end="1327">Total Profit = SUM(Sales[Profit])</code></td></tr><tr data-start="1330" data-end="1388"><td data-start="1330" data-end="1347" data-col-size="sm">Average Profit</td><td data-col-size="sm" data-start="1347" data-end="1388"><code data-start="1349" data-end="1386">Avg Profit = AVERAGE(Sales[Profit])</code></td></tr><tr data-start="1389" data-end="1448"><td data-start="1389" data-end="1403" data-col-size="sm">Sales Count</td><td data-start="1403" data-end="1448" data-col-size="sm"><code data-start="1405" data-end="1446">Sales Count = COUNT(Sales[SalesAmount])</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="1450" data-end="1504">📌 <strong data-start="1453" data-end="1467">Used when:</strong> value should <strong data-start="1481" data-end="1504">change with filters</strong></p>
+<hr data-start="1506" data-end="1509">
+<h2 data-start="1511" data-end="1540">🔹 4. Comparison Operators</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1542" data-end="1797" class="w-fit min-w-(--thread-content-width)"><thead data-start="1542" data-end="1574"><tr data-start="1542" data-end="1574"><th data-start="1542" data-end="1553" data-col-size="sm">Operator</th><th data-start="1553" data-end="1563" data-col-size="sm">Meaning</th><th data-start="1563" data-end="1574" data-col-size="sm">Example</th></tr></thead><tbody data-start="1602" data-end="1797"><tr data-start="1602" data-end="1627"><td data-start="1602" data-end="1608" data-col-size="sm"><code data-start="1604" data-end="1607">=</code></td><td data-start="1608" data-end="1616" data-col-size="sm">Equal</td><td data-start="1616" data-end="1627" data-col-size="sm"><code data-start="1618" data-end="1625">A = B</code></td></tr><tr data-start="1628" data-end="1659"><td data-start="1628" data-end="1635" data-col-size="sm"><code data-start="1630" data-end="1634">&lt;&gt;</code></td><td data-start="1635" data-end="1647" data-col-size="sm">Not Equal</td><td data-start="1647" data-end="1659" data-col-size="sm"><code data-start="1649" data-end="1657">A &lt;&gt; B</code></td></tr><tr data-start="1660" data-end="1692"><td data-start="1660" data-end="1666" data-col-size="sm"><code data-start="1662" data-end="1665">&gt;</code></td><td data-start="1666" data-end="1681" data-col-size="sm">Greater than</td><td data-col-size="sm" data-start="1681" data-end="1692"><code data-start="1683" data-end="1690">A &gt; B</code></td></tr><tr data-start="1693" data-end="1722"><td data-start="1693" data-end="1699" data-col-size="sm"><code data-start="1695" data-end="1698">&lt;</code></td><td data-start="1699" data-end="1711" data-col-size="sm">Less than</td><td data-start="1711" data-end="1722" data-col-size="sm"><code data-start="1713" data-end="1720">A &lt; B</code></td></tr><tr data-start="1723" data-end="1761"><td data-start="1723" data-end="1730" data-col-size="sm"><code data-start="1725" data-end="1729">&gt;=</code></td><td data-start="1730" data-end="1749" data-col-size="sm">Greater or equal</td><td data-col-size="sm" data-start="1749" data-end="1761"><code data-start="1751" data-end="1759">A &gt;= B</code></td></tr><tr data-start="1762" data-end="1797"><td data-start="1762" data-end="1769" data-col-size="sm"><code data-start="1764" data-end="1768">&lt;=</code></td><td data-start="1769" data-end="1785" data-col-size="sm">Less or equal</td><td data-start="1785" data-end="1797" data-col-size="sm"><code data-start="1787" data-end="1795">A &lt;= B</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1799" data-end="1802">
+<h2 data-start="1804" data-end="1830">🔹 5. Logical Functions</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1832" data-end="2112" class="w-fit min-w-(--thread-content-width)"><thead data-start="1832" data-end="1853"><tr data-start="1832" data-end="1853"><th data-start="1832" data-end="1842" data-col-size="sm">Purpose</th><th data-start="1842" data-end="1853" data-col-size="md">Formula</th></tr></thead><tbody data-start="1871" data-end="2112"><tr data-start="1871" data-end="1936"><td data-start="1871" data-end="1886" data-col-size="sm">IF condition</td><td data-start="1886" data-end="1936" data-col-size="md"><code data-start="1888" data-end="1934">IF(condition, value_if_true, value_if_false)</code></td></tr><tr data-start="1937" data-end="1991"><td data-start="1937" data-end="1953" data-col-size="sm">AND condition</td><td data-col-size="md" data-start="1953" data-end="1991"><code data-start="1955" data-end="1989">IF(A &gt; 10 &amp;&amp; B &lt; 5, "Yes", "No")</code></td></tr><tr data-start="1992" data-end="2045"><td data-start="1992" data-end="2007" data-col-size="sm">OR condition</td><td data-col-size="md" data-start="2007" data-end="2020">`IF(A &gt; 10</td></tr><tr data-start="2046" data-end="2112"><td data-start="2046" data-end="2068" data-col-size="sm">Multiple conditions</td><td data-start="2068" data-end="2112" data-col-size="md"><code data-start="2070" data-end="2110">SWITCH(TRUE(), A&gt;90,"A", A&gt;75,"B","C")</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2114" data-end="2117">
+<h2 data-start="2119" data-end="2142">🔹 6. Text Functions</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2144" data-end="2501" class="w-fit min-w-(--thread-content-width)"><thead data-start="2144" data-end="2175"><tr data-start="2144" data-end="2175"><th data-start="2144" data-end="2154" data-col-size="sm">Purpose</th><th data-start="2154" data-end="2164" data-col-size="sm">Formula</th><th data-start="2164" data-end="2175" data-col-size="sm">Example</th></tr></thead><tbody data-start="2202" data-end="2501"><tr data-start="2202" data-end="2251"><td data-start="2202" data-end="2214" data-col-size="sm">Join text</td><td data-col-size="sm" data-start="2214" data-end="2220"><code data-start="2216" data-end="2219">&amp;</code></td><td data-col-size="sm" data-start="2220" data-end="2251"><code data-start="2222" data-end="2249">Name = First &amp; " " &amp; Last</code></td></tr><tr data-start="2252" data-end="2293"><td data-start="2252" data-end="2264" data-col-size="sm">Left text</td><td data-col-size="sm" data-start="2264" data-end="2275"><code data-start="2266" data-end="2274">LEFT()</code></td><td data-col-size="sm" data-start="2275" data-end="2293"><code data-start="2277" data-end="2291">LEFT(Name,3)</code></td></tr><tr data-start="2294" data-end="2338"><td data-start="2294" data-end="2307" data-col-size="sm">Right text</td><td data-start="2307" data-end="2319" data-col-size="sm"><code data-start="2309" data-end="2318">RIGHT()</code></td><td data-start="2319" data-end="2338" data-col-size="sm"><code data-start="2321" data-end="2336">RIGHT(Code,2)</code></td></tr><tr data-start="2339" data-end="2382"><td data-start="2339" data-end="2353" data-col-size="sm">Middle text</td><td data-start="2353" data-end="2363" data-col-size="sm"><code data-start="2355" data-end="2362">MID()</code></td><td data-start="2363" data-end="2382" data-col-size="sm"><code data-start="2365" data-end="2380">MID(Text,2,5)</code></td></tr><tr data-start="2383" data-end="2417"><td data-start="2383" data-end="2392" data-col-size="sm">Length</td><td data-col-size="sm" data-start="2392" data-end="2402"><code data-start="2394" data-end="2401">LEN()</code></td><td data-col-size="sm" data-start="2402" data-end="2417"><code data-start="2404" data-end="2415">LEN(Name)</code></td></tr><tr data-start="2418" data-end="2459"><td data-start="2418" data-end="2430" data-col-size="sm">Uppercase</td><td data-start="2430" data-end="2442" data-col-size="sm"><code data-start="2432" data-end="2441">UPPER()</code></td><td data-start="2442" data-end="2459" data-col-size="sm"><code data-start="2444" data-end="2457">UPPER(Name)</code></td></tr><tr data-start="2460" data-end="2501"><td data-start="2460" data-end="2472" data-col-size="sm">Lowercase</td><td data-col-size="sm" data-start="2472" data-end="2484"><code data-start="2474" data-end="2483">LOWER()</code></td><td data-col-size="sm" data-start="2484" data-end="2501"><code data-start="2486" data-end="2499">LOWER(Name)</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2503" data-end="2506">
+<h2 data-start="2508" data-end="2538">🔹 7. Date &amp; Time Functions</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2540" data-end="2786" class="w-fit min-w-(--thread-content-width)"><thead data-start="2540" data-end="2561"><tr data-start="2540" data-end="2561"><th data-start="2540" data-end="2550" data-col-size="sm">Purpose</th><th data-start="2550" data-end="2561" data-col-size="sm">Formula</th></tr></thead><tbody data-start="2579" data-end="2786"><tr data-start="2579" data-end="2607"><td data-start="2579" data-end="2594" data-col-size="sm">Current Date</td><td data-start="2594" data-end="2607" data-col-size="sm"><code data-start="2596" data-end="2605">TODAY()</code></td></tr><tr data-start="2608" data-end="2638"><td data-start="2608" data-end="2627" data-col-size="sm">Current DateTime</td><td data-start="2627" data-end="2638" data-col-size="sm"><code data-start="2629" data-end="2636">NOW()</code></td></tr><tr data-start="2639" data-end="2670"><td data-start="2639" data-end="2654" data-col-size="sm">Extract Year</td><td data-start="2654" data-end="2670" data-col-size="sm"><code data-start="2656" data-end="2668">YEAR(Date)</code></td></tr><tr data-start="2671" data-end="2704"><td data-start="2671" data-end="2687" data-col-size="sm">Extract Month</td><td data-start="2687" data-end="2704" data-col-size="sm"><code data-start="2689" data-end="2702">MONTH(Date)</code></td></tr><tr data-start="2705" data-end="2734"><td data-start="2705" data-end="2719" data-col-size="sm">Extract Day</td><td data-start="2719" data-end="2734" data-col-size="sm"><code data-start="2721" data-end="2732">DAY(Date)</code></td></tr><tr data-start="2735" data-end="2786"><td data-start="2735" data-end="2753" data-col-size="sm">Date Difference</td><td data-start="2753" data-end="2786" data-col-size="sm"><code data-start="2755" data-end="2784">DATEDIFF(Date1, Date2, DAY)</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="2788" data-end="2800"><strong data-start="2788" data-end="2800">Example:</strong></p>
+<pre class="overflow-visible! px-0!" data-start="2801" data-end="2870"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">Days</span></span><span> </span><span><span class="hljs-variable">Taken</span></span><span> </span><span><span class="hljs-operator">=</span></span><span> DATEDIFF(Sales[OrderDate], Sales[ShipDate], DAY)
+</span></span></code></div></div></pre>
+<hr data-start="2872" data-end="2875">
+<h2 data-start="2877" data-end="2914">🔹 8. Math &amp; Statistical Functions</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2916" data-end="3080" class="w-fit min-w-(--thread-content-width)"><thead data-start="2916" data-end="2937"><tr data-start="2916" data-end="2937"><th data-start="2916" data-end="2926" data-col-size="sm">Purpose</th><th data-start="2926" data-end="2937" data-col-size="sm">Formula</th></tr></thead><tbody data-start="2955" data-end="3080"><tr data-start="2955" data-end="2990"><td data-start="2955" data-end="2963" data-col-size="sm">Round</td><td data-col-size="sm" data-start="2963" data-end="2990"><code data-start="2965" data-end="2988">ROUND(Number, Digits)</code></td></tr><tr data-start="2991" data-end="3019"><td data-start="2991" data-end="3002" data-col-size="sm">Absolute</td><td data-start="3002" data-end="3019" data-col-size="sm"><code data-start="3004" data-end="3017">ABS(Number)</code></td></tr><tr data-start="3020" data-end="3044"><td data-start="3020" data-end="3028" data-col-size="sm">Power</td><td data-col-size="sm" data-start="3028" data-end="3044"><code data-start="3030" data-end="3042">POWER(A,B)</code></td></tr><tr data-start="3045" data-end="3080"><td data-start="3045" data-end="3061" data-col-size="sm">Divide safely</td><td data-col-size="sm" data-start="3061" data-end="3080"><code data-start="3063" data-end="3078">DIVIDE(A,B,0)</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="3082" data-end="3126">📌 <strong data-start="3085" data-end="3126">DIVIDE() avoids divide-by-zero errors</strong></p>
+<hr data-start="3128" data-end="3131">
+<h2 data-start="3133" data-end="3185">🔹 9. Filter &amp; Context Functions (VERY IMPORTANT)</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3187" data-end="3379" class="w-fit min-w-(--thread-content-width)"><thead data-start="3187" data-end="3208"><tr data-start="3187" data-end="3208"><th data-start="3187" data-end="3197" data-col-size="sm">Purpose</th><th data-start="3197" data-end="3208" data-col-size="sm">Formula</th></tr></thead><tbody data-start="3226" data-end="3379"><tr data-start="3226" data-end="3267"><td data-start="3226" data-end="3250" data-col-size="sm">Change filter context</td><td data-col-size="sm" data-start="3250" data-end="3267"><code data-start="3252" data-end="3265">CALCULATE()</code></td></tr><tr data-start="3268" data-end="3301"><td data-start="3268" data-end="3287" data-col-size="sm">Apply row filter</td><td data-start="3287" data-end="3301" data-col-size="sm"><code data-start="3289" data-end="3299">FILTER()</code></td></tr><tr data-start="3302" data-end="3334"><td data-start="3302" data-end="3323" data-col-size="sm">Remove all filters</td><td data-start="3323" data-end="3334" data-col-size="sm"><code data-start="3325" data-end="3332">ALL()</code></td></tr><tr data-start="3335" data-end="3379"><td data-start="3335" data-end="3362" data-col-size="sm">Remove selective filters</td><td data-start="3362" data-end="3379" data-col-size="sm"><code data-start="3364" data-end="3377">ALLEXCEPT()</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<h3 data-start="3381" data-end="3403">🔸 Common Examples</h3>
+<p data-start="3405" data-end="3436"><strong data-start="3405" data-end="3436">Sales for High Value Orders</strong></p>
+<pre class="overflow-visible! px-0!" data-start="3437" data-end="3530"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">java</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-type">High</span></span><span> </span><span><span class="hljs-variable">Sales</span></span><span> </span><span><span class="hljs-operator">=</span></span><span>
+CALCULATE(
+    SUM(Sales[SalesAmount]),
+    Sales[SalesAmount] &gt; </span><span><span class="hljs-number">50000</span></span><span>
+)
+</span></span></code></div></div></pre>
+<p data-start="3532" data-end="3570"><strong data-start="3532" data-end="3570">Total Sales ignoring Region filter</strong></p>
+<pre class="overflow-visible! px-0!" data-start="3571" data-end="3661"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Total Sales </span><span><span class="hljs-keyword">All</span></span><span> </span><span><span class="hljs-operator">=</span></span><span>
+CALCULATE(
+    </span><span><span class="hljs-built_in">SUM</span></span><span>(Sales[SalesAmount]),
+    </span><span><span class="hljs-keyword">ALL</span></span><span>(Sales[Region])
+)
+</span></span></code></div></div></pre>
+<hr data-start="3663" data-end="3666">
+<h2 data-start="3668" data-end="3722">🔹 10. Calculated Column vs Measure (Exam Favorite)</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3724" data-end="3960" class="w-fit min-w-(--thread-content-width)"><thead data-start="3724" data-end="3765"><tr data-start="3724" data-end="3765"><th data-start="3724" data-end="3734" data-col-size="sm">Feature</th><th data-start="3734" data-end="3754" data-col-size="sm">Calculated Column</th><th data-start="3754" data-end="3765" data-col-size="sm">Measure</th></tr></thead><tbody data-start="3803" data-end="3960"><tr data-start="3803" data-end="3843"><td data-start="3803" data-end="3817" data-col-size="sm">Calculation</td><td data-start="3817" data-end="3830" data-col-size="sm">Row by row</td><td data-start="3830" data-end="3843" data-col-size="sm">On demand</td></tr><tr data-start="3844" data-end="3877"><td data-start="3844" data-end="3854" data-col-size="sm">Storage</td><td data-start="3854" data-end="3863" data-col-size="sm">Stored</td><td data-col-size="sm" data-start="3863" data-end="3877">Not stored</td></tr><tr data-start="3878" data-end="3920"><td data-start="3878" data-end="3888" data-col-size="sm">Context</td><td data-col-size="sm" data-start="3888" data-end="3902">Row Context</td><td data-col-size="sm" data-start="3902" data-end="3920">Filter Context</td></tr><tr data-start="3921" data-end="3960"><td data-start="3921" data-end="3927" data-col-size="sm">Use</td><td data-start="3927" data-end="3944" data-col-size="sm">Categorization</td><td data-col-size="sm" data-start="3944" data-end="3960">KPIs, Totals</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3962" data-end="3965">
+<h2 data-start="3967" data-end="4003">🔹 11. Relationship-Based Formula</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4005" data-end="4095" class="w-fit min-w-(--thread-content-width)"><thead data-start="4005" data-end="4026"><tr data-start="4005" data-end="4026"><th data-start="4005" data-end="4015" data-col-size="sm">Purpose</th><th data-start="4015" data-end="4026" data-col-size="sm">Formula</th></tr></thead><tbody data-start="4044" data-end="4095"><tr data-start="4044" data-end="4095"><td data-start="4044" data-end="4072" data-col-size="sm">Use inactive relationship</td><td data-col-size="sm" data-start="4072" data-end="4095"><code data-start="4074" data-end="4093">USERELATIONSHIP()</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="4097" data-end="4108"><strong data-start="4097" data-end="4108">Example</strong></p>
+<pre class="overflow-visible! px-0!" data-start="4109" data-end="4228"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Sales </span><span><span class="hljs-keyword">by</span></span><span> Ship </span><span><span class="hljs-type">Date</span></span><span> =
+CALCULATE(
+    SUM(Sales[SalesAmount]),
+    USERELATIONSHIP(Sales[ShipDate], </span><span><span class="hljs-type">Date</span></span><span>[</span><span><span class="hljs-type">Date</span></span><span>])
+)
+</span></span></code></div></div></pre>
+<hr data-start="4230" data-end="4233">
+<h2 data-start="4235" data-end="4266">🎯 <strong data-start="4241" data-end="4266">LAST-MINUTE EXAM TIPS</strong></h2>
+<ul data-start="4267" data-end="4467">
+<li data-start="4267" data-end="4324">
+<p data-start="4269" data-end="4324"><strong data-start="4269" data-end="4324">Use Measures &gt; Calculated Columns whenever possible</strong></p>
+</li>
+<li data-start="4325" data-end="4377">
+<p data-start="4327" data-end="4377"><strong data-start="4327" data-end="4377">CALCULATE() is the most important DAX function</strong></p>
+</li>
+<li data-start="4378" data-end="4433">
+<p data-start="4380" data-end="4433">Avoid too many calculated columns (performance issue)</p>
+</li>
+<li data-start="4434" data-end="4467">
+<p data-start="4436" data-end="4467">Always check <strong data-start="4449" data-end="4467">filter context</strong></p>
+</li>
+</ul>
+<hr data-start="4469" data-end="4472">
+<p data-start="4474" data-end="4507">If you want next, I can give you:</p>
+<ul data-start="4508" data-end="4657">
+<li data-start="4508" data-end="4540">
+<p data-start="4510" data-end="4540">✅ <strong data-start="4512" data-end="4540">One-page PDF cheat sheet</strong></p>
+</li>
+<li data-start="4541" data-end="4577">
+<p data-start="4543" data-end="4577">✅ <strong data-start="4545" data-end="4577">Only exam-important formulas</strong></p>
+</li>
+<li data-start="4578" data-end="4617">
+<p data-start="4580" data-end="4617">✅ <strong data-start="4582" data-end="4617">Practice questions with answers</strong></p>
+</li>
+<li data-start="4618" data-end="4657">
+<p data-start="4620" data-end="4657">✅ <strong data-start="4622" data-end="4657">Interview-focused DAX questions</strong></p>
+</li>
+</ul>
+<p data-start="4659" data-end="4695" data-is-last-node="" data-is-only-node="">👉 <strong data-start="4662" data-end="4695" data-is-last-node="">Tell me what you want next 👌</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
