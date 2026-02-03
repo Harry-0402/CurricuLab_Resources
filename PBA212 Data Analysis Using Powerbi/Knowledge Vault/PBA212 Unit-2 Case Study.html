@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBA212 Unit-2 Case Study - Astra Precision Components Ltd.</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content h1 {
+      font-size: 2em;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .message-content h2 {
+      font-size: 1.5em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    .message-content h3 {
+      font-size: 1.25em;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .message-content ul, .message-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    .message-content li {
+      margin: 5px 0;
+    }
+    .message-content p {
+      margin: 10px 0;
+    }
+    .message-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    body.dark-mode .message-content strong {
+      color: #f9fafb;
+    }
+    .message-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    body.dark-mode .message-content hr {
+      border-top-color: #404040;
+    }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PBA212 Unit-2 Case Study</h1>
+    <div class="metadata">Fixing Data at the Source: Implementing Power Query at Astra Precision Components Ltd.</div>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">Case Study</div>
+      <div class="message-content">
+        <h1>Fixing Data at the Source: Implementing Power Query–Driven Data Transformation at Astra Precision Components Ltd.</h1>
+
+<hr>
+
+<h2>1. Organizational Background</h2>
+
+<p>Astra Precision Components Ltd. (APCL) is a mid-sized Indian manufacturing company specializing in precision-engineered automotive and industrial components. Founded in 2005, the company supplies critical parts such as transmission housings, brake assemblies, and engine sub-components to leading OEMs and Tier-1 suppliers in India and Southeast Asia. By FY2024, APCL reported annual revenues of approximately INR 1,850 crore and employed close to 2,700 people across manufacturing plants, warehouses, and corporate offices.</p>
+
+<p>APCL operates three manufacturing plants located in Pune, Chennai, and Indore, supported by five regional warehouses and a centralized procurement and planning office. The company follows a hybrid make-to-stock and make-to-order model, depending on customer contracts and demand variability. Nearly 70% of revenues come from long-term OEM contracts, while the remaining 30% is driven by aftermarket and export orders.</p>
+
+<p>The manufacturing operations are data-intensive. Daily production logs, machine utilization data, quality inspection records, supplier delivery reports, and inventory movement data are captured across multiple systems. The company uses an ERP system for core transactions, a separate manufacturing execution system (MES) for shop-floor data, Excel-based files for supplier coordination, and CSV extracts from third-party logistics providers.</p>
+
+<p>Over time, this fragmented data environment created challenges in reporting accuracy and timeliness. While senior management invested in Power BI for reporting, they soon realized that poor data quality and inconsistent data structures limited the value of dashboards. This led APCL to focus attention on data preparation and transformation using Power Query as a foundational capability.</p>
+
+<hr>
+
+<h2>2. Business Environment and Context</h2>
+
+<p>The Indian manufacturing and supply chain sector has been under sustained pressure due to volatile raw material prices, increasing customer expectations for delivery reliability, and tighter quality standards imposed by OEMs. Margins have become increasingly sensitive to production inefficiencies, rework, and inventory mismanagement.</p>
+
+<p>Customers now demand real-time visibility into order status, defect rates, and delivery performance. Penalties for late deliveries and quality failures are common in OEM contracts. As a result, APCL's leadership began emphasizing data-driven operational control across production, procurement, and logistics.</p>
+
+<p>At the same time, digitization initiatives accelerated. Sensors on machines generated granular utilization data, while suppliers submitted shipment and quality reports in different formats. However, these data sources lacked standardization. Dates, units of measurement, product codes, and supplier identifiers often differed across systems.</p>
+
+<p>Management realized that analytics investments would not deliver value unless underlying data was consistently structured, cleansed, and integrated. This environment made data transformation a strategic priority rather than a technical afterthought.</p>
+
+<hr>
+
+<h2>3. Emerging Business Problem</h2>
+
+<p>Despite having access to large volumes of operational data, APCL struggled to produce reliable and timely insights. Production efficiency reports differed across departments, inventory numbers did not reconcile between warehouses and finance, and supplier performance metrics were frequently disputed.</p>
+
+<p>The root cause was traced to inconsistent data sources. Production data from MES used machine-level timestamps, while ERP data followed financial posting dates. Supplier delivery data arrived in Excel files with varying column names and formats. Manual data cleaning was performed every week by analysts using spreadsheets, leading to delays and errors.</p>
+
+<p>As APCL expanded its use of Power BI dashboards for plant managers and supply chain leaders, the limitations became more visible. Dashboards often broke when source file structures changed. Refresh failures were common, reducing trust in analytics outputs.</p>
+
+<p>Management concluded that without a robust, repeatable data transformation process, BI initiatives would fail to scale. The focus shifted toward using Power Query to standardize, cleanse, and automate data preparation across the organization.</p>
+
+<hr>
+
+<h2>4. Detailed Data and Metrics</h2>
+
+<p>APCL analyzed twelve months of operational data across its three plants. Monthly production volumes ranged from 420,000 to 510,000 units. Overall equipment effectiveness (OEE) averaged 68%, with significant variation across plants. Defect rates ranged between 2.1% and 4.3%, depending on product line and shift.</p>
+
+<p>Inventory data revealed inconsistencies. Raw material inventory days ranged from 22 to 38 days across locations, while finished goods inventory varied from 15 to 29 days. Data extracted from ERP and warehouse systems often showed mismatches of up to 7–10%.</p>
+
+<p>Supplier delivery performance was tracked using Excel files submitted weekly. However, date formats, product codes, and quantity units differed by supplier. Analysts spent nearly 40% of their time cleaning and aligning data before analysis.</p>
+
+<p>Key KPIs included production yield, machine utilization, supplier on-time delivery, inventory turnover, and order fulfillment lead time. While these KPIs were well-defined conceptually, inconsistent data structures prevented automated and reliable reporting.</p>
+
+<hr>
+
+<h2>5. Internal Challenges</h2>
+
+<p>APCL faced several internal challenges in implementing structured data transformation. Business users were unaware of how data issues impacted analytics reliability. Analysts relied heavily on manual Excel-based cleaning processes and lacked exposure to Power Query capabilities.</p>
+
+<p>IT teams were concerned about governance and control as more data preparation moved closer to business users. Source systems frequently changed file layouts without notification, breaking downstream reports.</p>
+
+<p>Additionally, there was resistance to investing time in data preparation, as management traditionally focused more on dashboard visuals rather than data readiness. Skill gaps in Power Query, data types, and transformation logic further slowed adoption.</p>
+
+<hr>
+
+<h2>6. Analytical Context</h2>
+
+<p>APCL's analytics team proposed using Power Query as the standard data transformation layer for all Power BI reports. The approach involved connecting to multiple data sources, applying repeatable transformation steps, standardizing data types, and creating reusable queries.</p>
+
+<p>Discussions focused on shaping data using filtering, column removal, renaming, merging datasets from ERP and MES, unpivoting machine logs, and handling missing or inconsistent values. Analysts evaluated how automated refresh and query dependencies could reduce manual effort.</p>
+
+<p>Management emphasized the need for transparency and documentation of transformation logic so that business users could trust the outputs. The objective was not advanced analytics, but reliable, clean, and analysis-ready data.</p>
+
+<hr>
+
+<h2>7. Decision Point</h2>
+
+<p>Senior management must decide whether to mandate Power Query-based data transformation as a core component of APCL's BI architecture. This includes defining standards, investing in training, and reallocating analyst time toward structured data preparation.</p>
+
+<p>The decision involves trade-offs between speed of implementation, governance, and user flexibility. A poorly governed approach could create inconsistencies, while excessive central control could slow analytics adoption.</p>
+
+<hr>
+
+<h2>8. Analytical and Decision Questions</h2>
+
+<ol>
+<li>What data quality issues at APCL indicate the need for structured data transformation?</li>
+<li>How does Power Query improve reliability compared to manual Excel-based cleaning?</li>
+<li>Which data transformation steps are most critical for manufacturing and supply chain data?</li>
+<li>How should APCL prioritize data sources for Power Query implementation?</li>
+<li>What governance controls are needed when enabling self-service data transformation?</li>
+<li>How can automated refresh improve operational decision-making?</li>
+<li>What risks arise if data transformation is ignored in BI initiatives?</li>
+<li>How should success of Power Query adoption be measured?</li>
+</ol>
+
+<hr>
+
+<h2>9. Model Answers (Selected)</h2>
+
+<p><strong>Question 1:</strong> Inconsistent formats, mismatched inventories, and disputed KPIs indicate poor data quality. These issues prevent automation and undermine trust in analytics outputs.</p>
+
+<p><strong>Question 2:</strong> Power Query enables repeatable, documented transformation steps that reduce manual errors and ensure consistent outputs across refresh cycles.</p>
+
+<p><strong>Question 3:</strong> Standardizing data types, merging ERP and MES data, handling missing values, and unpivoting machine logs are critical for manufacturing analytics.</p>
+
+<p><strong>Question 4:</strong> High-impact sources such as production, inventory, and supplier data should be prioritized due to their direct effect on operational performance.</p>
+
+<hr>
+
+<h2>10. Learning Focus</h2>
+
+<p>This case develops practical understanding of data transformation in a manufacturing context. It highlights the strategic role of Power Query in enabling reliable analytics and effective decision-making.</p>
+
+<p><strong>Primary Concepts:</strong> Data Transformation, Power Query, Data Quality, Manufacturing Analytics, BI Readiness</p>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeIcon = document.querySelector('.theme-icon');
+      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Load saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-icon').textContent = '☀️';
+    }
+  </script>
+</body>
+</html>

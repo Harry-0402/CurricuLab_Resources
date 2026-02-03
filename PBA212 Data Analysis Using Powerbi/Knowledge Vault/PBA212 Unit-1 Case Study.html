@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBA212 Unit-1 Case Study - Orion Foods Ltd.</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content h1 {
+      font-size: 2em;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .message-content h2 {
+      font-size: 1.5em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    .message-content h3 {
+      font-size: 1.25em;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .message-content ul, .message-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    .message-content li {
+      margin: 5px 0;
+    }
+    .message-content p {
+      margin: 10px 0;
+    }
+    .message-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    body.dark-mode .message-content strong {
+      color: #f9fafb;
+    }
+    .message-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    body.dark-mode .message-content hr {
+      border-top-color: #404040;
+    }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PBA212 Unit-1 Case Study</h1>
+    <div class="metadata">Implementing Enterprise Business Intelligence at Orion Foods Ltd.</div>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">Case Study</div>
+      <div class="message-content">
+        <h1>Implementing Enterprise Business Intelligence at Orion Foods Ltd.: Strategic Transition to Power BI</h1>
+
+<hr>
+
+<h2>1. Organizational Background</h2>
+
+<p>Orion Foods Ltd. is a mid-to-large sized Indian fast-moving consumer goods (FMCG) company operating in the packaged foods and ready-to-eat meals segment. Established in 2008, the company has grown steadily over the past fifteen years and now operates across six major regions in India: North, South, West, East, Central, and Metro Cities. Orion Foods employs approximately 3,200 people and reported consolidated revenues of INR 2,450 crore in FY2024, growing at a compound annual growth rate (CAGR) of around 11% over the last five years.</p>
+
+<p>The company's product portfolio includes packaged snacks, frozen foods, instant meals, sauces, and health-oriented food products. Orion distributes its products through a multi-channel model that includes modern trade retailers, traditional kirana stores, institutional buyers, and a rapidly expanding direct-to-consumer (D2C) e-commerce channel. Nearly 68% of revenues come from offline retail, while the remaining 32% is contributed by online platforms and institutional sales.</p>
+
+<p>From an operational perspective, Orion Foods runs four manufacturing plants and nine regional distribution centers. Each region operates semi-independently with its own sales targets, distributor networks, and promotional budgets. Over time, this decentralized operating model enabled faster regional expansion but created challenges in performance visibility and coordination.</p>
+
+<p>Until recently, Orion relied heavily on spreadsheet-based reporting and static MIS dashboards generated using traditional business intelligence tools hosted on on-premise servers. Reports were prepared by the central IT and MIS team and circulated weekly to senior management. While this system supported basic reporting needs, it lacked flexibility, real-time insights, and scalability. Senior leaders increasingly felt that decision-making was reactive rather than proactive.</p>
+
+<p>The competitive landscape intensified post-2020 with the entry of digital-native FMCG brands and aggressive pricing strategies by large multinational competitors. As margins tightened and customer preferences shifted rapidly, Orion's leadership realized that data-driven decision-making would be critical to sustain growth and profitability. This realization triggered a strategic review of the company's business intelligence capabilities.</p>
+
+<hr>
+
+<h2>2. Business Environment and Context</h2>
+
+<p>The Indian FMCG industry has undergone significant transformation over the last decade. Consumers are increasingly value-conscious, digitally informed, and sensitive to product availability and delivery speed. Demand patterns have become more volatile due to seasonal effects, regional preferences, promotional intensity, and macroeconomic factors such as inflation and fuel costs.</p>
+
+<p>Retailers and distributors now expect faster replenishment cycles, accurate demand forecasts, and data-backed trade promotions. Online channels generate large volumes of transactional and behavioral data, but also demand near real-time analytics to manage pricing, discounts, and inventory levels. Orion Foods found itself operating in an environment where traditional reporting cycles of weekly or monthly summaries were no longer sufficient.</p>
+
+<p>From a technology standpoint, cloud-based analytics and self-service business intelligence tools have become mainstream. Organizations are moving away from rigid, centrally controlled BI systems toward platforms that empower business users to explore data independently while maintaining governance and security. Competitors of Orion had already begun adopting modern BI platforms to monitor sales performance, distributor productivity, and campaign effectiveness in near real time.</p>
+
+<p>Regulatory requirements around data security, auditability, and compliance also increased. Orion needed to ensure that any analytics platform could integrate with existing ERP systems while supporting role-based access and data governance.</p>
+
+<p>Internally, leadership teams began demanding more interactive dashboards, drill-down capabilities, and mobile access to performance metrics. Regional sales heads wanted the ability to analyze their own data without waiting for the central MIS team. This shift in expectations placed significant pressure on Orion's existing BI setup.</p>
+
+<hr>
+
+<h2>3. Emerging Business Problem</h2>
+
+<p>The core business problem at Orion Foods was the growing gap between the organization's data availability and its ability to convert that data into timely, actionable insights. Although large volumes of sales, distribution, inventory, and finance data were being captured daily through ERP and CRM systems, decision-makers lacked a unified and real-time view of business performance.</p>
+
+<p>Reports were fragmented across departments. Sales performance reports did not align with finance numbers due to timing differences and manual adjustments. Regional managers often questioned data accuracy, leading to parallel versions of reports maintained in spreadsheets. The IT team spent a significant portion of its time responding to ad-hoc report requests rather than focusing on strategic initiatives.</p>
+
+<p>The leadership team identified several symptoms of the problem: delayed identification of underperforming regions, inconsistent tracking of KPIs across departments, limited visibility into promotional effectiveness, and an inability to quickly simulate business scenarios. These issues directly impacted revenue growth, cost control, and managerial accountability.</p>
+
+<p>As the company planned to expand its D2C channel and introduce new product lines, the lack of a scalable and modern BI platform became a strategic risk. Management began evaluating whether a shift to a self-service, cloud-enabled BI solution such as Power BI could address these challenges and support future growth.</p>
+
+<hr>
+
+<h2>4. Detailed Data and Metrics</h2>
+
+<p>To illustrate the scope of the problem, Orion's MIS team compiled historical performance data for FY2023 and FY2024. Monthly sales revenues ranged from INR 180 crore to INR 245 crore, with significant regional variation. The South and West regions consistently outperformed others, contributing nearly 48% of total revenues. However, the East and Central regions showed high volatility and frequent deviations from targets.</p>
+
+<p>Gross margins averaged 28%, but promotional months saw margins drop to as low as 22%. Inventory holding days varied widely across regions, ranging from 18 days in Metro Cities to over 35 days in the East region. Stock-out incidents were common during festive seasons, while excess inventory accumulated in low-demand regions.</p>
+
+<p>Key KPIs tracked included monthly sales growth, region-wise contribution, distributor fill rates, inventory turnover, promotional ROI, and operating margin. However, these KPIs were reported in separate files and formats, making cross-functional analysis difficult.</p>
+
+<p>Data refresh cycles were slow. Sales data was updated daily, but consolidated reports were generated weekly. Any change in business logic required manual rework, increasing the risk of errors. Management lacked confidence in the single version of truth.</p>
+
+<hr>
+
+<h2>5. Internal Challenges</h2>
+
+<p>Orion faced several internal constraints while attempting to modernize its BI capabilities. Business users had limited exposure to advanced analytics tools and were accustomed to static reports. The IT team was cautious about opening data access due to governance and security concerns.</p>
+
+<p>Legacy systems posed integration challenges. Data resided in multiple databases with inconsistent definitions. There were skill gaps in modern BI tools, cloud platforms, and data modeling. Resistance to change was evident among middle managers who feared loss of control over reporting.</p>
+
+<p>Budget constraints also influenced decision-making. Management needed to justify the ROI of investing in a new BI platform, including licensing, training, and change management costs.</p>
+
+<hr>
+
+<h2>6. Analytical Context</h2>
+
+<p>Orion's leadership identified Power BI as a potential platform to address its BI challenges. The proposed approach involved transitioning from traditional, centrally managed BI to a self-service BI model supported by Power BI Desktop, Power BI Service, and Power BI Mobile.</p>
+
+<p>Management discussions focused on defining a standard BI architecture, integrating data sources, establishing governance frameworks, and identifying critical KPIs. The analytics team considered how Power BI's data connectivity, visualization capabilities, and cloud-based service could enable faster insights and better decision-making.</p>
+
+<p>At this stage, the focus was on conceptual understanding rather than advanced analytics. Key considerations included BI workflow design, roles and responsibilities, report deployment models, and balancing flexibility with control.</p>
+
+<hr>
+
+<h2>7. Decision Point</h2>
+
+<p>The executive committee must decide whether to replace the existing BI setup with Power BI as the enterprise-wide analytics platform. The decision involves selecting an appropriate BI architecture (cloud-based vs hybrid), defining the scope of self-service access, and investing in capability building.</p>
+
+<p>This decision has long-term implications for data governance, decision speed, and organizational culture. A poorly designed implementation could lead to data chaos, while a well-executed transition could become a competitive advantage.</p>
+
+<hr>
+
+<h2>8. Analytical and Decision Questions</h2>
+
+<ol>
+<li>What limitations of Orion's existing BI system indicate the need for a modern BI platform?</li>
+<li>How does self-service BI differ from traditional BI in the context of Orion Foods?</li>
+<li>What factors should management consider when choosing between cloud-based and on-premise BI architectures?</li>
+<li>Which business KPIs should be prioritized in the first phase of Power BI implementation?</li>
+<li>How can Orion ensure data governance while enabling self-service analytics?</li>
+<li>What risks are associated with rapid BI transformation?</li>
+<li>How should success of the Power BI initiative be measured?</li>
+<li>What role should the central analytics team play post-implementation?</li>
+</ol>
+
+<hr>
+
+<h2>9. Model Answers (Selected)</h2>
+
+<p><strong>Question 1:</strong> Orion's existing BI system is slow, inflexible, and highly dependent on manual processes. Delayed reporting, multiple versions of data, and lack of interactivity highlight the system's inability to support dynamic decision-making.</p>
+
+<p><strong>Question 2:</strong> Self-service BI empowers business users to access and analyze data independently, reducing dependency on IT. For Orion, this means faster regional insights and improved managerial accountability.</p>
+
+<p><strong>Question 3:</strong> Cloud-based BI offers scalability, lower infrastructure costs, and mobile access, while on-premise solutions provide greater control. Orion must balance agility with data security requirements.</p>
+
+<p><strong>Question 4:</strong> Initial KPIs should focus on sales performance, regional contribution, inventory efficiency, and margin analysis to address immediate business pain points.</p>
+
+<hr>
+
+<h2>10. Learning Focus</h2>
+
+<p>This case develops understanding of business intelligence concepts, BI architecture, and the strategic role of analytics platforms. It emphasizes managerial decision-making in BI adoption and prepares students to evaluate enterprise analytics initiatives.</p>
+
+<p><strong>Primary Concepts:</strong> Business Intelligence, Traditional vs Self-Service BI, Power BI Architecture, BI Workflow, Managerial Decision-Making</p>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeIcon = document.querySelector('.theme-icon');
+      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Load saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-icon').textContent = '☀️';
+    }
+  </script>
+</body>
+</html>

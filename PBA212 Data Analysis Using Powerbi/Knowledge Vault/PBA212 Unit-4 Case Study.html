@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBA212 Unit-4 Case Study - ShopEase Online Pvt. Ltd.</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content h1 {
+      font-size: 2em;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .message-content h2 {
+      font-size: 1.5em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    .message-content h3 {
+      font-size: 1.25em;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .message-content ul, .message-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    .message-content li {
+      margin: 5px 0;
+    }
+    .message-content p {
+      margin: 10px 0;
+    }
+    .message-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    body.dark-mode .message-content strong {
+      color: #f9fafb;
+    }
+    .message-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    body.dark-mode .message-content hr {
+      border-top-color: #404040;
+    }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PBA212 Unit-4 Case Study</h1>
+    <div class="metadata">Standardizing Business Metrics Through DAX at ShopEase Online Pvt. Ltd.</div>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">Case Study</div>
+      <div class="message-content">
+        <h1>Standardizing Business Metrics Through DAX at ShopEase Online Pvt. Ltd.: Fixing KPI Confusion in E‑Commerce Analytics</h1>
+
+<hr>
+
+<h2>1. Organizational Background</h2>
+
+<p>ShopEase Online Pvt. Ltd. is a fast-growing Indian e‑commerce marketplace specializing in consumer electronics, fashion, home appliances, and daily essentials. Founded in 2014, the company operates on a marketplace model, connecting over 85,000 active sellers with nearly 22 million registered customers across India. By FY2024, ShopEase reported gross merchandise value (GMV) of INR 18,600 crore and net revenues of INR 2,950 crore, growing at an annual rate of approximately 18%.</p>
+
+<p>The company employs around 6,800 people, including teams in technology, data science, marketing, supply chain, seller management, and finance. ShopEase's operations are highly data-driven, with millions of daily transactions generated through its website and mobile app. Key revenue streams include seller commissions, advertising fees, logistics services, and subscription-based seller programs.</p>
+
+<p>To support rapid growth, ShopEase invested heavily in analytics infrastructure. Power BI was adopted as the primary enterprise reporting and dashboarding tool, used by business teams ranging from category managers and digital marketers to supply chain heads and senior leadership. Over time, hundreds of dashboards were created to track sales performance, customer behavior, marketing ROI, and operational efficiency.</p>
+
+<p>However, as analytics usage expanded, inconsistencies began to appear in reported metrics. The same KPI—such as conversion rate, average order value, or contribution margin—showed different values across dashboards. This raised serious concerns about how calculations were being defined and implemented within Power BI.</p>
+
+<hr>
+
+<h2>2. Business Environment and Context</h2>
+
+<p>The Indian e‑commerce sector is intensely competitive, with thin margins and high customer acquisition costs. Companies compete aggressively on pricing, delivery speed, assortment breadth, and user experience. Small changes in conversion rates, repeat purchase behavior, or fulfillment costs can have a large impact on profitability.</p>
+
+<p>E‑commerce analytics relies heavily on derived metrics rather than raw transaction counts. KPIs such as conversion rate, cart abandonment, customer lifetime value, cohort retention, seller contribution margin, and return rates are central to decision-making. These metrics depend on correct aggregation logic, filter context, and time-based calculations.</p>
+
+<p>ShopEase operated in an environment where daily performance reviews and campaign decisions were made based on dashboards. Senior leaders expected a single, trusted version of KPIs across all reports. However, pressure to deliver dashboards quickly led analysts to create their own calculations without standardization.</p>
+
+<p>Management realized that while data modeling issues had been addressed earlier, the next critical challenge lay in how business logic was implemented using DAX—specifically, the misuse of calculated columns and inconsistent measures.</p>
+
+<hr>
+
+<h2>3. Emerging Business Problem</h2>
+
+<p>The core problem at ShopEase was widespread inconsistency in business KPIs caused by improper use of DAX. Analysts frequently used calculated columns where measures were more appropriate, hard-coded business rules inside visuals, and recreated the same KPI logic in multiple datasets.</p>
+
+<p>For example, conversion rate was calculated differently across marketing dashboards. Some analysts used session-level logic, while others used user-level logic. Average order value varied depending on whether cancelled or returned orders were excluded. Contribution margin calculations differed between finance and category teams.</p>
+
+<p>These inconsistencies led to confusion during performance reviews. Marketing teams questioned finance numbers, category heads challenged growth metrics, and leadership meetings often focused on reconciling numbers rather than making decisions. Trust in analytics outputs declined.</p>
+
+<p>The root cause was not lack of data or tools, but lack of DAX governance and conceptual clarity around measures versus calculated columns, filter context, and reusable KPI definitions.</p>
+
+<hr>
+
+<h2>4. Detailed Data and Metrics</h2>
+
+<p>ShopEase's primary fact tables included order transactions, website sessions, customer interactions, returns, and marketing spends. The order fact table alone contained over 420 million rows spanning five years of transaction history.</p>
+
+<p>Key metrics tracked daily and monthly included GMV, net revenue, number of orders, active customers, conversion rate, average order value (AOV), repeat purchase rate, return rate, fulfillment cost per order, and contribution margin.</p>
+
+<p>Time intelligence was critical. Management frequently compared day-over-day, month-to-date, and year-over-year performance. Incorrect handling of time filters caused misleading growth rates in some dashboards.</p>
+
+<p>Analysts used a mix of calculated columns (for flags such as returned orders or first-time customers) and measures (for aggregations). However, many calculations were duplicated across datasets with slight variations, leading to metric drift.</p>
+
+<hr>
+
+<h2>5. Internal Challenges</h2>
+
+<p>ShopEase faced several internal challenges in addressing DAX-related issues. Business analysts were skilled in visualization but had uneven understanding of DAX concepts such as evaluation context and measure reusability.</p>
+
+<p>There was no centralized KPI dictionary or certified dataset policy. Teams optimized for speed rather than consistency. In some cases, calculated columns were used to simplify logic without understanding their performance and flexibility implications.</p>
+
+<p>Senior management demanded faster insights but also consistent numbers, creating tension between agility and control. Training gaps and lack of DAX standards slowed progress toward resolution.</p>
+
+<hr>
+
+<h2>6. Analytical Context</h2>
+
+<p>The analytics leadership proposed a structured DAX governance framework. This involved clearly defining which business logic should be implemented as calculated columns and which as measures, creating centralized KPI measures, and discouraging ad-hoc calculations inside visuals.</p>
+
+<p>Discussions focused on using measures for aggregations, ratios, and time-based KPIs, while reserving calculated columns for row-level attributes. The team also evaluated how filter context and slicers affected KPI outcomes.</p>
+
+<p>The objective was not to write complex DAX formulas, but to ensure that business logic was implemented consistently, transparently, and efficiently across all dashboards.</p>
+
+<hr>
+
+<h2>7. Decision Point</h2>
+
+<p>The executive analytics council must decide whether to enforce standardized DAX practices across ShopEase. This includes creating certified datasets with approved measures, mandating DAX reviews for critical KPIs, and investing in analyst training.</p>
+
+<p>The decision involves trade-offs. Strict controls may slow dashboard creation, while loose controls risk continued KPI inconsistency and poor decision-making. The outcome will directly affect strategic planning and performance management.</p>
+
+<hr>
+
+<h2>8. Analytical and Decision Questions</h2>
+
+<ol>
+<li>What DAX-related practices led to inconsistent KPIs at ShopEase?</li>
+<li>Why are measures preferred over calculated columns for most business KPIs?</li>
+<li>How does filter context influence KPI interpretation in e‑commerce dashboards?</li>
+<li>Which KPIs should be centralized and standardized first?</li>
+<li>What risks arise from duplicating DAX logic across multiple datasets?</li>
+<li>How can time-intelligence measures be governed effectively?</li>
+<li>What training priorities should ShopEase set for analysts?</li>
+<li>How should success of DAX standardization be measured?</li>
+</ol>
+
+<hr>
+
+<h2>9. Model Answers (Selected)</h2>
+
+<p><strong>Question 1:</strong> Inconsistent use of calculated columns, duplicated measures, and hard-coded logic caused KPI drift and conflicting results across dashboards.</p>
+
+<p><strong>Question 2:</strong> Measures respond dynamically to filters and slicers, making them more flexible and accurate for aggregations and ratios than calculated columns.</p>
+
+<p><strong>Question 3:</strong> Filter context determines which data is included in calculations. Misunderstanding it can lead to misleading conversion rates or growth metrics.</p>
+
+<p><strong>Question 4:</strong> Core metrics such as GMV, conversion rate, AOV, and contribution margin should be standardized first due to their strategic importance.</p>
+
+<hr>
+
+<h2>10. Learning Focus</h2>
+
+<p>This case builds conceptual clarity around DAX usage in Power BI. It emphasizes the business impact of correct measure design and prepares students to design reliable, scalable KPIs in analytics-driven organizations.</p>
+
+<p><strong>Primary Concepts:</strong> DAX Measures, Calculated Columns, Filter Context, KPI Standardization, E‑Commerce Analytics</p>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeIcon = document.querySelector('.theme-icon');
+      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Load saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-icon').textContent = '☀️';
+    }
+  </script>
+</body>
+</html>

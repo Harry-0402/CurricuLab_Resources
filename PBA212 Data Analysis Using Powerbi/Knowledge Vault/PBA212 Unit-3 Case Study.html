@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBA212 Unit-3 Case Study - Vertex Bank Ltd.</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content h1 {
+      font-size: 2em;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .message-content h2 {
+      font-size: 1.5em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    .message-content h3 {
+      font-size: 1.25em;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .message-content ul, .message-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    .message-content li {
+      margin: 5px 0;
+    }
+    .message-content p {
+      margin: 10px 0;
+    }
+    .message-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    body.dark-mode .message-content strong {
+      color: #f9fafb;
+    }
+    .message-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    body.dark-mode .message-content hr {
+      border-top-color: #404040;
+    }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PBA212 Unit-3 Case Study</h1>
+    <div class="metadata">Designing a Robust Analytics Data Model at Vertex Bank</div>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">Case Study</div>
+      <div class="message-content">
+        <h1>Designing a Robust Analytics Data Model at Vertex Bank: Fixing Relationship Failures in Enterprise Power BI</h1>
+
+<hr>
+
+<h2>1. Organizational Background</h2>
+
+<p>Vertex Bank Ltd. is a mid-sized private sector bank operating in India with a strong presence in retail banking, small and medium enterprise (SME) lending, and digital financial services. Established in 2010, the bank has grown steadily by focusing on technology-enabled customer acquisition and data-driven risk management. As of FY2024, Vertex Bank operated 420 branches across 18 states, served nearly 6.8 million retail customers, and employed approximately 9,500 staff members.</p>
+
+<p>The bank reported total assets under management (AUM) of INR 1.35 lakh crore and net interest income (NII) of INR 6,400 crore in FY2024. Retail loans accounted for 58% of the loan book, followed by SME loans at 27% and corporate lending at 15%. On the liability side, low-cost CASA deposits contributed 44% of total deposits, reflecting the bank's focus on digital savings and current accounts.</p>
+
+<p>Vertex Bank invested heavily in analytics to support credit decisions, branch performance monitoring, customer profitability analysis, and regulatory reporting. Over time, multiple data warehouses, marts, and reporting layers were created to serve different business functions. With the adoption of Power BI as the enterprise reporting platform, the bank aimed to consolidate dashboards and provide a unified analytical view to business leaders.</p>
+
+<p>However, as Power BI usage expanded, serious issues emerged around data modeling, relationships, and metric consistency. Dashboards built by different teams produced conflicting numbers, raising concerns at senior management and board levels.</p>
+
+<hr>
+
+<h2>2. Business Environment and Context</h2>
+
+<p>The Indian banking sector operates in a highly regulated and competitive environment. Banks are required to report accurate, timely, and auditable metrics related to credit exposure, asset quality, customer activity, and profitability. Regulatory scrutiny from the Reserve Bank of India (RBI) and frequent audits leave little room for data inconsistency.</p>
+
+<p>At the same time, competition from fintech firms and digital-first banks has raised customer expectations for personalized offerings, instant credit decisions, and seamless digital experiences. To respond, Vertex Bank expanded its analytics capabilities to track customer behavior, product usage, channel performance, and risk indicators in near real time.</p>
+
+<p>This environment increased the demand for integrated analytics that combined data from core banking systems, loan management systems, CRM platforms, and digital channels. However, these systems captured data at different granularities and used different keys, creating complexity in analytical modeling.</p>
+
+<p>Management realized that without a strong underlying data model, even the most visually appealing dashboards could mislead decision-makers and expose the bank to compliance and reputational risks.</p>
+
+<hr>
+
+<h2>3. Emerging Business Problem</h2>
+
+<p>As Power BI adoption grew across departments, analysts began building their own datasets by importing tables from data warehouses and operational systems. Relationship design was often left to auto-detection, resulting in incorrect or ambiguous relationships between fact and dimension tables.</p>
+
+<p>For example, loan performance dashboards linked loan fact tables directly to branch and customer tables without considering time dimensions or product hierarchies. Many-to-many relationships emerged unintentionally due to duplicate customer identifiers across systems. Some dashboards used inactive relationships without explicitly activating them in calculations.</p>
+
+<p>These modeling flaws caused inconsistent KPIs. Branch-wise loan outstanding figures did not match finance reports. Customer counts varied between marketing and risk dashboards. Non-performing asset (NPA) ratios differed depending on which report was viewed.</p>
+
+<p>Senior management lost confidence in analytics outputs. Decisions related to branch expansion, loan pricing, and portfolio risk were delayed or escalated for manual validation. The core problem was no longer data availability, but poor data modeling and relationship design within Power BI.</p>
+
+<hr>
+
+<h2>4. Detailed Data and Metrics</h2>
+
+<p>Vertex Bank's analytics team reviewed data used in Power BI models over a 24-month period. The primary fact tables included daily loan balances, transaction-level account activity, monthly interest income, and delinquency status. Dimension tables included customers, branches, products, time, channels, and relationship managers.</p>
+
+<p>The loan fact table contained over 180 million rows, capturing daily balances across products and branches. Customer dimension tables existed in multiple versions, with different customer IDs used in retail and SME systems. Product hierarchies varied across lending and deposit products.</p>
+
+<p>Key KPIs included loan outstanding, disbursement growth, CASA ratio, average balance per customer, NPA percentage, interest yield, and branch profitability. However, differences in relationship paths and granularity caused aggregation errors and double counting.</p>
+
+<p>Time dimensions were inconsistently applied. Some models joined facts directly to calendar dates, while others used month-end snapshots. This led to mismatches between operational and financial metrics.</p>
+
+<hr>
+
+<h2>5. Internal Challenges</h2>
+
+<p>Vertex Bank faced organizational and technical challenges in fixing its data models. Business analysts were skilled in visualization but lacked formal training in dimensional modeling. There was no centralized data modeling standard or review process.</p>
+
+<p>IT teams focused on data extraction and security, assuming modeling would be handled at the reporting layer. Pressure from business units to deliver dashboards quickly led to shortcuts in relationship design.</p>
+
+<p>Additionally, regulatory reporting teams were cautious about relying on self-service BI outputs due to audit concerns. Aligning agility with governance became a key internal tension.</p>
+
+<hr>
+
+<h2>6. Analytical Context</h2>
+
+<p>The bank's analytics leadership proposed redesigning Power BI datasets using proper star-schema principles. This involved clearly defining fact and dimension tables, establishing one-to-many relationships, controlling filter directions, and minimizing many-to-many relationships.</p>
+
+<p>Discussions focused on creating conformed dimensions for customers and branches, introducing role-playing time dimensions, and managing active and inactive relationships deliberately. Auto-detected relationships would be reviewed and overridden where necessary.</p>
+
+<p>The objective was not advanced modeling, but reliable aggregation and consistent KPIs across dashboards. Management emphasized that correct data modeling was foundational to trustworthy analytics and regulatory confidence.</p>
+
+<hr>
+
+<h2>7. Decision Point</h2>
+
+<p>The executive analytics committee must decide whether to enforce centralized data modeling standards for all Power BI datasets. This includes mandating dimensional modeling practices, restricting uncontrolled dataset creation, and investing in analyst training.</p>
+
+<p>The decision involves trade-offs between speed and accuracy. Strong controls may slow dashboard development, while weak controls risk inconsistent reporting and regulatory exposure.</p>
+
+<hr>
+
+<h2>8. Analytical and Decision Questions</h2>
+
+<ol>
+<li>What data modeling issues led to inconsistent KPIs at Vertex Bank?</li>
+<li>Why is star-schema modeling important in banking analytics?</li>
+<li>How do many-to-many relationships affect aggregation and interpretation?</li>
+<li>What risks arise from relying on auto-detected relationships in Power BI?</li>
+<li>How should time dimensions be handled for financial vs operational metrics?</li>
+<li>What governance controls are appropriate for enterprise BI models in banking?</li>
+<li>How can active and inactive relationships be managed effectively?</li>
+<li>How should the success of data model redesign be evaluated?</li>
+</ol>
+
+<hr>
+
+<h2>9. Model Answers (Selected)</h2>
+
+<p><strong>Question 1:</strong> Inconsistent relationships, duplicate dimensions, and unclear granularity caused aggregation errors. These flaws led to conflicting KPIs across dashboards.</p>
+
+<p><strong>Question 2:</strong> Star schemas ensure predictable filtering and aggregation, which is critical for financial accuracy and regulatory reporting in banking.</p>
+
+<p><strong>Question 3:</strong> Many-to-many relationships can cause double counting and ambiguous filters, making metrics unreliable for decision-making.</p>
+
+<p><strong>Question 4:</strong> Auto-detected relationships may ignore business logic, leading to incorrect joins and misleading insights.</p>
+
+<hr>
+
+<h2>10. Learning Focus</h2>
+
+<p>This case strengthens understanding of data modeling and relationship design in Power BI. It emphasizes the managerial impact of poor modeling and the importance of governance in financial analytics.</p>
+
+<p><strong>Primary Concepts:</strong> Data Modeling, Relationships, Cardinality, Star Schema, Banking Analytics</p>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeIcon = document.querySelector('.theme-icon');
+      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Load saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-icon').textContent = '☀️';
+    }
+  </script>
+</body>
+</html>
