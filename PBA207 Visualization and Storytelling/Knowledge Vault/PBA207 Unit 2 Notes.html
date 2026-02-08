@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT - NoteSmith | PBA207 Unit 2</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f7f7f8;
+            color: #1f2937;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .header {
+            background: #2d2d2d;
+            color: #f9fafb;
+        }
+
+        body.dark-mode .header h1 {
+            color: #f9fafb;
+        }
+
+        body.dark-mode .summary-section,
+        body.dark-mode .toc-section,
+        body.dark-mode .message {
+            background: #2d2d2d;
+            color: #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .message-role.assistant {
+            color: #c084fc;
+        }
+
+        body.dark-mode .message-content {
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .message-content * {
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .message-content h1,
+        body.dark-mode .message-content h2,
+        body.dark-mode .message-content h3,
+        body.dark-mode .message-content h4,
+        body.dark-mode .message-content h5,
+        body.dark-mode .message-content h6 {
+            color: #f9fafb;
+        }
+
+        body.dark-mode .message-content table th,
+        body.dark-mode .message-content table td {
+            border-color: #404040;
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .message-content table th {
+            background: #374151;
+            color: #f9fafb;
+        }
+
+        body.dark-mode a {
+            color: #60a5fa;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            color: #1f2937;
+        }
+
+        .message {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-role {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message-role.assistant {
+            color: #7c3aed;
+        }
+
+        .message-role img.chatgpt-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .message-content {
+            line-height: 1.6;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .message-content h1,
+        .message-content h2,
+        .message-content h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .message-content h1 {
+            font-size: 1.8em;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .message-content h2 {
+            font-size: 1.5em;
+            color: #1e40af;
+        }
+
+        body.dark-mode .message-content h2 {
+            color: #60a5fa;
+        }
+
+        .message-content h3 {
+            font-size: 1.2em;
+            color: #7c3aed;
+        }
+
+        body.dark-mode .message-content h3 {
+            color: #c084fc;
+        }
+
+        .message-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 12px 0;
+        }
+
+        .message-content table th,
+        .message-content table td {
+            border: 1px solid #e5e7eb;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .message-content table th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .message-content ul,
+        .message-content ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .message-content li {
+            margin: 4px 0;
+        }
+
+        .message-content a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .message-content a:hover {
+            text-decoration: underline;
+        }
+
+        .message-content blockquote {
+            border-left: 4px solid #7c3aed;
+            margin: 16px 0;
+            padding: 10px 20px;
+            background: #f3f4f6;
+            font-style: italic;
+        }
+
+        body.dark-mode .message-content blockquote {
+            background: #374151;
+            border-left-color: #c084fc;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: #2d2d2d;
+            border-color: #404040;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>📊 PBA207 - Visualization and Storytelling</h1>
+        <p style="color: #6b7280; margin: 0;">Unit 2: Visualization of Structured Data</p>
+    </div>
+
+    <div class="messages">
+        <div class="message" id="message-1">
+            <div class="message-role assistant"><img
+                    src="data:image/png;base64,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"
+                    alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+            <div class="message-content">
+                <h1>📊 Unit 2: Visualization of Structured Data</h1>
+
+                <h2>Part 1: Introduction to Structured Data Visualization</h2>
+
+                <h3>What is Structured Data Visualization?</h3>
+                <blockquote>
+                    <strong>Visualization</strong> is the graphical representation of structured data — data organized
+                    in rows and columns, often in databases, CSV files, or spreadsheets. It serves as a bridge between
+                    raw numbers and human understanding, enabling stakeholders to grasp patterns, trends, outliers, and
+                    relationships that might be invisible in tabular form.
+                </blockquote>
+
+                <h3>Why Visualize?</h3>
+                <ul>
+                    <li><strong>Simplify Complexity:</strong> Large datasets become interpretable</li>
+                    <li><strong>Reveal Patterns:</strong> Trends, clusters, and cycles become apparent</li>
+                    <li><strong>Communicate Insights:</strong> Effective storytelling for technical and non-technical
+                        audiences</li>
+                    <li><strong>Guide Analysis:</strong> Helps form hypotheses and direct modeling efforts</li>
+                    <li><strong>Support Decision-Making:</strong> Critical in business, healthcare, finance, and
+                        research</li>
+                </ul>
+
+                <h3>Key Principles of Visualization</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Principle</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Accuracy</strong></td>
+                            <td>Represent data truthfully without distortion</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Clarity</strong></td>
+                            <td>Ensure the message is easily understood</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Efficiency</strong></td>
+                            <td>Convey maximum insight with minimal cognitive load</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Aesthetics</strong></td>
+                            <td>Use color, shape, and layout purposefully to enhance readability</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h3>Exploratory Data Analysis (EDA)</h3>
+                <blockquote>
+                    <strong>EDA</strong> is about questioning your data, not just processing it. It's a mindset of
+                    curiosity. Before any sophisticated modelling, you must understand what you're working with — its
+                    characteristics, quality, and potential. EDA is the initial phase of data analysis where
+                    visualizations are used to understand the dataset's structure, quality, and initial patterns before
+                    formal modeling.
+                </blockquote>
+
+                <h4>Objectives of EDA</h4>
+                <ul>
+                    <li>Understand data types and distributions</li>
+                    <li>Detect missing values, anomalies, and outliers</li>
+                    <li>Identify potential relationships between variables</li>
+                    <li>Inform data cleaning and transformation steps</li>
+                </ul>
+
+                <h4>Common EDA Charts</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Chart Type</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Histograms & Box Plots</strong></td>
+                            <td>For distribution of numerical variables</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bar Charts</strong></td>
+                            <td>For categorical variable frequencies</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scatter Plot Matrix</strong></td>
+                            <td>Pairwise relationships between numerical variables</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Missing Data Heatmaps</strong></td>
+                            <td>Visualize gaps in the dataset</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h2>Part 2: The EDA Process & Univariate Analysis</h2>
+
+                <h3>The EDA Process</h3>
+                <ol>
+                    <li><strong>Data Loading & First Glimpse:</strong> Check dimensions, column names, data types</li>
+                    <li><strong>Understanding Variables:</strong> What does each column represent in the real world?
+                    </li>
+                    <li><strong>Initial Quality Check:</strong> Missing values? Obvious errors? Inconsistent formatting?
+                    </li>
+                    <li><strong>Summary Statistics:</strong> Quick numerical summaries (mean, median, min, max) for
+                        numerical data; frequency counts for categorical</li>
+                    <li><strong>Visual Exploration:</strong> Start creating simple visuals to spot obvious patterns,
+                        outliers, or anomalies</li>
+                </ol>
+
+                <hr>
+
+                <h3>Univariate Analysis</h3>
+                <blockquote>
+                    <strong>Univariate analysis</strong> focuses on a single variable at a time, summarizing its
+                    distribution and key statistics.
+                </blockquote>
+
+                <h4>For Continuous Variables</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Chart</th>
+                            <th>Use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Histogram</strong></td>
+                            <td>Shows frequency distribution and shape (normal, skewed)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Density Plot</strong></td>
+                            <td>Smooth version of a histogram</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Box Plot (Whisker Plot)</strong></td>
+                            <td>Displays median, quartiles, and outliers</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Violin Plot</strong></td>
+                            <td>Combines box plot and density shape</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>For Categorical Variables</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Chart</th>
+                            <th>Use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Bar Chart</strong></td>
+                            <td>Frequency or proportion of each category</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pie Chart</strong></td>
+                            <td>Proportions of categories (best for few categories, use cautiously)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Treemap</strong></td>
+                            <td>For hierarchical categorical data</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h2>Part 3: Multivariate Analysis</h2>
+
+                <h3>Charts to Visualize Multiple Measures</h3>
+                <blockquote>
+                    <strong>Multivariate analysis</strong> explores relationships between two or more variables. It
+                    analyzes two or more variables simultaneously to uncover relationships. This is where the magic
+                    happens — understanding how things influence each other.
+                </blockquote>
+
+                <h4>Two Numerical Variables</h4>
+                <ul>
+                    <li><strong>Scatter Plot:</strong> Correlation, clusters, and outliers</li>
+                    <li><strong>Line Chart:</strong> Trends over time or ordered sequences</li>
+                    <li><strong>Bubble Chart:</strong> Scatter plot with third variable encoded as bubble size</li>
+                </ul>
+
+                <h4>One Numerical, One Categorical</h4>
+                <ul>
+                    <li><strong>Grouped Box Plot/Violin Plot:</strong> Compare distributions across categories</li>
+                    <li><strong>Bar Chart with Aggregation:</strong> Mean, median, sum per category</li>
+                    <li><strong>Stacked/Grouped Bar Chart:</strong> Show composition and totals</li>
+                </ul>
+
+                <h4>Two Categorical Variables</h4>
+                <ul>
+                    <li><strong>Stacked Bar Chart:</strong> Show proportions across two categories</li>
+                    <li><strong>Heatmap of Crosstab:</strong> Frequency or proportion matrix</li>
+                    <li><strong>Mosaic Plot:</strong> Visualize contingency tables</li>
+                </ul>
+
+                <h4>Three or More Variables</h4>
+                <ul>
+                    <li><strong>Scatter Plot with Color/Size Encoding:</strong> Add categorical or numerical dimensions
+                    </li>
+                    <li><strong>Faceting/Small Multiples:</strong> Multiple plots split by a categorical variable</li>
+                    <li><strong>Parallel Coordinates Plot:</strong> Many numerical variables across observations</li>
+                    <li><strong>Radar Chart:</strong> Compare multivariate profiles (useful for performance analysis)
+                    </li>
+                </ul>
+
+                <h4>Spatial/Geographic Data</h4>
+                <ul>
+                    <li><strong>Choropleth Map:</strong> Colored regions based on variable values</li>
+                    <li><strong>Point/Proportional Symbol Map:</strong> Location-specific values</li>
+                </ul>
+
+                <hr>
+
+                <h2>Part 4: Visualization in Modeling</h2>
+
+                <h3>Before Modeling (Feature Understanding & Selection)</h3>
+                <ul>
+                    <li>Visualize relationships between potential features and the target variable</li>
+                    <li>Use scatter plots, box plots, etc., to select which variables might be good predictors</li>
+                </ul>
+
+                <h3>During Modeling</h3>
+
+                <h4>Diagnostic Plots (Especially for Regression)</h4>
+                <ul>
+                    <li><strong>Residuals vs. Fitted:</strong> Check for non-linearity, heteroscedasticity (changing
+                        variance)</li>
+                    <li><strong>QQ Plot:</strong> Check if residuals are normally distributed</li>
+                </ul>
+
+                <h4>Model Comparison Visualizations</h4>
+                <ul>
+                    <li><strong>ROC Curves:</strong> For classification models, to visualize the trade-off between true
+                        positive and false positive rates</li>
+                    <li><strong>Precision-Recall Curves:</strong> Useful for imbalanced datasets</li>
+                    <li><strong>Learning Curves:</strong> To diagnose if your model needs more data or is overfitting
+                    </li>
+                </ul>
+
+                <h3>After Modeling — Interpreting Results</h3>
+                <ul>
+                    <li><strong>Coefficient Plots (for linear/logistic regression):</strong> Show the magnitude and
+                        confidence interval of each feature's importance</li>
+                    <li><strong>Feature Importance Charts (for tree-based models):</strong> Bar charts showing which
+                        variables the model found most useful</li>
+                    <li><strong>Decision Boundaries:</strong> For 2-3 features, visualize how your model "draws the
+                        line" between classes or predicts values across a space</li>
+                </ul>
+
+                <hr>
+
+                <h2>Part 5: Visualization During Deployment & Communication</h2>
+
+                <blockquote>
+                    In deployment, visualizations move from exploratory to operational, often integrated into
+                    dashboards, reports, and real-time monitoring systems.
+                </blockquote>
+
+                <h3>Dashboards</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Purpose</strong></td>
+                            <td>Monitor key performance indicators (KPIs) and metrics in real-time</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Design Principles</strong></td>
+                            <td>Group related info, use consistent color schemes, place the most important metrics
+                                "above the fold"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interactivity</strong></td>
+                            <td>Allow users to filter, drill down, and adjust time frames</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tools</strong></td>
+                            <td>Tableau, Power BI, Plotly Dash, Streamlit</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Reporting & Storytelling</h3>
+
+                <h4>The Narrative Flow</h4>
+                <ol>
+                    <li><strong>Executive Summary View:</strong> High-level KPIs, trends</li>
+                    <li><strong>Detailed Analysis View:</strong> Supporting charts for deeper dives</li>
+                    <li><strong>Recommendations & Actions:</strong> Tie visuals directly to business decisions</li>
+                </ol>
+
+                <h4>Best Practices</h4>
+                <ul>
+                    <li><strong>Annotation:</strong> Use text, arrows, and highlights to guide the viewer's eye to the
+                        most important insight in a chart</li>
+                    <li><strong>Design for Accessibility:</strong> Consider colorblind-friendly palettes (like viridis,
+                        plasma), sufficient contrast, and clear labels</li>
+                </ul>
+
+                <hr>
+
+                <h2>Part 6: Applications & Design Considerations</h2>
+
+                <h3>Applications</h3>
+                <ul>
+                    <li><strong>Business Dashboards:</strong> KPIs, trends, and performance metrics (using tools like
+                        Tableau, Power BI, or custom Dash/Shiny apps)</li>
+                    <li><strong>Real-Time Monitoring:</strong> Live charts for system metrics, fraud detection, or
+                        sensor data</li>
+                    <li><strong>Automated Reporting:</strong> Static or interactive visuals in scheduled reports</li>
+                    <li><strong>Explainable AI (XAI) Interfaces:</strong> Show model predictions with reasoning (e.g.,
+                        LIME local explanations)</li>
+                </ul>
+
+                <h3>Design Considerations for Deployment</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Consideration</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Interactivity</strong></td>
+                            <td>Filters, drill-downs, tooltips for user exploration</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scalability</strong></td>
+                            <td>Handle large, streaming, or high-dimensional data</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Automation</strong></td>
+                            <td>Generate updated visuals without manual intervention</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Accessibility</strong></td>
+                            <td>Colorblind-friendly palettes, text descriptions, mobile responsiveness</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Narrative Flow</strong></td>
+                            <td>Dashboards should tell a clear story — from high-level KPIs to granular details</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+
+    <script>
+        // Theme Toggle functionality
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggleBtn.textContent = '☀️';
+        }
+
+        themeToggleBtn.addEventListener('click', function () {
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                themeToggleBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggleBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Back to Top button functionality
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function () {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+
+</html>

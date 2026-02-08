@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><p class="first:mt-0 my-1.5 h-8 flex items-center ltr:me-auto rtl:ms-auto empty:hidden text-token-text-secondary"></p><div data-message-author-role="assistant" data-message-id="fa5a6cde-3234-424a-b2de-b957ae52dc4b" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word light markdown-new-styling"><p data-start="0" data-end="132">Understood. Before I write <strong data-start="27" data-end="37">Unit 2</strong>, I must follow the <strong data-start="57" data-end="91">Initialization &amp; Mapping Phase</strong> strictly, as per the NoteSmith protocol.</p>
+<p data-start="134" data-end="356">I have read and extracted the structure <strong data-start="174" data-end="186">verbatim</strong> from your uploaded syllabus .<br data-start="253" data-end="256">
+Below is the <strong data-start="269" data-end="297">mapped Table of Contents</strong> for the entire course, with <strong data-start="326" data-end="355">Unit 2 clearly identified</strong>.</p>
+<hr data-start="358" data-end="361">
+<h1 data-start="363" data-end="400">📘 Digital Transformation (PB205)</h1>
+<h2 data-start="401" data-end="450"><strong data-start="404" data-end="450">Mapped Table of Contents (As per Syllabus)</strong></h2>
+<hr data-start="452" data-end="455">
+<h2 data-start="457" data-end="508"><strong data-start="460" data-end="508">Unit 1: Understanding Digital Transformation</strong></h2>
+<ol data-start="509" data-end="801">
+<li data-start="509" data-end="550">
+<p data-start="512" data-end="550">Definition of Digital Transformation</p>
+</li>
+<li data-start="551" data-end="587">
+<p data-start="554" data-end="587">Scope of Digital Transformation</p>
+</li>
+<li data-start="588" data-end="629">
+<p data-start="591" data-end="629">Importance of Digital Transformation</p>
+</li>
+<li data-start="630" data-end="669">
+<p data-start="633" data-end="669">Benefits of Digital Transformation</p>
+</li>
+<li data-start="670" data-end="712">
+<p data-start="673" data-end="712">Key Drivers of Digital Transformation</p>
+</li>
+<li data-start="713" data-end="750">
+<p data-start="716" data-end="750">Trends in Digital Transformation</p>
+</li>
+<li data-start="751" data-end="801">
+<p data-start="754" data-end="801">Overview of Digital Transformation Frameworks</p>
+</li>
+</ol>
+<hr data-start="803" data-end="806">
+<h2 data-start="808" data-end="886"><strong data-start="811" data-end="853">Unit 2: Leading Digital Transformation</strong>  ✅ <em data-start="857" data-end="886">(Your chosen starting unit)</em></h2>
+<ol data-start="887" data-end="1229">
+<li data-start="887" data-end="944">
+<p data-start="890" data-end="944">Role of Leadership in Driving Digital Transformation</p>
+</li>
+<li data-start="945" data-end="986">
+<p data-start="948" data-end="986">Key Competencies for Digital Leaders</p>
+</li>
+<li data-start="987" data-end="1039">
+<p data-start="990" data-end="1039">Building a Digital Culture within Organizations</p>
+</li>
+<li data-start="1040" data-end="1078">
+<p data-start="1043" data-end="1078">Introduction to Agile Methodology</p>
+</li>
+<li data-start="1079" data-end="1116">
+<p data-start="1082" data-end="1116">Introduction to Lean Methodology</p>
+</li>
+<li data-start="1117" data-end="1173">
+<p data-start="1120" data-end="1173">Applying Agile Principles to Digital Transformation</p>
+</li>
+<li data-start="1174" data-end="1229">
+<p data-start="1177" data-end="1229">Applying Lean Principles to Digital Transformation</p>
+</li>
+</ol>
+<hr data-start="1231" data-end="1234">
+<h2 data-start="1236" data-end="1295"><strong data-start="1239" data-end="1295">Unit 3: Digital Transformation in Various Industries</strong></h2>
+<ol data-start="1296" data-end="1642">
+<li data-start="1296" data-end="1334">
+<p data-start="1299" data-end="1334">Trends and Technologies in Retail</p>
+</li>
+<li data-start="1335" data-end="1386">
+<p data-start="1338" data-end="1386">Omnichannel Strategies and Customer Experience</p>
+</li>
+<li data-start="1387" data-end="1422">
+<p data-start="1390" data-end="1422">Fintech Innovations and Trends</p>
+</li>
+<li data-start="1423" data-end="1494">
+<p data-start="1426" data-end="1494">Impact of Digital Transformation on Banking and Financial Services</p>
+</li>
+<li data-start="1495" data-end="1571">
+<p data-start="1498" data-end="1571">Technologies Transforming Healthcare (Telemedicine, Health Informatics)</p>
+</li>
+<li data-start="1572" data-end="1642">
+<p data-start="1575" data-end="1642">Challenges and Opportunities in Healthcare Digital Transformation</p>
+</li>
+</ol>
+<hr data-start="1644" data-end="1647">
+<h2 data-start="1649" data-end="1693"><strong data-start="1652" data-end="1693">Unit 4: Innovation in the Digital Age</strong></h2>
+<ol data-start="1694" data-end="1997">
+<li data-start="1694" data-end="1803">
+<p data-start="1697" data-end="1718">Types of Innovation</p>
+<ul data-start="1722" data-end="1803">
+<li data-start="1722" data-end="1748">
+<p data-start="1724" data-end="1748">Incremental Innovation</p>
+</li>
+<li data-start="1752" data-end="1777">
+<p data-start="1754" data-end="1777">Disruptive Innovation</p>
+</li>
+<li data-start="1781" data-end="1803">
+<p data-start="1783" data-end="1803">Radical Innovation</p>
+</li>
+</ul>
+</li>
+<li data-start="1804" data-end="1852">
+<p data-start="1807" data-end="1852">Creating an Innovation-Friendly Environment</p>
+</li>
+<li data-start="1853" data-end="1900">
+<p data-start="1856" data-end="1900">Encouraging Creativity and Experimentation</p>
+</li>
+<li data-start="1901" data-end="1921">
+<p data-start="1904" data-end="1921">Design Thinking</p>
+</li>
+<li data-start="1922" data-end="1942">
+<p data-start="1925" data-end="1942">Open Innovation</p>
+</li>
+<li data-start="1943" data-end="1978">
+<p data-start="1946" data-end="1978">Innovation Labs and Incubators</p>
+</li>
+<li data-start="1979" data-end="1997">
+<p data-start="1982" data-end="1997">Crowdsourcing</p>
+</li>
+</ol>
+<hr data-start="1999" data-end="2002">
+<h2 data-start="2004" data-end="2050"><strong data-start="2007" data-end="2050">Unit 5: Digital Technologies and Trends</strong></h2>
+<ol data-start="2051" data-end="2291">
+<li data-start="2051" data-end="2077">
+<p data-start="2054" data-end="2077">Emerging Technologies</p>
+</li>
+<li data-start="2078" data-end="2111">
+<p data-start="2081" data-end="2111">Artificial Intelligence (AI)</p>
+</li>
+<li data-start="2112" data-end="2141">
+<p data-start="2115" data-end="2141">Internet of Things (IoT)</p>
+</li>
+<li data-start="2142" data-end="2168">
+<p data-start="2145" data-end="2168">Blockchain Technology</p>
+</li>
+<li data-start="2169" data-end="2189">
+<p data-start="2172" data-end="2189">Cloud Computing</p>
+</li>
+<li data-start="2190" data-end="2203">
+<p data-start="2193" data-end="2203">Big Data</p>
+</li>
+<li data-start="2204" data-end="2225">
+<p data-start="2207" data-end="2225">Machine Learning</p>
+</li>
+<li data-start="2226" data-end="2291">
+<p data-start="2229" data-end="2291">Impact of Emerging Technologies on Businesses and Industries</p>
+</li>
+</ol>
+<hr data-start="2293" data-end="2296">
+<h2 data-start="2298" data-end="2336">✅ Next Step (Required Confirmation)</h2>
+<p data-start="2338" data-end="2403">The <strong data-start="2342" data-end="2402">Table of Contents is now fully mapped and approved-ready</strong>.</p>
+<p data-start="2405" data-end="2484">👉 <strong data-start="2408" data-end="2484">Shall I begin writing <em data-start="2432" data-end="2481">Unit 2: Leading Digital Transformation – Part 1</em>?</strong></p>
+<p data-start="2486" data-end="2541">Once you confirm, I will start <strong data-start="2517" data-end="2535">Unit 2, Part 1</strong> with:</p>
+<ul data-start="2542" data-end="2688">
+<li data-start="2542" data-end="2587">
+<p data-start="2544" data-end="2587">Leadership role in digital transformation</p>
+</li>
+<li data-start="2588" data-end="2620">
+<p data-start="2590" data-end="2620">Core leadership competencies</p>
+</li>
+<li data-start="2621" data-end="2688">
+<p data-start="2623" data-end="2688">Clear explanations, tables, examples, and exam-oriented clarity</p>
+</li>
+</ul>
+<p data-start="2690" data-end="2733" data-is-last-node="" data-is-only-node="">Just reply: <strong data-start="2702" data-end="2733" data-is-last-node="">“Yes, start Unit 2 Part 1.”</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><br class="sr-only">
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="d3d90419-e7c5-4d54-89d3-d71e524f5d87" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word light markdown-new-styling"><hr data-start="0" data-end="3">
+<blockquote data-start="5" data-end="81">
+<p data-start="7" data-end="81"><strong data-start="7" data-end="18">STATUS:</strong> <strong data-start="19" data-end="62">Unit 2 – Leading Digital Transformation</strong> | <strong data-start="65" data-end="81">Part 1 of ~3</strong></p>
+</blockquote>
+<hr data-start="83" data-end="86">
+<h2 data-start="88" data-end="142"><strong data-start="91" data-end="142">Unit 2: Leading Digital Transformation – Part 1</strong></h2>
+<h3 data-start="144" data-end="216"><strong data-start="148" data-end="216">Subtopic 1: Role of Leadership in Driving Digital Transformation</strong></h3>
+<hr data-start="218" data-end="221">
+<h3 data-start="223" data-end="246"><strong data-start="227" data-end="246">1. Introduction</strong></h3>
+<p data-start="248" data-end="697">Digital transformation is not only a technological change; it is <strong data-start="313" data-end="353">primarily a leadership-driven change</strong>. While technologies such as cloud computing, AI, and data analytics act as enablers, it is leadership that <strong data-start="461" data-end="543">defines the vision, aligns people, allocates resources, and manages resistance</strong>. Organizations that succeed in digital transformation usually have leaders who actively champion change rather than delegate it solely to IT departments.</p>
+<p data-start="699" data-end="870">In simple terms, <strong data-start="716" data-end="760">digital transformation starts at the top</strong>. Without strong leadership commitment, digital initiatives often remain fragmented, slow, or fail completely.</p>
+<hr data-start="872" data-end="875">
+<h3 data-start="877" data-end="900"><strong data-start="881" data-end="900">2. Key Concepts</strong></h3>
+<ul data-start="902" data-end="1063">
+<li data-start="902" data-end="924">
+<p data-start="904" data-end="924">Digital leadership</p>
+</li>
+<li data-start="925" data-end="957">
+<p data-start="927" data-end="957">Vision-driven transformation</p>
+</li>
+<li data-start="958" data-end="979">
+<p data-start="960" data-end="979">Change management</p>
+</li>
+<li data-start="980" data-end="1003">
+<p data-start="982" data-end="1003">Strategic alignment</p>
+</li>
+<li data-start="1004" data-end="1034">
+<p data-start="1006" data-end="1034">Risk-taking and innovation</p>
+</li>
+<li data-start="1035" data-end="1063">
+<p data-start="1037" data-end="1063">Customer-centric mindset</p>
+</li>
+</ul>
+<hr data-start="1065" data-end="1068">
+<h3 data-start="1070" data-end="1101"><strong data-start="1074" data-end="1101">3. Detailed Explanation</strong></h3>
+<h4 data-start="1103" data-end="1167"><strong data-start="1108" data-end="1167">3.1 Why Leadership is Central to Digital Transformation</strong></h4>
+<p data-start="1169" data-end="1200">Digital transformation affects:</p>
+<ul data-start="1201" data-end="1309">
+<li data-start="1201" data-end="1220">
+<p data-start="1203" data-end="1220">Business models</p>
+</li>
+<li data-start="1221" data-end="1247">
+<p data-start="1223" data-end="1247">Organizational culture</p>
+</li>
+<li data-start="1248" data-end="1277">
+<p data-start="1250" data-end="1277">Employee roles and skills</p>
+</li>
+<li data-start="1278" data-end="1309">
+<p data-start="1280" data-end="1309">Customer engagement methods</p>
+</li>
+</ul>
+<p data-start="1311" data-end="1398">Such wide-ranging impact <strong data-start="1336" data-end="1383">cannot be managed by technology teams alone</strong>. Leaders must:</p>
+<ul data-start="1399" data-end="1498">
+<li data-start="1399" data-end="1428">
+<p data-start="1401" data-end="1428">Provide <strong data-start="1409" data-end="1428">clear direction</strong></p>
+</li>
+<li data-start="1429" data-end="1468">
+<p data-start="1431" data-end="1468">Inspire confidence during uncertainty</p>
+</li>
+<li data-start="1469" data-end="1498">
+<p data-start="1471" data-end="1498">Ensure long-term commitment</p>
+</li>
+</ul>
+<p data-start="1500" data-end="1669">👉 <strong data-start="1503" data-end="1525">Important Insight:</strong><br data-start="1525" data-end="1528">
+Many digital transformation failures occur <strong data-start="1571" data-end="1605">not because of poor technology</strong>, but because of <strong data-start="1622" data-end="1668">weak leadership and poor change management</strong>.</p>
+<hr data-start="1671" data-end="1674">
+<h4 data-start="1676" data-end="1716"><strong data-start="1681" data-end="1716">3.2 Key Roles Played by Leaders</strong></h4>
+<h5 data-start="1718" data-end="1757"><strong data-start="1724" data-end="1757">(a) Creating a Digital Vision</strong></h5>
+<p data-start="1759" data-end="1779">Leaders must define:</p>
+<ul data-start="1780" data-end="1950">
+<li data-start="1780" data-end="1837">
+<p data-start="1782" data-end="1837"><strong data-start="1782" data-end="1789">Why</strong> the organization needs digital transformation</p>
+</li>
+<li data-start="1838" data-end="1896">
+<p data-start="1840" data-end="1896"><strong data-start="1840" data-end="1848">What</strong> the transformed organization should look like</p>
+</li>
+<li data-start="1897" data-end="1950">
+<p data-start="1899" data-end="1950"><strong data-start="1899" data-end="1906">How</strong> digital tools will support business goals</p>
+</li>
+</ul>
+<p data-start="1952" data-end="2008"><strong data-start="1952" data-end="1964">Example:</strong><br data-start="1964" data-end="1967">
+A retail CEO may define a vision such as:</p>
+<blockquote data-start="2009" data-end="2124">
+<p data-start="2011" data-end="2124">“Transform our company into a data-driven, omnichannel retailer that delivers personalized customer experiences.”</p>
+</blockquote>
+<p data-start="2126" data-end="2169">This vision guides all digital initiatives.</p>
+<hr data-start="2171" data-end="2174">
+<h5 data-start="2176" data-end="2238"><strong data-start="2182" data-end="2238">(b) Aligning Digital Strategy with Business Strategy</strong></h5>
+<p data-start="2240" data-end="2328">Digital transformation should <strong data-start="2270" data-end="2301">support business objectives</strong>, not run parallel to them.</p>
+<p data-start="2330" data-end="2365"><strong data-start="2330" data-end="2365">Business Goal → Digital Support</strong></p>
+<ul data-start="2366" data-end="2510">
+<li data-start="2366" data-end="2427">
+<p data-start="2368" data-end="2427">Increase customer retention → CRM systems, data analytics</p>
+</li>
+<li data-start="2428" data-end="2474">
+<p data-start="2430" data-end="2474">Reduce costs → Automation, cloud migration</p>
+</li>
+<li data-start="2475" data-end="2510">
+<p data-start="2477" data-end="2510">Improve speed → Agile workflows</p>
+</li>
+</ul>
+<p data-start="2512" data-end="2584">Leaders ensure that <strong data-start="2532" data-end="2583">every digital investment has a business purpose</strong>.</p>
+<hr data-start="2586" data-end="2589">
+<h5 data-start="2591" data-end="2628"><strong data-start="2597" data-end="2628">(c) Driving Cultural Change</strong></h5>
+<p data-start="2630" data-end="2662">Digital transformation requires:</p>
+<ul data-start="2663" data-end="2769">
+<li data-start="2663" data-end="2694">
+<p data-start="2665" data-end="2694">Openness to experimentation</p>
+</li>
+<li data-start="2695" data-end="2732">
+<p data-start="2697" data-end="2732">Acceptance of failure as learning</p>
+</li>
+<li data-start="2733" data-end="2769">
+<p data-start="2735" data-end="2769">Collaboration across departments</p>
+</li>
+</ul>
+<p data-start="2771" data-end="2784">Leaders must:</p>
+<ul data-start="2785" data-end="2863">
+<li data-start="2785" data-end="2809">
+<p data-start="2787" data-end="2809">Encourage innovation</p>
+</li>
+<li data-start="2810" data-end="2835">
+<p data-start="2812" data-end="2835">Reduce fear of change</p>
+</li>
+<li data-start="2836" data-end="2863">
+<p data-start="2838" data-end="2863">Break rigid hierarchies</p>
+</li>
+</ul>
+<p data-start="2865" data-end="2881"><strong data-start="2865" data-end="2879">Key Point:</strong></p>
+<blockquote data-start="2882" data-end="2944">
+<p data-start="2884" data-end="2944">Technology changes systems, but <strong data-start="2916" data-end="2943">leaders change mindsets</strong>.</p>
+</blockquote>
+<hr data-start="2946" data-end="2949">
+<h5 data-start="2951" data-end="2994"><strong data-start="2957" data-end="2994">(d) Managing Resistance to Change</strong></h5>
+<p data-start="2996" data-end="3049">Employees often resist digital transformation due to:</p>
+<ul data-start="3050" data-end="3101">
+<li data-start="3050" data-end="3070">
+<p data-start="3052" data-end="3070">Fear of job loss</p>
+</li>
+<li data-start="3071" data-end="3085">
+<p data-start="3073" data-end="3085">Skill gaps</p>
+</li>
+<li data-start="3086" data-end="3101">
+<p data-start="3088" data-end="3101">Uncertainty</p>
+</li>
+</ul>
+<p data-start="3103" data-end="3132">Leaders handle resistance by:</p>
+<ul data-start="3133" data-end="3255">
+<li data-start="3133" data-end="3164">
+<p data-start="3135" data-end="3164">Communicating transparently</p>
+</li>
+<li data-start="3165" data-end="3201">
+<p data-start="3167" data-end="3201">Offering reskilling and training</p>
+</li>
+<li data-start="3202" data-end="3255">
+<p data-start="3204" data-end="3255">Involving employees in the transformation journey</p>
+</li>
+</ul>
+<hr data-start="3257" data-end="3260">
+<h5 data-start="3262" data-end="3312"><strong data-start="3268" data-end="3312">(e) Investing in Talent and Capabilities</strong></h5>
+<p data-start="3314" data-end="3339">Digital leaders focus on:</p>
+<ul data-start="3340" data-end="3436">
+<li data-start="3340" data-end="3365">
+<p data-start="3342" data-end="3365">Hiring digital talent</p>
+</li>
+<li data-start="3366" data-end="3399">
+<p data-start="3368" data-end="3399">Upskilling existing employees</p>
+</li>
+<li data-start="3400" data-end="3436">
+<p data-start="3402" data-end="3436">Partnering with technology firms</p>
+</li>
+</ul>
+<p data-start="3438" data-end="3513">This ensures that digital transformation is <strong data-start="3482" data-end="3497">sustainable</strong>, not temporary.</p>
+<hr data-start="3515" data-end="3518">
+<h3 data-start="3520" data-end="3600"><strong data-start="3524" data-end="3600">4. Leadership Responsibilities in Digital Transformation (Summary Table)</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3602" data-end="4004" class="w-fit min-w-(--thread-content-width)"><thead data-start="3602" data-end="3645"><tr data-start="3602" data-end="3645"><th data-start="3602" data-end="3630" data-col-size="sm" class="">Leadership Responsibility</th><th data-start="3630" data-end="3645" data-col-size="md" class="">Description</th></tr></thead><tbody data-start="3689" data-end="4004"><tr data-start="3689" data-end="3742"><td data-start="3689" data-end="3707" data-col-size="sm">Vision Creation</td><td data-col-size="md" data-start="3707" data-end="3742">Defining a clear digital future</td></tr><tr data-start="3743" data-end="3814"><td data-start="3743" data-end="3765" data-col-size="sm">Strategic Alignment</td><td data-col-size="md" data-start="3765" data-end="3814">Linking digital initiatives to business goals</td></tr><tr data-start="3815" data-end="3879"><td data-start="3815" data-end="3841" data-col-size="sm">Cultural Transformation</td><td data-col-size="md" data-start="3841" data-end="3879">Encouraging innovation and agility</td></tr><tr data-start="3880" data-end="3941"><td data-start="3880" data-end="3900" data-col-size="sm">Change Management</td><td data-col-size="md" data-start="3900" data-end="3941">Addressing resistance and uncertainty</td></tr><tr data-start="3942" data-end="4004"><td data-start="3942" data-end="3964" data-col-size="sm">Capability Building</td><td data-col-size="md" data-start="3964" data-end="4004">Developing digital skills and talent</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 32.7969px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4006" data-end="4009">
+<h3 data-start="4011" data-end="4045"><strong data-start="4015" data-end="4045">5. Examples / Case Studies</strong></h3>
+<h4 data-start="4047" data-end="4096"><strong data-start="4052" data-end="4096">Example 1: Microsoft under Satya Nadella</strong></h4>
+<ul data-start="4098" data-end="4244">
+<li data-start="4098" data-end="4152">
+<p data-start="4100" data-end="4152">Shifted culture from “know-it-all” to “learn-it-all”</p>
+</li>
+<li data-start="4153" data-end="4199">
+<p data-start="4155" data-end="4199">Emphasized cloud computing and collaboration</p>
+</li>
+<li data-start="4200" data-end="4244">
+<p data-start="4202" data-end="4244">Encouraged innovation and growth mindset</p>
+</li>
+</ul>
+<p data-start="4246" data-end="4346"><strong data-start="4246" data-end="4258">Outcome:</strong><br data-start="4258" data-end="4261">
+Microsoft successfully transformed into a cloud-first, customer-centric organization.</p>
+<hr data-start="4348" data-end="4351">
+<h4 data-start="4353" data-end="4387"><strong data-start="4358" data-end="4387">Example 2: Banking Sector</strong></h4>
+<p data-start="4389" data-end="4446">Banks adopting digital transformation require leaders to:</p>
+<ul data-start="4447" data-end="4568">
+<li data-start="4447" data-end="4480">
+<p data-start="4449" data-end="4480">Promote fintech collaboration</p>
+</li>
+<li data-start="4481" data-end="4518">
+<p data-start="4483" data-end="4518">Support digital payment platforms</p>
+</li>
+<li data-start="4519" data-end="4568">
+<p data-start="4521" data-end="4568">Balance innovation with regulatory compliance</p>
+</li>
+</ul>
+<p data-start="4570" data-end="4640">Without leadership backing, such initiatives face internal resistance.</p>
+<hr data-start="4642" data-end="4645">
+<h3 data-start="4647" data-end="4681"><strong data-start="4651" data-end="4681">6. Summary of this Section</strong></h3>
+<ul data-start="4683" data-end="5031">
+<li data-start="4683" data-end="4744">
+<p data-start="4685" data-end="4744">Leadership is the <strong data-start="4703" data-end="4717">foundation</strong> of digital transformation.</p>
+</li>
+<li data-start="4745" data-end="4851">
+<p data-start="4747" data-end="4851">Successful digital transformation depends more on <strong data-start="4797" data-end="4828">vision, culture, and people</strong> than technology alone.</p>
+</li>
+<li data-start="4852" data-end="4945">
+<p data-start="4854" data-end="4945">Leaders act as <strong data-start="4869" data-end="4886">change agents</strong>, ensuring alignment, motivation, and long-term commitment.</p>
+</li>
+<li data-start="4946" data-end="5031">
+<p data-start="4948" data-end="5031">Strong leadership reduces resistance and increases adoption of digital initiatives.</p>
+</li>
+</ul>
+<hr data-start="5033" data-end="5036">
+<h2 data-start="5038" data-end="5093"><strong data-start="5041" data-end="5093">Subtopic 2: Key Competencies for Digital Leaders</strong></h2>
+<p data-start="5095" data-end="5164"><em data-start="5095" data-end="5164">(This subtopic begins here and will be completed in the next part.)</em></p>
+<hr data-start="5166" data-end="5169">
+<h3 data-start="5171" data-end="5194"><strong data-start="5175" data-end="5194">1. Introduction</strong></h3>
+<p data-start="5196" data-end="5446">A digital leader requires <strong data-start="5222" data-end="5305">a unique blend of traditional leadership skills and modern digital capabilities</strong>. Unlike conventional leaders, digital leaders operate in environments characterized by rapid change, uncertainty, and continuous innovation.</p>
+<hr data-start="5448" data-end="5451">
+<h3 data-start="5453" data-end="5491"><strong data-start="5457" data-end="5491">2. Key Competencies (Overview)</strong></h3>
+<ul data-start="5493" data-end="5655">
+<li data-start="5493" data-end="5515">
+<p data-start="5495" data-end="5515">Strategic thinking</p>
+</li>
+<li data-start="5516" data-end="5536">
+<p data-start="5518" data-end="5536">Digital literacy</p>
+</li>
+<li data-start="5537" data-end="5565">
+<p data-start="5539" data-end="5565">Adaptability and agility</p>
+</li>
+<li data-start="5566" data-end="5594">
+<p data-start="5568" data-end="5594">Customer-centric mindset</p>
+</li>
+<li data-start="5595" data-end="5626">
+<p data-start="5597" data-end="5626">Data-driven decision-making</p>
+</li>
+<li data-start="5627" data-end="5655">
+<p data-start="5629" data-end="5655">Collaborative leadership</p>
+</li>
+</ul>
+<p data-start="5657" data-end="5701"><em data-start="5657" data-end="5701">(Detailed explanation continues in Part 2)</em></p>
+<hr data-start="5703" data-end="5706">
+<blockquote data-start="5708" data-end="5835" data-is-last-node="" data-is-only-node="">
+<p data-start="5710" data-end="5835" data-is-last-node=""><strong data-start="5710" data-end="5739"><em data-start="5712" data-end="5737">End of Unit 2 – Part 1.</em></strong><br data-start="5739" data-end="5742">
+👉 <strong data-start="5745" data-end="5835" data-is-last-node="">Continue to <em data-start="5759" data-end="5776">Unit 2 – Part 2</em> (Key Competencies of Digital Leaders &amp; Digital Culture)?</strong></p>
+</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><br class="sr-only">
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="fb6c26e8-3e97-49f5-87a1-a2ccef072253" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word light markdown-new-styling"><hr data-start="0" data-end="3">
+<blockquote data-start="5" data-end="81">
+<p data-start="7" data-end="81"><strong data-start="7" data-end="18">STATUS:</strong> <strong data-start="19" data-end="62">Unit 2 – Leading Digital Transformation</strong> | <strong data-start="65" data-end="81">Part 2 of ~3</strong></p>
+</blockquote>
+<hr data-start="83" data-end="86">
+<h2 data-start="88" data-end="142"><strong data-start="91" data-end="142">Unit 2: Leading Digital Transformation – Part 2</strong></h2>
+<p data-start="144" data-end="287">This part continues and completes <strong data-start="178" data-end="218">Key Competencies for Digital Leaders</strong> and then covers <strong data-start="235" data-end="286">Building a Digital Culture within Organizations</strong>.</p>
+<hr data-start="289" data-end="292">
+<h2 data-start="294" data-end="360"><strong data-start="297" data-end="360">Subtopic 2: Key Competencies for Digital Leaders (Detailed)</strong></h2>
+<h3 data-start="362" data-end="385"><strong data-start="366" data-end="385">1. Introduction</strong></h3>
+<p data-start="387" data-end="754">Digital leaders operate in environments marked by <strong data-start="437" data-end="505">rapid technological change, uncertainty, and intense competition</strong>. Therefore, effective digital leadership requires more than traditional management skills. Leaders must combine <strong data-start="618" data-end="694">strategic vision, technological awareness, and people-centric leadership</strong> to guide organizations through transformation successfully.</p>
+<hr data-start="756" data-end="759">
+<h3 data-start="761" data-end="798"><strong data-start="765" data-end="798">2. Key Competencies Explained</strong></h3>
+<hr data-start="800" data-end="803">
+<h3 data-start="805" data-end="846"><strong data-start="809" data-end="846">2.1 Strategic Thinking and Vision</strong></h3>
+<p data-start="848" data-end="909">Digital leaders must think <strong data-start="875" data-end="888">long-term</strong> and <strong data-start="893" data-end="908">system-wide</strong>.</p>
+<h4 data-start="911" data-end="932">What this means:</h4>
+<ul data-start="933" data-end="1078">
+<li data-start="933" data-end="992">
+<p data-start="935" data-end="992">Understanding how digital technologies reshape industries</p>
+</li>
+<li data-start="993" data-end="1021">
+<p data-start="995" data-end="1021">Anticipating future trends</p>
+</li>
+<li data-start="1022" data-end="1078">
+<p data-start="1024" data-end="1078">Aligning digital initiatives with organizational goals</p>
+</li>
+</ul>
+<p data-start="1080" data-end="1096"><strong data-start="1080" data-end="1094">Key Point:</strong></p>
+<blockquote data-start="1097" data-end="1194">
+<p data-start="1099" data-end="1194">A digital leader focuses not only on today’s efficiency but also on tomorrow’s competitiveness.</p>
+</blockquote>
+<p data-start="1196" data-end="1326"><strong data-start="1196" data-end="1208">Example:</strong><br data-start="1208" data-end="1211">
+Netflix’s leadership anticipated the decline of physical DVDs and invested early in streaming and original content.</p>
+<hr data-start="1328" data-end="1331">
+<h3 data-start="1333" data-end="1361"><strong data-start="1337" data-end="1361">2.2 Digital Literacy</strong></h3>
+<p data-start="1363" data-end="1425">Digital literacy does <strong data-start="1385" data-end="1392">not</strong> mean coding expertise. It means:</p>
+<ul data-start="1426" data-end="1579">
+<li data-start="1426" data-end="1485">
+<p data-start="1428" data-end="1485">Understanding what digital technologies can and cannot do</p>
+</li>
+<li data-start="1486" data-end="1579">
+<p data-start="1488" data-end="1579">Knowing how technologies like <strong data-start="1518" data-end="1563">AI, cloud, data analytics, and automation</strong> affect business</p>
+</li>
+</ul>
+<p data-start="1581" data-end="1600"><strong data-start="1581" data-end="1600">Why it matters:</strong></p>
+<ul data-start="1601" data-end="1727">
+<li data-start="1601" data-end="1635">
+<p data-start="1603" data-end="1635">Enables informed decision-making</p>
+</li>
+<li data-start="1636" data-end="1682">
+<p data-start="1638" data-end="1682">Prevents blind dependence on technical teams</p>
+</li>
+<li data-start="1683" data-end="1727">
+<p data-start="1685" data-end="1727">Helps leaders evaluate digital investments</p>
+</li>
+</ul>
+<p data-start="1729" data-end="1840"><strong data-start="1729" data-end="1743">Important:</strong><br data-start="1743" data-end="1746">
+Leaders who lack digital literacy often resist transformation or make poor technology choices.</p>
+<hr data-start="1842" data-end="1845">
+<h3 data-start="1847" data-end="1883"><strong data-start="1851" data-end="1883">2.3 Adaptability and Agility</strong></h3>
+<p data-start="1885" data-end="1935">Digital environments change rapidly. Leaders must:</p>
+<ul data-start="1936" data-end="2030">
+<li data-start="1936" data-end="1970">
+<p data-start="1938" data-end="1970">Respond quickly to market shifts</p>
+</li>
+<li data-start="1971" data-end="2002">
+<p data-start="1973" data-end="2002">Modify strategies when needed</p>
+</li>
+<li data-start="2003" data-end="2030">
+<p data-start="2005" data-end="2030">Encourage experimentation</p>
+</li>
+</ul>
+<p data-start="2032" data-end="2080"><strong data-start="2032" data-end="2080">Traditional Leadership vs Digital Leadership</strong></p>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2082" data-end="2298" class="w-fit min-w-(--thread-content-width)"><thead data-start="2082" data-end="2129"><tr data-start="2082" data-end="2129"><th data-start="2082" data-end="2107" data-col-size="sm" class="">Traditional Leadership</th><th data-start="2107" data-end="2129" data-col-size="sm" class="">Digital Leadership</th></tr></thead><tbody data-start="2176" data-end="2298"><tr data-start="2176" data-end="2214"><td data-start="2176" data-end="2196" data-col-size="sm">Stability-focused</td><td data-start="2196" data-end="2214" data-col-size="sm">Change-focused</td></tr><tr data-start="2215" data-end="2257"><td data-start="2215" data-end="2238" data-col-size="sm">Long planning cycles</td><td data-start="2238" data-end="2257" data-col-size="sm">Rapid iteration</td></tr><tr data-start="2258" data-end="2298"><td data-start="2258" data-end="2272" data-col-size="sm">Risk-averse</td><td data-start="2272" data-end="2298" data-col-size="sm">Calculated risk-taking</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 32.7969px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2300" data-end="2303">
+<h3 data-start="2305" data-end="2341"><strong data-start="2309" data-end="2341">2.4 Customer-Centric Mindset</strong></h3>
+<p data-start="2343" data-end="2422">Digital transformation is largely driven by <strong data-start="2387" data-end="2421">changing customer expectations</strong>.</p>
+<p data-start="2424" data-end="2440">Digital leaders:</p>
+<ul data-start="2441" data-end="2559">
+<li data-start="2441" data-end="2476">
+<p data-start="2443" data-end="2476">Focus on customer experience (CX)</p>
+</li>
+<li data-start="2477" data-end="2519">
+<p data-start="2479" data-end="2519">Use data to understand customer behavior</p>
+</li>
+<li data-start="2520" data-end="2559">
+<p data-start="2522" data-end="2559">Design services around customer needs</p>
+</li>
+</ul>
+<p data-start="2561" data-end="2677"><strong data-start="2561" data-end="2573">Example:</strong><br data-start="2573" data-end="2576">
+Amazon continuously improves personalization, delivery speed, and convenience by using customer data.</p>
+<hr data-start="2679" data-end="2682">
+<h3 data-start="2684" data-end="2723"><strong data-start="2688" data-end="2723">2.5 Data-Driven Decision Making</strong></h3>
+<p data-start="2725" data-end="2749">Digital leaders rely on:</p>
+<ul data-start="2750" data-end="2815">
+<li data-start="2750" data-end="2766">
+<p data-start="2752" data-end="2766">Data analytics</p>
+</li>
+<li data-start="2767" data-end="2789">
+<p data-start="2769" data-end="2789">Real-time dashboards</p>
+</li>
+<li data-start="2790" data-end="2815">
+<p data-start="2792" data-end="2815">Evidence-based insights</p>
+</li>
+</ul>
+<p data-start="2817" data-end="2902">Instead of intuition alone, decisions are supported by <strong data-start="2872" data-end="2901">data patterns and metrics</strong>.</p>
+<p data-start="2904" data-end="2922"><strong data-start="2904" data-end="2920">Key Benefit:</strong></p>
+<ul data-start="2923" data-end="3005">
+<li data-start="2923" data-end="2946">
+<p data-start="2925" data-end="2946">Reduces uncertainty</p>
+</li>
+<li data-start="2947" data-end="2968">
+<p data-start="2949" data-end="2968">Improves accuracy</p>
+</li>
+<li data-start="2969" data-end="3005">
+<p data-start="2971" data-end="3005">Enhances performance measurement</p>
+</li>
+</ul>
+<hr data-start="3007" data-end="3010">
+<h3 data-start="3012" data-end="3063"><strong data-start="3016" data-end="3063">2.6 Collaborative and Empowering Leadership</strong></h3>
+<p data-start="3065" data-end="3132">Digital transformation requires <strong data-start="3097" data-end="3131">cross-functional collaboration</strong>.</p>
+<p data-start="3134" data-end="3147">Leaders must:</p>
+<ul data-start="3148" data-end="3238">
+<li data-start="3148" data-end="3181">
+<p data-start="3150" data-end="3181">Break silos between departments</p>
+</li>
+<li data-start="3182" data-end="3215">
+<p data-start="3184" data-end="3215">Empower teams to take decisions</p>
+</li>
+<li data-start="3216" data-end="3238">
+<p data-start="3218" data-end="3238">Promote transparency</p>
+</li>
+</ul>
+<p data-start="3240" data-end="3255"><strong data-start="3240" data-end="3253">Key Idea:</strong></p>
+<blockquote data-start="3256" data-end="3311">
+<p data-start="3258" data-end="3311">Digital leaders act as facilitators, not controllers.</p>
+</blockquote>
+<hr data-start="3313" data-end="3316">
+<h3 data-start="3318" data-end="3375"><strong data-start="3322" data-end="3375">3. Summary Table: Competencies of Digital Leaders</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3377" data-end="3782" class="w-fit min-w-(--thread-content-width)"><thead data-start="3377" data-end="3405"><tr data-start="3377" data-end="3405"><th data-start="3377" data-end="3390" data-col-size="sm" class="">Competency</th><th data-start="3390" data-end="3405" data-col-size="md" class="">Explanation</th></tr></thead><tbody data-start="3433" data-end="3782"><tr data-start="3433" data-end="3503"><td data-start="3433" data-end="3452" data-col-size="sm">Strategic Vision</td><td data-start="3452" data-end="3503" data-col-size="md">Aligns digital initiatives with long-term goals</td></tr><tr data-start="3504" data-end="3569"><td data-start="3504" data-end="3523" data-col-size="sm">Digital Literacy</td><td data-start="3523" data-end="3569" data-col-size="md">Understands digital tools and their impact</td></tr><tr data-start="3570" data-end="3608"><td data-start="3570" data-end="3580" data-col-size="sm">Agility</td><td data-start="3580" data-end="3608" data-col-size="md">Adapts quickly to change</td></tr><tr data-start="3609" data-end="3674"><td data-start="3609" data-end="3626" data-col-size="sm">Customer Focus</td><td data-start="3626" data-end="3674" data-col-size="md">Designs transformation around customer needs</td></tr><tr data-start="3675" data-end="3726"><td data-start="3675" data-end="3694" data-col-size="sm">Data Orientation</td><td data-start="3694" data-end="3726" data-col-size="md">Uses analytics for decisions</td></tr><tr data-start="3727" data-end="3782"><td data-start="3727" data-end="3743" data-col-size="sm">Collaboration</td><td data-start="3743" data-end="3782" data-col-size="md">Encourages teamwork and empowerment</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 32.7969px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3784" data-end="3787">
+<h3 data-start="3789" data-end="3823"><strong data-start="3793" data-end="3823">4. Summary of this Section</strong></h3>
+<ul data-start="3825" data-end="4072">
+<li data-start="3825" data-end="3910">
+<p data-start="3827" data-end="3910">Digital leaders need <strong data-start="3848" data-end="3872">new-age competencies</strong> beyond traditional leadership skills.</p>
+</li>
+<li data-start="3911" data-end="3994">
+<p data-start="3913" data-end="3994">Strategic thinking, digital awareness, agility, and customer focus are essential.</p>
+</li>
+<li data-start="3995" data-end="4072">
+<p data-start="3997" data-end="4072">Effective digital leadership balances <strong data-start="4035" data-end="4071">technology, people, and strategy</strong>.</p>
+</li>
+</ul>
+<hr data-start="4074" data-end="4077">
+<h2 data-start="4079" data-end="4145"><strong data-start="4082" data-end="4145">Subtopic 3: Building a Digital Culture within Organizations</strong></h2>
+<hr data-start="4147" data-end="4150">
+<h3 data-start="4152" data-end="4175"><strong data-start="4156" data-end="4175">1. Introduction</strong></h3>
+<p data-start="4177" data-end="4367">A <strong data-start="4179" data-end="4198">digital culture</strong> refers to the shared values, beliefs, and behaviors that support digital transformation. Even the best digital strategies fail if organizational culture resists change.</p>
+<p data-start="4369" data-end="4390">👉 <strong data-start="4372" data-end="4388">Key Insight:</strong></p>
+<blockquote data-start="4391" data-end="4486">
+<p data-start="4393" data-end="4486">Digital transformation succeeds when culture supports innovation, learning, and adaptability.</p>
+</blockquote>
+<hr data-start="4488" data-end="4491">
+<h3 data-start="4493" data-end="4540"><strong data-start="4497" data-end="4540">2. Characteristics of a Digital Culture</strong></h3>
+<ul data-start="4542" data-end="4653">
+<li data-start="4542" data-end="4565">
+<p data-start="4544" data-end="4565">Innovation-oriented</p>
+</li>
+<li data-start="4566" data-end="4593">
+<p data-start="4568" data-end="4593">Open to experimentation</p>
+</li>
+<li data-start="4594" data-end="4614">
+<p data-start="4596" data-end="4614">Learning-focused</p>
+</li>
+<li data-start="4615" data-end="4632">
+<p data-start="4617" data-end="4632">Collaborative</p>
+</li>
+<li data-start="4633" data-end="4653">
+<p data-start="4635" data-end="4653">Customer-centric</p>
+</li>
+</ul>
+<hr data-start="4655" data-end="4658">
+<h3 data-start="4660" data-end="4700"><strong data-start="4664" data-end="4700">3. Importance of Digital Culture</strong></h3>
+<p data-start="4702" data-end="4727">A strong digital culture:</p>
+<ul data-start="4728" data-end="4865">
+<li data-start="4728" data-end="4769">
+<p data-start="4730" data-end="4769">Encourages adoption of new technologies</p>
+</li>
+<li data-start="4770" data-end="4800">
+<p data-start="4772" data-end="4800">Reduces resistance to change</p>
+</li>
+<li data-start="4801" data-end="4831">
+<p data-start="4803" data-end="4831">Improves employee engagement</p>
+</li>
+<li data-start="4832" data-end="4865">
+<p data-start="4834" data-end="4865">Supports continuous improvement</p>
+</li>
+</ul>
+<p data-start="4867" data-end="4941">Without cultural change, digital transformation remains <strong data-start="4923" data-end="4940">surface-level</strong>.</p>
+<hr data-start="4943" data-end="4946">
+<h3 data-start="4948" data-end="4994"><strong data-start="4952" data-end="4994">4. How Leaders Build a Digital Culture</strong></h3>
+<hr data-start="4996" data-end="4999">
+<h3 data-start="5001" data-end="5055"><strong data-start="5005" data-end="5055">4.1 Encouraging Innovation and Experimentation</strong></h3>
+<p data-start="5057" data-end="5070">Leaders must:</p>
+<ul data-start="5071" data-end="5166">
+<li data-start="5071" data-end="5102">
+<p data-start="5073" data-end="5102">Allow small-scale experiments</p>
+</li>
+<li data-start="5103" data-end="5146">
+<p data-start="5105" data-end="5146">Accept failures as learning opportunities</p>
+</li>
+<li data-start="5147" data-end="5166">
+<p data-start="5149" data-end="5166">Reward creativity</p>
+</li>
+</ul>
+<p data-start="5168" data-end="5252"><strong data-start="5168" data-end="5180">Example:</strong><br data-start="5180" data-end="5183">
+Google’s “20% time” encourages employees to explore innovative ideas.</p>
+<hr data-start="5254" data-end="5257">
+<h3 data-start="5259" data-end="5300"><strong data-start="5263" data-end="5300">4.2 Promoting Continuous Learning</strong></h3>
+<p data-start="5302" data-end="5352">Digital culture requires constant skill upgrading.</p>
+<p data-start="5354" data-end="5370">Leaders support:</p>
+<ul data-start="5371" data-end="5446">
+<li data-start="5371" data-end="5398">
+<p data-start="5373" data-end="5398">Digital training programs</p>
+</li>
+<li data-start="5399" data-end="5426">
+<p data-start="5401" data-end="5426">Online learning platforms</p>
+</li>
+<li data-start="5427" data-end="5446">
+<p data-start="5429" data-end="5446">Knowledge sharing</p>
+</li>
+</ul>
+<p data-start="5448" data-end="5554"><strong data-start="5448" data-end="5477">Flow of Learning Culture:</strong><br data-start="5477" data-end="5480">
+Traditional Skills → Digital Upskilling → Continuous Learning → Innovation</p>
+<hr data-start="5556" data-end="5559">
+<h3 data-start="5561" data-end="5602"><strong data-start="5565" data-end="5602">4.3 Breaking Organizational Silos</strong></h3>
+<p data-start="5604" data-end="5655">Digital transformation needs collaboration between:</p>
+<ul data-start="5656" data-end="5703">
+<li data-start="5656" data-end="5662">
+<p data-start="5658" data-end="5662">IT</p>
+</li>
+<li data-start="5663" data-end="5676">
+<p data-start="5665" data-end="5676">Marketing</p>
+</li>
+<li data-start="5677" data-end="5691">
+<p data-start="5679" data-end="5691">Operations</p>
+</li>
+<li data-start="5692" data-end="5703">
+<p data-start="5694" data-end="5703">Finance</p>
+</li>
+</ul>
+<p data-start="5705" data-end="5713">Leaders:</p>
+<ul data-start="5714" data-end="5778">
+<li data-start="5714" data-end="5746">
+<p data-start="5716" data-end="5746">Promote cross-functional teams</p>
+</li>
+<li data-start="5747" data-end="5778">
+<p data-start="5749" data-end="5778">Encourage information sharing</p>
+</li>
+</ul>
+<hr data-start="5780" data-end="5783">
+<h3 data-start="5785" data-end="5817"><strong data-start="5789" data-end="5817">4.4 Empowering Employees</strong></h3>
+<p data-start="5819" data-end="5840">Empowerment includes:</p>
+<ul data-start="5841" data-end="5919">
+<li data-start="5841" data-end="5872">
+<p data-start="5843" data-end="5872">Decentralized decision-making</p>
+</li>
+<li data-start="5873" data-end="5889">
+<p data-start="5875" data-end="5889">Trust in teams</p>
+</li>
+<li data-start="5890" data-end="5919">
+<p data-start="5892" data-end="5919">Autonomy in problem-solving</p>
+</li>
+</ul>
+<p data-start="5921" data-end="5973"><strong data-start="5921" data-end="5932">Result:</strong><br data-start="5932" data-end="5935">
+Faster innovation and improved morale.</p>
+<hr data-start="5975" data-end="5978">
+<h3 data-start="5980" data-end="6010"><strong data-start="5984" data-end="6010">4.5 Leading by Example</strong></h3>
+<p data-start="6012" data-end="6025">Leaders must:</p>
+<ul data-start="6026" data-end="6107">
+<li data-start="6026" data-end="6056">
+<p data-start="6028" data-end="6056">Use digital tools themselves</p>
+</li>
+<li data-start="6057" data-end="6079">
+<p data-start="6059" data-end="6079">Embrace transparency</p>
+</li>
+<li data-start="6080" data-end="6107">
+<p data-start="6082" data-end="6107">Show openness to feedback</p>
+</li>
+</ul>
+<p data-start="6109" data-end="6124"><strong data-start="6109" data-end="6122">Key Rule:</strong></p>
+<blockquote data-start="6125" data-end="6171">
+<p data-start="6127" data-end="6171">Employees follow behavior, not instructions.</p>
+</blockquote>
+<hr data-start="6173" data-end="6176">
+<h3 data-start="6178" data-end="6227"><strong data-start="6182" data-end="6227">5. Challenges in Building Digital Culture</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="6229" data-end="6461" class="w-fit min-w-(--thread-content-width)"><thead data-start="6229" data-end="6256"><tr data-start="6229" data-end="6256"><th data-start="6229" data-end="6241" data-col-size="sm" class="">Challenge</th><th data-start="6241" data-end="6256" data-col-size="sm" class="">Explanation</th></tr></thead><tbody data-start="6282" data-end="6461"><tr data-start="6282" data-end="6328"><td data-start="6282" data-end="6305" data-col-size="sm">Resistance to change</td><td data-col-size="sm" data-start="6305" data-end="6328">Fear of uncertainty</td></tr><tr data-start="6329" data-end="6372"><td data-start="6329" data-end="6342" data-col-size="sm">Skill gaps</td><td data-col-size="sm" data-start="6342" data-end="6372">Lack of digital competence</td></tr><tr data-start="6373" data-end="6411"><td data-start="6373" data-end="6391" data-col-size="sm">Rigid hierarchy</td><td data-col-size="sm" data-start="6391" data-end="6411">Slows innovation</td></tr><tr data-start="6412" data-end="6461"><td data-start="6412" data-end="6430" data-col-size="sm">Fear of failure</td><td data-col-size="sm" data-start="6430" data-end="6461">Discourages experimentation</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 32.7969px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="6463" data-end="6502">Leaders must address these proactively.</p>
+<hr data-start="6504" data-end="6507">
+<h3 data-start="6509" data-end="6543"><strong data-start="6513" data-end="6543">6. Summary of this Section</strong></h3>
+<ul data-start="6545" data-end="6759">
+<li data-start="6545" data-end="6622">
+<p data-start="6547" data-end="6622">Digital culture is a <strong data-start="6568" data-end="6595">critical success factor</strong> in digital transformation.</p>
+</li>
+<li data-start="6623" data-end="6671">
+<p data-start="6625" data-end="6671">Leaders play a direct role in shaping culture.</p>
+</li>
+<li data-start="6672" data-end="6759">
+<p data-start="6674" data-end="6759">Innovation, learning, collaboration, and empowerment define a strong digital culture.</p>
+</li>
+</ul>
+<hr data-start="6761" data-end="6764">
+<blockquote data-start="6766" data-end="6914" data-is-last-node="" data-is-only-node="">
+<p data-start="6768" data-end="6914" data-is-last-node=""><strong data-start="6768" data-end="6797"><em data-start="6770" data-end="6795">End of Unit 2 – Part 2.</em></strong><br data-start="6797" data-end="6800">
+👉 <strong data-start="6803" data-end="6914" data-is-last-node="">Continue to <em data-start="6817" data-end="6834">Unit 2 – Part 3</em> (Agile &amp; Lean Methodologies and Their Application to Digital Transformation)?</strong></p>
+</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><br class="sr-only">
+      </div>
+    </div>
+    <div class="message" id="message-3">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="e76fdafe-1712-4570-804a-7380602b0497" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word light markdown-new-styling"><hr data-start="0" data-end="3">
+<blockquote data-start="5" data-end="81">
+<p data-start="7" data-end="81"><strong data-start="7" data-end="18">STATUS:</strong> <strong data-start="19" data-end="62">Unit 2 – Leading Digital Transformation</strong> | <strong data-start="65" data-end="81">Part 3 of ~3</strong></p>
+</blockquote>
+<hr data-start="83" data-end="86">
+<h2 data-start="88" data-end="142"><strong data-start="91" data-end="142">Unit 2: Leading Digital Transformation – Part 3</strong></h2>
+<p data-start="144" data-end="167">This final part covers:</p>
+<ul data-start="168" data-end="313">
+<li data-start="168" data-end="207">
+<p data-start="170" data-end="207"><strong data-start="170" data-end="207">Introduction to Agile Methodology</strong></p>
+</li>
+<li data-start="208" data-end="246">
+<p data-start="210" data-end="246"><strong data-start="210" data-end="246">Introduction to Lean Methodology</strong></p>
+</li>
+<li data-start="247" data-end="313">
+<p data-start="249" data-end="313"><strong data-start="249" data-end="313">Applying Agile and Lean Principles to Digital Transformation</strong></p>
+</li>
+</ul>
+<hr data-start="315" data-end="318">
+<h2 data-start="320" data-end="372"><strong data-start="323" data-end="372">Subtopic 4: Introduction to Agile Methodology</strong></h2>
+<hr data-start="374" data-end="377">
+<h3 data-start="379" data-end="402"><strong data-start="383" data-end="402">1. Introduction</strong></h3>
+<p data-start="404" data-end="727">Agile methodology is a <strong data-start="427" data-end="497">flexible, iterative approach to managing work and delivering value</strong>, especially suited to environments with rapid change and uncertainty. In digital transformation, where requirements evolve quickly and customer expectations shift continuously, Agile provides a structured yet adaptable framework.</p>
+<p data-start="729" data-end="748">👉 <strong data-start="732" data-end="746">Core Idea:</strong></p>
+<blockquote data-start="749" data-end="838">
+<p data-start="751" data-end="838">Agile focuses on <strong data-start="768" data-end="837">speed, flexibility, customer feedback, and continuous improvement</strong>.</p>
+</blockquote>
+<hr data-start="840" data-end="843">
+<h3 data-start="845" data-end="868"><strong data-start="849" data-end="868">2. Key Concepts</strong></h3>
+<ul data-start="870" data-end="1016">
+<li data-start="870" data-end="887">
+<p data-start="872" data-end="887">Agile mindset</p>
+</li>
+<li data-start="888" data-end="913">
+<p data-start="890" data-end="913">Iterative development</p>
+</li>
+<li data-start="914" data-end="938">
+<p data-start="916" data-end="938">Incremental delivery</p>
+</li>
+<li data-start="939" data-end="965">
+<p data-start="941" data-end="965">Customer collaboration</p>
+</li>
+<li data-start="966" data-end="992">
+<p data-start="968" data-end="992">Cross-functional teams</p>
+</li>
+<li data-start="993" data-end="1016">
+<p data-start="995" data-end="1016">Continuous feedback</p>
+</li>
+</ul>
+<hr data-start="1018" data-end="1021">
+<h3 data-start="1023" data-end="1054"><strong data-start="1027" data-end="1054">3. Detailed Explanation</strong></h3>
+<h4 data-start="1056" data-end="1110"><strong data-start="1061" data-end="1110">3.1 Traditional (Waterfall) vs Agile Approach</strong></h4>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1112" data-end="1446" class="w-fit min-w-(--thread-content-width)"><thead data-start="1112" data-end="1156"><tr data-start="1112" data-end="1156"><th data-start="1112" data-end="1121" data-col-size="sm" class="">Aspect</th><th data-start="1121" data-end="1147" data-col-size="sm" class="">Traditional (Waterfall)</th><th data-start="1147" data-end="1156" data-col-size="sm" class="">Agile</th></tr></thead><tbody data-start="1198" data-end="1446"><tr data-start="1198" data-end="1252"><td data-start="1198" data-end="1209" data-col-size="sm">Planning</td><td data-start="1209" data-end="1228" data-col-size="sm">Long-term, fixed</td><td data-start="1228" data-end="1252" data-col-size="sm">Short-term, adaptive</td></tr><tr data-start="1253" data-end="1305"><td data-start="1253" data-end="1265" data-col-size="sm">Execution</td><td data-start="1265" data-end="1285" data-col-size="sm">Sequential phases</td><td data-start="1285" data-end="1305" data-col-size="sm">Iterative cycles</td></tr><tr data-start="1306" data-end="1353"><td data-start="1306" data-end="1329" data-col-size="sm">Customer Involvement</td><td data-start="1329" data-end="1339" data-col-size="sm">Minimal</td><td data-start="1339" data-end="1353" data-col-size="sm">Continuous</td></tr><tr data-start="1354" data-end="1396"><td data-start="1354" data-end="1372" data-col-size="sm">Change Handling</td><td data-start="1372" data-end="1384" data-col-size="sm">Difficult</td><td data-start="1384" data-end="1396" data-col-size="sm">Welcomed</td></tr><tr data-start="1397" data-end="1446"><td data-start="1397" data-end="1408" data-col-size="sm">Delivery</td><td data-start="1408" data-end="1421" data-col-size="sm">At the end</td><td data-start="1421" data-end="1446" data-col-size="sm">Frequent, incremental</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 32.7969px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1448" data-end="1451">
+<h4 data-start="1453" data-end="1490"><strong data-start="1458" data-end="1490">3.2 Core Principles of Agile</strong></h4>
+<p data-start="1492" data-end="1529">Agile is based on principles such as:</p>
+<ul data-start="1530" data-end="1688">
+<li data-start="1530" data-end="1566">
+<p data-start="1532" data-end="1566">Deliver value early and frequently</p>
+</li>
+<li data-start="1567" data-end="1598">
+<p data-start="1569" data-end="1598">Welcome changing requirements</p>
+</li>
+<li data-start="1599" data-end="1644">
+<p data-start="1601" data-end="1644">Build projects around motivated individuals</p>
+</li>
+<li data-start="1645" data-end="1688">
+<p data-start="1647" data-end="1688">Measure progress through working outcomes</p>
+</li>
+</ul>
+<p data-start="1690" data-end="1769"><strong data-start="1690" data-end="1719">Agile Cycle (Simplified):</strong><br data-start="1719" data-end="1722">
+Plan → Build → Test → Review → Improve → Repeat</p>
+<hr data-start="1771" data-end="1774">
+<h4 data-start="1776" data-end="1838"><strong data-start="1781" data-end="1838">3.3 Why Agile is Important for Digital Transformation</strong></h4>
+<p data-start="1840" data-end="1872">Digital transformation involves:</p>
+<ul data-start="1873" data-end="1942">
+<li data-start="1873" data-end="1897">
+<p data-start="1875" data-end="1897">Uncertain requirements</p>
+</li>
+<li data-start="1898" data-end="1916">
+<p data-start="1900" data-end="1916">New technologies</p>
+</li>
+<li data-start="1917" data-end="1942">
+<p data-start="1919" data-end="1942">Evolving customer needs</p>
+</li>
+</ul>
+<p data-start="1944" data-end="1970">Agile helps organizations:</p>
+<ul data-start="1971" data-end="2074">
+<li data-start="1971" data-end="1984">
+<p data-start="1973" data-end="1984">Reduce risk</p>
+</li>
+<li data-start="1985" data-end="2010">
+<p data-start="1987" data-end="2010">Improve speed to market</p>
+</li>
+<li data-start="2011" data-end="2043">
+<p data-start="2013" data-end="2043">Increase customer satisfaction</p>
+</li>
+<li data-start="2044" data-end="2074">
+<p data-start="2046" data-end="2074">Learn and adapt continuously</p>
+</li>
+</ul>
+<hr data-start="2076" data-end="2079">
+<h3 data-start="2081" data-end="2099"><strong data-start="2085" data-end="2099">4. Example</strong></h3>
+<p data-start="2101" data-end="2144"><strong data-start="2101" data-end="2144">Example: Mobile Banking App Development</strong></p>
+<ul data-start="2145" data-end="2251">
+<li data-start="2145" data-end="2184">
+<p data-start="2147" data-end="2184">Features released in small iterations</p>
+</li>
+<li data-start="2185" data-end="2223">
+<p data-start="2187" data-end="2223">User feedback collected continuously</p>
+</li>
+<li data-start="2224" data-end="2251">
+<p data-start="2226" data-end="2251">Improvements made rapidly</p>
+</li>
+</ul>
+<p data-start="2253" data-end="2308">This approach minimizes failure and improves usability.</p>
+<hr data-start="2310" data-end="2313">
+<h3 data-start="2315" data-end="2354"><strong data-start="2319" data-end="2354">5. Summary of Agile Methodology</strong></h3>
+<ul data-start="2356" data-end="2526">
+<li data-start="2356" data-end="2403">
+<p data-start="2358" data-end="2403">Agile supports flexibility and fast learning.</p>
+</li>
+<li data-start="2404" data-end="2464">
+<p data-start="2406" data-end="2464">It is ideal for digital initiatives with high uncertainty.</p>
+</li>
+<li data-start="2465" data-end="2526">
+<p data-start="2467" data-end="2526">Agile emphasizes collaboration, feedback, and adaptability.</p>
+</li>
+</ul>
+<hr data-start="2528" data-end="2531">
+<h2 data-start="2533" data-end="2584"><strong data-start="2536" data-end="2584">Subtopic 5: Introduction to Lean Methodology</strong></h2>
+<hr data-start="2586" data-end="2589">
+<h3 data-start="2591" data-end="2614"><strong data-start="2595" data-end="2614">1. Introduction</strong></h3>
+<p data-start="2616" data-end="2847">Lean methodology focuses on <strong data-start="2644" data-end="2696">maximizing customer value while minimizing waste</strong>. Originating from manufacturing (Toyota Production System), Lean principles are now widely applied in services and digital transformation initiatives.</p>
+<p data-start="2849" data-end="2874">👉 <strong data-start="2852" data-end="2872">Lean Philosophy:</strong></p>
+<blockquote data-start="2875" data-end="2933">
+<p data-start="2877" data-end="2933">Do more with less — without compromising customer value.</p>
+</blockquote>
+<hr data-start="2935" data-end="2938">
+<h3 data-start="2940" data-end="2963"><strong data-start="2944" data-end="2963">2. Key Concepts</strong></h3>
+<ul data-start="2965" data-end="3067">
+<li data-start="2965" data-end="2974">
+<p data-start="2967" data-end="2974">Value</p>
+</li>
+<li data-start="2975" data-end="2991">
+<p data-start="2977" data-end="2991">Waste (Muda)</p>
+</li>
+<li data-start="2992" data-end="3027">
+<p data-start="2994" data-end="3027">Continuous improvement (Kaizen)</p>
+</li>
+<li data-start="3028" data-end="3052">
+<p data-start="3030" data-end="3052">Process optimization</p>
+</li>
+<li data-start="3053" data-end="3067">
+<p data-start="3055" data-end="3067">Efficiency</p>
+</li>
+</ul>
+<hr data-start="3069" data-end="3072">
+<h3 data-start="3074" data-end="3105"><strong data-start="3078" data-end="3105">3. Detailed Explanation</strong></h3>
+<h4 data-start="3107" data-end="3173"><strong data-start="3112" data-end="3173">3.1 Understanding “Value” from the Customer’s Perspective</strong></h4>
+<p data-start="3175" data-end="3207">Value refers to activities that:</p>
+<ul data-start="3208" data-end="3280">
+<li data-start="3208" data-end="3239">
+<p data-start="3210" data-end="3239">Directly benefit the customer</p>
+</li>
+<li data-start="3240" data-end="3280">
+<p data-start="3242" data-end="3280">Improve quality, speed, or convenience</p>
+</li>
+</ul>
+<p data-start="3282" data-end="3343">Any activity that does <strong data-start="3305" data-end="3312">not</strong> add value is considered waste.</p>
+<hr data-start="3345" data-end="3348">
+<h4 data-start="3350" data-end="3385"><strong data-start="3355" data-end="3385">3.2 Types of Waste in Lean</strong></h4>
+<p data-start="3387" data-end="3409">Common wastes include:</p>
+<ul data-start="3410" data-end="3519">
+<li data-start="3410" data-end="3428">
+<p data-start="3412" data-end="3428">Overproduction</p>
+</li>
+<li data-start="3429" data-end="3445">
+<p data-start="3431" data-end="3445">Waiting time</p>
+</li>
+<li data-start="3446" data-end="3471">
+<p data-start="3448" data-end="3471">Unnecessary processes</p>
+</li>
+<li data-start="3472" data-end="3494">
+<p data-start="3474" data-end="3494">Defects and rework</p>
+</li>
+<li data-start="3495" data-end="3519">
+<p data-start="3497" data-end="3519">Underutilized talent</p>
+</li>
+</ul>
+<hr data-start="3521" data-end="3524">
+<h4 data-start="3526" data-end="3554"><strong data-start="3531" data-end="3554">3.3 Lean Principles</strong></h4>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3556" data-end="3854" class="w-fit min-w-(--thread-content-width)"><thead data-start="3556" data-end="3588"><tr data-start="3556" data-end="3588"><th data-start="3556" data-end="3573" data-col-size="sm" class="">Lean Principle</th><th data-start="3573" data-end="3588" data-col-size="sm" class="">Explanation</th></tr></thead><tbody data-start="3620" data-end="3854"><tr data-start="3620" data-end="3666"><td data-start="3620" data-end="3637" data-col-size="sm">Identify Value</td><td data-start="3637" data-end="3666" data-col-size="sm">Understand customer needs</td></tr><tr data-start="3667" data-end="3711"><td data-start="3667" data-end="3686" data-col-size="sm">Map Value Stream</td><td data-start="3686" data-end="3711" data-col-size="sm">Analyze process steps</td></tr><tr data-start="3712" data-end="3761"><td data-start="3712" data-end="3730" data-col-size="sm">Eliminate Waste</td><td data-start="3730" data-end="3761" data-col-size="sm">Remove non-value activities</td></tr><tr data-start="3762" data-end="3804"><td data-start="3762" data-end="3777" data-col-size="sm">Improve Flow</td><td data-start="3777" data-end="3804" data-col-size="sm">Ensure smooth processes</td></tr><tr data-start="3805" data-end="3854"><td data-start="3805" data-end="3830" data-col-size="sm">Continuous Improvement</td><td data-start="3830" data-end="3854" data-col-size="sm">Ongoing optimization</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 32.7969px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3856" data-end="3859">
+<h3 data-start="3861" data-end="3916"><strong data-start="3865" data-end="3916">4. Importance of Lean in Digital Transformation</strong></h3>
+<p data-start="3918" data-end="3943">Lean helps organizations:</p>
+<ul data-start="3944" data-end="4048">
+<li data-start="3944" data-end="3972">
+<p data-start="3946" data-end="3972">Optimize digital workflows</p>
+</li>
+<li data-start="3973" data-end="3996">
+<p data-start="3975" data-end="3996">Reduce inefficiencies</p>
+</li>
+<li data-start="3997" data-end="4022">
+<p data-start="3999" data-end="4022">Improve service quality</p>
+</li>
+<li data-start="4023" data-end="4048">
+<p data-start="4025" data-end="4048">Lower operational costs</p>
+</li>
+</ul>
+<hr data-start="4050" data-end="4053">
+<h3 data-start="4055" data-end="4073"><strong data-start="4059" data-end="4073">5. Example</strong></h3>
+<p data-start="4075" data-end="4109"><strong data-start="4075" data-end="4109">Example: E-Governance Services</strong></p>
+<ul data-start="4110" data-end="4187">
+<li data-start="4110" data-end="4128">
+<p data-start="4112" data-end="4128">Digitizing forms</p>
+</li>
+<li data-start="4129" data-end="4155">
+<p data-start="4131" data-end="4155">Reducing approval layers</p>
+</li>
+<li data-start="4156" data-end="4187">
+<p data-start="4158" data-end="4187">Automating repetitive tasks</p>
+</li>
+</ul>
+<p data-start="4189" data-end="4240">Result: Faster service delivery and reduced errors.</p>
+<hr data-start="4242" data-end="4245">
+<h3 data-start="4247" data-end="4285"><strong data-start="4251" data-end="4285">6. Summary of Lean Methodology</strong></h3>
+<ul data-start="4287" data-end="4445">
+<li data-start="4287" data-end="4336">
+<p data-start="4289" data-end="4336">Lean focuses on efficiency and waste reduction.</p>
+</li>
+<li data-start="4337" data-end="4393">
+<p data-start="4339" data-end="4393">It ensures digital transformation delivers real value.</p>
+</li>
+<li data-start="4394" data-end="4445">
+<p data-start="4396" data-end="4445">Lean complements Agile by improving process flow.</p>
+</li>
+</ul>
+<hr data-start="4447" data-end="4450">
+<h2 data-start="4452" data-end="4531"><strong data-start="4455" data-end="4531">Subtopic 6: Applying Agile and Lean Principles to Digital Transformation</strong></h2>
+<hr data-start="4533" data-end="4536">
+<h3 data-start="4538" data-end="4561"><strong data-start="4542" data-end="4561">1. Introduction</strong></h3>
+<p data-start="4563" data-end="4741">Agile and Lean are <strong data-start="4582" data-end="4610">not competing approaches</strong>. In digital transformation, they are often used together to achieve <strong data-start="4679" data-end="4740">speed, flexibility, efficiency, and customer satisfaction</strong>.</p>
+<hr data-start="4743" data-end="4746">
+<h3 data-start="4748" data-end="4791"><strong data-start="4752" data-end="4791">2. How Agile and Lean Work Together</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4793" data-end="4996" class="w-fit min-w-(--thread-content-width)"><thead data-start="4793" data-end="4821"><tr data-start="4793" data-end="4821"><th data-start="4793" data-end="4807" data-col-size="sm" class="">Agile Focus</th><th data-start="4807" data-end="4821" data-col-size="sm" class="">Lean Focus</th></tr></thead><tbody data-start="4848" data-end="4996"><tr data-start="4848" data-end="4907"><td data-start="4848" data-end="4873" data-col-size="sm">Speed and adaptability</td><td data-col-size="sm" data-start="4873" data-end="4907">Efficiency and waste reduction</td></tr><tr data-start="4908" data-end="4953"><td data-start="4908" data-end="4929" data-col-size="sm">Iterative delivery</td><td data-col-size="sm" data-start="4929" data-end="4953">Process optimization</td></tr><tr data-start="4954" data-end="4996"><td data-start="4954" data-end="4974" data-col-size="sm">Customer feedback</td><td data-col-size="sm" data-start="4974" data-end="4996">Value maximization</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 32.7969px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4998" data-end="5001">
+<h3 data-start="5003" data-end="5051"><strong data-start="5007" data-end="5051">3. Application in Digital Transformation</strong></h3>
+<hr data-start="5053" data-end="5056">
+<h3 data-start="5058" data-end="5087"><strong data-start="5062" data-end="5087">3.1 Agile Application</strong></h3>
+<p data-start="5089" data-end="5118">Organizations apply Agile by:</p>
+<ul data-start="5119" data-end="5239">
+<li data-start="5119" data-end="5149">
+<p data-start="5121" data-end="5149">Using cross-functional teams</p>
+</li>
+<li data-start="5150" data-end="5194">
+<p data-start="5152" data-end="5194">Delivering digital solutions incrementally</p>
+</li>
+<li data-start="5195" data-end="5239">
+<p data-start="5197" data-end="5239">Incorporating continuous customer feedback</p>
+</li>
+</ul>
+<p data-start="5241" data-end="5295"><strong data-start="5241" data-end="5253">Example:</strong><br data-start="5253" data-end="5256">
+Agile-based ERP or CRM system rollouts.</p>
+<hr data-start="5297" data-end="5300">
+<h3 data-start="5302" data-end="5330"><strong data-start="5306" data-end="5330">3.2 Lean Application</strong></h3>
+<p data-start="5332" data-end="5351">Lean is applied by:</p>
+<ul data-start="5352" data-end="5447">
+<li data-start="5352" data-end="5384">
+<p data-start="5354" data-end="5384">Streamlining digital processes</p>
+</li>
+<li data-start="5385" data-end="5414">
+<p data-start="5387" data-end="5414">Automating repetitive tasks</p>
+</li>
+<li data-start="5415" data-end="5447">
+<p data-start="5417" data-end="5447">Removing unnecessary approvals</p>
+</li>
+</ul>
+<p data-start="5449" data-end="5496"><strong data-start="5449" data-end="5461">Example:</strong><br data-start="5461" data-end="5464">
+Automated HR onboarding systems.</p>
+<hr data-start="5498" data-end="5501">
+<h3 data-start="5503" data-end="5543"><strong data-start="5507" data-end="5543">3.3 Combined Agile–Lean Approach</strong></h3>
+<p data-start="5545" data-end="5658"><strong data-start="5545" data-end="5569">Flow Representation:</strong><br data-start="5569" data-end="5572">
+Customer Need → Agile Development → Lean Process Optimization → Continuous Improvement</p>
+<hr data-start="5660" data-end="5663">
+<h3 data-start="5665" data-end="5728"><strong data-start="5669" data-end="5728">4. Benefits of Agile and Lean in Digital Transformation</strong></h3>
+<ul data-start="5730" data-end="5868">
+<li data-start="5730" data-end="5751">
+<p data-start="5732" data-end="5751">Faster innovation</p>
+</li>
+<li data-start="5752" data-end="5768">
+<p data-start="5754" data-end="5768">Reduced risk</p>
+</li>
+<li data-start="5769" data-end="5801">
+<p data-start="5771" data-end="5801">Higher customer satisfaction</p>
+</li>
+<li data-start="5802" data-end="5837">
+<p data-start="5804" data-end="5837">Improved operational efficiency</p>
+</li>
+<li data-start="5838" data-end="5868">
+<p data-start="5840" data-end="5868">Better employee engagement</p>
+</li>
+</ul>
+<hr data-start="5870" data-end="5873">
+<h3 data-start="5875" data-end="5914"><strong data-start="5879" data-end="5914">5. Challenges in Implementation</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5916" data-end="6153" class="w-fit min-w-(--thread-content-width)"><thead data-start="5916" data-end="5943"><tr data-start="5916" data-end="5943"><th data-start="5916" data-end="5928" data-col-size="sm" class="">Challenge</th><th data-start="5928" data-end="5943" data-col-size="sm" class="">Explanation</th></tr></thead><tbody data-start="5969" data-end="6153"><tr data-start="5969" data-end="6009"><td data-start="5969" data-end="5991" data-col-size="sm">Cultural resistance</td><td data-col-size="sm" data-start="5991" data-end="6009">Fear of change</td></tr><tr data-start="6010" data-end="6055"><td data-start="6010" data-end="6023" data-col-size="sm">Skill gaps</td><td data-col-size="sm" data-start="6023" data-end="6055">Lack of Agile/Lean knowledge</td></tr><tr data-start="6056" data-end="6104"><td data-start="6056" data-end="6077" data-col-size="sm">Leadership support</td><td data-col-size="sm" data-start="6077" data-end="6104">Inconsistent commitment</td></tr><tr data-start="6105" data-end="6153"><td data-start="6105" data-end="6120" data-col-size="sm">Misalignment</td><td data-col-size="sm" data-start="6120" data-end="6153">Agile without Lean discipline</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 32.7969px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="6155" data-end="6215">Strong leadership is essential to overcome these challenges.</p>
+<hr data-start="6217" data-end="6220">
+<h3 data-start="6222" data-end="6256"><strong data-start="6226" data-end="6256">6. Summary of this Section</strong></h3>
+<ul data-start="6258" data-end="6472">
+<li data-start="6258" data-end="6324">
+<p data-start="6260" data-end="6324">Agile and Lean are essential enablers of digital transformation.</p>
+</li>
+<li data-start="6325" data-end="6365">
+<p data-start="6327" data-end="6365">Agile improves adaptability and speed.</p>
+</li>
+<li data-start="6366" data-end="6412">
+<p data-start="6368" data-end="6412">Lean improves efficiency and value delivery.</p>
+</li>
+<li data-start="6413" data-end="6472">
+<p data-start="6415" data-end="6472">Together, they create a sustainable transformation model.</p>
+</li>
+</ul>
+<hr data-start="6474" data-end="6477">
+<h2 data-start="6479" data-end="6504"><strong data-start="6482" data-end="6504">🔚 Unit 2 Complete</strong></h2>
+<hr data-start="6506" data-end="6509">
+<h3 data-start="6511" data-end="6545"><strong data-start="6515" data-end="6545">📘 Unit 2 – Review Section</strong></h3>
+<h4 data-start="6547" data-end="6560"><strong data-start="6552" data-end="6560">MCQs</strong></h4>
+<ol data-start="6561" data-end="6760">
+<li data-start="6561" data-end="6633">
+<p data-start="6564" data-end="6633">Which leadership quality is most critical for digital transformation?</p>
+</li>
+<li data-start="6634" data-end="6676">
+<p data-start="6637" data-end="6676">Agile methodology primarily focuses on:</p>
+</li>
+<li data-start="6677" data-end="6708">
+<p data-start="6680" data-end="6708">Lean methodology emphasizes:</p>
+</li>
+<li data-start="6709" data-end="6760">
+<p data-start="6712" data-end="6760">Digital culture supports which of the following?</p>
+</li>
+</ol>
+<h4 data-start="6762" data-end="6793"><strong data-start="6767" data-end="6793">Short Answer Questions</strong></h4>
+<ol data-start="6794" data-end="6975">
+<li data-start="6794" data-end="6854">
+<p data-start="6797" data-end="6854">Explain the role of leadership in digital transformation.</p>
+</li>
+<li data-start="6855" data-end="6900">
+<p data-start="6858" data-end="6900">List key competencies of a digital leader.</p>
+</li>
+<li data-start="6901" data-end="6928">
+<p data-start="6904" data-end="6928">What is digital culture?</p>
+</li>
+<li data-start="6929" data-end="6975">
+<p data-start="6932" data-end="6975">Differentiate Agile and Lean methodologies.</p>
+</li>
+</ol>
+<h4 data-start="6977" data-end="7007"><strong data-start="6982" data-end="7007">Descriptive Questions</strong></h4>
+<ol data-start="7008" data-end="7217">
+<li data-start="7008" data-end="7075">
+<p data-start="7011" data-end="7075">Discuss how leadership drives successful digital transformation.</p>
+</li>
+<li data-start="7076" data-end="7154">
+<p data-start="7079" data-end="7154">Explain the role of Agile and Lean methodologies in digital transformation.</p>
+</li>
+<li data-start="7155" data-end="7217">
+<p data-start="7158" data-end="7217">Analyze the importance of digital culture in organizations.</p>
+</li>
+</ol>
+<hr data-start="7219" data-end="7222">
+<h3 data-start="7224" data-end="7241"><strong data-start="7228" data-end="7241">Next Step</strong></h3>
+<p data-start="7243" data-end="7324" data-is-last-node="" data-is-only-node="">👉 <strong data-start="7246" data-end="7324" data-is-last-node="">Shall I proceed to <em data-start="7267" data-end="7321">Unit 3: Digital Transformation in Various Industries</em>?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
