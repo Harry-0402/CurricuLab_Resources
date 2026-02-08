@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quality, Lean, and Throughput Improvement at Pratibha Electrical Equipment Ltd.</title>
+  <title>ChatGPT - CaseOrbit</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -302,52 +302,52 @@
     .message-content pre .hljs-selector-tag,
     .message-content pre .hljs-literal,
     .message-content pre .hljs-tag {
-      color: #569cd6;
+      color: #569cd6; /* Blue for keywords */
     }
     .message-content pre .hljs-string,
     .message-content pre .hljs-doctag {
-      color: #ce9178;
+      color: #ce9178; /* Orange for strings */
     }
     .message-content pre .hljs-title,
     .message-content pre .hljs-section,
     .message-content pre .hljs-selector-id {
-      color: #dcdcaa;
+      color: #dcdcaa; /* Yellow for function names */
     }
     .message-content pre .hljs-subst,
     .message-content pre .hljs-type,
     .message-content pre .hljs-class .hljs-title,
     .message-content pre .hljs-title.class_,
     .message-content pre .hljs-attr {
-      color: #4ec9b0;
+      color: #4ec9b0; /* Cyan for types/classes */
     }
     .message-content pre .hljs-comment,
     .message-content pre .hljs-quote {
-      color: #6a9955;
+      color: #6a9955; /* Green for comments */
       font-style: italic;
     }
     .message-content pre .hljs-number,
     .message-content pre .hljs-built_in,
     .message-content pre .hljs-builtin-name {
-      color: #b5cea8;
+      color: #b5cea8; /* Light green for numbers */
     }
     .message-content pre .hljs-variable,
     .message-content pre .hljs-template-variable,
     .message-content pre .hljs-params {
-      color: #9cdcfe;
+      color: #9cdcfe; /* Light blue for variables */
     }
     .message-content pre .hljs-function {
-      color: #dcdcaa;
+      color: #dcdcaa; /* Yellow for functions */
     }
     .message-content pre .hljs-meta {
-      color: #c586c0;
+      color: #c586c0; /* Purple for meta/decorators */
     }
     .message-content pre .hljs-operator,
     .message-content pre .hljs-punctuation {
-      color: #d4d4d4;
+      color: #d4d4d4; /* Light gray for operators */
     }
     .message-content pre .hljs-regexp,
     .message-content pre .hljs-symbol {
-      color: #d16969;
+      color: #d16969; /* Red for regex */
     }
     .message-content table {
       border-collapse: collapse;
@@ -401,29 +401,27 @@
       border: none;
       border-radius: 50%;
       cursor: pointer;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      opacity: 0;
-      visibility: hidden;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       transition: all 0.3s ease;
       z-index: 1000;
     }
-    .back-to-top.show {
-      opacity: 1;
-      visibility: visible;
-    }
     .back-to-top:hover {
       transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
     }
     
     /* Theme Toggle Button */
     .theme-toggle {
       position: fixed;
-      bottom: 30px;
-      left: 30px;
+      top: 20px;
+      right: 20px;
       width: 50px;
       height: 50px;
       background: white;
@@ -450,185 +448,221 @@
 </head>
 <body>
   <div class="header">
-    <h1>Production and Operation Management (PB204)</h1>
+    <h1>ChatGPT - CaseOrbit</h1>
   </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
   
   <div class="messages">
     <div class="message" id="message-0">
       <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
       <div class="message-content">
-        <h6 class="sr-only">CaseOrbit Said:</h6>
-        <div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)">
-          <div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1">
-            <div class="flex max-w-full flex-col grow">
-              <div data-message-author-role="assistant" data-message-id="case-study-pratibha" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&]:mt-1" data-message-model-slug="gpt-5-2">
-                <div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]">
-                  <div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling">
-                    <h2>Quality, Lean, and Throughput Improvement at Pratibha Electrical Equipment Ltd.</h2>
-                    <hr>
-                    <h3>1. Organizational Background</h3>
-                    <p>Pratibha Electrical Equipment Ltd. (PEEL) is a mid-sized Indian manufacturer of low- and medium-voltage electrical equipment, including circuit breakers, control panels, switchgear assemblies, and distribution boards. Headquartered in Nashik, Maharashtra, the company was established in 2004 and caters primarily to infrastructure developers, industrial plants, and power utilities.</p>
-                    <p>As of FY 2024, PEEL recorded annual revenues of approximately ₹1,780 crore and employed around 3,100 people across manufacturing, quality, engineering, procurement, and service functions. The company operates a single integrated manufacturing facility in Nashik, spread over 28 acres, with fabrication, assembly, testing, inspection, and dispatch operations under one roof.</p>
-                    <p>PEEL’s business model is largely make-to-order, driven by project-specific customer requirements. Products must comply with stringent electrical safety standards, and quality failures can lead to catastrophic consequences such as equipment failure, plant shutdowns, or safety hazards. As a result, customers place high emphasis on product reliability and certification.</p>
-                    <p>Historically, PEEL relied on 100% inspection at multiple stages to ensure quality. While this approach minimized field failures, it increased inspection costs, cycle time, and work-in-process inventory. As order volumes grew, the inspection-heavy system became a bottleneck.</p>
-                    <p>Between FY 2021 and FY 2024, PEEL expanded capacity and introduced new product variants. However, operational performance did not improve proportionally. Lead times increased, defect rework costs rose, and customer complaints related to delayed deliveries became frequent.</p>
-                    <p>In early 2025, the Board raised concerns that PEEL’s operations were becoming inefficient and reactive. A strategic review suggested that quality issues, inventory buildup, and throughput constraints were interconnected rather than isolated problems. This realization triggered a deeper examination of inspection practices, statistical quality control, and lean production principles.</p>
-                    <hr>
-                    <h3>2. Business Environment and Context</h3>
-                    <p>The electrical equipment industry operates under intense pressure from infrastructure expansion, renewable energy projects, and industrial modernization. Customers demand reliable equipment delivered within tight project timelines. Delays or defects can result in penalties and reputational damage.</p>
-                    <p>Competition has intensified from both multinational firms with advanced quality systems and domestic players adopting lean manufacturing practices. These competitors emphasize process capability, statistical quality control, and pull-based production systems rather than reliance on final inspection.</p>
-                    <p>Regulatory requirements have also tightened. Certification agencies increasingly focus on process controls, documentation, and continuous improvement systems rather than only end-product testing.</p>
-                    <p>Cost pressures are significant. Copper, steel, and insulating materials account for a large share of production cost, making inventory management critical. Excess WIP and finished goods inventory tie up capital and reduce flexibility.</p>
-                    <p>Technological adoption has changed industry benchmarks. Companies implementing Lean, JIT, Kanban, and Six Sigma have demonstrated reductions in defect rates, lead time, and cost. These approaches require a shift in mindset—from detecting defects to preventing defects and from maximizing utilization to maximizing flow.</p>
-                    <p>Within this environment, PEEL’s traditional inspection-driven quality assurance system appeared increasingly outdated. Management recognized that quality, productivity, and delivery performance were tightly linked and needed to be addressed holistically.</p>
-                    <hr>
-                    <h3>3. Emerging Business Problem</h3>
-                    <p>PEEL began experiencing compounding operational problems.</p>
-                    <p>First, inspection queues grew steadily. Assembly lines frequently waited for inspection clearance before proceeding, causing delays and idle time. Despite multiple inspection stages, defect rates remained high, indicating that inspection was catching defects but not preventing them.</p>
-                    <p>Second, rework increased sharply. Defects detected late in the process required disassembly and re-testing, consuming skilled labor and extending lead times.</p>
-                    <p>Third, inventory levels rose. To buffer against inspection delays and rework uncertainty, planners increased WIP and finished goods inventory. This masked underlying problems but worsened cash flow.</p>
-                    <p>Fourth, throughput stagnated. Although machines and labor were available, output was constrained by a few critical processes—particularly final testing and inspection.</p>
-                    <p>Management initially attempted incremental fixes, such as hiring more inspectors and expediting orders. These actions increased cost but did not improve overall system performance.</p>
-                    <p>The COO argued that PEEL was managing symptoms rather than root causes. The company relied excessively on inspection-based quality, ignored statistical process control, and operated a push-based production system that amplified variability.</p>
-                    <p>The core problem was systemic: PEEL needed to shift from inspection-heavy, push-driven operations to a process-controlled, lean, flow-oriented system.</p>
-                    <hr>
-                    <h3>4. Detailed Data and Metrics</h3>
-                    <p><strong>Quality Performance (FY 2024)</strong></p>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Metric</th>
-                          <th>Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Incoming Material Defect Rate</td>
-                          <td>3.8%</td>
-                        </tr>
-                        <tr>
-                          <td>In-Process Defect Rate</td>
-                          <td>4.6%</td>
-                        </tr>
-                        <tr>
-                          <td>Final Inspection Rejection Rate</td>
-                          <td>2.9%</td>
-                        </tr>
-                        <tr>
-                          <td>Field Failure Rate</td>
-                          <td>0.7%</td>
-                        </tr>
-                        <tr>
-                          <td>Cost of Poor Quality (COPQ)</td>
-                          <td>₹92 crore</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p><strong>Inspection and Rework</strong></p>
-                    <ul>
-                      <li>% of operations with 100% inspection: 82%</li>
-                      <li>Avg. inspection time per unit: 48 minutes</li>
-                      <li>Rework hours per month: 21,400</li>
-                      <li>Rework cost as % of sales: 3.6%</li>
-                    </ul>
-                    <p><strong>Inventory and Flow Metrics</strong></p>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Metric</th>
-                          <th>Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Raw Material Inventory</td>
-                          <td>54 days</td>
-                        </tr>
-                        <tr>
-                          <td>WIP Inventory</td>
-                          <td>29 days</td>
-                        </tr>
-                        <tr>
-                          <td>Finished Goods Inventory</td>
-                          <td>18 days</td>
-                        </tr>
-                        <tr>
-                          <td>Total Manufacturing Lead Time</td>
-                          <td>47 days</td>
-                        </tr>
-                        <tr>
-                          <td>Value-Added Time</td>
-                          <td>9.5 days</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p><strong>Throughput and Constraints</strong></p>
-                    <ul>
-                      <li>Bottleneck identified at final testing and inspection</li>
-                      <li>Average utilization at bottleneck: 96%</li>
-                      <li>Average utilization elsewhere: 68%</li>
-                    </ul>
-                    <p>The data indicated classic symptoms of a non-lean system: high inspection, high WIP, long lead times, and localized optimization.</p>
-                    <hr>
-                    <h3>5. Internal Challenges</h3>
-                    <p>PEEL faced significant internal constraints in adopting modern quality and lean practices.</p>
-                    <p>First, cultural resistance was strong. Many managers equated quality with inspection and believed reducing inspection would increase risk.</p>
-                    <p>Second, statistical capability was limited. Engineers had theoretical exposure to control charts but lacked confidence in practical application and interpretation.</p>
-                    <p>Third, supplier quality was inconsistent, making incoming inspection seem unavoidable.</p>
-                    <p>Fourth, organizational silos prevented system-wide optimization. Each department focused on its own efficiency rather than overall flow.</p>
-                    <p>These challenges meant that any transformation would require not only technical tools but also mindset change and leadership commitment.</p>
-                    <hr>
-                    <h3>6. Analytical Context</h3>
-                    <p>Management considered several analytical and improvement frameworks:</p>
-                    <ul>
-                      <li><strong>Inspection Strategies:</strong> Evaluating the role of 100% inspection versus sampling inspection and understanding when each is appropriate.</li>
-                      <li><strong>Statistical Quality Control (SQC):</strong> Using control charts (X̄-R, p, c charts) to monitor process stability and distinguish common-cause from special-cause variation.</li>
-                      <li><strong>Lean Production Systems:</strong> Identifying waste (overproduction, waiting, excess inventory) and improving flow.</li>
-                      <li><strong>JIT and Kanban:</strong> Transitioning from push-based scheduling to pull-based replenishment to control WIP.</li>
-                      <li><strong>Theory of Constraints (TOC):</strong> Focusing improvement efforts on system bottlenecks rather than local efficiencies.</li>
-                      <li><strong>Six Sigma:</strong> Applying DMAIC thinking to reduce defect variation and improve process capability.</li>
-                    </ul>
-                    <p>The goal was not to implement all tools simultaneously, but to design a coherent improvement roadmap aligned with PEEL’s operational realities.</p>
-                    <hr>
-                    <h3>7. Decision Point</h3>
-                    <p>The COO must now recommend a transformation strategy to the Board.</p>
-                    <p>Key decisions include whether to reduce reliance on 100% inspection, how aggressively to implement SQC, whether to adopt pull-based production, and how to manage the bottleneck processes.</p>
-                    <p>Each decision carries risk. Moving too slowly perpetuates inefficiency; moving too fast risks quality failures and employee resistance.</p>
-                    <p>The Board expects a data-driven, phased approach that improves quality, reduces lead time, and increases throughput without compromising safety or compliance.</p>
-                    <hr>
-                    <h3>8. Analytical and Decision Questions</h3>
-                    <ul>
-                      <li>What are the limitations of 100% inspection as a quality strategy?</li>
-                      <li>How can control charts improve process quality at PEEL?</li>
-                      <li>When is sampling inspection preferable to full inspection?</li>
-                      <li>How does excess WIP mask quality and process problems?</li>
-                      <li>How can TOC help PEEL increase throughput?</li>
-                      <li>What role can Kanban play in reducing inventory?</li>
-                      <li>How should Six Sigma projects be selected in this context?</li>
-                      <li>What risks arise if lean tools are implemented without cultural change?</li>
-                    </ul>
-                    <hr>
-                    <h3>9. Model Answers (Selected)</h3>
-                    <p><strong>Answer 1:</strong><br>
-                    100% inspection detects defects but does not prevent them. It increases cost, lead time, and reliance on inspection capacity while allowing unstable processes to continue.</p>
-                    <p><strong>Answer 2:</strong><br>
-                    Control charts help distinguish normal process variation from abnormal variation, enabling managers to take corrective action at the process level rather than after defects occur.</p>
-                    <p><strong>Answer 3:</strong><br>
-                    Sampling inspection is suitable when processes are stable and defect rates are low, allowing quality assurance at lower cost and faster throughput.</p>
-                    <p><strong>Answer 4:</strong><br>
-                    Excess WIP hides process variability and delays defect detection, increasing rework and lead time while giving a false sense of capacity adequacy.</p>
-                    <p><strong>Answer 5:</strong><br>
-                    TOC focuses improvement on bottleneck processes, ensuring that system throughput improves rather than optimizing non-constraining resources.</p>
-                    <hr>
-                    <h3>10. Learning Focus</h3>
-                    <p>This case tests students’ ability to analyze quality systems, interpret SQC data, and apply lean, TOC, and Six Sigma concepts to real operational problems.</p>
-                    <p><strong>Primary Concepts:</strong> Inspection Strategies, Statistical Quality Control, Lean Production, JIT, Kanban, Theory of Constraints, Six Sigma.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h6 class="sr-only">CaseOrbit said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="1735454c-9a80-4d67-86d4-dc6a38e291f6" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="423">Below are <strong data-start="10" data-end="42">THREE MBA-level case studies</strong> for <strong data-start="47" data-end="150">PB204 – Production &amp; Operations Management, Unit IV: Types of Industries &amp; Methods of Manufacturing</strong>.<br data-start="151" data-end="154">
+Each case is <strong data-start="167" data-end="184">500–600 words</strong>, uses a <strong data-start="193" data-end="219">different real company</strong>, and focuses strictly on <strong data-start="245" data-end="422">types of industries, scale of operations, integration of manufacturing and services, and manufacturing methods (Project, Jobbing, Batch, Flow/Continuous, Process production)</strong>.</p>
+<hr data-start="425" data-end="428">
+<h2 data-start="430" data-end="510"><strong data-start="433" data-end="510">Case Study 1: Selecting the Right Manufacturing System at Larsen &amp; Toubro</strong></h2>
+<h3 data-start="512" data-end="526">1. Title</h3>
+<p data-start="527" data-end="583">Project-Based Manufacturing Decisions at Larsen &amp; Toubro</p>
+<h3 data-start="585" data-end="623">2. Company Background (90 words)</h3>
+<p data-start="624" data-end="1098">Larsen &amp; Toubro (L&amp;T) is a major Indian multinational operating in engineering, construction, and infrastructure development. The company executes large-scale projects such as power plants, metro systems, industrial complexes, and defense installations. L&amp;T’s business model is project-driven, with each contract customized to client specifications. Operations management plays a vital role in planning, coordinating, and controlling resources across long project timelines.</p>
+<h3 data-start="1100" data-end="1136">3. Business Context (85 words)</h3>
+<p data-start="1137" data-end="1588">India’s infrastructure spending has increased significantly, leading to a surge in complex, high-value projects. Clients demand strict adherence to timelines, cost control, and quality standards. Unlike repetitive manufacturing, each L&amp;T project differs in scope, location, and execution constraints. Management must ensure that operations systems are flexible enough to handle uniqueness while maintaining efficiency across multiple ongoing projects.</p>
+<h3 data-start="1590" data-end="1632">4. Core Business Problem (100 words)</h3>
+<p data-start="1633" data-end="2200">L&amp;T’s operations team faces challenges in standardizing processes across projects without compromising customization. Project delays, cost overruns, and coordination issues arise due to varied site conditions and resource dependencies. Management must evaluate whether existing project-based manufacturing practices are adequate or if elements of jobbing or batch production can be incorporated for certain components to improve efficiency. Choosing the correct manufacturing method for different project elements is critical to improving overall project performance.</p>
+<h3 data-start="2202" data-end="2243">5. Key Data and Metrics (125 words)</h3>
+<p data-start="2244" data-end="2269">Operational reviews show:</p>
+<ul data-start="2270" data-end="2643">
+<li data-start="2270" data-end="2317">
+<p data-start="2272" data-end="2317">Average project duration overruns of 12–15%</p>
+</li>
+<li data-start="2318" data-end="2367">
+<p data-start="2320" data-end="2367">Cost overruns in large projects averaging 10%</p>
+</li>
+<li data-start="2368" data-end="2420">
+<p data-start="2370" data-end="2420">Equipment utilization varies widely across sites</p>
+</li>
+<li data-start="2421" data-end="2488">
+<p data-start="2423" data-end="2488">Engineering rework accounts for nearly 8% of total project cost</p>
+</li>
+<li data-start="2489" data-end="2643">
+<p data-start="2491" data-end="2643">Procurement lead times differ significantly by location<br data-start="2546" data-end="2549">
+These metrics indicate coordination and planning challenges inherent in project-based systems.</p>
+</li>
+</ul>
+<h3 data-start="2645" data-end="2683">6. Decision Situation (70 words)</h3>
+<p data-start="2684" data-end="2899">Senior management must decide how much standardization can be introduced into a project manufacturing environment. The decision involves balancing efficiency gains against the need for customization and flexibility.</p>
+<h3 data-start="2901" data-end="2930">7. Analytical Questions</h3>
+<ol data-start="2931" data-end="3223">
+<li data-start="2931" data-end="3000">
+<p data-start="2934" data-end="3000">Why is project manufacturing most suitable for L&amp;T’s operations?</p>
+</li>
+<li data-start="3001" data-end="3076">
+<p data-start="3004" data-end="3076">What limitations does project-based production impose on productivity?</p>
+</li>
+<li data-start="3077" data-end="3149">
+<p data-start="3080" data-end="3149">Can elements of batch or job production improve project efficiency?</p>
+</li>
+<li data-start="3150" data-end="3223">
+<p data-start="3153" data-end="3223">How does project manufacturing affect planning and control complexity?</p>
+</li>
+</ol>
+<h3 data-start="3225" data-end="3247">8. Model Answers</h3>
+<ul data-start="3248" data-end="3492">
+<li data-start="3248" data-end="3332">
+<p data-start="3250" data-end="3332">Project manufacturing suits L&amp;T due to high customization and low repeatability.</p>
+</li>
+<li data-start="3333" data-end="3410">
+<p data-start="3335" data-end="3410">Lack of repetition limits learning curve benefits and economies of scale.</p>
+</li>
+<li data-start="3411" data-end="3492">
+<p data-start="3413" data-end="3492">Standardized subassemblies can improve efficiency without reducing flexibility.</p>
+</li>
+</ul>
+<h3 data-start="3494" data-end="3517">9. Learning Focus</h3>
+<p data-start="3518" data-end="3596">Understanding project manufacturing systems and their managerial implications.</p>
+<p data-start="3598" data-end="3701"><strong data-start="3598" data-end="3619">Primary Concepts:</strong> Project production, customization, planning complexity, infrastructure operations</p>
+<hr data-start="3703" data-end="3706">
+<h2 data-start="3708" data-end="3779"><strong data-start="3711" data-end="3779">Case Study 2: Batch Production Strategy at Cipla Pharmaceuticals</strong></h2>
+<h3 data-start="3781" data-end="3795">1. Title</h3>
+<p data-start="3796" data-end="3870">Managing Batch Production Systems in Pharmaceutical Manufacturing at Cipla</p>
+<h3 data-start="3872" data-end="3910">2. Company Background (90 words)</h3>
+<p data-start="3911" data-end="4288">Cipla is a leading pharmaceutical manufacturer producing a wide range of formulations for domestic and international markets. The company operates under strict regulatory requirements while serving diverse therapeutic segments. Cipla’s production system relies heavily on batch manufacturing due to product variety, regulatory validation needs, and moderate production volumes.</p>
+<h3 data-start="4290" data-end="4326">3. Business Context (85 words)</h3>
+<p data-start="4327" data-end="4674">Demand variability across drug categories and frequent product launches require flexibility in production. Regulatory approvals mandate batch-wise documentation and validation. At the same time, pricing pressure from generic competition limits cost escalation. Operations management must optimize batch sizes, scheduling, and resource utilization.</p>
+<h3 data-start="4676" data-end="4718">4. Core Business Problem (100 words)</h3>
+<p data-start="4719" data-end="5074">Cipla faces inefficiencies due to frequent changeovers, long setup times, and uneven equipment utilization. Smaller batch sizes improve responsiveness but increase setup costs, while larger batches reduce flexibility and increase inventory holding. Management must determine the optimal balance between batch size, productivity, and regulatory compliance.</p>
+<h3 data-start="5076" data-end="5117">5. Key Data and Metrics (120 words)</h3>
+<p data-start="5118" data-end="5144">Production data indicates:</p>
+<ul data-start="5145" data-end="5458">
+<li data-start="5145" data-end="5188">
+<p data-start="5147" data-end="5188">Average setup time per batch: 6–8 hours</p>
+</li>
+<li data-start="5189" data-end="5240">
+<p data-start="5191" data-end="5240">Capacity utilization varies between 60% and 85%</p>
+</li>
+<li data-start="5241" data-end="5285">
+<p data-start="5243" data-end="5285">Inventory holding costs increased by 18%</p>
+</li>
+<li data-start="5286" data-end="5330">
+<p data-start="5288" data-end="5330">Stock-outs reported in fast-moving drugs</p>
+</li>
+<li data-start="5331" data-end="5458">
+<p data-start="5333" data-end="5458">Changeover frequency increased by 25% year-on-year<br data-start="5383" data-end="5386">
+These metrics highlight trade-offs inherent in batch production systems.</p>
+</li>
+</ul>
+<h3 data-start="5460" data-end="5498">6. Decision Situation (70 words)</h3>
+<p data-start="5499" data-end="5683">Cipla’s plant management must decide whether to increase batch sizes or invest in faster changeover processes. The decision impacts cost, flexibility, compliance, and customer service.</p>
+<h3 data-start="5685" data-end="5714">7. Analytical Questions</h3>
+<ol data-start="5715" data-end="5963">
+<li data-start="5715" data-end="5786">
+<p data-start="5718" data-end="5786">Why is batch production suitable for pharmaceutical manufacturing?</p>
+</li>
+<li data-start="5787" data-end="5844">
+<p data-start="5790" data-end="5844">What are the key trade-offs in batch size decisions?</p>
+</li>
+<li data-start="5845" data-end="5911">
+<p data-start="5848" data-end="5911">How does regulation influence manufacturing method selection?</p>
+</li>
+<li data-start="5912" data-end="5963">
+<p data-start="5915" data-end="5963">How can batch production efficiency be improved?</p>
+</li>
+</ol>
+<h3 data-start="5965" data-end="5987">8. Model Answers</h3>
+<ul data-start="5988" data-end="6206">
+<li data-start="5988" data-end="6068">
+<p data-start="5990" data-end="6068">Batch production balances product variety with moderate volume requirements.</p>
+</li>
+<li data-start="6069" data-end="6134">
+<p data-start="6071" data-end="6134">Larger batches reduce setup cost but increase inventory risk.</p>
+</li>
+<li data-start="6135" data-end="6206">
+<p data-start="6137" data-end="6206">Regulatory validation enforces batch-level control and documentation.</p>
+</li>
+</ul>
+<h3 data-start="6208" data-end="6231">9. Learning Focus</h3>
+<p data-start="6232" data-end="6292">Evaluating batch production systems in regulated industries.</p>
+<p data-start="6294" data-end="6385"><strong data-start="6294" data-end="6315">Primary Concepts:</strong> Batch production, product variety, setup time, regulatory constraints</p>
+<hr data-start="6387" data-end="6390">
+<h2 data-start="6392" data-end="6462"><strong data-start="6395" data-end="6462">Case Study 3: Flow and Continuous Production at IOCL Refineries</strong></h2>
+<h3 data-start="6464" data-end="6478">1. Title</h3>
+<p data-start="6479" data-end="6543">Managing Continuous Process Production at Indian Oil Corporation</p>
+<h3 data-start="6545" data-end="6583">2. Company Background (90 words)</h3>
+<p data-start="6584" data-end="6930">Indian Oil Corporation Limited (IOCL) is India’s largest oil refining and fuel marketing company. Its refineries operate continuous process production systems handling massive volumes of crude oil. Operations are capital-intensive, technology-driven, and highly standardized. Any disruption leads to significant financial and safety implications.</p>
+<h3 data-start="6932" data-end="6968">3. Business Context (85 words)</h3>
+<p data-start="6969" data-end="7268">Rising energy demand and environmental regulations have increased pressure on refinery efficiency and reliability. Continuous operations require precise coordination of equipment, maintenance, and quality control. Unlike discrete manufacturing, stopping and restarting processes is costly and risky.</p>
+<h3 data-start="7270" data-end="7312">4. Core Business Problem (100 words)</h3>
+<p data-start="7313" data-end="7683">IOCL faces challenges in maintaining uninterrupted operations while upgrading technology and complying with environmental norms. Management must decide how to balance preventive maintenance, capacity utilization, and process stability. The key issue is ensuring high productivity and quality in a continuous production environment where flexibility is extremely limited.</p>
+<h3 data-start="7685" data-end="7726">5. Key Data and Metrics (120 words)</h3>
+<p data-start="7727" data-end="7750">Operational data shows:</p>
+<ul data-start="7751" data-end="8107">
+<li data-start="7751" data-end="7798">
+<p data-start="7753" data-end="7798">Capacity utilization consistently above 92%</p>
+</li>
+<li data-start="7799" data-end="7851">
+<p data-start="7801" data-end="7851">Unplanned shutdowns cost ₹3–5 crore per incident</p>
+</li>
+<li data-start="7852" data-end="7902">
+<p data-start="7854" data-end="7902">Maintenance accounts for 14% of operating cost</p>
+</li>
+<li data-start="7903" data-end="7967">
+<p data-start="7905" data-end="7967">Energy efficiency improvements of 6% achieved over two years</p>
+</li>
+<li data-start="7968" data-end="8107">
+<p data-start="7970" data-end="8107">Quality deviations lead to significant reprocessing losses<br data-start="8028" data-end="8031">
+These figures highlight the high stakes of continuous production management.</p>
+</li>
+</ul>
+<h3 data-start="8109" data-end="8147">6. Decision Situation (65 words)</h3>
+<p data-start="8148" data-end="8328">Operations leadership must decide whether to schedule more frequent planned shutdowns or maximize continuous run time. The decision affects cost, safety, and regulatory compliance.</p>
+<h3 data-start="8330" data-end="8359">7. Analytical Questions</h3>
+<ol data-start="8360" data-end="8597">
+<li data-start="8360" data-end="8417">
+<p data-start="8363" data-end="8417">Why is continuous production ideal for oil refining?</p>
+</li>
+<li data-start="8418" data-end="8472">
+<p data-start="8421" data-end="8472">What are the risks of continuous process systems?</p>
+</li>
+<li data-start="8473" data-end="8533">
+<p data-start="8476" data-end="8533">How does scale of operations affect managerial control?</p>
+</li>
+<li data-start="8534" data-end="8597">
+<p data-start="8537" data-end="8597">How does integration of services support process industries?</p>
+</li>
+</ol>
+<h3 data-start="8599" data-end="8621">8. Model Answers</h3>
+<ul data-start="8622" data-end="8835">
+<li data-start="8622" data-end="8706">
+<p data-start="8624" data-end="8706">Continuous production suits refining due to standardized output and high volume.</p>
+</li>
+<li data-start="8707" data-end="8764">
+<p data-start="8709" data-end="8764">System inflexibility makes downtime extremely costly.</p>
+</li>
+<li data-start="8765" data-end="8835">
+<p data-start="8767" data-end="8835">Large scale requires strong process control and maintenance systems.</p>
+</li>
+</ul>
+<h3 data-start="8837" data-end="8860">9. Learning Focus</h3>
+<p data-start="8861" data-end="8936">Understanding flow and continuous production systems in process industries.</p>
+<p data-start="8938" data-end="9042"><strong data-start="8938" data-end="8959">Primary Concepts:</strong> Continuous production, process industries, scale of operations, system integration</p>
+<hr data-start="9044" data-end="9047">
+<p data-start="9049" data-end="9073">If you want next, I can:</p>
+<ul data-start="9074" data-end="9244">
+<li data-start="9074" data-end="9135">
+<p data-start="9076" data-end="9135">Create <strong data-start="9083" data-end="9133">comparative cases across manufacturing methods</strong></p>
+</li>
+<li data-start="9136" data-end="9191">
+<p data-start="9138" data-end="9191">Convert these into <strong data-start="9157" data-end="9189">exam-oriented case questions</strong></p>
+</li>
+<li data-start="9192" data-end="9244">
+<p data-start="9194" data-end="9244">Prepare <strong data-start="9202" data-end="9244">Unit IV summary tables with case links</strong></p>
+</li>
+</ul>
+<p data-start="9246" data-end="9265" data-is-last-node="" data-is-only-node="">Just let me know 👍</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><br class="sr-only">
       </div>
     </div>
   </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repositioning Operations for Competitive Advantage at Orion Appliances Ltd.</title>
+  <title>ChatGPT - CaseOrbit</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -302,52 +302,52 @@
     .message-content pre .hljs-selector-tag,
     .message-content pre .hljs-literal,
     .message-content pre .hljs-tag {
-      color: #569cd6;
+      color: #569cd6; /* Blue for keywords */
     }
     .message-content pre .hljs-string,
     .message-content pre .hljs-doctag {
-      color: #ce9178;
+      color: #ce9178; /* Orange for strings */
     }
     .message-content pre .hljs-title,
     .message-content pre .hljs-section,
     .message-content pre .hljs-selector-id {
-      color: #dcdcaa;
+      color: #dcdcaa; /* Yellow for function names */
     }
     .message-content pre .hljs-subst,
     .message-content pre .hljs-type,
     .message-content pre .hljs-class .hljs-title,
     .message-content pre .hljs-title.class_,
     .message-content pre .hljs-attr {
-      color: #4ec9b0;
+      color: #4ec9b0; /* Cyan for types/classes */
     }
     .message-content pre .hljs-comment,
     .message-content pre .hljs-quote {
-      color: #6a9955;
+      color: #6a9955; /* Green for comments */
       font-style: italic;
     }
     .message-content pre .hljs-number,
     .message-content pre .hljs-built_in,
     .message-content pre .hljs-builtin-name {
-      color: #b5cea8;
+      color: #b5cea8; /* Light green for numbers */
     }
     .message-content pre .hljs-variable,
     .message-content pre .hljs-template-variable,
     .message-content pre .hljs-params {
-      color: #9cdcfe;
+      color: #9cdcfe; /* Light blue for variables */
     }
     .message-content pre .hljs-function {
-      color: #dcdcaa;
+      color: #dcdcaa; /* Yellow for functions */
     }
     .message-content pre .hljs-meta {
-      color: #c586c0;
+      color: #c586c0; /* Purple for meta/decorators */
     }
     .message-content pre .hljs-operator,
     .message-content pre .hljs-punctuation {
-      color: #d4d4d4;
+      color: #d4d4d4; /* Light gray for operators */
     }
     .message-content pre .hljs-regexp,
     .message-content pre .hljs-symbol {
-      color: #d16969;
+      color: #d16969; /* Red for regex */
     }
     .message-content table {
       border-collapse: collapse;
@@ -401,29 +401,27 @@
       border: none;
       border-radius: 50%;
       cursor: pointer;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      opacity: 0;
-      visibility: hidden;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       transition: all 0.3s ease;
       z-index: 1000;
     }
-    .back-to-top.show {
-      opacity: 1;
-      visibility: visible;
-    }
     .back-to-top:hover {
       transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
     }
     
     /* Theme Toggle Button */
     .theme-toggle {
       position: fixed;
-      bottom: 30px;
-      left: 30px;
+      top: 20px;
+      right: 20px;
       width: 50px;
       height: 50px;
       background: white;
@@ -450,169 +448,224 @@
 </head>
 <body>
   <div class="header">
-    <h1>Production and Operation Management (PB204)</h1>
+    <h1>ChatGPT - CaseOrbit</h1>
   </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
   
   <div class="messages">
     <div class="message" id="message-0">
       <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
       <div class="message-content">
-        <h6 class="sr-only">CaseOrbit Said:</h6>
-        <div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)">
-          <div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1">
-            <div class="flex max-w-full flex-col grow">
-              <div data-message-author-role="assistant" data-message-id="case-study-orion" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&]:mt-1" data-message-model-slug="gpt-5-2">
-                <div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]">
-                  <div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling">
-                    <h2>Repositioning Operations for Competitive Advantage at Orion Appliances Ltd.</h2>
-                    <hr>
-                    <h3>1. Organizational Background</h3>
-                    <p>Orion Appliances Ltd. (OAL) is a mid-sized Indian consumer durables manufacturer headquartered in Pune, Maharashtra. Established in 2005, the company designs, manufactures, and markets a range of home appliances including washing machines, refrigerators, air coolers, and small kitchen appliances. Over the years, Orion has built a reputation for affordable pricing and wide distribution across Tier-2 and Tier-3 cities in India.</p>
-                    <p>As of FY 2024, Orion reported annual revenues of approximately ₹3,200 crore, with an employee base of nearly 4,800 across manufacturing, logistics, sales, and corporate functions. The company operates three manufacturing plants located in Pune, Indore, and Coimbatore, each specializing in different product families. The Pune plant focuses on washing machines and refrigerators, Indore on air coolers, and Coimbatore on mixers, grinders, and other small appliances.</p>
-                    <p>Orion follows a hybrid business model. Core manufacturing activities are performed in-house, while several non-core components such as plastic casings, wiring harnesses, and packaging materials are sourced from third-party vendors. Finished products are sold through a network of over 1,200 distributors and large-format retailers, along with a growing presence on e-commerce platforms.</p>
-                    <p>Historically, Orion competed primarily on cost and availability rather than innovation or premium quality. This strategy helped the company gain early market share, particularly in price-sensitive segments. However, in recent years, competition has intensified with the entry of global brands and aggressive domestic players offering better design, energy efficiency, and after-sales service.</p>
-                    <p>Operationally, Orion’s manufacturing systems evolved organically as volumes grew. Each plant developed its own processes, planning methods, and performance metrics. While this decentralized approach allowed flexibility, it also resulted in inconsistencies in productivity, quality, and delivery performance across locations.</p>
-                    <p>From a financial perspective, Orion remained profitable but showed signs of stress. Operating margins declined from 12.8% in FY 2021 to 9.6% in FY 2024. Inventory holding costs increased, and customer complaints related to delayed deliveries and service quality rose steadily. Senior management began to suspect that operational inefficiencies, rather than market demand alone, were eroding competitiveness.</p>
-                    <p>The Board appointed a new Chief Operations Officer (COO) in early 2025 with a mandate to strengthen operations management practices and align them more closely with corporate strategy. This marked the first time Orion explicitly recognized operations management as a strategic function rather than a support activity.</p>
-                    <hr>
-                    <h3>2. Business Environment and Context</h3>
-                    <p>The Indian consumer appliances market has undergone significant structural changes over the past decade. Rising disposable incomes, rapid urbanization, and increased electrification have driven demand for household appliances. At the same time, customers have become more discerning, placing higher value on product reliability, energy efficiency, and service responsiveness.</p>
-                    <p>Market growth, however, has attracted intense competition. Multinational corporations operate highly automated plants and leverage global supply chains to achieve cost efficiency and consistent quality. Domestic competitors have invested in lean manufacturing, quality certifications, and digital supply chain systems. As a result, operational excellence has emerged as a key differentiator in the industry.</p>
-                    <p>Customer behavior has also shifted. Large retail chains and e-commerce platforms demand shorter lead times, accurate order fulfillment, and flexible replenishment schedules. Penalties for late deliveries are common, and shelf space is increasingly allocated based on supplier performance metrics rather than brand legacy.</p>
-                    <p>Regulatory pressures have further increased operational complexity. Energy efficiency standards, environmental compliance norms, and labor regulations require tighter process control and better documentation. Non-compliance leads to financial penalties and reputational damage.</p>
-                    <p>Technological advancements have changed industry benchmarks. Competitors are deploying advanced planning systems, automation in assembly lines, and real-time performance dashboards. These systems provide better visibility into operations and support faster managerial decision-making. Orion, by contrast, still relies heavily on manual reporting and spreadsheet-based tracking.</p>
-                    <p>Macroeconomic volatility has added another layer of uncertainty. Fluctuations in raw material prices, particularly steel and copper, have increased cost pressures. Supply disruptions during recent years exposed weaknesses in inventory planning and supplier coordination. Companies with robust operations systems were able to absorb shocks better than those with fragmented processes.</p>
-                    <p>Within this environment, operations management is no longer limited to factory-floor efficiency. It directly influences cost leadership, quality consistency, delivery dependability, and flexibility—dimensions that define enterprise competitiveness as highlighted in foundational operations management theory.</p>
-                    <p>Orion’s leadership realized that competing effectively would require a fundamental reassessment of how its operations function was designed, managed, and integrated with business strategy.</p>
-                    <hr>
-                    <h3>3. Emerging Business Problem</h3>
-                    <p>Despite stable demand, Orion began experiencing persistent operational symptoms that collectively threatened its competitive position. These issues did not emerge overnight but developed gradually as the company scaled without a coherent operations strategy.</p>
-                    <p>First, production costs varied significantly across plants for similar products. For example, unit manufacturing cost for a semi-automatic washing machine at the Pune plant was nearly 11% higher than at a competitor’s facility producing a comparable model. Internal benchmarking revealed wide variation in labor productivity, machine utilization, and scrap rates.</p>
-                    <p>Second, quality performance was inconsistent. Customer return rates for refrigerators averaged 2.8%, but certain batches exceeded 4.5%, leading to increased warranty expenses and service complaints. Root cause analyses were often reactive and localized rather than systemic.</p>
-                    <p>Third, delivery reliability deteriorated. On-time-in-full (OTIF) delivery dropped from 92% to 84% over three years. Sales teams frequently escalated issues related to delayed dispatches, while operations blamed volatile demand forecasts and supplier delays.</p>
-                    <p>Fourth, organizational silos became pronounced. Operations, procurement, marketing, and finance operated with limited coordination. Production plans were often revised based on short-term sales pressures, causing frequent schedule changes and inefficiencies on the shop floor.</p>
-                    <p>At a strategic level, Orion lacked clarity on its competitive priorities. While marketing emphasized low prices, operations struggled to maintain cost efficiency due to poor process integration and lack of standardized practices. Quality initiatives were launched sporadically but were not embedded into core operations.</p>
-                    <p>The COO concluded that these issues were symptoms of a deeper problem: Orion had never clearly defined the role of operations management in achieving corporate objectives. Operations decisions were made tactically, without a unified framework linking cost, quality, dependability, and flexibility.</p>
-                    <p>This realization placed Orion at a crossroads. Either it could continue managing operations as a collection of isolated activities, or it could reposition operations management as a strategic function critical to long-term competitiveness.</p>
-                    <hr>
-                    <h3>4. Detailed Data and Metrics</h3>
-                    <p><strong>Production and Cost Metrics (FY 2024)</strong></p>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Metric</th>
-                          <th>Pune</th>
-                          <th>Indore</th>
-                          <th>Coimbatore</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Annual Output (units)</td>
-                          <td>620,000</td>
-                          <td>480,000</td>
-                          <td>910,000</td>
-                        </tr>
-                        <tr>
-                          <td>Capacity Utilization</td>
-                          <td>78%</td>
-                          <td>72%</td>
-                          <td>81%</td>
-                        </tr>
-                        <tr>
-                          <td>Unit Manufacturing Cost (₹)</td>
-                          <td>7,850</td>
-                          <td>6,920</td>
-                          <td>2,150</td>
-                        </tr>
-                        <tr>
-                          <td>Direct Labor Productivity (units/worker/month)</td>
-                          <td>42</td>
-                          <td>47</td>
-                          <td>58</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p><strong>Quality Metrics</strong></p>
-                    <ul>
-                      <li>Average defect rate: 3.2%</li>
-                      <li>Warranty cost as % of sales: 2.1%</li>
-                      <li>Rework hours per month: 18,500</li>
-                    </ul>
-                    <p><strong>Delivery and Inventory Metrics</strong></p>
-                    <ul>
-                      <li>OTIF delivery: 84%</li>
-                      <li>Average finished goods inventory: 38 days</li>
-                      <li>Raw material inventory: 52 days</li>
-                      <li>Inventory carrying cost: ₹146 crore annually</li>
-                    </ul>
-                    <p><strong>Financial Performance Indicators</strong></p>
-                    <ul>
-                      <li>Gross margin: 21.4%</li>
-                      <li>Operating margin: 9.6%</li>
-                      <li>Return on assets (ROA): 7.8%</li>
-                    </ul>
-                    <p>Trend analysis showed that while sales volumes grew at an average of 6% annually, operational costs grew faster at nearly 9%. Productivity improvements failed to keep pace with wage increases and input cost inflation.</p>
-                    <p>Importantly, none of the plants tracked a unified set of operational KPIs. Each plant manager prioritized different metrics, making enterprise-wide comparison and control difficult.</p>
-                    <p>The data indicated that operational inefficiencies were eroding profitability and weakening Orion’s ability to compete on cost and reliability—two dimensions critical in the consumer durables market.</p>
-                    <hr>
-                    <h3>5. Internal Challenges</h3>
-                    <p>Several internal constraints limited Orion’s ability to improve operations performance quickly.</p>
-                    <p>First, managerial capability in operations analytics was uneven. Many supervisors were technically skilled but lacked exposure to modern operations management concepts. Decision-making relied heavily on experience rather than structured analysis.</p>
-                    <p>Second, data quality was a major issue. Production, quality, and inventory data were stored in separate systems, often with delays and inconsistencies. Real-time visibility into operations was limited.</p>
-                    <p>Third, organizational resistance posed challenges. Plant managers were accustomed to autonomy and resisted standardization, fearing loss of flexibility. Cross-functional coordination mechanisms were weak.</p>
-                    <p>Fourth, legacy systems constrained process improvement. Equipment layouts and workflows were designed years earlier without systematic analysis. Modifying them required capital investment and careful change management.</p>
-                    <p>These challenges meant that any improvement initiative would need to address not just technical processes but also people, systems, and organizational alignment.</p>
-                    <hr>
-                    <h3>6. Analytical Context</h3>
-                    <p>Senior management began evaluating how analytical thinking could support better operations decisions. The COO emphasized the need to adopt a structured operations management framework grounded in four core dimensions: cost, quality, dependability, and flexibility.</p>
-                    <p><strong>Key analytical considerations included:</strong></p>
-                    <ul>
-                      <li>Assessing productivity trends across plants to identify systemic inefficiencies.</li>
-                      <li>Evaluating the relationship between capacity utilization and unit cost.</li>
-                      <li>Analyzing quality data to distinguish between common-cause and special-cause variation.</li>
-                      <li>Mapping operations processes to understand flow inefficiencies and bottlenecks.</li>
-                      <li>Designing performance dashboards aligned with strategic priorities.</li>
-                    </ul>
-                    <p>Management also explored how operations strategy could be aligned with competitive strategy. Should Orion continue competing primarily on low cost, or should it rebalance priorities toward quality and reliability? Each option had implications for process design, technology investment, and workforce management.</p>
-                    <p>Rather than immediately implementing solutions, the leadership decided to frame the problem analytically and involve cross-functional teams in diagnosing root causes. The focus was on building a shared understanding of operations management as an integrated system rather than a set of isolated activities.</p>
-                    <hr>
-                    <h3>7. Decision Point</h3>
-                    <p>The COO must now recommend a clear direction to the Board. The central decision is how Orion should reposition its operations function to support long-term competitiveness.</p>
-                    <p>Key questions include whether to standardize operations practices across plants, redefine performance metrics, and explicitly link operations decisions to corporate strategy. Each option involves trade-offs between short-term disruption and long-term gains.</p>
-                    <p>Failure to act risks continued margin erosion and loss of market relevance. Acting without analytical rigor risks costly initiatives with limited impact. The Board expects a decision framework grounded in operations management principles that balances cost efficiency, quality consistency, delivery reliability, and flexibility.</p>
-                    <hr>
-                    <h3>8. Analytical and Decision Questions</h3>
-                    <ul>
-                      <li>How should Orion define the role of operations management in achieving corporate objectives?</li>
-                      <li>Which competitive priorities should operations focus on given Orion’s market position?</li>
-                      <li>What operational performance metrics would best reflect these priorities?</li>
-                      <li>How can Orion assess productivity differences across plants analytically?</li>
-                      <li>What trade-offs exist between cost leadership and quality improvement?</li>
-                      <li>How should operations strategy be aligned with marketing and sales strategy?</li>
-                      <li>What risks arise if operations decisions remain decentralized?</li>
-                      <li>How can operations management contribute to sustainable competitive advantage?</li>
-                    </ul>
-                    <hr>
-                    <h3>9. Model Answers (Selected)</h3>
-                    <p><strong>Answer 1:</strong><br>
-                    Operations management should be positioned as a strategic function that directly supports competitive priorities. It must integrate cost, quality, delivery, and flexibility decisions rather than focusing only on production efficiency. This alignment enables consistent execution of corporate strategy.</p>
-                    <p><strong>Answer 2:</strong><br>
-                    Given Orion’s price-sensitive market, cost remains important, but quality and delivery reliability must be elevated. Competing solely on cost is unsustainable without operational discipline. A balanced priority set reduces risk and improves customer retention.</p>
-                    <p><strong>Answer 3:</strong><br>
-                    KPIs should include unit cost, defect rate, OTIF delivery, inventory turnover, and capacity utilization. These metrics collectively capture operational effectiveness and link daily performance to strategic goals.</p>
-                    <p><strong>Answer 4:</strong><br>
-                    Productivity analysis should normalize output by labor hours and machine time across plants. Trend analysis and benchmarking can identify structural inefficiencies rather than temporary fluctuations.</p>
-                    <hr>
-                    <h3>10. Learning Focus</h3>
-                    <p>This case develops students’ understanding of operations management as a strategic function. It emphasizes linking operational decisions to competitive advantage, interpreting performance metrics, and evaluating trade-offs among cost, quality, dependability, and flexibility.</p>
-                    <p><strong>Primary Concepts:</strong> Nature of Operations Management, Operations as a Strategic Function, Competitive Priorities, Productivity, Enterprise Competitiveness, Manufacturing vs Operations Perspective.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h6 class="sr-only">CaseOrbit said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="88d7eba9-585a-4406-b57a-fa39355fe6b1" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="407">Below are <strong data-start="10" data-end="42">THREE MBA-level case studies</strong> for <strong data-start="47" data-end="172">PB204 – Production &amp; Operations Management, Unit V: Inspection, SQC, Six Sigma, Lean Production Systems, JIT, Kanban, TOC</strong>.<br data-start="173" data-end="176">
+Each case is <strong data-start="189" data-end="206">500–600 words</strong>, uses a <strong data-start="215" data-end="241">different real company</strong>, and focuses strictly on <strong data-start="267" data-end="374">inspection systems, statistical quality control, Six Sigma, Lean/JIT, Kanban, and Theory of Constraints</strong>, as prescribed in your syllabus.</p>
+<hr data-start="409" data-end="412">
+<h2 data-start="414" data-end="494"><strong data-start="417" data-end="494">Case Study 1: Statistical Quality Control Implementation at Maruti Suzuki</strong></h2>
+<h3 data-start="496" data-end="510">1. Title</h3>
+<p data-start="511" data-end="607">Using Statistical Quality Control to Reduce Defects in Automobile Manufacturing at Maruti Suzuki</p>
+<h3 data-start="609" data-end="647">2. Company Background (90 words)</h3>
+<p data-start="648" data-end="1083">Maruti Suzuki is India’s largest passenger vehicle manufacturer, operating high-volume assembly plants with a strong focus on cost efficiency and quality consistency. The company follows mass production and flow manufacturing systems, where even small quality deviations can result in large-scale rework or recalls. Quality management is therefore a critical operational priority, supported by inspection systems and statistical tools.</p>
+<h3 data-start="1085" data-end="1121">3. Business Context (85 words)</h3>
+<p data-start="1122" data-end="1512">Increasing competition from domestic and global automakers has raised customer expectations regarding vehicle reliability and finish. While automation has improved productivity, defect rates in certain body and paint shop processes have shown an upward trend. Management is concerned that traditional end-of-line inspection may be insufficient to detect and prevent process variation early.</p>
+<h3 data-start="1514" data-end="1556">4. Core Business Problem (105 words)</h3>
+<p data-start="1557" data-end="2090">Maruti Suzuki has observed an increase in minor but recurring defects in door alignment and paint thickness. Although overall defect levels remain within acceptable limits, variation across shifts and suppliers is increasing. The existing inspection approach relies heavily on final inspection, leading to rework rather than prevention. Management must decide whether to strengthen in-process inspection using Statistical Quality Control tools to identify assignable causes of variation before defects reach the final assembly stage.</p>
+<h3 data-start="2092" data-end="2133">5. Key Data and Metrics (130 words)</h3>
+<p data-start="2134" data-end="2176">Quality data from one assembly line shows:</p>
+<ul data-start="2177" data-end="2626">
+<li data-start="2177" data-end="2225">
+<p data-start="2179" data-end="2225">Average defect rate: 2.4 defects per vehicle</p>
+</li>
+<li data-start="2226" data-end="2285">
+<p data-start="2228" data-end="2285">Paint thickness variation ranges from 90 to 130 microns</p>
+</li>
+<li data-start="2286" data-end="2331">
+<p data-start="2288" data-end="2331">Rework cost increased by 16% year-on-year</p>
+</li>
+<li data-start="2332" data-end="2402">
+<p data-start="2334" data-end="2402">Final inspection rejection rate varies significantly across shifts</p>
+</li>
+<li data-start="2403" data-end="2469">
+<p data-start="2405" data-end="2469">Customer complaints related to fit-and-finish increased by 11%</p>
+</li>
+<li data-start="2470" data-end="2626">
+<p data-start="2472" data-end="2626">Process capability index (Cp) below desired level in two processes<br data-start="2538" data-end="2541">
+These metrics indicate uncontrolled process variation rather than random fluctuation.</p>
+</li>
+</ul>
+<h3 data-start="2628" data-end="2666">6. Decision Situation (70 words)</h3>
+<p data-start="2667" data-end="2904">Plant management must decide whether to introduce control charts (X̄–R charts) at critical process stages and reduce reliance on final inspection. The decision involves training costs, data discipline, and possible short-term disruption.</p>
+<h3 data-start="2906" data-end="2935">7. Analytical Questions</h3>
+<ol data-start="2936" data-end="3231">
+<li data-start="2936" data-end="3013">
+<p data-start="2939" data-end="3013">Why is end-of-line inspection insufficient in high-volume manufacturing?</p>
+</li>
+<li data-start="3014" data-end="3088">
+<p data-start="3017" data-end="3088">Which control charts are suitable for dimensional and attribute data?</p>
+</li>
+<li data-start="3089" data-end="3155">
+<p data-start="3092" data-end="3155">How does SQC support defect prevention rather than detection?</p>
+</li>
+<li data-start="3156" data-end="3231">
+<p data-start="3159" data-end="3231">What managerial actions are required when a process goes out of control?</p>
+</li>
+</ol>
+<h3 data-start="3233" data-end="3255">8. Model Answers</h3>
+<ul data-start="3256" data-end="3468">
+<li data-start="3256" data-end="3324">
+<p data-start="3258" data-end="3324">Final inspection detects defects after cost is already incurred.</p>
+</li>
+<li data-start="3325" data-end="3398">
+<p data-start="3327" data-end="3398">X̄–R charts suit variable data; p or c charts suit attribute defects.</p>
+</li>
+<li data-start="3399" data-end="3468">
+<p data-start="3401" data-end="3468">SQC identifies assignable causes early, enabling corrective action.</p>
+</li>
+</ul>
+<h3 data-start="3470" data-end="3493">9. Learning Focus</h3>
+<p data-start="3494" data-end="3572">Applying Statistical Quality Control to improve process stability and quality.</p>
+<p data-start="3574" data-end="3671"><strong data-start="3574" data-end="3595">Primary Concepts:</strong> Inspection systems, SQC, control charts, process variation, quality control</p>
+<hr data-start="3673" data-end="3676">
+<h2 data-start="3678" data-end="3757"><strong data-start="3681" data-end="3757">Case Study 2: Six Sigma Quality Improvement at Tata Consultancy Services</strong></h2>
+<h3 data-start="3759" data-end="3773">1. Title</h3>
+<p data-start="3774" data-end="3847">Applying Six Sigma to Reduce Process Errors in IT Service Delivery at TCS</p>
+<h3 data-start="3849" data-end="3887">2. Company Background (90 words)</h3>
+<p data-start="3888" data-end="4264">Tata Consultancy Services (TCS) is a global IT services company delivering software development, consulting, and business process services. Although output is intangible, service quality, consistency, and defect reduction are critical for client satisfaction. TCS has adopted Six Sigma as a structured methodology for quality and process improvement across service operations.</p>
+<h3 data-start="4266" data-end="4302">3. Business Context (85 words)</h3>
+<p data-start="4303" data-end="4642">Clients increasingly demand predictable delivery timelines, low error rates, and high service reliability. Project delays and rework due to requirement misunderstandings or process lapses have increased operating costs. Traditional quality checks conducted at the end of project phases have proven insufficient to prevent recurring issues.</p>
+<h3 data-start="4644" data-end="4686">4. Core Business Problem (105 words)</h3>
+<p data-start="4687" data-end="5153">TCS faces repeated defects in application maintenance projects, such as missed deadlines, rework, and customer escalations. Although teams track errors, root causes are not systematically analyzed. Management believes that defect reduction requires a structured, data-driven approach rather than isolated corrective actions. The challenge is to apply Six Sigma principles effectively in a service environment where processes are less standardized than manufacturing.</p>
+<h3 data-start="5155" data-end="5196">5. Key Data and Metrics (120 words)</h3>
+<p data-start="5197" data-end="5228">Project performance data shows:</p>
+<ul data-start="5229" data-end="5572">
+<li data-start="5229" data-end="5296">
+<p data-start="5231" data-end="5296">Average defect rate: 4.2 defects per 1,000 service transactions</p>
+</li>
+<li data-start="5297" data-end="5361">
+<p data-start="5299" data-end="5361">Rework effort accounts for nearly 15% of total project hours</p>
+</li>
+<li data-start="5362" data-end="5401">
+<p data-start="5364" data-end="5401">Client escalations increased by 18%</p>
+</li>
+<li data-start="5402" data-end="5451">
+<p data-start="5404" data-end="5451">Process cycle time varies widely across teams</p>
+</li>
+<li data-start="5452" data-end="5572">
+<p data-start="5454" data-end="5572">Post-delivery defect leakage remains high<br data-start="5495" data-end="5498">
+These indicators suggest process instability and lack of root-cause focus.</p>
+</li>
+</ul>
+<h3 data-start="5574" data-end="5612">6. Decision Situation (70 words)</h3>
+<p data-start="5613" data-end="5835">TCS leadership must decide whether to mandate Six Sigma DMAIC projects for high-impact service processes. The decision involves training Black Belts, dedicating resources, and aligning teams around data-driven improvement.</p>
+<h3 data-start="5837" data-end="5866">7. Analytical Questions</h3>
+<ol data-start="5867" data-end="6132">
+<li data-start="5867" data-end="5934">
+<p data-start="5870" data-end="5934">How does Six Sigma differ from traditional quality inspection?</p>
+</li>
+<li data-start="5935" data-end="5994">
+<p data-start="5938" data-end="5994">Why is DMAIC suitable for service process improvement?</p>
+</li>
+<li data-start="5995" data-end="6059">
+<p data-start="5998" data-end="6059">What challenges arise in applying Six Sigma to IT services?</p>
+</li>
+<li data-start="6060" data-end="6132">
+<p data-start="6063" data-end="6132">How can defect reduction improve both cost and customer satisfaction?</p>
+</li>
+</ol>
+<h3 data-start="6134" data-end="6156">8. Model Answers</h3>
+<ul data-start="6157" data-end="6374">
+<li data-start="6157" data-end="6231">
+<p data-start="6159" data-end="6231">Six Sigma focuses on root-cause elimination, not just error detection.</p>
+</li>
+<li data-start="6232" data-end="6303">
+<p data-start="6234" data-end="6303">DMAIC provides a structured roadmap for reducing process variation.</p>
+</li>
+<li data-start="6304" data-end="6374">
+<p data-start="6306" data-end="6374">Data availability and process definition are key service challenges.</p>
+</li>
+</ul>
+<h3 data-start="6376" data-end="6399">9. Learning Focus</h3>
+<p data-start="6400" data-end="6470">Understanding Six Sigma application beyond manufacturing environments.</p>
+<p data-start="6472" data-end="6566"><strong data-start="6472" data-end="6493">Primary Concepts:</strong> Six Sigma, DMAIC, service quality, defect reduction, process improvement</p>
+<hr data-start="6568" data-end="6571">
+<h2 data-start="6573" data-end="6641"><strong data-start="6576" data-end="6641">Case Study 3: Lean, JIT, and Kanban at Toyota Kirloskar Motor</strong></h2>
+<h3 data-start="6643" data-end="6657">1. Title</h3>
+<p data-start="6658" data-end="6727">Lean Production and Just-in-Time Operations at Toyota Kirloskar Motor</p>
+<h3 data-start="6729" data-end="6767">2. Company Background (90 words)</h3>
+<p data-start="6768" data-end="7068">Toyota Kirloskar Motor (TKM) operates automobile manufacturing plants in India, following the Toyota Production System (TPS). The company emphasizes Lean production, Just-in-Time (JIT), Kanban, and waste elimination. Operations are designed to produce high quality at low cost with minimal inventory.</p>
+<h3 data-start="7070" data-end="7106">3. Business Context (85 words)</h3>
+<p data-start="7107" data-end="7422">Supply chain disruptions and fluctuating demand have increased pressure on inventory management. Holding excess inventory increases cost, while shortages disrupt production. TKM must maintain smooth production flow while minimizing inventory buffers. Lean principles are tested under uncertain operating conditions.</p>
+<h3 data-start="7424" data-end="7466">4. Core Business Problem (105 words)</h3>
+<p data-start="7467" data-end="7879">TKM has experienced intermittent production stoppages due to supplier delays and demand variability. While JIT minimizes inventory, it also reduces protection against uncertainty. Management must evaluate whether existing Kanban systems and supplier coordination are sufficient or if additional buffers or process changes are required. The challenge lies in balancing Lean efficiency with operational resilience.</p>
+<h3 data-start="7881" data-end="7922">5. Key Data and Metrics (120 words)</h3>
+<p data-start="7923" data-end="7945">Operations data shows:</p>
+<ul data-start="7946" data-end="8292">
+<li data-start="7946" data-end="8002">
+<p data-start="7948" data-end="8002">Inventory turnover among the highest in the industry</p>
+</li>
+<li data-start="8003" data-end="8059">
+<p data-start="8005" data-end="8059">Line stoppages increased by 9% due to part shortages</p>
+</li>
+<li data-start="8060" data-end="8108">
+<p data-start="8062" data-end="8108">Supplier delivery adherence dropped slightly</p>
+</li>
+<li data-start="8109" data-end="8167">
+<p data-start="8111" data-end="8167">Space utilization improved due to low inventory levels</p>
+</li>
+<li data-start="8168" data-end="8292">
+<p data-start="8170" data-end="8292">Cost savings achieved through waste reduction initiatives<br data-start="8227" data-end="8230">
+These figures reflect both benefits and risks of Lean systems.</p>
+</li>
+</ul>
+<h3 data-start="8294" data-end="8332">6. Decision Situation (65 words)</h3>
+<p data-start="8333" data-end="8508">Operations leadership must decide whether to modify Kanban quantities or invest in supplier capability improvement. The decision impacts cost, continuity, and Lean discipline.</p>
+<h3 data-start="8510" data-end="8539">7. Analytical Questions</h3>
+<ol data-start="8540" data-end="8754">
+<li data-start="8540" data-end="8591">
+<p data-start="8543" data-end="8591">How do JIT and Kanban support Lean production?</p>
+</li>
+<li data-start="8592" data-end="8645">
+<p data-start="8595" data-end="8645">What risks arise from minimal inventory systems?</p>
+</li>
+<li data-start="8646" data-end="8706">
+<p data-start="8649" data-end="8706">How does Theory of Constraints apply to line stoppages?</p>
+</li>
+<li data-start="8707" data-end="8754">
+<p data-start="8710" data-end="8754">How can Lean systems be made more resilient?</p>
+</li>
+</ol>
+<h3 data-start="8756" data-end="8778">8. Model Answers</h3>
+<ul data-start="8779" data-end="8954">
+<li data-start="8779" data-end="8833">
+<p data-start="8781" data-end="8833">Kanban regulates flow and prevents overproduction.</p>
+</li>
+<li data-start="8834" data-end="8898">
+<p data-start="8836" data-end="8898">Low inventory increases vulnerability to supply disruptions.</p>
+</li>
+<li data-start="8899" data-end="8954">
+<p data-start="8901" data-end="8954">TOC helps identify and manage production bottlenecks.</p>
+</li>
+</ul>
+<h3 data-start="8956" data-end="8979">9. Learning Focus</h3>
+<p data-start="8980" data-end="9048">Evaluating Lean, JIT, Kanban, and TOC in real manufacturing systems.</p>
+<p data-start="9050" data-end="9140"><strong data-start="9050" data-end="9071">Primary Concepts:</strong> Lean production, JIT, Kanban, Theory of Constraints, waste reduction</p>
+<hr data-start="9142" data-end="9145">
+<p data-start="9147" data-end="9171">If you want next, I can:</p>
+<ul data-start="9172" data-end="9329">
+<li data-start="9172" data-end="9227">
+<p data-start="9174" data-end="9227">Create <strong data-start="9181" data-end="9225">numerical SQC problems with case context</strong></p>
+</li>
+<li data-start="9228" data-end="9272">
+<p data-start="9230" data-end="9272">Design <strong data-start="9237" data-end="9270">Six Sigma DMAIC mini-projects</strong></p>
+</li>
+<li data-start="9273" data-end="9329">
+<p data-start="9275" data-end="9329">Prepare <strong data-start="9283" data-end="9329">Unit V exam-ready case questions &amp; rubrics</strong></p>
+</li>
+</ul>
+<p data-start="9331" data-end="9346" data-is-last-node="" data-is-only-node="">Just tell me 👍</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
       </div>
     </div>
   </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Selecting the Appropriate Manufacturing System at Aarohan Engineering Services Ltd.</title>
+  <title>ChatGPT - CaseOrbit</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -302,52 +302,52 @@
     .message-content pre .hljs-selector-tag,
     .message-content pre .hljs-literal,
     .message-content pre .hljs-tag {
-      color: #569cd6;
+      color: #569cd6; /* Blue for keywords */
     }
     .message-content pre .hljs-string,
     .message-content pre .hljs-doctag {
-      color: #ce9178;
+      color: #ce9178; /* Orange for strings */
     }
     .message-content pre .hljs-title,
     .message-content pre .hljs-section,
     .message-content pre .hljs-selector-id {
-      color: #dcdcaa;
+      color: #dcdcaa; /* Yellow for function names */
     }
     .message-content pre .hljs-subst,
     .message-content pre .hljs-type,
     .message-content pre .hljs-class .hljs-title,
     .message-content pre .hljs-title.class_,
     .message-content pre .hljs-attr {
-      color: #4ec9b0;
+      color: #4ec9b0; /* Cyan for types/classes */
     }
     .message-content pre .hljs-comment,
     .message-content pre .hljs-quote {
-      color: #6a9955;
+      color: #6a9955; /* Green for comments */
       font-style: italic;
     }
     .message-content pre .hljs-number,
     .message-content pre .hljs-built_in,
     .message-content pre .hljs-builtin-name {
-      color: #b5cea8;
+      color: #b5cea8; /* Light green for numbers */
     }
     .message-content pre .hljs-variable,
     .message-content pre .hljs-template-variable,
     .message-content pre .hljs-params {
-      color: #9cdcfe;
+      color: #9cdcfe; /* Light blue for variables */
     }
     .message-content pre .hljs-function {
-      color: #dcdcaa;
+      color: #dcdcaa; /* Yellow for functions */
     }
     .message-content pre .hljs-meta {
-      color: #c586c0;
+      color: #c586c0; /* Purple for meta/decorators */
     }
     .message-content pre .hljs-operator,
     .message-content pre .hljs-punctuation {
-      color: #d4d4d4;
+      color: #d4d4d4; /* Light gray for operators */
     }
     .message-content pre .hljs-regexp,
     .message-content pre .hljs-symbol {
-      color: #d16969;
+      color: #d16969; /* Red for regex */
     }
     .message-content table {
       border-collapse: collapse;
@@ -401,29 +401,27 @@
       border: none;
       border-radius: 50%;
       cursor: pointer;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      opacity: 0;
-      visibility: hidden;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       transition: all 0.3s ease;
       z-index: 1000;
     }
-    .back-to-top.show {
-      opacity: 1;
-      visibility: visible;
-    }
     .back-to-top:hover {
       transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
     }
     
     /* Theme Toggle Button */
     .theme-toggle {
       position: fixed;
-      bottom: 30px;
-      left: 30px;
+      top: 20px;
+      right: 20px;
       width: 50px;
       height: 50px;
       background: white;
@@ -450,188 +448,224 @@
 </head>
 <body>
   <div class="header">
-    <h1>Production and Operation Management (PB204)</h1>
+    <h1>ChatGPT - CaseOrbit</h1>
   </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
   
   <div class="messages">
     <div class="message" id="message-0">
       <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
       <div class="message-content">
-        <h6 class="sr-only">CaseOrbit Said:</h6>
-        <div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)">
-          <div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1">
-            <div class="flex max-w-full flex-col grow">
-              <div data-message-author-role="assistant" data-message-id="case-study-aarohan" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&]:mt-1" data-message-model-slug="gpt-5-2">
-                <div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]">
-                  <div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling">
-                    <h2>Selecting the Appropriate Manufacturing System at Aarohan Engineering Services Ltd.</h2>
-                    <hr>
-                    <h3>1. Organizational Background</h3>
-                    <p>Aarohan Engineering Services Ltd. (AESL) is a diversified Indian engineering company headquartered in Vadodara, Gujarat. Established in 2006, AESL operates across industrial equipment manufacturing, customized fabrication, and engineering services for infrastructure, power, and process industries.</p>
-                    <p>As of FY 2024, AESL reported consolidated revenues of approximately ₹2,250 crore and employed nearly 3,400 people, including engineers, technicians, project managers, and service staff. The company operates three major divisions:</p>
-                    <ul>
-                      <li><strong>Custom Engineering Division</strong> – designs and fabricates pressure vessels, heat exchangers, and special-purpose equipment.</li>
-                      <li><strong>Industrial Products Division</strong> – manufactures standard pumps, valves, and compressors.</li>
-                      <li><strong>Engineering Services Division</strong> – provides installation, commissioning, and maintenance services at customer sites.</li>
-                    </ul>
-                    <p>AESL serves a mix of domestic and international clients, including EPC contractors, refineries, power plants, and chemical manufacturers. The company’s value proposition lies in its ability to deliver both manufactured products and associated services, positioning itself as an integrated solution provider.</p>
-                    <p>Manufacturing operations are spread across two plants in Gujarat. Plant X handles heavy fabrication and custom orders, while Plant Y focuses on standardized industrial products. Over time, AESL expanded into multiple business lines, each with different volume, variety, and customization requirements.</p>
-                    <p>However, manufacturing systems evolved organically rather than strategically. Different production approaches coexisted within the same facilities, leading to confusion in planning, scheduling, and performance evaluation.</p>
-                    <p>Senior management increasingly struggled to answer a basic question:<br>
-                    <strong>Are the current manufacturing systems appropriate for the types of products and services AESL delivers?</strong></p>
-                    <hr>
-                    <h3>2. Business Environment and Context</h3>
-                    <p>India’s industrial engineering sector is characterized by wide diversity in demand patterns. Customers range from large infrastructure developers ordering one-of-a-kind equipment to industrial buyers purchasing standardized components in recurring volumes.</p>
-                    <p>Customers expect flexibility in design, strict adherence to delivery timelines, and competitive pricing. At the same time, service expectations have increased. Installation support, maintenance contracts, and rapid response services are now integral to customer satisfaction.</p>
-                    <p>Competition has intensified from both specialized manufacturers and low-cost producers. Firms with clearly defined manufacturing systems aligned to product characteristics tend to outperform diversified firms with mismatched systems.</p>
-                    <p>Technological changes have blurred the line between manufacturing and services. Customers increasingly evaluate suppliers on lifecycle value rather than just product cost. This requires seamless integration between production and service operations.</p>
-                    <p>Within this context, selecting the appropriate method of manufacturing—project, jobbing, batch, or flow—has become a strategic decision affecting cost structure, delivery reliability, and flexibility.</p>
-                    <p>AESL’s leadership realized that without explicitly aligning manufacturing systems to product types, operational inefficiencies would continue to erode margins and service performance.</p>
-                    <hr>
-                    <h3>3. Emerging Business Problem</h3>
-                    <p>AESL began facing operational challenges across divisions.</p>
-                    <p>In the Custom Engineering Division, projects were frequently delayed. Although each order was unique, production planning often followed routines suited for repetitive manufacturing. This led to unrealistic schedules and frequent rescheduling.</p>
-                    <p>In the Industrial Products Division, standardized pumps and valves were manufactured using layouts and processes originally designed for jobbing work. As volumes increased, material movement and setup times remained high, inflating unit costs.</p>
-                    <p>The Engineering Services Division struggled with coordination. Manufacturing delays directly impacted installation schedules, causing penalties and customer dissatisfaction.</p>
-                    <p>Management also noticed confusion in performance metrics. Productivity was measured uniformly across divisions, despite vastly different production characteristics. Comparing output per worker across project-based and flow-based operations produced misleading conclusions.</p>
-                    <p>The root cause was the absence of a clear framework distinguishing types of industries and manufacturing systems. AESL treated all operations as variations of the same system, ignoring fundamental differences in volume, variety, and customization.</p>
-                    <p>The COO argued that AESL needed to clearly classify its operations and realign manufacturing methods accordingly. Without this, investments in capacity and technology would continue to deliver suboptimal results.</p>
-                    <hr>
-                    <h3>4. Detailed Data and Metrics</h3>
-                    <p><strong>Product and Volume Characteristics</strong></p>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Division</th>
-                          <th>Product Type</th>
-                          <th>Avg. Annual Volume</th>
-                          <th>Customization Level</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Custom Engineering</td>
-                          <td>Pressure vessels</td>
-                          <td>40–60 units</td>
-                          <td>Very High</td>
-                        </tr>
-                        <tr>
-                          <td>Industrial Products</td>
-                          <td>Pumps</td>
-                          <td>48,000 units</td>
-                          <td>Low</td>
-                        </tr>
-                        <tr>
-                          <td>Industrial Products</td>
-                          <td>Valves</td>
-                          <td>62,000 units</td>
-                          <td>Low–Medium</td>
-                        </tr>
-                        <tr>
-                          <td>Services</td>
-                          <td>Installation projects</td>
-                          <td>120 projects</td>
-                          <td>High</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p><strong>Manufacturing Performance Metrics</strong></p>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Metric</th>
-                          <th>Custom Engg.</th>
-                          <th>Industrial Products</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Avg. Lead Time</td>
-                          <td>16–22 weeks</td>
-                          <td>3–4 weeks</td>
-                        </tr>
-                        <tr>
-                          <td>Schedule Adherence</td>
-                          <td>74%</td>
-                          <td>86%</td>
-                        </tr>
-                        <tr>
-                          <td>Unit Cost Variability</td>
-                          <td>Very High</td>
-                          <td>Moderate</td>
-                        </tr>
-                        <tr>
-                          <td>WIP Inventory</td>
-                          <td>High</td>
-                          <td>Medium</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p><strong>Observations</strong></p>
-                    <ul>
-                      <li>Custom jobs shared machines with batch production items, causing priority conflicts.</li>
-                      <li>Setup times in Plant Y averaged 2.8 hours, despite repetitive product lines.</li>
-                      <li>Flow interruptions were frequent due to design changes and small batch runs.</li>
-                      <li>Service engineers reported idle time due to manufacturing delays.</li>
-                    </ul>
-                    <p>The data highlighted misalignment between product characteristics and manufacturing systems.</p>
-                    <hr>
-                    <h3>5. Internal Challenges</h3>
-                    <p>AESL faced several internal constraints.</p>
-                    <p>First, cultural resistance existed. Managers were accustomed to flexible jobbing approaches and resisted standardization.</p>
-                    <p>Second, physical layouts were shared across divisions, limiting easy separation of production systems.</p>
-                    <p>Third, performance evaluation systems were uniform, discouraging system-specific optimization.</p>
-                    <p>Fourth, capital investment decisions were constrained by uncertainty about future demand mix.</p>
-                    <p>These challenges made restructuring manufacturing systems complex but unavoidable.</p>
-                    <hr>
-                    <h3>6. Analytical Context</h3>
-                    <p>Management initiated an analytical review based on manufacturing system classification principles.</p>
-                    <p><strong>Key analytical dimensions included:</strong></p>
-                    <ul>
-                      <li><strong>Project / Jobbing Production:</strong> Suitable for one-off, customized equipment requiring high flexibility and skilled labor.</li>
-                      <li><strong>Batch Production:</strong> Appropriate for moderate volumes and product variety, balancing setup cost and flexibility.</li>
-                      <li><strong>Flow / Continuous Production:</strong> Ideal for high-volume, standardized products requiring low unit cost and stable demand.</li>
-                      <li><strong>Service Operations Integration:</strong> Coordinating manufacturing outputs with installation and maintenance services to ensure seamless delivery.</li>
-                    </ul>
-                    <p>The objective was to evaluate whether AESL should separate manufacturing systems physically or logically and redefine planning and control approaches for each.</p>
-                    <hr>
-                    <h3>7. Decision Point</h3>
-                    <p>AESL’s top management must decide how to restructure manufacturing systems.</p>
-                    <p>Options include creating dedicated project shops, converting high-volume products to flow-oriented lines, and redesigning service coordination mechanisms.</p>
-                    <p>Each option involves trade-offs between flexibility, cost efficiency, and investment.</p>
-                    <p>The decision will shape AESL’s operational effectiveness and strategic positioning over the next decade.</p>
-                    <hr>
-                    <h3>8. Analytical and Decision Questions</h3>
-                    <ul>
-                      <li>How do product volume and variety influence manufacturing system selection?</li>
-                      <li>Why is jobbing production unsuitable for high-volume standardized products?</li>
-                      <li>What advantages does flow production offer in cost and delivery?</li>
-                      <li>How should project-based manufacturing be planned and controlled differently?</li>
-                      <li>How can manufacturing and services be better integrated at AESL?</li>
-                      <li>What risks arise from using a single system for diverse products?</li>
-                      <li>How should KPIs differ across manufacturing systems?</li>
-                      <li>What role does scale of operations play in system choice?</li>
-                    </ul>
-                    <hr>
-                    <h3>9. Model Answers (Selected)</h3>
-                    <p><strong>Answer 1:</strong><br>
-                    Higher volume and lower variety favor flow production, while low volume and high customization require project or jobbing systems. Matching system to product characteristics is essential for efficiency.</p>
-                    <p><strong>Answer 2:</strong><br>
-                    Jobbing systems involve frequent setups and variable routing, which increase cost and reduce consistency when applied to standardized high-volume products.</p>
-                    <p><strong>Answer 3:</strong><br>
-                    Flow production reduces material handling, setup time, and unit cost while improving delivery reliability through standardized sequences.</p>
-                    <p><strong>Answer 4:</strong><br>
-                    Project manufacturing requires milestone-based planning, resource coordination, and flexible scheduling rather than repetitive line balancing.</p>
-                    <hr>
-                    <h3>10. Learning Focus</h3>
-                    <p>This case develops students’ understanding of different types of industries and manufacturing systems and their strategic implications.</p>
-                    <p><strong>Primary Concepts:</strong> Types of Industries, Project Production, Jobbing, Batch Production, Flow Production, Manufacturing–Service Integration, Scale of Operations.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h6 class="sr-only">CaseOrbit said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="7f25be27-13a1-4b9a-94be-e97540256628" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="355">Below are <strong data-start="10" data-end="42">THREE MBA-level case studies</strong> for <strong data-start="47" data-end="133">PB204 – Production &amp; Operations Management, Unit III: Facilities Location &amp; Layout</strong>.<br data-start="134" data-end="137">
+Each case is <strong data-start="150" data-end="167">500–600 words</strong>, uses a <strong data-start="176" data-end="202">different real company</strong>, and focuses strictly on <strong data-start="228" data-end="332">strategic importance of location, location factors, layout decisions, and installation of facilities</strong>, as per your syllabus.</p>
+<hr data-start="357" data-end="360">
+<h2 data-start="362" data-end="429"><strong data-start="365" data-end="429">Case Study 1: Warehouse Location Strategy at Reliance Retail</strong></h2>
+<h3 data-start="431" data-end="445">1. Title</h3>
+<p data-start="446" data-end="525">Strategic Facility Location Decisions in Reliance Retail’s Distribution Network</p>
+<h3 data-start="527" data-end="565">2. Company Background (90 words)</h3>
+<p data-start="566" data-end="1085">Reliance Retail is India’s largest retail company, operating thousands of stores across grocery, fashion, electronics, and e-commerce formats. Its business model depends on a strong distribution network that connects suppliers to stores efficiently. The company operates multiple regional distribution centers that support high-volume, low-margin retail operations. Efficient facility location and layout are critical to maintaining cost leadership while ensuring product availability across diverse geographic markets.</p>
+<h3 data-start="1087" data-end="1123">3. Business Context (85 words)</h3>
+<p data-start="1124" data-end="1593">Rapid expansion into Tier-2 and Tier-3 cities has increased pressure on Reliance Retail’s supply chain. Existing warehouses are concentrated near major metropolitan regions, leading to longer delivery lead times and higher transportation costs for emerging markets. Management is considering setting up additional regional distribution centers. However, land costs, labor availability, infrastructure quality, and tax considerations vary significantly across locations.</p>
+<h3 data-start="1595" data-end="1637">4. Core Business Problem (105 words)</h3>
+<p data-start="1638" data-end="2184">Reliance Retail must decide whether to establish a new regional distribution center to support its growing store network in central and eastern India. The challenge lies in selecting the optimal location that minimizes total logistics cost while ensuring service reliability. Management must evaluate trade-offs between transportation cost savings, warehouse operating costs, and long-term scalability. A poorly chosen location could lock the company into high fixed costs and inefficiencies for years, making the decision strategically critical.</p>
+<h3 data-start="2186" data-end="2227">5. Key Data and Metrics (130 words)</h3>
+<p data-start="2228" data-end="2279">A feasibility analysis presents the following data:</p>
+<ul data-start="2280" data-end="2773">
+<li data-start="2280" data-end="2346">
+<p data-start="2282" data-end="2346">Current average delivery lead time to eastern stores: 72 hours</p>
+</li>
+<li data-start="2347" data-end="2410">
+<p data-start="2349" data-end="2410">Transportation cost per shipment from existing DCs: ₹14,500</p>
+</li>
+<li data-start="2411" data-end="2472">
+<p data-start="2413" data-end="2472">Estimated reduction in transport cost with new DC: 22–28%</p>
+</li>
+<li data-start="2473" data-end="2556">
+<p data-start="2475" data-end="2556">Land cost per acre varies from ₹2.5 crore to ₹6 crore across shortlisted cities</p>
+</li>
+<li data-start="2557" data-end="2610">
+<p data-start="2559" data-end="2610">Average warehouse labor cost differs by up to 35%</p>
+</li>
+<li data-start="2611" data-end="2773">
+<p data-start="2613" data-end="2773">Infrastructure reliability scores vary significantly (power, road access)<br data-start="2686" data-end="2689">
+The data highlights clear cost and service trade-offs between alternative locations.</p>
+</li>
+</ul>
+<h3 data-start="2775" data-end="2813">6. Decision Situation (70 words)</h3>
+<p data-start="2814" data-end="3072">Reliance Retail’s supply chain leadership must decide whether to adopt a single centralized warehouse model or a multi-location distribution strategy. The decision affects capital investment, operating costs, service levels, and future expansion flexibility.</p>
+<h3 data-start="3074" data-end="3103">7. Analytical Questions</h3>
+<ol data-start="3104" data-end="3396">
+<li data-start="3104" data-end="3184">
+<p data-start="3107" data-end="3184">Which factors should dominate Reliance Retail’s facility location decision?</p>
+</li>
+<li data-start="3185" data-end="3258">
+<p data-start="3188" data-end="3258">How does location choice influence long-term operational efficiency?</p>
+</li>
+<li data-start="3259" data-end="3337">
+<p data-start="3262" data-end="3337">Should management prioritize cost minimization or service responsiveness?</p>
+</li>
+<li data-start="3338" data-end="3396">
+<p data-start="3341" data-end="3396">What risks are associated with poor location decisions?</p>
+</li>
+</ol>
+<h3 data-start="3398" data-end="3420">8. Model Answers</h3>
+<ul data-start="3421" data-end="3732">
+<li data-start="3421" data-end="3526">
+<p data-start="3423" data-end="3526">Transportation cost, infrastructure quality, and market proximity should dominate location decisions.</p>
+</li>
+<li data-start="3527" data-end="3634">
+<p data-start="3529" data-end="3634">Facility location decisions have long-term cost and service implications due to high fixed investments.</p>
+</li>
+<li data-start="3635" data-end="3732">
+<p data-start="3637" data-end="3732">A balanced approach is needed to avoid sacrificing service quality for short-term cost savings.</p>
+</li>
+</ul>
+<h3 data-start="3734" data-end="3757">9. Learning Focus</h3>
+<p data-start="3758" data-end="3835">Strategic importance of facility location and multi-location decision-making.</p>
+<p data-start="3837" data-end="3956"><strong data-start="3837" data-end="3858">Primary Concepts:</strong> Facility location, strategic operations, logistics cost, market proximity, infrastructure factors</p>
+<hr data-start="3958" data-end="3961">
+<h2 data-start="3963" data-end="4019"><strong data-start="3966" data-end="4019">Case Study 2: Plant Layout Redesign at Tata Steel</strong></h2>
+<h3 data-start="4021" data-end="4035">1. Title</h3>
+<p data-start="4036" data-end="4102">Optimizing Plant Layout for Productivity Improvement at Tata Steel</p>
+<h3 data-start="4104" data-end="4142">2. Company Background (90 words)</h3>
+<p data-start="4143" data-end="4561">Tata Steel is a global steel manufacturing company with large integrated plants in India. Its operations involve high-capital, process-oriented production systems where material flow efficiency is critical. Steel manufacturing requires coordination of raw material handling, processing, and finishing operations. Even small inefficiencies in layout can lead to significant cost overruns due to the scale of operations.</p>
+<h3 data-start="4563" data-end="4599">3. Business Context (85 words)</h3>
+<p data-start="4600" data-end="4988">An aging Tata Steel plant has expanded incrementally over decades. New machinery and auxiliary processes were added without a comprehensive layout redesign. As a result, material handling distances have increased, internal congestion has worsened, and maintenance access has become difficult. Management is under pressure to improve productivity without building an entirely new facility.</p>
+<h3 data-start="4990" data-end="5032">4. Core Business Problem (100 words)</h3>
+<p data-start="5033" data-end="5453">The existing plant layout has evolved organically rather than strategically. Material moves back and forth across departments, increasing handling time and energy consumption. Work-in-process inventory has grown, and coordination between departments is inefficient. Tata Steel must evaluate whether redesigning the layout can improve material flow, reduce waste, and enhance safety without disrupting ongoing production.</p>
+<h3 data-start="5455" data-end="5496">5. Key Data and Metrics (125 words)</h3>
+<p data-start="5497" data-end="5521">Internal analysis shows:</p>
+<ul data-start="5522" data-end="5918">
+<li data-start="5522" data-end="5591">
+<p data-start="5524" data-end="5591">Average material travel distance increased by 18% over five years</p>
+</li>
+<li data-start="5592" data-end="5663">
+<p data-start="5594" data-end="5663">Material handling cost accounts for 22% of total manufacturing cost</p>
+</li>
+<li data-start="5664" data-end="5710">
+<p data-start="5666" data-end="5710">Work-in-process inventory increased by 25%</p>
+</li>
+<li data-start="5711" data-end="5766">
+<p data-start="5713" data-end="5766">Production cycle time increased from 36 to 42 hours</p>
+</li>
+<li data-start="5767" data-end="5918">
+<p data-start="5769" data-end="5918">Safety incidents related to congestion increased by 12%<br data-start="5824" data-end="5827">
+These indicators suggest layout inefficiencies are affecting productivity and cost control.</p>
+</li>
+</ul>
+<h3 data-start="5920" data-end="5958">6. Decision Situation (65 words)</h3>
+<p data-start="5959" data-end="6157">Plant management must decide whether to undertake a phased layout redesign or continue with incremental improvements. The decision involves short-term disruption versus long-term productivity gains.</p>
+<h3 data-start="6159" data-end="6188">7. Analytical Questions</h3>
+<ol data-start="6189" data-end="6470">
+<li data-start="6189" data-end="6267">
+<p data-start="6192" data-end="6267">Which type of layout is most suitable for steel manufacturing operations?</p>
+</li>
+<li data-start="6268" data-end="6331">
+<p data-start="6271" data-end="6331">How does layout affect material handling and productivity?</p>
+</li>
+<li data-start="6332" data-end="6406">
+<p data-start="6335" data-end="6406">What constraints must be considered in redesigning an existing plant?</p>
+</li>
+<li data-start="6407" data-end="6470">
+<p data-start="6410" data-end="6470">How can layout decisions improve safety and cost efficiency?</p>
+</li>
+</ol>
+<h3 data-start="6472" data-end="6494">8. Model Answers</h3>
+<ul data-start="6495" data-end="6730">
+<li data-start="6495" data-end="6581">
+<p data-start="6497" data-end="6581">A product-oriented or process-integrated layout suits continuous steel production.</p>
+</li>
+<li data-start="6582" data-end="6651">
+<p data-start="6584" data-end="6651">Poor layout increases handling cost and cycle time significantly.</p>
+</li>
+<li data-start="6652" data-end="6730">
+<p data-start="6654" data-end="6730">Redesign must consider space limitations, downtime, and capital constraints.</p>
+</li>
+</ul>
+<h3 data-start="6732" data-end="6755">9. Learning Focus</h3>
+<p data-start="6756" data-end="6840">Understanding the impact of plant layout on operational efficiency and productivity.</p>
+<p data-start="6842" data-end="6952"><strong data-start="6842" data-end="6863">Primary Concepts:</strong> Plant layout, material flow, productivity improvement, process layout, facility redesign</p>
+<hr data-start="6954" data-end="6957">
+<h2 data-start="6959" data-end="7031"><strong data-start="6962" data-end="7031">Case Study 3: Service Facility Layout at HDFC Bank Branch Network</strong></h2>
+<h3 data-start="7033" data-end="7047">1. Title</h3>
+<p data-start="7048" data-end="7112">Service Facility Layout Decisions in HDFC Bank Branch Operations</p>
+<h3 data-start="7114" data-end="7152">2. Company Background (90 words)</h3>
+<p data-start="7153" data-end="7510">HDFC Bank is one of India’s largest private-sector banks, operating an extensive branch network across urban and semi-urban regions. Branch operations involve customer-facing services such as account opening, cash transactions, and advisory services. Service efficiency and customer experience are directly influenced by branch layout and space utilization.</p>
+<h3 data-start="7512" data-end="7548">3. Business Context (85 words)</h3>
+<p data-start="7549" data-end="7899">Customer footfall has increased in high-growth urban areas, while digital banking adoption has changed service patterns. Traditional branch layouts designed for manual processing now experience congestion at peak hours and underutilization during off-peak periods. Customer wait times have increased, negatively impacting service quality perceptions.</p>
+<h3 data-start="7901" data-end="7943">4. Core Business Problem (100 words)</h3>
+<p data-start="7944" data-end="8382">HDFC Bank’s branch layouts are no longer aligned with evolving service requirements. Poor counter placement, inadequate waiting areas, and inefficient customer flow result in longer queues and staff stress. Management must redesign branch layouts to improve service efficiency while maintaining security and regulatory compliance. Unlike manufacturing, service layout decisions must account for customer behavior and interaction patterns.</p>
+<h3 data-start="8384" data-end="8425">5. Key Data and Metrics (120 words)</h3>
+<p data-start="8426" data-end="8460">Branch performance data indicates:</p>
+<ul data-start="8461" data-end="8834">
+<li data-start="8461" data-end="8525">
+<p data-start="8463" data-end="8525">Average customer waiting time increased from 9 to 16 minutes</p>
+</li>
+<li data-start="8526" data-end="8579">
+<p data-start="8528" data-end="8579">Peak-hour congestion observed for 3–4 hours daily</p>
+</li>
+<li data-start="8580" data-end="8627">
+<p data-start="8582" data-end="8627">Customer satisfaction scores dropped by 12%</p>
+</li>
+<li data-start="8628" data-end="8696">
+<p data-start="8630" data-end="8696">Teller utilization varies widely between peak and non-peak hours</p>
+</li>
+<li data-start="8697" data-end="8834">
+<p data-start="8699" data-end="8834">Floor space utilization efficiency estimated at only 65%<br data-start="8755" data-end="8758">
+The data highlights misalignment between layout and service demand patterns.</p>
+</li>
+</ul>
+<h3 data-start="8836" data-end="8874">6. Decision Situation (65 words)</h3>
+<p data-start="8875" data-end="9071">Branch operations management must decide whether to standardize a new branch layout model or allow location-specific customization. The decision affects customer experience, cost, and scalability.</p>
+<h3 data-start="9073" data-end="9102">7. Analytical Questions</h3>
+<ol data-start="9103" data-end="9379">
+<li data-start="9103" data-end="9174">
+<p data-start="9106" data-end="9174">How does service facility layout differ from manufacturing layout?</p>
+</li>
+<li data-start="9175" data-end="9238">
+<p data-start="9178" data-end="9238">Which layout principles are critical for banking services?</p>
+</li>
+<li data-start="9239" data-end="9313">
+<p data-start="9242" data-end="9313">How can layout redesign reduce waiting time without increasing staff?</p>
+</li>
+<li data-start="9314" data-end="9379">
+<p data-start="9317" data-end="9379">What trade-offs exist between standardization and flexibility?</p>
+</li>
+</ol>
+<h3 data-start="9381" data-end="9403">8. Model Answers</h3>
+<ul data-start="9404" data-end="9650">
+<li data-start="9404" data-end="9494">
+<p data-start="9406" data-end="9494">Service layouts emphasize customer flow and interaction rather than material movement.</p>
+</li>
+<li data-start="9495" data-end="9566">
+<p data-start="9497" data-end="9566">Proper counter placement and waiting area design reduce congestion.</p>
+</li>
+<li data-start="9567" data-end="9650">
+<p data-start="9569" data-end="9650">Layout standardization improves consistency but may ignore local demand patterns.</p>
+</li>
+</ul>
+<h3 data-start="9652" data-end="9675">9. Learning Focus</h3>
+<p data-start="9676" data-end="9732">Applying facility layout concepts to service operations.</p>
+<p data-start="9734" data-end="9854"><strong data-start="9734" data-end="9755">Primary Concepts:</strong> Service layout, customer flow, facility planning, operational efficiency, layout design principles</p>
+<hr data-start="9856" data-end="9859">
+<p data-start="9861" data-end="9885">If you want next, I can:</p>
+<ul data-start="9886" data-end="10050">
+<li data-start="9886" data-end="9936">
+<p data-start="9888" data-end="9936">Create <strong data-start="9895" data-end="9934">numerical location-model mini cases</strong></p>
+</li>
+<li data-start="9937" data-end="9993">
+<p data-start="9939" data-end="9993">Design <strong data-start="9946" data-end="9991">exam-oriented case questions for Unit III</strong></p>
+</li>
+<li data-start="9994" data-end="10050">
+<p data-start="9996" data-end="10050">Generate <strong data-start="10005" data-end="10050">layout diagrams with analytical questions</strong></p>
+</li>
+</ul>
+<p data-start="10052" data-end="10067" data-is-last-node="" data-is-only-node="">Just tell me 👍</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><br class="sr-only">
       </div>
     </div>
   </div>

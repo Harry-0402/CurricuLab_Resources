@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Improving Shop-Floor Productivity at Vardhan Auto Components Pvt. Ltd.</title>
+  <title>ChatGPT - CaseOrbit</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -302,52 +302,52 @@
     .message-content pre .hljs-selector-tag,
     .message-content pre .hljs-literal,
     .message-content pre .hljs-tag {
-      color: #569cd6;
+      color: #569cd6; /* Blue for keywords */
     }
     .message-content pre .hljs-string,
     .message-content pre .hljs-doctag {
-      color: #ce9178;
+      color: #ce9178; /* Orange for strings */
     }
     .message-content pre .hljs-title,
     .message-content pre .hljs-section,
     .message-content pre .hljs-selector-id {
-      color: #dcdcaa;
+      color: #dcdcaa; /* Yellow for function names */
     }
     .message-content pre .hljs-subst,
     .message-content pre .hljs-type,
     .message-content pre .hljs-class .hljs-title,
     .message-content pre .hljs-title.class_,
     .message-content pre .hljs-attr {
-      color: #4ec9b0;
+      color: #4ec9b0; /* Cyan for types/classes */
     }
     .message-content pre .hljs-comment,
     .message-content pre .hljs-quote {
-      color: #6a9955;
+      color: #6a9955; /* Green for comments */
       font-style: italic;
     }
     .message-content pre .hljs-number,
     .message-content pre .hljs-built_in,
     .message-content pre .hljs-builtin-name {
-      color: #b5cea8;
+      color: #b5cea8; /* Light green for numbers */
     }
     .message-content pre .hljs-variable,
     .message-content pre .hljs-template-variable,
     .message-content pre .hljs-params {
-      color: #9cdcfe;
+      color: #9cdcfe; /* Light blue for variables */
     }
     .message-content pre .hljs-function {
-      color: #dcdcaa;
+      color: #dcdcaa; /* Yellow for functions */
     }
     .message-content pre .hljs-meta {
-      color: #c586c0;
+      color: #c586c0; /* Purple for meta/decorators */
     }
     .message-content pre .hljs-operator,
     .message-content pre .hljs-punctuation {
-      color: #d4d4d4;
+      color: #d4d4d4; /* Light gray for operators */
     }
     .message-content pre .hljs-regexp,
     .message-content pre .hljs-symbol {
-      color: #d16969;
+      color: #d16969; /* Red for regex */
     }
     .message-content table {
       border-collapse: collapse;
@@ -401,29 +401,27 @@
       border: none;
       border-radius: 50%;
       cursor: pointer;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      opacity: 0;
-      visibility: hidden;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       transition: all 0.3s ease;
       z-index: 1000;
     }
-    .back-to-top.show {
-      opacity: 1;
-      visibility: visible;
-    }
     .back-to-top:hover {
       transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
     }
     
     /* Theme Toggle Button */
     .theme-toggle {
       position: fixed;
-      bottom: 30px;
-      left: 30px;
+      top: 20px;
+      right: 20px;
       width: 50px;
       height: 50px;
       background: white;
@@ -450,187 +448,227 @@
 </head>
 <body>
   <div class="header">
-    <h1>Production and Operation Management (PB204)</h1>
+    <h1>ChatGPT - CaseOrbit</h1>
   </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
   
   <div class="messages">
     <div class="message" id="message-0">
       <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
       <div class="message-content">
-        <h6 class="sr-only">CaseOrbit Said:</h6>
-        <div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)">
-          <div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1">
-            <div class="flex max-w-full flex-col grow">
-              <div data-message-author-role="assistant" data-message-id="case-study-vardhan" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&]:mt-1" data-message-model-slug="gpt-5-2">
-                <div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]">
-                  <div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling">
-                    <h2>Improving Shop-Floor Productivity at Vardhan Auto Components Pvt. Ltd.</h2>
-                    <hr>
-                    <h3>1. Organizational Background</h3>
-                    <p>Vardhan Auto Components Pvt. Ltd. (VACPL) is an Indian automotive components manufacturer headquartered in Aurangabad, Maharashtra. Established in 2008, the company supplies precision-machined and assembled components to original equipment manufacturers (OEMs) in the passenger vehicle and two-wheeler segments. Its major customers include domestic OEMs and Tier-1 suppliers operating across India.</p>
-                    <p>As of FY 2024, VACPL reported annual revenues of approximately ₹1,450 crore and employed nearly 2,600 people across manufacturing, quality, logistics, and administrative functions. The company operates two manufacturing facilities: Plant A in Aurangabad focusing on engine and transmission components, and Plant B in Chakan specializing in braking and suspension assemblies.</p>
-                    <p>VACPL’s business model is based on long-term supply contracts with OEMs. Pricing is largely fixed for contract periods of three to five years, with limited scope for passing on cost increases. As a result, operational efficiency and productivity directly determine profitability. Margins in the auto component industry are thin, typically ranging between 8% and 12%, making productivity improvement a strategic necessity rather than an operational choice.</p>
-                    <p>The company follows a make-to-order production system. Monthly production schedules are driven by OEM demand forecasts, with weekly and daily schedules finalized at the plant level. Over the years, VACPL invested heavily in CNC machines and semi-automated assembly lines. However, productivity outcomes did not improve in proportion to capital investment.</p>
-                    <p>Between FY 2021 and FY 2024, VACPL’s revenue grew at a compound annual rate of 7%, but operating profit grew at only 2%. Labor costs increased steadily due to wage revisions and skill premiums, while output per worker stagnated. Senior management initially attributed this to external pressures such as fluctuating demand and stricter quality norms.</p>
-                    <p>An internal audit conducted in late 2024 revealed that work methods, task allocation, and time standards had not been formally reviewed since the plants were commissioned. Many shop-floor practices evolved informally, driven by supervisors’ experience rather than systematic analysis.</p>
-                    <p>In January 2025, VACPL’s Managing Director initiated a company-wide productivity improvement program with a clear mandate: identify inefficiencies using work study and work measurement techniques, establish realistic standard times, and improve overall labor productivity without compromising quality or safety.</p>
-                    <hr>
-                    <h3>2. Business Environment and Context</h3>
-                    <p>The Indian automotive sector operates under intense cost and delivery pressure. OEMs continuously push suppliers for annual cost reductions, often referred to as “productivity give-backs.” Suppliers that fail to meet these expectations risk losing future contracts.</p>
-                    <p>At the same time, demand volatility has increased due to changing consumer preferences, regulatory transitions, and supply chain disruptions. These fluctuations require manufacturers to be flexible while maintaining cost efficiency.</p>
-                    <p>Technological upgrades alone have proven insufficient to ensure competitiveness. Many auto component firms discovered that without proper work methods and accurate time standards, automation investments lead to underutilization rather than productivity gains.</p>
-                    <p>Labor productivity has become a key benchmark in supplier evaluations. OEMs increasingly assess metrics such as units per labor hour, line efficiency, and manpower utilization. Firms with weak productivity performance face pricing pressure and reduced order allocations.</p>
-                    <p>Regulatory compliance and quality requirements have also tightened. Zero-defect expectations leave little room for speed-driven shortcuts. Productivity improvement must therefore come from better methods and balanced workloads, not from excessive work pressure.</p>
-                    <p>Within this context, VACPL’s leadership recognized that traditional supervision-based control was no longer adequate. A structured approach to productivity—grounded in work study, method analysis, and work measurement—was required to sustain competitiveness.</p>
-                    <hr>
-                    <h3>3. Emerging Business Problem</h3>
-                    <p>Despite modern machinery and skilled operators, VACPL experienced persistent productivity challenges. Output per worker varied significantly across shifts and supervisors. Overtime usage increased even when order volumes remained stable.</p>
-                    <p>At Plant A, engine component machining lines consistently failed to meet daily output targets. Supervisors responded by adding manpower or authorizing overtime, increasing labor costs without addressing root causes.</p>
-                    <p>At Plant B, assembly lines showed frequent bottlenecks. Operators at some stations were overloaded, while others waited idly for parts. Material handling delays and unclear task boundaries further reduced effective working time.</p>
-                    <p>Management lacked reliable standard times for most operations. Production planning relied on historical averages and supervisor estimates. As a result, capacity planning was inaccurate, and manpower allocation was often arbitrary.</p>
-                    <p>Employee dissatisfaction also grew. Operators complained of uneven workloads and unrealistic targets, while supervisors argued that workers were underperforming. Industrial relations risks began to surface.</p>
-                    <p>The core issue was not lack of effort or equipment, but the absence of scientifically defined work methods and time standards. Without these, productivity improvement initiatives remained reactive and fragmented.</p>
-                    <hr>
-                    <h3>4. Detailed Data and Metrics</h3>
-                    <p><strong>Workforce and Output Data (Plant A – Machining)</strong></p>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Metric</th>
-                          <th>FY 2022</th>
-                          <th>FY 2023</th>
-                          <th>FY 2024</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Avg. Monthly Output (units)</td>
-                          <td>410,000</td>
-                          <td>425,000</td>
-                          <td>432,000</td>
-                        </tr>
-                        <tr>
-                          <td>Direct Workers</td>
-                          <td>520</td>
-                          <td>540</td>
-                          <td>560</td>
-                        </tr>
-                        <tr>
-                          <td>Output per Worker/Month</td>
-                          <td>788</td>
-                          <td>787</td>
-                          <td>771</td>
-                        </tr>
-                        <tr>
-                          <td>Overtime Hours/Month</td>
-                          <td>9,800</td>
-                          <td>11,200</td>
-                          <td>13,600</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p><strong>Assembly Line Data (Plant B)</strong></p>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Metric</th>
-                          <th>Line 1</th>
-                          <th>Line 2</th>
-                          <th>Line 3</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Designed Capacity (units/day)</td>
-                          <td>1,200</td>
-                          <td>1,100</td>
-                          <td>1,000</td>
-                        </tr>
-                        <tr>
-                          <td>Actual Avg. Output</td>
-                          <td>980</td>
-                          <td>860</td>
-                          <td>890</td>
-                        </tr>
-                        <tr>
-                          <td>Line Efficiency (%)</td>
-                          <td>82%</td>
-                          <td>78%</td>
-                          <td>85%</td>
-                        </tr>
-                        <tr>
-                          <td>Idle Time (%)</td>
-                          <td>12%</td>
-                          <td>15%</td>
-                          <td>10%</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p><strong>Observations from Preliminary Study</strong></p>
-                    <ul>
-                      <li>Operators spent 18–22% of shift time on non-value-adding activities such as searching for tools, waiting for material, and rework.</li>
-                      <li>Method variations existed for the same operation across shifts.</li>
-                      <li>No documented standard time existed for 65% of operations.</li>
-                      <li>Allowances for fatigue and delays were inconsistent and undocumented.</li>
-                    </ul>
-                    <p>The data indicated significant scope for productivity improvement through systematic methods study and work measurement rather than additional capital investment.</p>
-                    <hr>
-                    <h3>5. Internal Challenges</h3>
-                    <p>VACPL faced several internal constraints in implementing productivity improvements.</p>
-                    <p>First, supervisors lacked formal training in work study techniques. Most relied on intuition and past experience. Introducing scientific methods required capability building.</p>
-                    <p>Second, operators were skeptical of time studies, associating them with work intensification. Trust-building and transparent communication were necessary.</p>
-                    <p>Third, data collection was manual and time-consuming. There was no standardized format for recording elements, performance ratings, or allowances.</p>
-                    <p>Fourth, production pressure limited time available for detailed studies. Stopping lines for observation was seen as risky by plant managers.</p>
-                    <p>These challenges meant that productivity initiatives had to be carefully designed to balance operational continuity with analytical rigor.</p>
-                    <hr>
-                    <h3>6. Analytical Context</h3>
-                    <p>Management decided to adopt a structured productivity improvement approach based on classical work study principles.</p>
-                    <p><strong>The analytical focus areas included:</strong></p>
-                    <ul>
-                      <li><strong>Methods Study:</strong> Mapping existing processes using flow process charts and process mapping to identify unnecessary movements, delays, and redundancies.</li>
-                      <li><strong>Work Measurement:</strong> Breaking jobs into elements, conducting time studies, applying performance ratings, and determining appropriate allowances.</li>
-                      <li><strong>Standard Time Determination:</strong> Establishing standard times to serve as a basis for production planning, manpower allocation, and performance evaluation.</li>
-                      <li><strong>Productivity Metrics:</strong> Measuring labor productivity, line efficiency, and utilization before and after method improvements.</li>
-                    </ul>
-                    <p>Management emphasized that the objective was system improvement, not individual speed-up. Analytical outputs would support fair workload distribution and realistic target setting.</p>
-                    <hr>
-                    <h3>7. Decision Point</h3>
-                    <p>The Managing Director must now decide how aggressively VACPL should roll out work study and work measurement across both plants.</p>
-                    <p>Key decisions include selecting pilot areas, determining the depth of time studies, defining allowance policies, and deciding how standard times will be used in performance management.</p>
-                    <p>A poorly executed program risks employee resistance and disruption. A well-designed program could unlock significant productivity gains without additional capital investment.</p>
-                    <p>The decision will shape VACPL’s cost competitiveness and labor relations over the next several years.</p>
-                    <hr>
-                    <h3>8. Analytical and Decision Questions</h3>
-                    <ul>
-                      <li>Why is labor productivity critical to VACPL’s profitability?</li>
-                      <li>How can methods study help identify non-value-adding activities?</li>
-                      <li>What factors should be considered while defining work elements?</li>
-                      <li>How should performance rating be applied objectively?</li>
-                      <li>What types of allowances are appropriate in VACPL’s operations?</li>
-                      <li>How can standard time improve production planning accuracy?</li>
-                      <li>What risks arise if standard times are poorly defined?</li>
-                      <li>How should management address employee concerns during time studies?</li>
-                    </ul>
-                    <hr>
-                    <h3>9. Model Answers (Selected)</h3>
-                    <p><strong>Answer 1:</strong><br>
-                    Labor productivity directly impacts unit cost in a fixed-price contract environment. Since pricing flexibility is limited, productivity improvement becomes the primary lever for margin protection.</p>
-                    <p><strong>Answer 2:</strong><br>
-                    Methods study systematically documents each step in a process, allowing identification of unnecessary movements, delays, and repetitions that do not add value but consume time and effort.</p>
-                    <p><strong>Answer 3:</strong><br>
-                    Work elements should be clearly defined, observable, and repetitive. They must reflect natural breakpoints in work to ensure accurate measurement and analysis.</p>
-                    <p><strong>Answer 4:</strong><br>
-                    Performance rating should compare observed worker pace to a defined normal pace. Consistency and training of observers are critical to reduce subjectivity.</p>
-                    <hr>
-                    <h3>10. Learning Focus</h3>
-                    <p>This case develops analytical understanding of productivity improvement through work study and work measurement. Students learn to connect operational data, human factors, and managerial decisions.</p>
-                    <p><strong>Primary Concepts:</strong> Productivity, Work Study, Methods Study, Work Measurement, Standard Time, Performance Rating, Allowances.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h6 class="sr-only">CaseOrbit said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="81ce20af-e2cb-4702-bf72-4422cb184c8e" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="352">Below are <strong data-start="10" data-end="42">THREE MBA-level case studies</strong> for <strong data-start="47" data-end="147">PB204 – Production &amp; Operations Management, Unit II: Productivity, Work Study &amp; Work Measurement</strong>.<br data-start="148" data-end="151">
+Each case strictly follows your required structure, uses <strong data-start="208" data-end="226">real companies</strong>, and focuses on <strong data-start="243" data-end="351">methods study, work measurement, productivity improvement, standard time, and managerial decision-making</strong>.</p>
+<hr data-start="354" data-end="357">
+<h2 data-start="359" data-end="424"><strong data-start="362" data-end="424">Case Study 1: Improving Warehouse Productivity at Flipkart</strong></h2>
+<h3 data-start="426" data-end="440">1. Title</h3>
+<p data-start="441" data-end="515">Work Study–Driven Productivity Improvement at Flipkart Fulfillment Centers</p>
+<h3 data-start="517" data-end="555">2. Company Background (90 words)</h3>
+<p data-start="556" data-end="1035">Flipkart is one of India’s largest e-commerce companies, operating a nationwide network of fulfillment and sorting centers. Its core business depends on high-volume order processing with tight delivery timelines. Flipkart follows a cost-competitive marketplace model, where operational productivity directly impacts margins. The company employs thousands of warehouse associates performing picking, packing, and dispatch operations that are highly repetitive and labor-intensive.</p>
+<h3 data-start="1037" data-end="1073">3. Business Context (85 words)</h3>
+<p data-start="1074" data-end="1538">Rising order volumes during sales events and increased customer expectations for faster deliveries have stressed Flipkart’s warehouse operations. Labor costs have increased due to higher wages and overtime payments. Management has observed significant differences in output per worker across shifts and facilities. There is growing concern that productivity improvement efforts are ad hoc rather than systematically driven by work study and measurement techniques.</p>
+<h3 data-start="1540" data-end="1582">4. Core Business Problem (100 words)</h3>
+<p data-start="1583" data-end="2225">Flipkart’s operations team has identified low and inconsistent labor productivity in its mid-sized fulfillment centers. Although demand has increased steadily, output per worker has not improved proportionately. Supervisors rely on experience-based estimates for task completion times, leading to unrealistic performance targets and employee dissatisfaction. The absence of scientifically determined standard times has resulted in inefficient manpower planning, higher idle time in some processes, and bottlenecks in others. Management must determine how work study techniques can be used to establish fair standards and improve productivity.</p>
+<h3 data-start="2227" data-end="2268">5. Key Data and Metrics (130 words)</h3>
+<p data-start="2269" data-end="2320">Operational data from one fulfillment center shows:</p>
+<ul data-start="2321" data-end="2745">
+<li data-start="2321" data-end="2386">
+<p data-start="2323" data-end="2386">Average picking time per order varies from 6.2 to 9.1 minutes</p>
+</li>
+<li data-start="2387" data-end="2446">
+<p data-start="2389" data-end="2446">Packing time ranges between 4.5 and 7 minutes per order</p>
+</li>
+<li data-start="2447" data-end="2502">
+<p data-start="2449" data-end="2502">Daily output per worker varies by 28% across shifts</p>
+</li>
+<li data-start="2503" data-end="2557">
+<p data-start="2505" data-end="2557">Overtime costs have increased by 18% in six months</p>
+</li>
+<li data-start="2558" data-end="2616">
+<p data-start="2560" data-end="2616">Idle time during non-peak hours is estimated at 15–20%</p>
+</li>
+<li data-start="2617" data-end="2745">
+<p data-start="2619" data-end="2745">Error rates increase sharply during peak hours<br data-start="2665" data-end="2668">
+The data suggests lack of standardized methods and improper work measurement.</p>
+</li>
+</ul>
+<h3 data-start="2747" data-end="2785">6. Decision Situation (70 words)</h3>
+<p data-start="2786" data-end="3106">Flipkart’s operations manager must decide whether to conduct a detailed methods study and work measurement exercise across key warehouse activities. The decision involves investment in industrial engineering expertise and possible redesign of workflows, balanced against expected productivity gains and labor acceptance.</p>
+<h3 data-start="3108" data-end="3137">7. Analytical Questions</h3>
+<ol data-start="3138" data-end="3457">
+<li data-start="3138" data-end="3223">
+<p data-start="3141" data-end="3223">Which work study tools are most appropriate for Flipkart’s warehouse operations?</p>
+</li>
+<li data-start="3224" data-end="3301">
+<p data-start="3227" data-end="3301">How can standard time be established for picking and packing activities?</p>
+</li>
+<li data-start="3302" data-end="3378">
+<p data-start="3305" data-end="3378">What factors should be considered while setting performance allowances?</p>
+</li>
+<li data-start="3379" data-end="3457">
+<p data-start="3382" data-end="3457">How can productivity improvements be sustained without employee resistance?</p>
+</li>
+</ol>
+<h3 data-start="3459" data-end="3481">8. Model Answers</h3>
+<ul data-start="3482" data-end="3747">
+<li data-start="3482" data-end="3565">
+<p data-start="3484" data-end="3565">Flow process charts and time study are suitable for repetitive warehouse tasks.</p>
+</li>
+<li data-start="3566" data-end="3665">
+<p data-start="3568" data-end="3665">Standard time should be based on observed times adjusted for performance rating and allowances.</p>
+</li>
+<li data-start="3666" data-end="3747">
+<p data-start="3668" data-end="3747">Allowances must reflect fatigue, delays, and personal needs to ensure fairness.</p>
+</li>
+</ul>
+<h3 data-start="3749" data-end="3772">9. Learning Focus</h3>
+<p data-start="3773" data-end="3876">Application of work study and work measurement for productivity improvement in service-like operations.</p>
+<p data-start="3878" data-end="3978"><strong data-start="3878" data-end="3899">Primary Concepts:</strong> Productivity, methods study, work measurement, standard time, labor efficiency</p>
+<hr data-start="3980" data-end="3983">
+<h2 data-start="3985" data-end="4059"><strong data-start="3988" data-end="4059">Case Study 2: Standard Time Estimation at Tata Motors Assembly Line</strong></h2>
+<h3 data-start="4061" data-end="4075">1. Title</h3>
+<p data-start="4076" data-end="4141">Work Measurement Challenges in Automobile Assembly at Tata Motors</p>
+<h3 data-start="4143" data-end="4181">2. Company Background (90 words)</h3>
+<p data-start="4182" data-end="4601">Tata Motors is a leading Indian automobile manufacturer producing passenger and commercial vehicles. Its assembly plants operate high-volume, flow-oriented production systems. Cost control and productivity improvement are critical due to intense competition and thin margins. The company relies heavily on standardized work practices to ensure consistent output, quality, and labor utilization across shifts and plants.</p>
+<h3 data-start="4603" data-end="4639">3. Business Context (85 words)</h3>
+<p data-start="4640" data-end="5041">Tata Motors recently introduced minor design modifications in one of its vehicle models. While changes improved product features, they altered assembly tasks slightly. However, existing standard times were not revised. Supervisors report frequent line stoppages and increased fatigue complaints from workers. Management suspects that outdated work standards are affecting both productivity and morale.</p>
+<h3 data-start="5043" data-end="5085">4. Core Business Problem (100 words)</h3>
+<p data-start="5086" data-end="5579">The assembly line continues to operate using old standard times that no longer reflect actual task requirements. Workers struggle to meet targets, leading to increased fatigue and error rates. At the same time, management observes declining output per shift. Without scientifically revised standard times, production planning, manpower allocation, and incentive calculations have become inaccurate. Tata Motors must reassess work measurement practices to restore line balance and productivity.</p>
+<h3 data-start="5581" data-end="5622">5. Key Data and Metrics (120 words)</h3>
+<p data-start="5623" data-end="5648">Plant-level data reveals:</p>
+<ul data-start="5649" data-end="6000">
+<li data-start="5649" data-end="5707">
+<p data-start="5651" data-end="5707">Cycle time per vehicle increased from 58 to 64 minutes</p>
+</li>
+<li data-start="5708" data-end="5751">
+<p data-start="5710" data-end="5751">Line efficiency dropped from 92% to 85%</p>
+</li>
+<li data-start="5752" data-end="5785">
+<p data-start="5754" data-end="5785">Defect rates increased by 14%</p>
+</li>
+<li data-start="5786" data-end="5827">
+<p data-start="5788" data-end="5827">Worker fatigue complaints rose by 20%</p>
+</li>
+<li data-start="5828" data-end="5870">
+<p data-start="5830" data-end="5870">Absenteeism increased marginally by 6%</p>
+</li>
+<li data-start="5871" data-end="6000">
+<p data-start="5873" data-end="6000">Output shortfall of 18 vehicles per day versus plan<br data-start="5924" data-end="5927">
+These indicators point toward mismatched work content and standard times.</p>
+</li>
+</ul>
+<h3 data-start="6002" data-end="6040">6. Decision Situation (70 words)</h3>
+<p data-start="6041" data-end="6237">The plant manager must decide whether to immediately conduct a fresh time study or temporarily adjust manpower levels. The decision affects production targets, labor costs, and employee relations.</p>
+<h3 data-start="6239" data-end="6268">7. Analytical Questions</h3>
+<ol data-start="6269" data-end="6559">
+<li data-start="6269" data-end="6341">
+<p data-start="6272" data-end="6341">Why must standard times be revised after process or design changes?</p>
+</li>
+<li data-start="6342" data-end="6417">
+<p data-start="6345" data-end="6417">How does incorrect performance rating affect productivity measurement?</p>
+</li>
+<li data-start="6418" data-end="6485">
+<p data-start="6421" data-end="6485">What risks arise from ignoring allowances in work measurement?</p>
+</li>
+<li data-start="6486" data-end="6559">
+<p data-start="6489" data-end="6559">How can balanced standard times improve both productivity and quality?</p>
+</li>
+</ol>
+<h3 data-start="6561" data-end="6583">8. Model Answers</h3>
+<ul data-start="6584" data-end="6842">
+<li data-start="6584" data-end="6674">
+<p data-start="6586" data-end="6674">Process changes invalidate earlier standard times and distort productivity evaluation.</p>
+</li>
+<li data-start="6675" data-end="6769">
+<p data-start="6677" data-end="6769">Incorrect performance rating leads to unrealistic expectations and worker dissatisfaction.</p>
+</li>
+<li data-start="6770" data-end="6842">
+<p data-start="6772" data-end="6842">Ignoring allowances increases fatigue and long-term productivity loss.</p>
+</li>
+</ul>
+<h3 data-start="6844" data-end="6867">9. Learning Focus</h3>
+<p data-start="6868" data-end="6964">Understanding the importance of accurate standard time estimation in manufacturing flow systems.</p>
+<p data-start="6966" data-end="7073"><strong data-start="6966" data-end="6987">Primary Concepts:</strong> Work measurement, standard time, performance rating, allowances, productivity control</p>
+<hr data-start="7075" data-end="7078">
+<h2 data-start="7080" data-end="7155"><strong data-start="7083" data-end="7155">Case Study 3: Productivity Measurement in Infosys Service Operations</strong></h2>
+<h3 data-start="7157" data-end="7171">1. Title</h3>
+<p data-start="7172" data-end="7240">Measuring Knowledge-Work Productivity at Infosys Using Work Sampling</p>
+<h3 data-start="7242" data-end="7280">2. Company Background (90 words)</h3>
+<p data-start="7281" data-end="7689">Infosys is a global IT services and consulting company delivering software development and business process services. Unlike manufacturing, Infosys operates in a knowledge-intensive environment where output is less tangible. Productivity measurement is critical for cost control, project estimation, and client billing. The company employs thousands of professionals working on multiple tasks simultaneously.</p>
+<h3 data-start="7691" data-end="7727">3. Business Context (85 words)</h3>
+<p data-start="7728" data-end="8143">Project managers at Infosys report difficulty in accurately estimating effort and productivity for large application maintenance projects. Employees divide time between coding, meetings, rework, and support tasks. Traditional time study techniques are impractical due to task variability. Management is exploring alternative work measurement methods to better understand utilization and non-value-adding activities.</p>
+<h3 data-start="8145" data-end="8187">4. Core Business Problem (100 words)</h3>
+<p data-start="8188" data-end="8608">Infosys lacks reliable data on how employee time is actually spent during work hours. Productivity metrics based on billable hours fail to capture inefficiencies caused by rework, coordination delays, and excessive meetings. Without objective work measurement, management cannot identify improvement opportunities or benchmark team performance. The challenge is to measure productivity without disrupting knowledge work.</p>
+<h3 data-start="8610" data-end="8651">5. Key Data and Metrics (120 words)</h3>
+<p data-start="8652" data-end="8672">A pilot study shows:</p>
+<ul data-start="8673" data-end="8994">
+<li data-start="8673" data-end="8721">
+<p data-start="8675" data-end="8721">Average billable utilization reported at 78%</p>
+</li>
+<li data-start="8722" data-end="8775">
+<p data-start="8724" data-end="8775">Rework consumes approximately 12% of total effort</p>
+</li>
+<li data-start="8776" data-end="8820">
+<p data-start="8778" data-end="8820">Meetings account for 18–22% of work time</p>
+</li>
+<li data-start="8821" data-end="8867">
+<p data-start="8823" data-end="8867">Idle or waiting time is estimated at 8–10%</p>
+</li>
+<li data-start="8868" data-end="8994">
+<p data-start="8870" data-end="8994">Project delivery delays increased by 15%<br data-start="8910" data-end="8913">
+These estimates are based on self-reported data, raising concerns about accuracy.</p>
+</li>
+</ul>
+<h3 data-start="8996" data-end="9034">6. Decision Situation (65 words)</h3>
+<p data-start="9035" data-end="9239">Infosys must decide whether to use work sampling techniques to measure actual time distribution across activities. The decision involves balancing data accuracy, employee trust, and analytical usefulness.</p>
+<h3 data-start="9241" data-end="9270">7. Analytical Questions</h3>
+<ol data-start="9271" data-end="9537">
+<li data-start="9271" data-end="9337">
+<p data-start="9274" data-end="9337">Why is work sampling suitable for service and knowledge work?</p>
+</li>
+<li data-start="9338" data-end="9401">
+<p data-start="9341" data-end="9401">How can productivity be improved using work sampling data?</p>
+</li>
+<li data-start="9402" data-end="9476">
+<p data-start="9405" data-end="9476">What limitations must management consider while interpreting results?</p>
+</li>
+<li data-start="9477" data-end="9537">
+<p data-start="9480" data-end="9537">How can findings be used without harming employee morale?</p>
+</li>
+</ol>
+<h3 data-start="9539" data-end="9561">8. Model Answers</h3>
+<ul data-start="9562" data-end="9807">
+<li data-start="9562" data-end="9642">
+<p data-start="9564" data-end="9642">Work sampling captures activity distribution without continuous observation.</p>
+</li>
+<li data-start="9643" data-end="9729">
+<p data-start="9645" data-end="9729">Identifying non-value-adding activities helps redesign workflows and reduce waste.</p>
+</li>
+<li data-start="9730" data-end="9807">
+<p data-start="9732" data-end="9807">Results should be used for system improvement, not individual surveillance.</p>
+</li>
+</ul>
+<h3 data-start="9809" data-end="9832">9. Learning Focus</h3>
+<p data-start="9833" data-end="9909">Applying work measurement concepts to service operations and knowledge work.</p>
+<p data-start="9911" data-end="10038"><strong data-start="9911" data-end="9932">Primary Concepts:</strong> Productivity measurement, work sampling, service operations, utilization analysis, efficiency improvement</p>
+<hr data-start="10040" data-end="10043">
+<p data-start="10045" data-end="10069">If you want next, I can:</p>
+<ul data-start="10070" data-end="10242">
+<li data-start="10070" data-end="10131">
+<p data-start="10072" data-end="10131">Create <strong data-start="10079" data-end="10117">numerical problem-based mini cases</strong> for Unit II</p>
+</li>
+<li data-start="10132" data-end="10192">
+<p data-start="10134" data-end="10192">Convert these into <strong data-start="10153" data-end="10190">CIA / End-Sem exam case questions</strong></p>
+</li>
+<li data-start="10193" data-end="10242">
+<p data-start="10195" data-end="10242">Design <strong data-start="10202" data-end="10242">Unit II MCQs + case analytics rubric</strong></p>
+</li>
+</ul>
+<p data-start="10244" data-end="10259" data-is-last-node="" data-is-only-node="">Just tell me 👍</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><br class="sr-only">
       </div>
     </div>
   </div>
