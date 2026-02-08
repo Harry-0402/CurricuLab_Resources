@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBA206 Unit-1 Case Study - Business Law</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content h1 {
+      font-size: 2em;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .message-content h2 {
+      font-size: 1.5em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    .message-content h3 {
+      font-size: 1.25em;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .message-content ul, .message-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    .message-content li {
+      margin: 5px 0;
+    }
+    .message-content p {
+      margin: 10px 0;
+    }
+    .message-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    body.dark-mode .message-content strong {
+      color: #f9fafb;
+    }
+    .message-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    body.dark-mode .message-content hr {
+      border-top-color: #404040;
+    }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PBA206 Unit-1 Case Study</h1>
+    <div class="metadata">Business Law - Indian Contract Act Cases</div>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">Case Study Set</div>
+      <div class="message-content">
+        <h1>UNIT 1 – CASE STUDY SET</h1>
+
+<hr>
+
+<h2>CASE STUDY 1</h2>
+
+<h3>Offer, Acceptance, Consideration & Capacity</h3>
+
+<h4>Background</h4>
+
+<p>Ravi, a 17-year-old student, ordered a high-end laptop online from TechMart Ltd. for ₹85,000 after seeing an advertisement offering a "limited period discount." Ravi paid an advance of ₹20,000. Later, TechMart refused to deliver the laptop, stating that the advertisement was only an invitation to offer.</p>
+
+<p>Separately, Ravi's friend Aman promised to pay Ravi ₹10,000 if Ravi scored above 90% in his semester exam. Ravi achieved the score, but Aman refused to pay, claiming there was no enforceable contract.</p>
+
+<p>Ravi approached a legal advisor to understand his rights.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Distinguish between an offer and an invitation to offer.</li>
+<li>Was there a valid acceptance in Ravi's contract with TechMart?</li>
+<li>Discuss the effect of minority on contractual capacity.</li>
+<li>Is Aman's promise supported by valid consideration?</li>
+<li>Can Ravi enforce either of the agreements? Give reasons.</li>
+</ol>
+
+<hr>
+
+<h2>CASE STUDY 2</h2>
+
+<h3>Free Consent, Legality, Void & Contingent Contracts</h3>
+
+<h4>Background</h4>
+
+<p>Sharma borrowed ₹5 lakh from Mehta under a written agreement that carried an interest rate of 48% per annum. Sharma agreed due to financial pressure. Later, Sharma discovered that Mehta had threatened to disclose personal information if the agreement was not signed.</p>
+
+<p>In another agreement, Sharma promised to sell his house to Verma if he receives a foreign job offer within six months. Unfortunately, Sharma never received the offer.</p>
+
+<p>Sharma now wants to know whether these contracts are legally binding.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Explain the meaning of free consent under the Indian Contract Act.</li>
+<li>Identify whether Sharma's consent was free or not, and why.</li>
+<li>Discuss the legality of object and consideration in this case.</li>
+<li>Distinguish between void and voidable contracts.</li>
+<li>Is the agreement with Verma a contingent contract? Explain.</li>
+<li>What is the legal status of the contract if the contingency does not occur?</li>
+</ol>
+
+<hr>
+
+<h2>CASE STUDY 3</h2>
+
+<h3>Performance, Discharge, Quasi Contract, Bailment, Agency & Remedies</h3>
+
+<h4>Background</h4>
+
+<p>Amit gave his car to SpeedFix Garage for servicing. The garage entrusted the car to a trainee who damaged it during a test drive. Meanwhile, Amit mistakenly paid an electricity bill of his neighbor Rohit. Rohit refused to refund the amount.</p>
+
+<p>In a separate transaction, Amit appointed Kunal as his agent to sell goods on commission. Kunal sold goods on credit against Amit's instructions and failed to recover payment.</p>
+
+<p>Amit suffered losses and wants legal remedies.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Explain the duties of a bailee in a contract of bailment.</li>
+<li>Is SpeedFix Garage liable for damage caused by its trainee?</li>
+<li>Discuss the concept of quasi contract with reference to mistaken payment.</li>
+<li>Explain the relationship between principal and agent.</li>
+<li>Has Kunal breached his duties as an agent?</li>
+<li>What remedies for breach of contract are available to Amit?</li>
+</ol>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeIcon = document.querySelector('.theme-icon');
+      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Load saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-icon').textContent = '☀️';
+    }
+  </script>
+</body>
+</html>

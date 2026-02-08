@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBA206 Unit-5 Case Study - Business Law</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content h1 {
+      font-size: 2em;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .message-content h2 {
+      font-size: 1.5em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    .message-content h3 {
+      font-size: 1.25em;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .message-content ul, .message-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    .message-content li {
+      margin: 5px 0;
+    }
+    .message-content p {
+      margin: 10px 0;
+    }
+    .message-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    body.dark-mode .message-content strong {
+      color: #f9fafb;
+    }
+    .message-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    body.dark-mode .message-content hr {
+      border-top-color: #404040;
+    }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PBA206 Unit-5 Case Study</h1>
+    <div class="metadata">Business Law - Consumer Protection, Co-operatives & FEMA</div>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">Case Study Set</div>
+      <div class="message-content">
+        <h1>UNIT 5 – CASE STUDY SET</h1>
+
+<hr>
+
+<h2>CASE STUDY 1</h2>
+
+<h3>Essential Commodities Act & Consumer Protection Act</h3>
+
+<h4>Background</h4>
+
+<p>FreshLife Agro Traders is a wholesale distributor of essential food items such as rice, wheat, sugar, and edible oil. During a period of inflation and supply disruption, the company was found to be:</p>
+
+<ul>
+<li>Stocking large quantities of edible oil beyond prescribed limits</li>
+<li>Selling commodities at prices much higher than government-notified rates</li>
+<li>Supplying substandard packaged food products to retail consumers</li>
+</ul>
+
+<p>Several consumers filed complaints alleging deficiency in service, unfair trade practices, and adulteration. Simultaneously, the state authorities initiated action against the firm under the Essential Commodities Act, 1955 for hoarding and price manipulation.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Explain the object and scope of the Essential Commodities Act, 1955.</li>
+<li>What constitutes hoarding and black marketing under the Act?</li>
+<li>Discuss the rights of consumers under the Consumer Protection Act, 1986.</li>
+<li>What is meant by deficiency in service and unfair trade practice?</li>
+<li>What remedies are available to consumers in this case?</li>
+<li>Can criminal liability arise along with consumer liability? Explain.</li>
+</ol>
+
+<hr>
+
+<h2>CASE STUDY 2</h2>
+
+<h3>Co-operative Societies & Multi-State Co-operative Societies</h3>
+
+<h4>Background</h4>
+
+<p>Sahakar Dairy Cooperative Society was registered under the Co-operative Societies Act, 1912 and operated within one state. Over time, it expanded operations into neighboring states and re-registered as a Multi-State Co-operative Society.</p>
+
+<p>Disputes arose when:</p>
+
+<ul>
+<li>Elections to the managing committee were not held on time</li>
+<li>Financial statements were not disclosed to members</li>
+<li>Certain members were denied voting rights</li>
+<li>Government authorities intervened in the functioning of the society</li>
+</ul>
+
+<p>Members challenged the actions of the management and questioned the legality of government interference.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Explain the nature and objectives of co-operative societies.</li>
+<li>Distinguish between State Co-operative Societies and Multi-State Co-operative Societies.</li>
+<li>Discuss the rights and duties of members of a co-operative society.</li>
+<li>Examine the role of the government in regulating co-operative societies.</li>
+<li>What remedies are available to members against mismanagement?</li>
+<li>Can elections be postponed indefinitely? Give reasons.</li>
+</ol>
+
+<hr>
+
+<h2>CASE STUDY 3</h2>
+
+<h3>FEMA, MRTP & Information Technology Act</h3>
+
+<h4>Background</h4>
+
+<p>TechNova Solutions Pvt. Ltd. is an Indian IT services company engaged in:</p>
+
+<ul>
+<li>Receiving foreign investment from overseas clients</li>
+<li>Exporting software services</li>
+<li>Processing online payments through digital platforms</li>
+</ul>
+
+<p>The company was accused of:</p>
+
+<ul>
+<li>Violating FEMA norms by routing foreign payments through unauthorized channels</li>
+<li>Entering into exclusive agreements restricting competition</li>
+<li>Failing to protect customer data, leading to a major data breach</li>
+</ul>
+
+<p>Regulatory authorities initiated proceedings under FEMA, MRTP Act, and the Information Technology Act, 2000.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Explain the object and scope of the Foreign Exchange Management Act, 1999.</li>
+<li>What types of transactions are regulated under FEMA?</li>
+<li>What constitutes restrictive and monopolistic trade practices?</li>
+<li>Explain the relevance of the MRTP Act in this case.</li>
+<li>Discuss the legal obligations of companies under the Information Technology Act, 2000.</li>
+<li>What penalties can arise from data protection and cyber law violations?</li>
+</ol>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeIcon = document.querySelector('.theme-icon');
+      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Load saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-icon').textContent = '☀️';
+    }
+  </script>
+</body>
+</html>

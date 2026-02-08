@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBA206 Unit-3 Case Study - Company Law</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content h1 {
+      font-size: 2em;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .message-content h2 {
+      font-size: 1.5em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    .message-content h3 {
+      font-size: 1.25em;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .message-content ul, .message-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    .message-content li {
+      margin: 5px 0;
+    }
+    .message-content p {
+      margin: 10px 0;
+    }
+    .message-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    body.dark-mode .message-content strong {
+      color: #f9fafb;
+    }
+    .message-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    body.dark-mode .message-content hr {
+      border-top-color: #404040;
+    }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .topics-covered {
+      background: #f0f9ff;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 16px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+    body.dark-mode .topics-covered {
+      background: #1e3a5f;
+      border-left-color: #60a5fa;
+    }
+    .topics-covered p {
+      margin: 5px 0;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PBA206 Unit-3 Case Study</h1>
+    <div class="metadata">Company Law - Formation, Shares & Winding Up</div>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">Case Study Set</div>
+      <div class="message-content">
+        <h1>UNIT 3 – COMPANY LAW</h1>
+        <h2>CASE STUDY SET (B)</h2>
+
+<hr>
+
+<h2>CASE STUDY 1</h2>
+
+<h3>Formation of the Company, MOA, AOA, Promoters & Prospectus</h3>
+
+<h4>Background</h4>
+
+<p>Orion GreenTech Private Limited was incorporated in 2022 with the objective of manufacturing eco-friendly packaging materials. The idea was conceptualized by three promoters—two engineers and one venture capitalist—who decided to convert their partnership firm into a company to raise funds and expand operations.</p>
+
+<p>During incorporation, the promoters drafted the Memorandum of Association (MOA) specifying objectives related to biodegradable packaging. The Articles of Association (AOA) provided rules for internal management, share transfer restrictions, and director powers. Soon after incorporation, the company decided to issue a prospectus to invite public investment and convert into a public limited company.</p>
+
+<p>However, after funds were raised, it was discovered that:</p>
+
+<ul>
+<li>Certain activities undertaken by the company were not mentioned in the object clause of the MOA</li>
+<li>The prospectus contained over-optimistic profit projections</li>
+<li>One promoter sold his shares immediately after allotment without disclosure</li>
+<li>Investors alleged that they were misled during subscription</li>
+</ul>
+
+<p>The company now faces complaints from shareholders and scrutiny from regulatory authorities.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Explain the legal significance of the Memorandum of Association in this case.</li>
+<li>Can activities beyond the object clause of the MOA be legally undertaken? Why?</li>
+<li>Distinguish between MOA and AOA with reference to this case.</li>
+<li>Discuss the legal duties and liabilities of promoters.</li>
+<li>What remedies are available to investors if a prospectus is misleading?</li>
+<li>Can the promoter be held liable for selling shares immediately after allotment?</li>
+</ol>
+
+<div class="topics-covered">
+<p><strong>Topics Covered:</strong></p>
+<p>✔ Company and its forms</p>
+<p>✔ Formation of a company</p>
+<p>✔ Memorandum of Association</p>
+<p>✔ Articles of Association</p>
+<p>✔ Promoters</p>
+<p>✔ Prospectus</p>
+</div>
+
+<hr>
+
+<h2>CASE STUDY 2</h2>
+
+<h3>Shares, Share Capital, Membership, Meetings & Directors</h3>
+
+<h4>Background</h4>
+
+<p>Nova Auto Components Ltd., a listed manufacturing company, issued additional equity shares through a rights issue to finance capacity expansion. The Board of Directors approved the issue in a board meeting, but no extraordinary general meeting (EGM) was conducted.</p>
+
+<p>Several shareholders complained that:</p>
+
+<ul>
+<li>They did not receive proper notice of the meeting</li>
+<li>Shares were allotted preferentially to related parties</li>
+<li>The company secretary failed to maintain updated register of members</li>
+<li>Directors approved an increase in their remuneration despite declining profits</li>
+</ul>
+
+<p>One shareholder challenged the validity of the board decisions and questioned whether statutory procedures under company law were followed.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Explain the procedure for valid allotment of shares.</li>
+<li>Who can become a member of a company, and how does membership arise?</li>
+<li>Examine the role and legal responsibilities of the company secretary in this case.</li>
+<li>Distinguish between board meetings and general meetings.</li>
+<li>Was it legally correct to increase directors' remuneration under the given conditions?</li>
+<li>What are the statutory duties of directors towards shareholders?</li>
+</ol>
+
+<div class="topics-covered">
+<p><strong>Topics Covered:</strong></p>
+<p>✔ Shares and share capital</p>
+<p>✔ Share allotment</p>
+<p>✔ Membership of a company</p>
+<p>✔ Meetings and proceedings</p>
+<p>✔ Directors</p>
+<p>✔ Managers and remuneration</p>
+<p>✔ Company secretary</p>
+</div>
+
+<hr>
+
+<h2>CASE STUDY 3</h2>
+
+<h3>Oppression, Mismanagement & Winding Up</h3>
+
+<h4>Background</h4>
+
+<p>Galaxy Infrastructure Limited is a public company dominated by majority shareholders holding 62% equity. Minority shareholders alleged that:</p>
+
+<ul>
+<li>Board decisions were taken without consulting them</li>
+<li>Profits were diverted through related-party contracts</li>
+<li>Dividends were not declared despite adequate profits</li>
+<li>Key managerial positions were filled with relatives of majority shareholders</li>
+</ul>
+
+<p>As losses mounted, the company defaulted on bank loans. Minority shareholders filed a petition alleging oppression and mismanagement, while creditors applied for winding up of the company.</p>
+
+<p>The court is now required to decide whether:</p>
+
+<ul>
+<li>The management conduct amounts to oppression</li>
+<li>Alternative remedies exist before winding up</li>
+<li>Winding up is in the interest of shareholders and creditors</li>
+</ul>
+
+<h4>Questions</h4>
+
+<ol>
+<li>What constitutes oppression of minority shareholders under company law?</li>
+<li>Differentiate between oppression and mismanagement.</li>
+<li>What remedies are available to minority shareholders apart from winding up?</li>
+<li>Explain the grounds for winding up of a company.</li>
+<li>Who can file a petition for winding up?</li>
+<li>Why is winding up considered a last resort under company law?</li>
+</ol>
+
+<div class="topics-covered">
+<p><strong>Topics Covered:</strong></p>
+<p>✔ Prevention of oppression and mismanagement</p>
+<p>✔ Rights of minority shareholders</p>
+<p>✔ Winding up of a company</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeIcon = document.querySelector('.theme-icon');
+      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Load saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-icon').textContent = '☀️';
+    }
+  </script>
+</body>
+</html>
