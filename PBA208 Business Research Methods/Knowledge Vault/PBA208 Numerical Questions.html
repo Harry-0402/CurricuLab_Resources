@@ -3,749 +3,628 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChatGPT - NoteSmith</title>
+  <title>PBA208 Numerical Questions - NoteSmith</title>
   <style>
+    :root {
+      --bg-color: #f7f7f8;
+      --card-bg: #ffffff;
+      --text-color: #1f2937;
+      --header-bg: #ffffff;
+      --accent-color: #7c3aed;
+      --border-color: #e5e7eb;
+      --formula-bg: #f9fafb;
+      --math-font: "Cambria Math", "Times New Roman", serif;
+    }
+
+    body.dark-mode {
+      --bg-color: #1a1a1a;
+      --card-bg: #2d2d2d;
+      --text-color: #e5e7eb;
+      --header-bg: #2d2d2d;
+      --accent-color: #c084fc;
+      --border-color: #404040;
+      --formula-bg: #242424;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       max-width: 900px;
       margin: 0 auto;
       padding: 20px;
-      background: #f7f7f8;
-      color: #1f2937;
+      background: var(--bg-color);
+      color: var(--text-color);
       line-height: 1.6;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: all 0.3s ease;
     }
-    
-    /* Dark Mode Styles */
-    body.dark-mode {
-      background: #1a1a1a;
-      color: #e5e7eb;
-    }
-    body.dark-mode .header {
-      background: #2d2d2d;
-      color: #f9fafb;
-    }
-    body.dark-mode .header h1 {
-      color: #f9fafb;
-    }
-    body.dark-mode .summary-section,
-    body.dark-mode .toc-section,
-    body.dark-mode .message {
-      background: #2d2d2d;
-      color: #e5e7eb;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    body.dark-mode .summary-section h2,
-    body.dark-mode .toc-section h2 {
-      color: #f9fafb;
-    }
-    body.dark-mode .message-role.user {
-      color: #60a5fa;
-    }
-    body.dark-mode .message-role.assistant {
-      color: #c084fc;
-    }
-    body.dark-mode .message-content {
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content * {
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content h1,
-    body.dark-mode .message-content h2,
-    body.dark-mode .message-content h3,
-    body.dark-mode .message-content h4,
-    body.dark-mode .message-content h5,
-    body.dark-mode .message-content h6 {
-      color: #f9fafb;
-    }
-    body.dark-mode .message-content pre {
-      background: #1e1e1e !important;
-      border: 1px solid #404040;
-    }
-    body.dark-mode .message-content pre code {
-      background: transparent !important;
-      color: #d4d4d4 !important;
-    }
-    body.dark-mode .message-content code {
-      background: #374151 !important;
-      color: #f9fafb !important;
-    }
-    /* Keep syntax highlighting colors in dark mode */
-    body.dark-mode .message-content pre .hljs-keyword,
-    body.dark-mode .message-content pre .hljs-selector-tag,
-    body.dark-mode .message-content pre .hljs-literal,
-    body.dark-mode .message-content pre .hljs-tag {
-      color: #569cd6 !important;
-    }
-    body.dark-mode .message-content pre .hljs-string,
-    body.dark-mode .message-content pre .hljs-doctag {
-      color: #ce9178 !important;
-    }
-    body.dark-mode .message-content pre .hljs-title,
-    body.dark-mode .message-content pre .hljs-section,
-    body.dark-mode .message-content pre .hljs-selector-id {
-      color: #dcdcaa !important;
-    }
-    body.dark-mode .message-content pre .hljs-subst,
-    body.dark-mode .message-content pre .hljs-type,
-    body.dark-mode .message-content pre .hljs-class .hljs-title,
-    body.dark-mode .message-content pre .hljs-title.class_,
-    body.dark-mode .message-content pre .hljs-attr {
-      color: #4ec9b0 !important;
-    }
-    body.dark-mode .message-content pre .hljs-comment,
-    body.dark-mode .message-content pre .hljs-quote {
-      color: #6a9955 !important;
-    }
-    body.dark-mode .message-content pre .hljs-number,
-    body.dark-mode .message-content pre .hljs-built_in,
-    body.dark-mode .message-content pre .hljs-builtin-name {
-      color: #b5cea8 !important;
-    }
-    body.dark-mode .message-content pre .hljs-variable,
-    body.dark-mode .message-content pre .hljs-template-variable,
-    body.dark-mode .message-content pre .hljs-params {
-      color: #9cdcfe !important;
-    }
-    body.dark-mode .message-content pre .hljs-function {
-      color: #dcdcaa !important;
-    }
-    body.dark-mode .message-content pre .hljs-meta {
-      color: #c586c0 !important;
-    }
-    body.dark-mode .message-content pre .hljs-regexp,
-    body.dark-mode .message-content pre .hljs-symbol {
-      color: #d16969 !important;
-    }
-    body.dark-mode .message-content table th,
-    body.dark-mode .message-content table td {
-      border-color: #404040;
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content table th {
-      background: #374151;
-      color: #f9fafb;
-    }
-    body.dark-mode a {
-      color: #60a5fa;
-    }
-    body.dark-mode .summary-section > div > div {
-      color: #e5e7eb;
-    }
-    body.dark-mode .toc-section a {
-      color: #e5e7eb;
-    }
-    body.dark-mode .toc-link {
-      color: #e5e7eb !important;
-    }
-    body.dark-mode .toc-link:hover {
-      background: #374151 !important;
-    }
-    body.dark-mode .toc-role {
-      color: #9ca3af !important;
-    }
-    body.dark-mode .toc-preview {
-      color: #e5e7eb !important;
-    }
-    body.dark-mode .summary-export-info {
-      background: #374151 !important;
-    }
-    body.dark-mode .summary-card {
-      background: #374151 !important;
-      color: #e5e7eb !important;
-    }
-    body.dark-mode .summary-card > div {
-      color: #e5e7eb !important;
-    }
-    body.dark-mode .summary-card-blue {
-      background: #1e3a5f !important;
-      color: #93c5fd !important;
-    }
-    body.dark-mode .summary-card-blue > div {
-      color: #93c5fd !important;
-    }
-    body.dark-mode .summary-card-purple {
-      background: #4c1d95 !important;
-      color: #d8b4fe !important;
-    }
-    body.dark-mode .summary-card-purple > div {
-      color: #d8b4fe !important;
-    }
-    .summary-section {
-      background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .toc-section {
-      background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .summary-export-info {
-      background: #f9fafb;
-    }
-    .summary-card {
-      background: #f3f4f6;
-      color: #1f2937;
-    }
-    .summary-card > div:first-child {
-      color: #6b7280;
-    }
-    .summary-card > div:last-child {
-      color: #1f2937;
-    }
-    .summary-card-blue {
-      background: #dbeafe;
-    }
-    .summary-card-blue > div:first-child {
-      color: #1e40af;
-    }
-    .summary-card-blue > div:last-child {
-      color: #1e40af;
-    }
-    .summary-card-purple {
-      background: #e9d5ff;
-    }
-    .summary-card-purple > div:first-child {
-      color: #6b21a8;
-    }
-    .summary-card-purple > div:last-child {
-      color: #6b21a8;
-    }
-    .toc-link {
-      color: inherit;
-      transition: background 0.2s;
-    }
-    .toc-link:hover {
-      background: #f3f4f6;
-    }
-    .toc-role {
-      color: #6b7280;
-    }
-    .toc-preview {
-      color: #1f2937;
-    }
+
     .header {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: var(--header-bg);
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      text-align: center;
     }
+
     .header h1 {
-      margin: 0 0 10px 0;
-      color: #1f2937;
+      margin: 0;
+      font-size: 2rem;
+      color: var(--accent-color);
     }
-    .metadata {
-      font-size: 14px;
-      color: #6b7280;
+
+    .section {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
-    .message {
-      background: white;
+
+    h2 {
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 10px;
+      margin-top: 0;
+      color: var(--accent-color);
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      color: var(--accent-color);
+      margin-top: 25px;
+      font-size: 1.25rem;
+    }
+
+    h4 {
+      margin-top: 15px;
+      color: var(--text-color);
+      font-weight: 600;
+      border-left: 4px solid var(--accent-color);
+      padding-left: 10px;
+    }
+
+    /* Professional Math Layout System */
+    .math-block {
+      background: var(--formula-bg);
+      border: 1px solid var(--border-color);
       padding: 20px;
       border-radius: 8px;
-      margin-bottom: 15px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin: 15px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: auto;
     }
-    .message-role {
-      font-weight: 600;
-      margin-bottom: 10px;
-      font-size: 14px;
+
+    .math {
+      font-family: var(--math-font);
+      font-size: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      line-height: normal;
+    }
+
+    .math i {
+      padding: 0 0.1rem;
+    }
+
+    .frac {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: middle;
+      text-align: center;
+      padding: 0 0.4rem;
+      font-size: 0.95em;
+    }
+
+    .num {
+      border-bottom: 1.5px solid currentColor;
+      padding: 0 0.4rem 2px 0.4rem;
+    }
+
+    .den {
+      padding: 2px 0.4rem 0 0.4rem;
+    }
+
+    /* Scalable Professional Radicals */
+    .sqrt {
+      display: inline-flex;
+      align-items: stretch;
+      vertical-align: middle;
+      position: relative;
+      padding-left: 0.85em;
+      margin: 0 0.2rem;
+    }
+
+    .sqrt::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0.85em;
+      background: currentColor;
+      clip-path: polygon(0% 55%, 15% 55%, 38% 95%, 43% 95%, 98% 0%, 100% 0%, 100% 8%, 45% 100%, 35% 100%, 10% 58%, 0% 58%);
+    }
+
+    .rad {
+      border-top: 1.8px solid currentColor;
+      padding-top: 4px;
+      padding-left: 4px;
+      padding-right: 4px;
       display: flex;
       align-items: center;
-      gap: 8px;
     }
-    .message-role.user {
-      color: #2563eb;
+
+    .sum-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 0.3rem;
+      line-height: 1;
     }
-    .message-role.assistant {
-      color: #7c3aed;
+
+    .sum-sym {
+      font-size: 1.8rem;
+      font-style: normal;
     }
-    .message-role img.chatgpt-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 4px;
+
+    .limit {
+      font-size: 0.55em;
+      font-style: normal;
     }
-    .message-content {
-      line-height: 1.6;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
+
+    .sup {
+      font-size: 0.6em;
+      vertical-align: super;
+      margin-left: 1px;
     }
-    .message-content h1, .message-content h2, .message-content h3 {
-      margin-top: 20px;
-      margin-bottom: 10px;
+
+    .sub {
+      font-size: 0.6em;
+      vertical-align: sub;
+      margin-left: 1px;
     }
-    .message-content pre {
-      background: #1f2937;
-      color: #f9fafb;
-      padding: 16px;
-      border-radius: 6px;
-      overflow-x: auto;
-      margin: 12px 0;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .message-content code {
-      font-family: 'Courier New', Consolas, Monaco, monospace;
-      font-size: 14px;
-      background: #f3f4f6;
-      padding: 2px 6px;
-      border-radius: 3px;
-    }
-    .message-content pre code {
-      background: none;
-      padding: 0;
-      color: inherit;
-    }
-    
-    /* Syntax Highlighting - VS Code Dark+ Theme */
-    .message-content pre .hljs-keyword,
-    .message-content pre .hljs-selector-tag,
-    .message-content pre .hljs-literal,
-    .message-content pre .hljs-tag {
-      color: #569cd6; /* Blue for keywords */
-    }
-    .message-content pre .hljs-string,
-    .message-content pre .hljs-doctag {
-      color: #ce9178; /* Orange for strings */
-    }
-    .message-content pre .hljs-title,
-    .message-content pre .hljs-section,
-    .message-content pre .hljs-selector-id {
-      color: #dcdcaa; /* Yellow for function names */
-    }
-    .message-content pre .hljs-subst,
-    .message-content pre .hljs-type,
-    .message-content pre .hljs-class .hljs-title,
-    .message-content pre .hljs-title.class_,
-    .message-content pre .hljs-attr {
-      color: #4ec9b0; /* Cyan for types/classes */
-    }
-    .message-content pre .hljs-comment,
-    .message-content pre .hljs-quote {
-      color: #6a9955; /* Green for comments */
-      font-style: italic;
-    }
-    .message-content pre .hljs-number,
-    .message-content pre .hljs-built_in,
-    .message-content pre .hljs-builtin-name {
-      color: #b5cea8; /* Light green for numbers */
-    }
-    .message-content pre .hljs-variable,
-    .message-content pre .hljs-template-variable,
-    .message-content pre .hljs-params {
-      color: #9cdcfe; /* Light blue for variables */
-    }
-    .message-content pre .hljs-function {
-      color: #dcdcaa; /* Yellow for functions */
-    }
-    .message-content pre .hljs-meta {
-      color: #c586c0; /* Purple for meta/decorators */
-    }
-    .message-content pre .hljs-operator,
-    .message-content pre .hljs-punctuation {
-      color: #d4d4d4; /* Light gray for operators */
-    }
-    .message-content pre .hljs-regexp,
-    .message-content pre .hljs-symbol {
-      color: #d16969; /* Red for regex */
-    }
-    .message-content table {
+
+    /* Table Styling */
+    table {
       border-collapse: collapse;
       width: 100%;
-      margin: 12px 0;
+      margin: 20px 0;
+      border-radius: 8px;
+      overflow: hidden;
     }
-    .message-content table th,
-    .message-content table td {
-      border: 1px solid #e5e7eb;
-      padding: 8px 12px;
-      text-align: left;
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      text-align: center;
     }
-    .message-content table th {
-      background: #f3f4f6;
-      font-weight: 600;
+
+    th {
+      background: var(--accent-color);
+      color: white;
     }
-    .message-content ul, .message-content ol {
-      margin: 12px 0;
-      padding-left: 24px;
+
+    tr:nth-child(even) {
+      background: rgba(124, 58, 237, 0.05);
     }
-    .message-content li {
-      margin: 4px 0;
+
+    .conclusion {
+      background: rgba(124, 58, 237, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 5px solid var(--accent-color);
+      font-weight: bold;
+      margin-top: 20px;
     }
-    .message-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-      margin: 12px 0;
-    }
-    .message-content a {
-      color: #2563eb;
-      text-decoration: none;
-    }
-    .message-content a:hover {
-      text-decoration: underline;
-    }
-    /* Hide "You said:", "ChatGPT said:" labels */
-    .message-content > div > div.text-sm {
-      display: none;
-    }
-    
-    /* Back to Top Button */
-    .back-to-top {
+
+    .theme-toggle, .back-to-top {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
       width: 50px;
       height: 50px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
       border: none;
       border-radius: 50%;
       cursor: pointer;
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       font-size: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       z-index: 1000;
+      transition: transform 0.3s;
     }
-    .back-to-top:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+
+    .theme-toggle {
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
     }
+
+    .back-to-top {
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: white;
+      display: none;
+    }
+
     .back-to-top.show {
       display: flex;
     }
-    
-    /* Theme Toggle Button */
-    .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    body.dark-mode .theme-toggle {
-      background: #2d2d2d;
-      border-color: #404040;
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: var(--border-color);
+      margin: 30px 0;
     }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>ChatGPT - NoteSmith</h1>
+    <h1>📘 PBA208: Business Research Methodology</h1>
+    <p>Professional Numerical Solved Examples (Units 1-5)</p>
   </div>
-  
-  <!-- Conversation Summary -->
-  
-  
-  <!-- Table of Contents -->
-  
-  
-  <div class="messages">
-    <div class="message" id="message-0">
-      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
-      <div class="message-content">
-        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="5ac1cb0d-f224-483e-a94f-2211a7e542a8" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="73">Perfect ✅<br data-start="9" data-end="12">
-Now I am giving you a <strong data-start="34" data-end="61">FINAL COMPLETE RESPONSE</strong> containing:</p>
-<h1 data-start="75" data-end="120">📘 PBA208 – BUSINESS RESEARCH METHODOLOGY</h1>
-<h1 data-start="121" data-end="167">🔥 DETAILED NUMERICALS FOR ALL UNITS (1–5)</h1>
-<p data-start="168" data-end="228">With full step-by-step calculations (University exam format)</p>
-<hr data-start="230" data-end="233">
-<hr data-start="235" data-end="238">
-<h1 data-start="240" data-end="285">✅ UNIT 1: INTRODUCTION TO BUSINESS RESEARCH</h1>
-<h2 data-start="287" data-end="339">🔢 Q1. Hypothesis Testing (Z-Test – Large Sample)</h2>
-<p data-start="341" data-end="481">A company claims average production = 500 units.<br data-start="389" data-end="392">
-Sample of 64 days shows mean = 520 units.<br data-start="433" data-end="436">
-Population SD = 80 units.<br data-start="461" data-end="464">
-Test at 5% level.</p>
-<hr data-start="483" data-end="486">
-<h3 data-start="488" data-end="510">Step 1: Hypotheses</h3>
-<p data-start="512" data-end="539">H₀: μ = 500<br data-start="523" data-end="526">
-H₁: μ ≠ 500</p>
-<hr data-start="541" data-end="544">
-<h3 data-start="546" data-end="565">Step 2: Formula</h3>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Z</mi><mo>=</mo><mfrac><mrow><mover accent="true"><mi>X</mi><mo>ˉ</mo></mover><mo>−</mo><mi>μ</mi></mrow><mrow><mi>σ</mi><mi mathvariant="normal">/</mi><msqrt><mi>n</mi></msqrt></mrow></mfrac></mrow><annotation encoding="application/x-tex">Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">Z</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.4374em; vertical-align: -0.9403em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.4971em;"><span style="top: -2.3097em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.03588em;">σ</span><span class="mord">/</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.8003em;"><span class="svg-align" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord" style="padding-left: 0.833em;"><span class="mord mathnormal">n</span></span></span><span style="top: -2.7603em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail" style="min-width: 0.853em; height: 1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
-c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
-c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
-c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
-s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
-c69,-144,104.5,-217.7,106.5,-221
-l0 -0
-c5.3,-9.3,12,-14,20,-14
-H400000v40H845.2724
-s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
-c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
-M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2397em;"><span></span></span></span></span></span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8201em;"><span style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span><span style="top: -3.2523em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.1667em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal">μ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.9403em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<hr data-start="616" data-end="619">
-<h3 data-start="621" data-end="650">Step 3: Substitute Values</h3>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Z</mi><mo>=</mo><mfrac><mrow><mn>520</mn><mo>−</mo><mn>500</mn></mrow><mrow><mn>80</mn><mi mathvariant="normal">/</mi><msqrt><mn>64</mn></msqrt></mrow></mfrac></mrow><annotation encoding="application/x-tex">Z = \frac{520 - 500}{80/\sqrt{64}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">Z</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.3687em; vertical-align: -1.0472em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.2028em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">80/</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.9072em;"><span class="svg-align" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord" style="padding-left: 0.833em;"><span class="mord">64</span></span></span><span style="top: -2.8672em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail" style="min-width: 0.853em; height: 1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
-c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
-c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
-c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
-s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
-c69,-144,104.5,-217.7,106.5,-221
-l0 -0
-c5.3,-9.3,12,-14,20,-14
-H400000v40H845.2724
-s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
-c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
-M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.1328em;"><span></span></span></span></span></span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">520</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord">500</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 1.0472em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mfrac><mn>20</mn><mrow><mn>80</mn><mi mathvariant="normal">/</mi><mn>8</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">= \frac{20}{80/8}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.2574em; vertical-align: -0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">80/8</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">20</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mfrac><mn>20</mn><mn>10</mn></mfrac></mrow><annotation encoding="application/x-tex">= \frac{20}{10}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0074em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">10</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">20</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">= 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">2</span></span></span></span></span>
-<hr data-start="753" data-end="756">
-<h3 data-start="758" data-end="784">Step 4: Critical Value</h3>
-<p data-start="786" data-end="801">Z₀.₀₅ = ±1.96</p>
-<p data-start="803" data-end="813">2 &gt; 1.96</p>
-<hr data-start="815" data-end="818">
-<h3 data-start="820" data-end="836">✅ Conclusion</h3>
-<p data-start="838" data-end="899">Reject H₀.<br data-start="848" data-end="851">
-Production significantly differs from 500 units.</p>
-<hr data-start="901" data-end="904">
-<h1 data-start="906" data-end="951">✅ UNIT 2: RESEARCH DESIGN &amp; DATA COLLECTION</h1>
-<h2 data-start="953" data-end="1001">🔢 Q2. Reliability (Cronbach’s Alpha Example)</h2>
-<p data-start="1003" data-end="1011">Suppose:</p>
-<p data-start="1013" data-end="1094">Number of items (k) = 5<br data-start="1036" data-end="1039">
-Sum of item variances = 12<br data-start="1065" data-end="1068">
-Total test variance = 25</p>
-<p data-start="1096" data-end="1104">Formula:</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>α</mi><mo>=</mo><mfrac><mi>k</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mrow><mo fence="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mo>∑</mo><msup><mi>σ</mi><mn>2</mn></msup></mrow><msubsup><mi>σ</mi><mi>T</mi><mn>2</mn></msubsup></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\alpha = \frac{k}{k-1} \left(1 - \frac{\sum \sigma^2}{\sigma_T^2} \right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal" style="margin-right: 0.0037em;">α</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.4706em; vertical-align: -0.9795em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3714em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord">1</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top: 0em;"><span class="delimsizing size3">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.4911em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right: 0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.7959em;"><span style="top: -2.4065em; margin-left: -0.0359em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.13889em;">T</span></span></span><span style="top: -3.0448em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.2935em;"><span></span></span></span></span></span></span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mop op-symbol small-op" style="position: relative; top: 0em;">∑</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.03588em;">σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8141em;"><span style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.9795em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top: 0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mfrac><mn>5</mn><mn>4</mn></mfrac><mrow><mo fence="true">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>12</mn><mn>25</mn></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">= \frac{5}{4} \left(1 - \frac{12}{25}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.4em; vertical-align: -0.95em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">5</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top: 0em;"><span class="delimsizing size3">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">25</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">12</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top: 0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mn>1.25</mn><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mn>0.48</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">= 1.25 (1 - 0.48)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1.25</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">0.48</span><span class="mclose">)</span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mn>1.25</mn><mo stretchy="false">(</mo><mn>0.52</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">= 1.25 (0.52)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1.25</span><span class="mopen">(</span><span class="mord">0.52</span><span class="mclose">)</span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mn>0.65</mn></mrow><annotation encoding="application/x-tex">= 0.65</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">0.65</span></span></span></span></span>
-<hr data-start="1299" data-end="1302">
-<h3 data-start="1304" data-end="1324">✅ Interpretation</h3>
-<p data-start="1326" data-end="1358">α = 0.65 → Moderate reliability.</p>
-<hr data-start="1360" data-end="1363">
-<h1 data-start="1365" data-end="1385">✅ UNIT 3: SAMPLING</h1>
-<hr data-start="1387" data-end="1390">
-<h2 data-start="1392" data-end="1427">🔢 Q3. Sample Size Determination</h2>
-<p data-start="1429" data-end="1475">95% confidence<br data-start="1443" data-end="1446">
-Margin error = 5%<br data-start="1463" data-end="1466">
-p = 0.5</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>n</mi><mo>=</mo><mfrac><mrow><msup><mi>Z</mi><mn>2</mn></msup><mi>p</mi><mi>q</mi></mrow><msup><mi>e</mi><mn>2</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">n = \frac{Z^2pq}{e^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.1771em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.4911em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.7401em;"><span style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right: 0.07153em;">Z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8141em;"><span style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right: 0.03588em;">pq</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><mn>1.96</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo stretchy="false">(</mo><mn>0.5</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mn>0.5</mn><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">(</mo><mn>0.05</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">= \frac{(1.96)^2(0.5)(0.5)}{(0.05)^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.4271em; vertical-align: -0.936em;"></span><span class="mord" style=""><span class="mopen nulldelimiter" style=""></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.4911em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">0.05</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.7401em;"><span style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">1.96</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8141em;"><span style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">0.5</span><span class="mclose">)</span><span class="mopen">(</span><span class="mord">0.5</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mfrac><mrow><mn>3.8416</mn><mo>×</mo><mn>0.25</mn></mrow><mn>0.0025</mn></mfrac></mrow><annotation encoding="application/x-tex">= \frac{3.8416 × 0.25}{0.0025}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0074em; vertical-align: -0.686em;"></span><span class="mord" style=""><span class="mopen nulldelimiter" style=""></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">0.0025</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">3.8416</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord">0.25</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mfrac><mn>0.9604</mn><mn>0.0025</mn></mfrac></mrow><annotation encoding="application/x-tex">= \frac{0.9604}{0.0025}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0074em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">0.0025</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">0.9604</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mn>384.16</mn></mrow><annotation encoding="application/x-tex">= 384.16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">384.16</span></span></span></span></span>
-<hr data-start="1636" data-end="1639">
-<h3 data-start="1641" data-end="1664">✅ Sample size = 385</h3>
-<hr data-start="1666" data-end="1669">
-<h2 data-start="1671" data-end="1711">🔢 Q4. Stratified Sampling Allocation</h2>
-<p data-start="1713" data-end="1732">Population = 1000</p>
-<p data-start="1734" data-end="1769">Stratum A = 400<br data-start="1749" data-end="1752">
-Stratum B = 600</p>
-<p data-start="1771" data-end="1790">Sample size = 200</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>n</mi><mi>A</mi></msub><mo>=</mo><mfrac><mn>400</mn><mn>1000</mn></mfrac><mo>×</mo><mn>200</mn><mo>=</mo><mn>80</mn></mrow><annotation encoding="application/x-tex">n_A = \frac{400}{1000} × 200 = 80</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0074em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">1000</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">400</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">200</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">80</span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>n</mi><mi>B</mi></msub><mo>=</mo><mfrac><mn>600</mn><mn>1000</mn></mfrac><mo>×</mo><mn>200</mn><mo>=</mo><mn>120</mn></mrow><annotation encoding="application/x-tex">n_B = \frac{600}{1000} × 200 = 120</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5806em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3283em;"><span style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0074em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">1000</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">600</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">200</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">120</span></span></span></span></span>
-<hr data-start="1875" data-end="1878">
-<h3 data-start="1880" data-end="1898">✅ Final Sample</h3>
-<p data-start="1900" data-end="1918">A = 80<br data-start="1906" data-end="1909">
-B = 120</p>
-<hr data-start="1920" data-end="1923">
-<h1 data-start="1925" data-end="1950">✅ UNIT 4: DATA ANALYSIS</h1>
-<hr data-start="1952" data-end="1955">
-<h1 data-start="1957" data-end="1984">🔹 1. Univariate Analysis</h1>
-<h2 data-start="1986" data-end="2030">🔢 Q5. Mean, Variance, Standard Deviation</h2>
-<p data-start="2032" data-end="2053">Data: 5, 7, 9, 6, 8</p>
-<p data-start="2055" data-end="2060">Mean:</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover accent="true"><mi>X</mi><mo>ˉ</mo></mover><mo>=</mo><mfrac><mn>35</mn><mn>5</mn></mfrac><mo>=</mo><mn>7</mn></mrow><annotation encoding="application/x-tex">\bar{X} = \frac{35}{5} = 7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8201em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8201em;"><span style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span><span style="top: -3.2523em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.1667em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0074em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">5</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">35</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">7</span></span></span></span></span>
-<p data-start="2096" data-end="2105">Variance:</p>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2107" data-end="2183" class="w-fit min-w-(--thread-content-width)"><thead data-start="2107" data-end="2127"><tr data-start="2107" data-end="2127"><th data-start="2107" data-end="2111" data-col-size="sm" class="">X</th><th data-start="2111" data-end="2117" data-col-size="sm" class="">X−7</th><th data-start="2117" data-end="2127" data-col-size="sm" class="">(X−7)²</th></tr></thead><tbody data-start="2142" data-end="2183"><tr data-start="2142" data-end="2150"><td data-start="2142" data-end="2144" data-col-size="sm">5</td><td data-start="2144" data-end="2147" data-col-size="sm">-2</td><td data-start="2147" data-end="2150" data-col-size="sm">4</td></tr><tr data-start="2151" data-end="2158"><td data-start="2151" data-end="2153" data-col-size="sm">7</td><td data-start="2153" data-end="2155" data-col-size="sm">0</td><td data-start="2155" data-end="2158" data-col-size="sm">0</td></tr><tr data-start="2159" data-end="2166"><td data-start="2159" data-end="2161" data-col-size="sm">9</td><td data-start="2161" data-end="2163" data-col-size="sm">2</td><td data-start="2163" data-end="2166" data-col-size="sm">4</td></tr><tr data-start="2167" data-end="2175"><td data-start="2167" data-end="2169" data-col-size="sm">6</td><td data-start="2169" data-end="2172" data-col-size="sm">-1</td><td data-start="2172" data-end="2175" data-col-size="sm">1</td></tr><tr data-start="2176" data-end="2183"><td data-start="2176" data-end="2178" data-col-size="sm">8</td><td data-start="2178" data-end="2180" data-col-size="sm">1</td><td data-start="2180" data-end="2183" data-col-size="sm">1</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>10</mn><mn>5</mn></mfrac><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\sigma^2 = \frac{10}{5} = 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8641em;"></span><span class="mord" style=""><span class="mord mathnormal" style="margin-right: 0.03588em;">σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8641em;"><span style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0074em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">5</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">10</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">2</span></span></span></span></span>
-<p data-start="2220" data-end="2223">SD:</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>1.41</mn></mrow><annotation encoding="application/x-tex">= \sqrt{2} = 1.41</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1.04em; vertical-align: -0.0839em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.9561em;"><span class="svg-align" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord" style="padding-left: 0.833em;"><span class="mord">2</span></span></span><span style="top: -2.9161em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail" style="min-width: 0.853em; height: 1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
-c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
-c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
-c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
-s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
-c69,-144,104.5,-217.7,106.5,-221
-l0 -0
-c5.3,-9.3,12,-14,20,-14
-H400000v40H845.2724
-s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
-c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
-M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.0839em;"><span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">1.41</span></span></span></span></span>
-<hr data-start="2250" data-end="2253">
-<h1 data-start="2255" data-end="2295">🔹 2. Bivariate Analysis (Correlation)</h1>
-<h2 data-start="2297" data-end="2306">🔢 Q6.</h2>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2308" data-end="2346" class="w-fit min-w-(--thread-content-width)"><thead data-start="2308" data-end="2317"><tr data-start="2308" data-end="2317"><th data-start="2308" data-end="2312" data-col-size="sm" class="">X</th><th data-start="2312" data-end="2317" data-col-size="sm" class="">Y</th></tr></thead><tbody data-start="2328" data-end="2346"><tr data-start="2328" data-end="2333"><td data-start="2328" data-end="2330" data-col-size="sm">2</td><td data-start="2330" data-end="2333" data-col-size="sm">4</td></tr><tr data-start="2334" data-end="2339"><td data-start="2334" data-end="2336" data-col-size="sm">4</td><td data-start="2336" data-end="2339" data-col-size="sm">8</td></tr><tr data-start="2340" data-end="2346"><td data-start="2340" data-end="2342" data-col-size="sm">6</td><td data-start="2342" data-end="2346" data-col-size="sm">12</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<p data-start="2348" data-end="2370">Using Pearson formula:</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>r</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">r = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">1</span></span></span></span></span>
-<hr data-start="2385" data-end="2388">
-<h3 data-start="2390" data-end="2424">✅ Perfect positive correlation</h3>
-<hr data-start="2426" data-end="2429">
-<h1 data-start="2431" data-end="2473">🔹 3. Multivariate (Multiple Regression)</h1>
-<h2 data-start="2475" data-end="2484">🔢 Q7.</h2>
-<p data-start="2486" data-end="2506">Regression equation:</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Y</mi><mo>=</mo><mn>10</mn><mo>+</mo><mn>2</mn><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mn>3</mn><msub><mi>X</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">Y = 10 + 2X_1 + 3X_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.7278em; vertical-align: -0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord">2</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span style="top: -2.55em; margin-left: -0.0785em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.8333em; vertical-align: -0.15em;"></span><span class="mord">3</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span style="top: -2.55em; margin-left: -0.0785em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span></span></span></span></span>
-<p data-start="2536" data-end="2539">If:</p>
-<p data-start="2541" data-end="2558">X₁ = 5<br data-start="2547" data-end="2550">
-X₂ = 2</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Y</mi><mo>=</mo><mn>10</mn><mo>+</mo><mn>10</mn><mo>+</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">Y = 10 + 10 + 6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.7278em; vertical-align: -0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.7278em; vertical-align: -0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">6</span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mn>26</mn></mrow><annotation encoding="application/x-tex">= 26</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">26</span></span></span></span></span>
-<hr data-start="2595" data-end="2598">
-<h1 data-start="2600" data-end="2635">🔹 4. Hypothesis Testing (t-test)</h1>
-<p data-start="2637" data-end="2696">Sample mean = 30<br data-start="2653" data-end="2656">
-Population mean = 27<br data-start="2676" data-end="2679">
-SD = 6<br data-start="2685" data-end="2688">
-n = 36</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>t</mi><mo>=</mo><mfrac><mrow><mn>30</mn><mo>−</mo><mn>27</mn></mrow><mrow><mn>6</mn><mi mathvariant="normal">/</mi><msqrt><mn>36</mn></msqrt></mrow></mfrac></mrow><annotation encoding="application/x-tex">t = \frac{30-27}{6/\sqrt{36}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6151em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.3687em; vertical-align: -1.0472em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.2028em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">6/</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.9072em;"><span class="svg-align" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord" style="padding-left: 0.833em;"><span class="mord">36</span></span></span><span style="top: -2.8672em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail" style="min-width: 0.853em; height: 1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
-c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
-c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
-c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
-s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
-c69,-144,104.5,-217.7,106.5,-221
-l0 -0
-c5.3,-9.3,12,-14,20,-14
-H400000v40H845.2724
-s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
-c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
-M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.1328em;"><span></span></span></span></span></span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">30</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord">27</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 1.0472em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mfrac><mn>3</mn><mn>1</mn></mfrac></mrow><annotation encoding="application/x-tex">= \frac{3}{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0074em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3214em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">= 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">3</span></span></span></span></span>
-<p data-start="2767" data-end="2786">Critical t ≈ 2.03</p>
-<p data-start="2788" data-end="2797">Reject H₀</p>
-<hr data-start="2799" data-end="2802">
-<h1 data-start="2804" data-end="2848">✅ UNIT 5: ANALYTICAL TECHNIQUES (ADVANCED)</h1>
-<hr data-start="2850" data-end="2853">
-<h1 data-start="2855" data-end="2890">🔥 1️⃣ ONE-WAY ANOVA (FULL TABLE)</h1>
-<p data-start="2892" data-end="2897">Data:</p>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2899" data-end="2959" class="w-fit min-w-(--thread-content-width)"><thead data-start="2899" data-end="2912"><tr data-start="2899" data-end="2912"><th data-start="2899" data-end="2903" data-col-size="sm" class="">A</th><th data-start="2903" data-end="2907" data-col-size="sm" class="">B</th><th data-start="2907" data-end="2912" data-col-size="sm" class="">C</th></tr></thead><tbody data-start="2927" data-end="2959"><tr data-start="2927" data-end="2937"><td data-start="2927" data-end="2930" data-col-size="sm">10</td><td data-start="2930" data-end="2933" data-col-size="sm">15</td><td data-start="2933" data-end="2937" data-col-size="sm">20</td></tr><tr data-start="2938" data-end="2948"><td data-start="2938" data-end="2941" data-col-size="sm">12</td><td data-start="2941" data-end="2944" data-col-size="sm">14</td><td data-start="2944" data-end="2948" data-col-size="sm">22</td></tr><tr data-start="2949" data-end="2959"><td data-start="2949" data-end="2952" data-col-size="sm">11</td><td data-start="2952" data-end="2955" data-col-size="sm">16</td><td data-start="2955" data-end="2959" data-col-size="sm">21</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<p data-start="2961" data-end="2967">Means:</p>
-<p data-start="2969" data-end="2995">A = 11<br data-start="2975" data-end="2978">
-B = 15<br data-start="2984" data-end="2987">
-C = 21</p>
-<p data-start="2997" data-end="3017">Grand Mean = 15.67</p>
-<p data-start="3019" data-end="3041">SSB = 300<br data-start="3028" data-end="3031">
-SSW = 12</p>
-<p data-start="3043" data-end="3075">df Between = 2<br data-start="3057" data-end="3060">
-df Within = 6</p>
-<p data-start="3077" data-end="3098">MSB = 150<br data-start="3086" data-end="3089">
-MSW = 2</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mo>=</mo><mn>75</mn></mrow><annotation encoding="application/x-tex">F = 75</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">F</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">75</span></span></span></span></span>
-<p data-start="3114" data-end="3133">Critical F ≈ 5.14</p>
-<p data-start="3135" data-end="3146">Reject H₀</p>
-<hr data-start="3148" data-end="3151">
-<h1 data-start="3153" data-end="3186">🔥 2️⃣ CHI-SQUARE (CONTINGENCY)</h1>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3188" data-end="3319" class="w-fit min-w-(--thread-content-width)"><thead data-start="3188" data-end="3215"><tr data-start="3188" data-end="3215"><th data-start="3188" data-end="3195" data-col-size="sm" class=""></th><th data-start="3195" data-end="3201" data-col-size="sm" class="">Yes</th><th data-start="3201" data-end="3206" data-col-size="sm" class="">No</th><th data-start="3206" data-end="3215" data-col-size="sm" class="">Total</th></tr></thead><tbody data-start="3244" data-end="3319"><tr data-start="3244" data-end="3267"><td data-start="3244" data-end="3251" data-col-size="sm">Male</td><td data-col-size="sm" data-start="3251" data-end="3256">50</td><td data-col-size="sm" data-start="3256" data-end="3261">30</td><td data-col-size="sm" data-start="3261" data-end="3267">80</td></tr><tr data-start="3268" data-end="3293"><td data-start="3268" data-end="3277" data-col-size="sm">Female</td><td data-start="3277" data-end="3282" data-col-size="sm">30</td><td data-start="3282" data-end="3287" data-col-size="sm">40</td><td data-start="3287" data-end="3293" data-col-size="sm">70</td></tr><tr data-start="3294" data-end="3319"><td data-start="3294" data-end="3302" data-col-size="sm">Total</td><td data-start="3302" data-end="3307" data-col-size="sm">80</td><td data-start="3307" data-end="3312" data-col-size="sm">70</td><td data-start="3312" data-end="3319" data-col-size="sm">150</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<p data-start="3321" data-end="3348">Expected values calculated:</p>
-<p data-start="3350" data-end="3361">χ² = 5.02</p>
-<p data-start="3363" data-end="3371">df = 1</p>
-<p data-start="3373" data-end="3390">Critical = 3.84</p>
-<p data-start="3392" data-end="3403">Reject H₀</p>
-<p data-start="3405" data-end="3436">Significant association exists.</p>
-<hr data-start="3438" data-end="3441">
-<h1 data-start="3443" data-end="3481">🔥 3️⃣ REGRESSION (FULL CALCULATION)</h1>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3483" data-end="3526" class="w-fit min-w-(--thread-content-width)"><thead data-start="3483" data-end="3492"><tr data-start="3483" data-end="3492"><th data-start="3483" data-end="3487" data-col-size="sm" class="">X</th><th data-start="3487" data-end="3492" data-col-size="sm" class="">Y</th></tr></thead><tbody data-start="3503" data-end="3526"><tr data-start="3503" data-end="3508"><td data-start="3503" data-end="3505" data-col-size="sm">1</td><td data-start="3505" data-end="3508" data-col-size="sm">2</td></tr><tr data-start="3509" data-end="3514"><td data-start="3509" data-end="3511" data-col-size="sm">2</td><td data-col-size="sm" data-start="3511" data-end="3514">4</td></tr><tr data-start="3515" data-end="3520"><td data-start="3515" data-end="3517" data-col-size="sm">3</td><td data-start="3517" data-end="3520" data-col-size="sm">5</td></tr><tr data-start="3521" data-end="3526"><td data-start="3521" data-end="3523" data-col-size="sm">4</td><td data-start="3523" data-end="3526" data-col-size="sm">8</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<p data-start="3528" data-end="3551">After full calculation:</p>
-<p data-start="3553" data-end="3572">b = 1.8<br data-start="3560" data-end="3563">
-a = 0.2</p>
-<p data-start="3574" data-end="3594">Regression equation:</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Y</mi><mo>=</mo><mn>0.2</mn><mo>+</mo><mn>1.8</mn><mi>X</mi></mrow><annotation encoding="application/x-tex">Y = 0.2 + 1.8X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.7278em; vertical-align: -0.0833em;"></span><span class="mord">0.2</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord">1.8</span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span>
-<hr data-start="3618" data-end="3621">
-<h1 data-start="3623" data-end="3657">🔥 4️⃣ NON-PARAMETRIC (RUN TEST)</h1>
-<p data-start="3659" data-end="3668">Sequence:</p>
-<p data-start="3670" data-end="3687">++ + − − ++ − −</p>
-<p data-start="3689" data-end="3709">Number of runs = 4</p>
-<p data-start="3711" data-end="3770">Compare with table → Not random (if outside critical range)</p>
-<hr data-start="3772" data-end="3775">
-<h1 data-start="3777" data-end="3801">🔥 5️⃣ FACTOR ANALYSIS</h1>
-<p data-start="3803" data-end="3815">Eigenvalues:</p>
-<p data-start="3817" data-end="3832">3.4, 1.6, 0.8</p>
-<p data-start="3834" data-end="3853">Retain factors &gt;1</p>
-<p data-start="3855" data-end="3875">So retain 2 factors.</p>
-<hr data-start="3877" data-end="3880">
-<h1 data-start="3882" data-end="3911">🎯 FINAL COVERAGE CHECKLIST</h1>
-<p data-start="3913" data-end="4148">✔ Unit 1 – Hypothesis testing<br data-start="3942" data-end="3945">
-✔ Unit 2 – Reliability<br data-start="3967" data-end="3970">
-✔ Unit 3 – Sampling<br data-start="3989" data-end="3992">
-✔ Unit 4 – Univariate, Bivariate, Multivariate, t-test<br data-start="4046" data-end="4049">
-✔ Unit 5 – ANOVA (full table), Chi-square contingency, Regression full, Run test, Factor analysis</p>
-<hr data-start="4150" data-end="4153">
-<p data-start="4155" data-end="4185">If you want, I can now create:</p>
-<ul data-start="4187" data-end="4377">
-<li data-start="4187" data-end="4229">
-<p data-start="4189" data-end="4229">📘 60-mark complete solved model paper</p>
-</li>
-<li data-start="4230" data-end="4281">
-<p data-start="4232" data-end="4281">🔥 20 most important university exam numericals</p>
-</li>
-<li data-start="4282" data-end="4326">
-<p data-start="4284" data-end="4326">📊 Only advanced hypothesis testing pack</p>
-</li>
-<li data-start="4327" data-end="4377">
-<p data-start="4329" data-end="4377">🧠 Concept + numerical combined revision notes</p>
-</li>
-</ul>
-<p data-start="4379" data-end="4409" data-is-last-node="" data-is-only-node="">Just tell me your requirement.</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+
+  <div class="section">
+    <h2>✅ UNIT 1: INTRODUCTION TO BUSINESS RESEARCH</h2>
+    <h3>🔢 Q1. Hypothesis Testing (Z-Test – Large Sample)</h3>
+    <p><strong>Problem:</strong> A company claims average production = 500 units. A sample of 64 days shows a mean (X̄) of 520 units. Population SD (σ) = 80 units. Test at α = 0.05.</p>
+
+    <h4>Step 1: Hypotheses</h4>
+    <p>H₀: μ = 500 (No difference)<br>H₁: μ ≠ 500 (Significant difference)</p>
+
+    <h4>Step 2: Formula</h4>
+    <div class="math-block">
+      <div class="math">
+        <i>Z</i> = 
+        <div class="frac">
+          <div class="num"><i>X̄</i> - <i>μ</i></div>
+          <div class="den">
+            <i>σ</i> / <span class="sqrt"><span class="rad"><i>n</i></span></span>
+          </div>
+        </div>
       </div>
     </div>
+
+    <h4>Step 3: Substitute Values</h4>
+    <div class="math-block">
+      <div class="math">
+        <i>Z</i> = 
+        <div class="frac">
+          <div class="num">520 - 500</div>
+          <div class="den">80 / <span class="sqrt"><span class="rad">64</span></span></div>
+        </div>
+        =
+        <div class="frac">
+          <div class="num">20</div>
+          <div class="den">80 / 8</div>
+        </div>
+        =
+        <div class="frac">
+          <div class="num">20</div>
+          <div class="den">10</div>
+        </div>
+        = 2
+      </div>
+    </div>
+
+    <h4>Step 4: Critical Value</h4>
+    <p>Critical Z at 5% (two-tailed) = ±1.96<br>Calculated Z (2) > 1.96</p>
+
+    <div class="conclusion">
+      Decision: REJECT H₀. The production significantly differs from 500 units.
+    </div>
   </div>
-  
-  <!-- Theme Toggle Button -->
+
+  <div class="section">
+    <h2>✅ UNIT 2: RESEARCH DESIGN & DATA COLLECTION</h2>
+    <h3>🔢 Q2. Reliability (Cronbach’s Alpha Example)</h3>
+    <p><strong>Data:</strong> Number of items (k) = 5, Sum of item variances (Σσᵢ²) = 12, Total test variance (σₜ²) = 25.</p>
+
+    <h4>Formula:</h4>
+    <div class="math-block">
+      <div class="math">
+        <i>α</i> = 
+        <span style="font-size: 1.2em;">(</span>
+        <div class="frac"><div class="num"><i>k</i></div><div class="den"><i>k</i> - 1</div></div>
+        <span style="font-size: 1.2em;">)</span>
+        <span style="font-size: 1.2em;">[</span>
+        1 - 
+        <div class="frac">
+          <div class="num">Σ<i>σ</i><span class="sup">2</span></div>
+          <div class="den"><i>σ</i><span class="sub"><i>T</i></span><span class="sup">2</span></div>
+        </div>
+        <span style="font-size: 1.2em;">]</span>
+      </div>
+    </div>
+
+    <h4>Calculation:</h4>
+    <div class="math-block">
+      <div class="math">
+        <i>α</i> = 
+        <span style="font-size: 1.2em;">(</span><div class="frac"><div class="num">5</div><div class="den">4</div></div><span style="font-size: 1.2em;">)</span>
+        <span style="font-size: 1.2em;">[</span>1 - <div class="frac"><div class="num">12</div><div class="den">25</div></div><span style="font-size: 1.2em;">]</span>
+        = 1.25(1 - 0.48) = 1.25(0.52) = 0.65
+      </div>
+    </div>
+
+    <div class="conclusion">
+      Alpha = 0.65, indicating moderate reliability.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>✅ UNIT 3: SAMPLING</h2>
+    <h3>🔢 Q3. Sample Size Determination</h3>
+    <p><strong>Data:</strong> Confidence = 95% (Z = 1.96), Margin of Error (e) = 5% (0.05), p = 0.5 (Maximum variability).</p>
+
+    <div class="math-block">
+      <div class="math">
+        <i>n</i> = 
+        <div class="frac">
+          <div class="num"><i>Z</i><span class="sup">2</span><i>pq</i></div>
+          <div class="den"><i>e</i><span class="sup">2</span></div>
+        </div>
+        =
+        <div class="frac">
+          <div class="num">(1.96)<span class="sup">2</span>(0.5)(0.5)</div>
+          <div class="den">(0.05)<span class="sup">2</span></div>
+        </div>
+        =
+        <div class="frac">
+          <div class="num">3.8416 &times; 0.25</div>
+          <div class="den">0.0025</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="math-block">
+      <div class="math">
+        <i>n</i> = 
+        <div class="frac">
+          <div class="num">0.9604</div>
+          <div class="den">0.0025</div>
+        </div>
+        = 384.16
+      </div>
+    </div>
+
+    <div class="conclusion">
+      Recommended Sample Size = 385
+    </div>
+
+    <hr>
+
+    <h3>🔢 Q4. Stratified Sampling Allocation</h3>
+    <p><strong>Data:</strong> Population (N) = 1000 | Stratum A = 400 | Stratum B = 600 | Desired Sample (n) = 200.</p>
+    
+    <div class="math-block">
+      <div class="math">
+        <i>n</i><span class="sub"><i>A</i></span> = 
+        <div class="frac"><div class="num">400</div><div class="den">1000</div></div>
+        &times; 200 = 80
+      </div>
+    </div>
+    
+    <div class="math-block">
+      <div class="math">
+        <i>n</i><span class="sub"><i>B</i></span> = 
+        <div class="frac"><div class="num">600</div><div class="den">1000</div></div>
+        &times; 200 = 120
+      </div>
+    </div>
+
+    <div class="conclusion">
+      Final Sample: A = 80, B = 120 (Total = 200)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>✅ UNIT 4: DATA ANALYSIS</h2>
+    <h3>🔹 1. Univariate Analysis</h3>
+    <h4>🔢 Q5. Mean, Variance, Standard Deviation</h4>
+    <p><strong>Data:</strong> 5, 7, 9, 6, 8 (n = 5)</p>
+    
+    <div class="math-block">
+      <div class="math">
+        <i>Mean (X̄)</i> = 
+        <div class="frac"><div class="num">35</div><div class="den">5</div></div>
+        = 7
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>X</th>
+          <th>(X - X̄)</th>
+          <th>(X - X̄)²</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>5</td><td>-2</td><td>4</td></tr>
+        <tr><td>7</td><td>0</td><td>0</td></tr>
+        <tr><td>9</td><td>2</td><td>4</td></tr>
+        <tr><td>6</td><td>-1</td><td>1</td></tr>
+        <tr><td>8</td><td>1</td><td>1</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>0</strong></td><td><strong>10</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="math-block">
+      <div class="math">
+        <i>Variance (σ²)</i> = 
+        <div class="frac"><div class="num">10</div><div class="den">5</div></div>
+        = 2
+      </div>
+    </div>
+
+    <div class="math-block">
+      <div class="math">
+        <i>SD (σ)</i> = 
+        <span class="sqrt"><span class="rad">2</span></span> = 1.41
+      </div>
+    </div>
+
+    <hr>
+
+    <h3>🔹 2. Bivariate Analysis (Correlation)</h3>
+    <h4>🔢 Q6. Pearson Correlation</h4>
+    <p><strong>Data:</strong> X {2, 4, 6} | Y {4, 8, 12}</p>
+    <p>Observation: Y value is exactly twice of X consistently.</p>
+    <div class="conclusion">
+      <i>r</i> = 1.0 (Perfect Positive Correlation)
+    </div>
+
+    <hr>
+
+    <h3>🔹 3. Multivariate (Multiple Regression)</h3>
+    <h4>🔢 Q7. Prediction</h4>
+    <p><strong>Equation:</strong> Y = 10 + 2X₁ + 3X₂</p>
+    <p>If X₁ = 5 and X₂ = 2:</p>
+    <div class="math-block">
+      <div class="math">Y = 10 + 2(5) + 3(2) = 10 + 10 + 6 = 26</div>
+    </div>
+
+    <hr>
+
+    <h3>🔹 4. Hypothesis Testing (t-test)</h3>
+    <p><strong>Data:</strong> X̄ = 30 | μ = 27 | σ = 6 | n = 36</p>
+    <div class="math-block">
+      <div class="math">
+        <i>t</i> = 
+        <div class="frac">
+          <div class="num">30 - 27</div>
+          <div class="den">6 / <span class="sqrt"><span class="rad">36</span></span></div>
+        </div>
+        =
+        <div class="frac"><div class="num">3</div><div class="den">6 / 6</div></div>
+        =
+        <div class="frac"><div class="num">3</div><div class="den">1</div></div>
+        = 3
+      </div>
+    </div>
+    <div class="conclusion">
+      Decision: Cal. t (3) > Crit. t (≈2.03) → REJECT H₀
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>✅ UNIT 5: ANALYTICAL TECHNIQUES (ADVANCED)</h2>
+    <h3>🔥 1. One-Way ANOVA (Example)</h3>
+    <p>Comparing three groups A, B, C:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Group A</th>
+          <th>Group B</th>
+          <th>Group C</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>10, 12, 11</td><td>15, 14, 16</td><td>20, 22, 21</td></tr>
+        <tr><td>X̄ = 11</td><td>X̄ = 15</td><td>X̄ = 21</td></tr>
+      </tbody>
+    </table>
+    <p>Grand Mean = 15.67 | SSB = 300 | SSW = 12</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>df</th>
+          <th>MS</th>
+          <th>F-ratio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Between</td><td>2</td><td>150</td><td rowspan="2"><strong>75</strong></td></tr>
+        <tr><td>Within</td><td>6</td><td>2</td></tr>
+      </tbody>
+    </table>
+    <div class="conclusion">
+      Decision: F (75) > Critical F (5.14) → REJECT H₀ (Groups differ significantly)
+    </div>
+
+    <hr>
+
+    <h3>🔥 2. Chi-Square (Contingency)</h3>
+    <p>Association between Gender and Preference:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Gender</th>
+          <th>Yes</th>
+          <th>No</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Male</td><td>50</td><td>30</td><td>80</td></tr>
+        <tr><td>Female</td><td>30</td><td>40</td><td>70</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>80</strong></td><td><strong>70</strong></td><td><strong>150</strong></td></tr>
+      </tbody>
+    </table>
+    <p>Calculated χ² = 5.02 | Degrees of Freedom = 1 | Critical Value (0.05) = 3.84</p>
+    <div class="conclusion">
+      Decision: 5.02 > 3.84 → Significant association exists.
+    </div>
+
+    <hr>
+
+    <h3>🔥 3. Simple Linear Regression</h3>
+    <p>Calculating regression for {(1,2), (2,4), (3,5), (4,8)}:</p>
+    <div class="math-block">
+      <div class="math"><i>b</i> = 1.8, <i>a</i> = 0.2</div>
+    </div>
+    <div class="conclusion">
+      <strong>Equation:</strong> Y = 0.2 + 1.8X
+    </div>
+
+    <hr>
+
+    <h3>🔥 4. Non-Parametric (Run Test)</h3>
+    <p>Sequence: ++ + − − ++ − − (n=10)</p>
+    <p>Number of runs (r) = 4. Compare with critical range from table to check randomness.</p>
+
+    <hr>
+
+    <h3>🔥 5. Factor Analysis</h3>
+    <p>Eigenvalues found: 3.4, 1.6, 0.8</p>
+    <div class="conclusion">
+      Selection: Factors with Eigenvalue > 1 are retained. Total = 2 Factors.
+    </div>
+  </div>
+
   <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
-  
-  <!-- Back to Top Button -->
   <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
-  
+
   <script>
-    // Theme Toggle functionality
-    const themeToggleBtn = document.getElementById('themeToggle');
+    const themeBtn = document.getElementById('themeToggle');
     const body = document.body;
-    
-    // Check for saved theme preference or default to light mode
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
+
+    if (localStorage.getItem('theme') === 'dark') {
       body.classList.add('dark-mode');
-      themeToggleBtn.textContent = '☀️';
+      themeBtn.textContent = '☀️';
     }
-    
-    themeToggleBtn.addEventListener('click', function() {
+
+    themeBtn.addEventListener('click', () => {
       body.classList.toggle('dark-mode');
-      
-      if (body.classList.contains('dark-mode')) {
-        themeToggleBtn.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        themeToggleBtn.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
-      }
+      const isDark = body.classList.contains('dark-mode');
+      themeBtn.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
     });
-    
-    // Back to Top button functionality
-    const backToTopBtn = document.getElementById('backToTop');
-    
-    window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 300) {
-        backToTopBtn.classList.add('show');
-      } else {
-        backToTopBtn.classList.remove('show');
-      }
+
+    const bttBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      bttBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
     });
-    
-    backToTopBtn.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+    bttBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
 </body>
