@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - CaseOrbit</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - CaseOrbit</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">CaseOrbit said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="15167c04-601f-432e-ae08-a78b0dcc96e2" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="47">Below are <strong data-start="10" data-end="42">THREE MBA-level case studies</strong> for:</p>
+<p data-start="49" data-end="168"><strong data-start="49" data-end="61">Subject:</strong> Business Research Methodology<br data-start="91" data-end="94">
+<strong data-start="94" data-end="105">Unit 4:</strong> Data Analysis &amp; Hypothesis Testing<br data-start="140" data-end="143">
+<strong data-start="143" data-end="166">Key Topics Covered:</strong></p>
+<ul data-start="169" data-end="330">
+<li data-start="169" data-end="217">
+<p data-start="171" data-end="217">Univariate, Bivariate, Multivariate Analysis</p>
+</li>
+<li data-start="218" data-end="274">
+<p data-start="220" data-end="274">Hypothesis Testing (Concept, Types of Errors, Steps)</p>
+</li>
+<li data-start="275" data-end="300">
+<p data-start="277" data-end="300">Statistical Inference</p>
+</li>
+<li data-start="301" data-end="330">
+<p data-start="303" data-end="330">Interpretation of Results</p>
+</li>
+</ul>
+<p data-start="332" data-end="425">Each case requires analytical thinking, statistical reasoning, and managerial interpretation.</p>
+<hr data-start="427" data-end="430">
+<h1 data-start="432" data-end="452"><strong data-start="434" data-end="450">Case Study 1</strong></h1>
+<h2 data-start="453" data-end="497">Evaluating Dynamic Pricing Impact at Uber</h2>
+<h3 data-start="499" data-end="526">1. Company Background</h3>
+<p data-start="528" data-end="921"><span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">Uber</span></span> operates a global ride-hailing marketplace connecting drivers and riders through a digital platform. The company uses dynamic (surge) pricing to balance demand and supply. Surge pricing increases fares during high-demand periods. While it improves driver availability, customer complaints regarding high fares have increased by 15% in major Indian cities.</p>
+<h3 data-start="923" data-end="948">2. Business Context</h3>
+<p data-start="950" data-end="1321">Competition from Ola and local aggregators has intensified. Customer retention is sensitive to price perception. Uber’s India analytics team suspects that surge pricing above a certain multiplier may significantly increase rider churn. However, surge pricing also increases contribution margins per ride. Management needs statistical evidence to evaluate its true impact.</p>
+<h3 data-start="1323" data-end="1353">3. Core Business Problem</h3>
+<p data-start="1355" data-end="1451">Research Problem:<br data-start="1372" data-end="1375">
+<strong data-start="1375" data-end="1451">“Does higher surge pricing significantly increase customer churn rates?”</strong></p>
+<p data-start="1453" data-end="1619">Uber must determine whether churn differences are statistically significant or due to random variation. The decision directly affects revenue optimization algorithms.</p>
+<h3 data-start="1621" data-end="1650">4. Key Data and Metrics</h3>
+<p data-start="1652" data-end="1691">Data from 120,000 riders over 3 months:</p>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1693" data-end="1962" class="w-fit min-w-(--thread-content-width)"><thead data-start="1693" data-end="1749"><tr data-start="1693" data-end="1749"><th data-start="1693" data-end="1710" data-col-size="sm" class="">Surge Category</th><th data-start="1710" data-end="1727" data-col-size="sm" class="">Avg Multiplier</th><th data-start="1727" data-end="1749" data-col-size="sm" class="">Monthly Churn Rate</th></tr></thead><tbody data-start="1804" data-end="1962"><tr data-start="1804" data-end="1856"><td data-start="1804" data-end="1820" data-col-size="sm">Low Surge</td><td data-col-size="sm" data-start="1820" data-end="1835">1.0–1.2x</td><td data-col-size="sm" data-start="1835" data-end="1856">4.8%</td></tr><tr data-start="1857" data-end="1909"><td data-start="1857" data-end="1873" data-col-size="sm">Medium Surge</td><td data-col-size="sm" data-start="1873" data-end="1888">1.3–1.6x</td><td data-col-size="sm" data-start="1888" data-end="1909">6.5%</td></tr><tr data-start="1910" data-end="1962"><td data-start="1910" data-end="1926" data-col-size="sm">High Surge</td><td data-col-size="sm" data-start="1926" data-end="1941">1.7x+</td><td data-col-size="sm" data-start="1941" data-end="1962">9.2%</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="1964" data-end="1983">Additional metrics:</p>
+<ul data-start="1984" data-end="2131">
+<li data-start="1984" data-end="2031">
+<p data-start="1986" data-end="2031">Average revenue per ride (High Surge): ₹420</p>
+</li>
+<li data-start="2032" data-end="2078">
+<p data-start="2034" data-end="2078">Average revenue per ride (Low Surge): ₹310</p>
+</li>
+<li data-start="2079" data-end="2131">
+<p data-start="2081" data-end="2131">Standard deviation of churn rate (overall): 1.8%</p>
+</li>
+</ul>
+<p data-start="2133" data-end="2237">Preliminary bivariate analysis shows positive correlation between surge multiplier and churn (r = 0.54).</p>
+<h3 data-start="2239" data-end="2266">5. Decision Situation</h3>
+<p data-start="2268" data-end="2291">Management must decide:</p>
+<ol data-start="2293" data-end="2487">
+<li data-start="2293" data-end="2337">
+<p data-start="2296" data-end="2337">Whether to cap surge multiplier at 1.6x</p>
+</li>
+<li data-start="2338" data-end="2398">
+<p data-start="2341" data-end="2398">Whether churn differences are statistically significant</p>
+</li>
+<li data-start="2399" data-end="2487">
+<p data-start="2402" data-end="2487">Whether a regression model should be used to control for rider income and city type</p>
+</li>
+</ol>
+<h3 data-start="2489" data-end="2518">6. Analytical Questions</h3>
+<ol data-start="2520" data-end="2835">
+<li data-start="2520" data-end="2583">
+<p data-start="2523" data-end="2583">What null and alternative hypotheses should be formulated?</p>
+</li>
+<li data-start="2584" data-end="2650">
+<p data-start="2587" data-end="2650">Which statistical test is appropriate to compare churn rates?</p>
+</li>
+<li data-start="2651" data-end="2715">
+<p data-start="2654" data-end="2715">What is the risk of Type I and Type II errors in this case?</p>
+</li>
+<li data-start="2716" data-end="2775">
+<p data-start="2719" data-end="2775">How can regression analysis improve decision accuracy?</p>
+</li>
+<li data-start="2776" data-end="2835">
+<p data-start="2779" data-end="2835">Should Uber rely on univariate or multivariate analysis?</p>
+</li>
+</ol>
+<h3 data-start="2837" data-end="2859">7. Model Answers</h3>
+<p data-start="2861" data-end="2999"><strong data-start="2861" data-end="2868">Q1:</strong><br data-start="2868" data-end="2871">
+H₀: Surge pricing level does not significantly affect churn rate.<br data-start="2936" data-end="2939">
+H₁: Higher surge pricing significantly increases churn rate.</p>
+<p data-start="3001" data-end="3093"><strong data-start="3001" data-end="3008">Q2:</strong><br data-start="3008" data-end="3011">
+ANOVA or proportion test can compare churn rates across multiple surge categories.</p>
+<p data-start="3095" data-end="3201"><strong data-start="3095" data-end="3102">Q3:</strong><br data-start="3102" data-end="3105">
+Type I error may lead Uber to cap surge unnecessarily; Type II error may ignore real churn risk.</p>
+<p data-start="3203" data-end="3305"><strong data-start="3203" data-end="3210">Q4:</strong><br data-start="3210" data-end="3213">
+Regression controls for rider demographics and city demand patterns, isolating surge impact.</p>
+<h3 data-start="3307" data-end="3330">8. Learning Focus</h3>
+<p data-start="3332" data-end="3432">Application of hypothesis testing, bivariate analysis, and regression modeling in pricing analytics.</p>
+<p data-start="3434" data-end="3527"><strong data-start="3434" data-end="3455">Primary Concepts:</strong> Hypothesis Testing, Type I &amp; II Errors, ANOVA, Correlation &amp; Regression</p>
+<hr data-start="3529" data-end="3532">
+<h1 data-start="3534" data-end="3554"><strong data-start="3536" data-end="3552">Case Study 2</strong></h1>
+<h2 data-start="3555" data-end="3616">Customer Satisfaction and Sales Linkage at Reliance Retail</h2>
+<h3 data-start="3618" data-end="3645">1. Company Background</h3>
+<p data-start="3647" data-end="3872"><span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">Reliance Retail</span></span> is India’s largest organized retailer operating supermarkets and hypermarkets. Customer satisfaction scores are collected quarterly and are believed to influence store-level sales growth.</p>
+<h3 data-start="3874" data-end="3899">2. Business Context</h3>
+<p data-start="3901" data-end="4206">Over the past year, management invested ₹150 crore in store experience upgrades. Satisfaction scores increased from 3.8 to 4.2 (5-point scale). However, sales growth varied widely across stores. Management wants statistical validation of whether satisfaction improvement actually drives sales performance.</p>
+<h3 data-start="4208" data-end="4238">3. Core Business Problem</h3>
+<p data-start="4240" data-end="4382">Research Problem:<br data-start="4257" data-end="4260">
+<strong data-start="4260" data-end="4382">“Is there a statistically significant relationship between customer satisfaction scores and store-level sales growth?”</strong></p>
+<p data-start="4384" data-end="4490">Without analytical validation, investment decisions may rely on managerial intuition rather than evidence.</p>
+<h3 data-start="4492" data-end="4521">4. Key Data and Metrics</h3>
+<p data-start="4523" data-end="4544">Data from 220 stores:</p>
+<ul data-start="4546" data-end="4706">
+<li data-start="4546" data-end="4578">
+<p data-start="4548" data-end="4578">Mean satisfaction score: 4.2</p>
+</li>
+<li data-start="4579" data-end="4613">
+<p data-start="4581" data-end="4613">Mean annual sales growth: 8.5%</p>
+</li>
+<li data-start="4614" data-end="4651">
+<p data-start="4616" data-end="4651">Correlation coefficient (r): 0.61</p>
+</li>
+<li data-start="4652" data-end="4687">
+<p data-start="4654" data-end="4687">Regression coefficient (β): 2.4</p>
+</li>
+<li data-start="4688" data-end="4706">
+<p data-start="4690" data-end="4706">R² value: 0.37</p>
+</li>
+</ul>
+<p data-start="4708" data-end="4727">Standard deviation:</p>
+<ul data-start="4728" data-end="4772">
+<li data-start="4728" data-end="4749">
+<p data-start="4730" data-end="4749">Satisfaction: 0.5</p>
+</li>
+<li data-start="4750" data-end="4772">
+<p data-start="4752" data-end="4772">Sales growth: 3.2%</p>
+</li>
+</ul>
+<p data-start="4774" data-end="4809">Some regions show weak association.</p>
+<h3 data-start="4811" data-end="4838">5. Decision Situation</h3>
+<p data-start="4840" data-end="4866">Management must determine:</p>
+<ol data-start="4868" data-end="5060">
+<li data-start="4868" data-end="4921">
+<p data-start="4871" data-end="4921">Whether correlation is statistically significant</p>
+</li>
+<li data-start="4922" data-end="4975">
+<p data-start="4925" data-end="4975">Whether satisfaction alone explains sales growth</p>
+</li>
+<li data-start="4976" data-end="5060">
+<p data-start="4979" data-end="5060">Whether other variables (location, competition, income levels) must be included</p>
+</li>
+</ol>
+<h3 data-start="5062" data-end="5091">6. Analytical Questions</h3>
+<ol data-start="5093" data-end="5390">
+<li data-start="5093" data-end="5142">
+<p data-start="5096" data-end="5142">What does the correlation coefficient imply?</p>
+</li>
+<li data-start="5143" data-end="5213">
+<p data-start="5146" data-end="5213">Is the relationship strong enough for managerial decision-making?</p>
+</li>
+<li data-start="5214" data-end="5273">
+<p data-start="5217" data-end="5273">How would hypothesis testing validate the correlation?</p>
+</li>
+<li data-start="5274" data-end="5342">
+<p data-start="5277" data-end="5342">What are the limitations of relying only on bivariate analysis?</p>
+</li>
+<li data-start="5343" data-end="5390">
+<p data-start="5346" data-end="5390">Why is multivariate analysis important here?</p>
+</li>
+</ol>
+<h3 data-start="5392" data-end="5414">7. Model Answers</h3>
+<p data-start="5416" data-end="5524"><strong data-start="5416" data-end="5423">Q1:</strong><br data-start="5423" data-end="5426">
+r = 0.61 indicates moderate-to-strong positive relationship between satisfaction and sales growth.</p>
+<p data-start="5526" data-end="5610"><strong data-start="5526" data-end="5533">Q3:</strong><br data-start="5533" data-end="5536">
+t-test for correlation coefficient can determine statistical significance.</p>
+<p data-start="5612" data-end="5685"><strong data-start="5612" data-end="5619">Q4:</strong><br data-start="5619" data-end="5622">
+Bivariate analysis ignores confounding factors affecting sales.</p>
+<p data-start="5687" data-end="5782"><strong data-start="5687" data-end="5694">Q5:</strong><br data-start="5694" data-end="5697">
+Multivariate regression improves explanatory power and reduces omitted variable bias.</p>
+<h3 data-start="5784" data-end="5807">8. Learning Focus</h3>
+<p data-start="5809" data-end="5893">Interpreting correlation, regression, and hypothesis testing in managerial contexts.</p>
+<p data-start="5895" data-end="5992"><strong data-start="5895" data-end="5916">Primary Concepts:</strong> Bivariate Analysis, Regression, Significance Testing, Multivariate Analysis</p>
+<hr data-start="5994" data-end="5997">
+<h1 data-start="5999" data-end="6019"><strong data-start="6001" data-end="6017">Case Study 3</strong></h1>
+<h2 data-start="6020" data-end="6073">Fraud Detection Model Validation at JPMorgan Chase</h2>
+<h3 data-start="6075" data-end="6102">1. Company Background</h3>
+<p data-start="6104" data-end="6392"><span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">JPMorgan Chase</span></span> is a leading global financial institution offering retail and corporate banking services. Fraud detection accuracy is critical for minimizing financial loss and regulatory risk. The bank uses machine learning models to detect suspicious transactions.</p>
+<h3 data-start="6394" data-end="6419">2. Business Context</h3>
+<p data-start="6421" data-end="6635">A new fraud detection algorithm was introduced to reduce false positives. Excessive false alarms inconvenience customers and increase operational costs. However, relaxing detection criteria may increase fraud risk.</p>
+<h3 data-start="6637" data-end="6667">3. Core Business Problem</h3>
+<p data-start="6669" data-end="6811">Research Problem:<br data-start="6686" data-end="6689">
+<strong data-start="6689" data-end="6811">“Does the new fraud detection model significantly reduce false positive rates without increasing actual fraud losses?”</strong></p>
+<p data-start="6813" data-end="6903">The bank must statistically validate performance improvement before full-scale deployment.</p>
+<h3 data-start="6905" data-end="6934">4. Key Data and Metrics</h3>
+<p data-start="6936" data-end="6983">Sample: 1.2 million transactions (pilot period)</p>
+<p data-start="6985" data-end="6995">Old Model:</p>
+<ul data-start="6996" data-end="7055">
+<li data-start="6996" data-end="7025">
+<p data-start="6998" data-end="7025">False positive rate: 6.8%</p>
+</li>
+<li data-start="7026" data-end="7055">
+<p data-start="7028" data-end="7055">Fraud detection rate: 91%</p>
+</li>
+</ul>
+<p data-start="7057" data-end="7067">New Model:</p>
+<ul data-start="7068" data-end="7127">
+<li data-start="7068" data-end="7097">
+<p data-start="7070" data-end="7097">False positive rate: 4.1%</p>
+</li>
+<li data-start="7098" data-end="7127">
+<p data-start="7100" data-end="7127">Fraud detection rate: 89%</p>
+</li>
+</ul>
+<p data-start="7129" data-end="7146">Financial impact:</p>
+<ul data-start="7147" data-end="7234">
+<li data-start="7147" data-end="7190">
+<p data-start="7149" data-end="7190">Avg fraud loss per missed fraud: $1,200</p>
+</li>
+<li data-start="7191" data-end="7234">
+<p data-start="7193" data-end="7234">Cost per false alarm investigation: $25</p>
+</li>
+</ul>
+<p data-start="7236" data-end="7278">Standard error (false positive rate): 0.5%</p>
+<h3 data-start="7280" data-end="7307">5. Decision Situation</h3>
+<p data-start="7309" data-end="7335">Management must determine:</p>
+<ol data-start="7337" data-end="7514">
+<li data-start="7337" data-end="7407">
+<p data-start="7340" data-end="7407">Whether reduction in false positives is statistically significant</p>
+</li>
+<li data-start="7408" data-end="7465">
+<p data-start="7411" data-end="7465">Whether slight drop in fraud detection is acceptable</p>
+</li>
+<li data-start="7466" data-end="7514">
+<p data-start="7469" data-end="7514">Trade-off between Type I and Type II errors</p>
+</li>
+</ol>
+<h3 data-start="7516" data-end="7545">6. Analytical Questions</h3>
+<ol data-start="7547" data-end="7843">
+<li data-start="7547" data-end="7614">
+<p data-start="7550" data-end="7614">What hypothesis should be tested for false positive reduction?</p>
+</li>
+<li data-start="7615" data-end="7684">
+<p data-start="7618" data-end="7684">Which statistical test is appropriate for comparing proportions?</p>
+</li>
+<li data-start="7685" data-end="7734">
+<p data-start="7688" data-end="7734">How do Type I and Type II errors apply here?</p>
+</li>
+<li data-start="7735" data-end="7803">
+<p data-start="7738" data-end="7803">How should financial cost be incorporated into decision-making?</p>
+</li>
+<li data-start="7804" data-end="7843">
+<p data-start="7807" data-end="7843">Is univariate comparison sufficient?</p>
+</li>
+</ol>
+<h3 data-start="7845" data-end="7867">7. Model Answers</h3>
+<p data-start="7869" data-end="8003"><strong data-start="7869" data-end="7876">Q1:</strong><br data-start="7876" data-end="7879">
+H₀: No significant difference in false positive rates between models.<br data-start="7948" data-end="7951">
+H₁: New model significantly reduces false positives.</p>
+<p data-start="8005" data-end="8076"><strong data-start="8005" data-end="8012">Q2:</strong><br data-start="8012" data-end="8015">
+Z-test for difference between two proportions is appropriate.</p>
+<p data-start="8078" data-end="8171"><strong data-start="8078" data-end="8085">Q3:</strong><br data-start="8085" data-end="8088">
+Type I error may deploy inferior model; Type II error may miss genuine improvement.</p>
+<p data-start="8173" data-end="8246"><strong data-start="8173" data-end="8180">Q4:</strong><br data-start="8180" data-end="8183">
+Cost-benefit analysis must supplement statistical significance.</p>
+<h3 data-start="8248" data-end="8271">8. Learning Focus</h3>
+<p data-start="8273" data-end="8346">Application of hypothesis testing and error trade-offs in risk analytics.</p>
+<p data-start="8348" data-end="8451"><strong data-start="8348" data-end="8369">Primary Concepts:</strong> Hypothesis Testing, Proportion Tests, Type I &amp; II Errors, Multivariate Evaluation</p>
+<hr data-start="8453" data-end="8456">
+<p data-start="8458" data-end="8626" data-is-last-node="" data-is-only-node="">If you would like, I can now proceed with <strong data-start="8500" data-end="8620">Unit 5 (Analytical Techniques – ANOVA, Chi-square, Parametric vs Non-parametric, Factor Analysis, Conjoint Analysis)</strong> next.</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
