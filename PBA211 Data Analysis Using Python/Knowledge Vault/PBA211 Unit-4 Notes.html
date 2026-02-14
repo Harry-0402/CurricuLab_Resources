@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoteSmith - Data Analysis Python</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>NoteSmith - Data Analysis Python</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH5wIVCDAwLR4isAAAHepJREFUeNrtned/W9eZ538HAMEC9t57J0iwiqSoXmlZzUXSJi6fZCxlPOWTjYdKsi/2D5hxrJlJMjvJRPQmG6dYtGJbtKwuWo1iE3vvvVeQBAva2RcUNbJ0L3AB3AtQCr/vyNtOeXDK0w6BgJwtKvQGRQ4ITQMl8SAIA+BHATcCSAEQIb//4kAppUQNAiUBnQDQR4F2AlJLKS0/d+rMpFBf5rUDzv75Y0BEUyjBSYAeJiDJAERCN99LDYUeBI0UuAzQz0SE1v/sxA94ez0vAlBQdN6BUPI2CP4OQBpf793kOSiAOgD/SSn+cO7U6RVLX2hRRxUUFUoBvE8o/hcIAmzdOn9ljFLgnwnorz86eUZt7kvMFoCCosJ8AvwCQIytW+KvGQraSSh++NGpM9fMed5kASgoKnR93PHvmvP8JoJAKcXvAfrDc6fOzJvyoEkdeLbovIICFwlItK1rvAkjXZTixLlTp+u4PsB5hV5wofA4BSnd7PwNTTQBHpwtOn+c6wOcBKCg6Px7hOAiAWS2ruEmRiCQAeRiQVHhe9xuN0JB0fn3CMhvsLmff8GgegA/+OjkmY8N3WVQAAounD9OCLkIQGzr6mxiFjpK6ZvnTp35ku0GVgEoKDqfSkAeYHPYf9FRUSDv3MnT9UwXGQWgoOi8K0CqCbC54Hs56AJFxkenTj+3RWSc1wnwi83Of6mIxpru5jmeGwHOFhXmA7iCTSXPywalwKFzJ09/S2P4rU4uKCqUEqAJL5l6VyqRwE4sASig0Wmh1mltXSRb0QkK+UenTj+xHUieueF9vMCdLyIEoZ4+iPQJQIinN3xdPeDhJINEJAYha7JOKYVGp8Xs0iLGlHMYnJlE9+QIhmanbV18axBDCd7HU9PBkxGgoOi8A0B6CF48q16QuxeyI+OQHBwBZ3sHs96hXFKhbrAHFb3tmFxQ2rpKQjJKgchzJ9dMyU+NAOTtF63zo3wCsD8pDZHe/k9+4ebi5iTDzrhk7IiVo2VkADdaajAyN2PrKgpBAAF9G0Ah8HgE+PHFX4PqxTUASbN16bjg7iTD8dRcJAaGWtzxbOgpRVVvB75urMKyetXWVeYVCtQCSD938vTaCKDXSxQESLV1wbiQERaN42m5cLCTCvodESHIjoxDQkAIPq28i86JEVtXnTcIkApKUwA0iNb+QU9gg2/7RESEN9LzcCprh+Cd/zSujk44vSMfu+JSbN0EfEJAcBJ4vAagIIc3cu/bicV4d+s+xPsHc7pfrdWgZ3IM/dMTGJ+fg3J5CWqtBnZiMRykUng4OcPf1QPh3n4I8vCGyMg0IiIEr6Zkwd1Jhi9ry2zdHLxAgcMA/jcpKDrvQ4AxgGxIa59EJMbfbNuPGL8gwxWiFL1T4yjrbkXzSD80Oh2n97s4OCItNAq5UQnwdnY1en9pVwvudzbB39UDHjIXONs7QCqxAwGg1mmhWl3BrGoR4wtzmJxXgoLaugnZ0FPAnxRcKDxCCIptXRo23s7ZDUVIpMF7hmenUFxfgZ7JMbO/QwhBRmg0XknOhKujEy9lX9Go0TM5htbRQTQO90G1arETL69Q4Kg47+SRUwDZbevCMLE7PgXbY+Ss13V6Pa43VePTqnuYVS1a/L0R5Qwqe9vh5uCEADdPi3cYErEYPi5uSAwMxfaYJPi7eWJuaRHK5SWrtyUTBGiVUEriBdpJWUSIpw8OJmWwXl9Wr+L3ZbfRNTHK63dXNBpcb65BmLcfpymBK2KRGIqQCKQEh6N9bBhfN1RibH5WsPbjBEW8hABhti3F84gIwYnMbRCLmJclqtUV/ObeVd4VNVKJBHviFdgRK1+zHQgAIQTxAcGI8QvE3fZG3GipgU6vF+RbxgtDwyQg8LPN19nJjUpAgJsn4zWNTovflt7kvfMzwtbmfzdH6/i/iEUi7ElQINY/CJ+UlWBGtWCV734b4icB4GaDL7NiJxZjb0Iq6/VLteXon57g7Xuhnr44lpqNUC9fk56jlGJ+ZQlzSyqsaNaMa/YSO7g5yeDuKOO8fgj28MYP9x7Fb0tv8lovjrhJsBalu2HIDI+Fi4Mj47XW0UFU9LbzU3NHJxxKzkJaaBTnzlpcXUbDUB/aRgfRNzWOZQ1zRJa9xA5hXr6I8w+GIiTC6Kgis3fAD3bk47elN3lf0xhBKsEG0wDmRsUz/l+r0+ESD0oYO7EYO2OTsSs+BfYSO07PTC4ocbu1DnWDPZzm61WtBh3jw+gYH8blhkrIA8OwNyEVQR5erM9IJXb4Xt5+/NfdqxicESwa/FmIMCsdM5CKJUgIDIW/qwfj9Uf9nZi2cJ5UBEfg1ZQseMhcON2/pF7FzZZaPOxqgZ6ap9ChlKJxuA9Nw33IiojFqylb4CS1Z7zXXmKH7+ftw89vXbLaVtGmAuBgJ4UiJAKK4AhEePtDImb2PqeU4kFns9nfCXL3wtHUHET6+HO6X6/Xo6K3HdebqqHiyRJIAVT2dqBjbBjv5O5hXXO4ODjhrZzd+NWdK6BmCp0p2EQA3J1k2B2XgszwGEg5DMNDs1MYn58z+TvO9o7Il2cgKyLWqL5/na6JERTXlWNUKcwefW5ZhV/duYK3cnZBHhTOeE+Etz92xspxp71RkDI8jVUFQCqRYH9iGrZFJ7H+2ploGR006TtikQjbYpKwLyGVs+VwenEBlxsq0TTcJ3g7aPU6fFJWgne37kVSILMaZn9iOuoGezC3pBK0LFYTgCgff5zK2sF5/n2aXhN0/ImBoTiSsgXeLtx2t6saDUra6nGvowlaPTcDEh/oKcUfy+/gH3YfZlwcSiUS5Msz8WnlXUHLYRUB2BOvwEF5OkRmGBwppRhVGlf6+Lm642hqDmJ8Azlt6yilqOnvwpXGR5hfsY1uXqPT4g/lJfhg/3HGqTAtNBK3WmoxtWhSyL9JCCoAIkLwZsY2ZEXEmv0OtU6LJSMLsRAPb7y/61VIJdyq0z89geK6cgxYsN0iILyYeqcW53GzpQ6vpmQxtN/aVCakD4JgAkBA8J0tu5AaGmn03hWNGtOL8wjy8H7u2rLaePqbA0npnDpfuazClcZHqOnvMrteqSGR2JeYCl8Xd0wtzqOkrR7VfZ0WicL9ziZsjU6Ah5Pzc9fSQ6Nwub5SsOlJMAE4npZrtPNXNGp809aA0q4WZIRF4zUGAdBT44oXHxd3g9c1Oi3udTShpLXe7KCQYA9vHE3NQYT3f5tOfFzccCprB7ZGJeBSnfkqap1ej3sdTTiWmvPcNUepPWL9g9AyMmDWu40hiADkRMazavTWaRrux+c1pVhYWbb4e2xT/roS5uuGSsyY6S/g4uCIV+SZyAiPYd1Khnj64B92H0btQDeuNFaZpcSp7uvEoeRMRitkgn/IiyMA/q4eOJqazboQ0+v1uNxQifsWKHa4MD4/hy9qHqJ70jzdulgkwvYYOfYmKDhtJQkhSA+LhjwoDN+0NeBORyO0HN3SAGBZo0bH+DDjtpCrAssceBUAAoKTWdtZbelavQ5/LP8GTcP9glVoner+TrM7PykwFIcV2WY5hEgldjj4WPn0dUMVGoZ6OT/bMcYsAN4ubrCX2GFVq+G9nXgVgC0RsQjx9GG8RinFp5X3rNL55rI+ehlzQOWCp8wF7+TuQc/kKC7VlXPyX2DblYgIgbezK4bn+I9f5E0AJGIxDiSls16/1VqH+sEe3ivAB05SexxISkdOZDyrF9I6gzOTuNPeiOzIOMT4BYIYMaZG+gTgf+47hsreDlxvqsaiAcfQyQUlKKWM06e7k2xjC0BWeCyrN23/9ARuttTyXnhLERGC3KgEHEhMg5ORoNL55SVcbXr0ZMvXMNTLWesoIiLkRMZDERyBW611KO1sgY5hd7Oq1UCt0zKaqdksiJbCmwDkRScw/l9P9fhLdalVLFumEOsXhCOKbPi7eRi8T6vT4V7n2hby2Tm4ZWQA7WND2BadhH2Jxu0OjlJ7HFFkIzsyDl/VVaBtbOi5e9RaZgGQiITJ08WLAIR4+sCPxY5fO9DDSZVrLbydXXFYsQWJAYYDSymlaB7px+X6SoN+CDq9Hnc7GlHd34l8eSYny6Ovizv+ZtsBtI8Nobi+4lvh6GzPmuuPYAxeBCCZxaxJKcXd9gZBCm4q9hI77EtM5WSJHFPO4lJdmUnuWYurK7hY/QBl3a2cfA/WvINDEOMXhNKuFtxsqcWqVsM6iqxozU4IbhBeBCDOn3nVPDQ7JZhdnSsEQFZELPLlmay+hs/iKJWa7R08PDeNX935GimPvY88jVg/xSIRdsTKkR4WhdKuVtZF6MKy5QozJiwWAHuJHfxZXLgbrWBbN0SEtx+OpuYgmEHFbAg3Rxn+x5adT1S85hiNGoZ60TI6gJ2xydjNwf/Q2d4RB1l2UZRSwSyCFgtAgJsn67xlZQ/Xb7E1KhGvyDMtCu8K9fLFP+45gpqBblxpqDLZbKzV6XC7tQ6P+jrwSnIW0k3wQH4alXpFMJO1xQLg7cKsLdPp9Ri1YYoVdyfDQ/jEwhy+qquEzN4eh5KzWLewhBBkPFHx1uNuu+mOI8rlJXxaeRcPu1pwLDXH5BiE/inh4gUsFgBXB+aGUy6rrOphw5VltRq3Wmu/tRdvHO7D3vhUbI+Vw45lgWgvsUO+PBNbIuJwub7SrOltYGYSvyz5Culh0ThkQhRSx/iwYO1hsQA4sqxaN1ootJ7qUdXbgWsM2ji1VourTY9Q0duOI4otSAoMYx2qPWUueGfrHvRMjOFSXblZW9ya/i40DfVhT4KwcYhcsDgphIhl1aq1VcAjAz2TY/j5rWJcrC41qIqdUS3g/z28jd/cu2awYwkIonwD8KN9x/BGeh5kZqSmU+u0uNZUjXPXP0e3kbXSEUU2wk2cNrhisQCwRcpIRLZPODKrWsQfykrwqztfY8QEPXrXxAj+/eaX+KLmocGRTCQSIScqHj/NfxPbY5LM8nmcVi3gv+5exa3WOlZtqUQsxls5e+AogDrY4l5a1jD76zlz3HMLRf1gD352/SLqTTDHPo2eUjzsbsWH1y6id8qwV7Kj1B5HU3NQcOA1znmMnoaC4npTNf5SXcqq8XN3kjF6DFmKxQIwz+L94ubgxLqgsgbDc9Oc8wQZYkm9yjlzqK/rmor3vW0H4MPRLf1pKnrbUVxXzjoSpIdGIdKbX+cQiwWArXFEIhEC3b1MfNuLz7qKt+DAaziiyDY5pV1pVwvKe9pY332IwXvYEiwWgDHlLOs6INrX8syzUrFEMFOoJSyr1U/yAjAhFomxI1aOn77yJnIi401SABXXVWCCJRQuzMsXMb6BvNXDYgFQ67SsCyy22Dcm2OY+ZwdH/CT/TWyNSuAc32cNplXz+PDaRVT1dhi01DnbO+KNjDz8aN8xRHH07dPqdfii9iHrVLAtJom3evCyVG9nsGsDa1G5XKeB/ukJ1grL7B3wWvpWfLD/NV6l31IWVpZR9Og+fnm7GL1T4wbvDXT3wt/uPGQw+8nTdE2MonOcOT1tnH8wnO35WWTzIgANQ32MnUcIwa64ZE7vGFXOoKSt3qDjiL+bB87syMf3tu6DF48ZvCxlaHYK//nNZfyx/BvMLbG7nxNCcCApjTEAhIk7HcymdLFIBHlQKB9Fd+VFAEaVM6zTgCIkkvMocK2p2rgShhAkBYXh7IHX8WpKFucsH9agbrAHH167iBvNNVBrmQNQRESEYE9u1snO8RHW/IexZmw3GcvDV+UfdLWwVJjgjYw8k+Lz//3ml/jciBJGIhZjV1wKfvrKm2Zp4oRCo9PhZkstfnbtIjQ6diHgSvMIsxd1hBc/yd14E4Da/m7WVGehnj4GPYafRU8pyrpb8S9XP8ODzmaDeXlcHJw21Ciwztyyipf8f10saepl9g5w4yGlLW8CoKN6XG18xHp9T7wC6aFRJr1zWaPGpbpy/OuNL1gXmjbDSj6uwyxnGRFC4O1seYY/XhX2dYM9rBJLCMHJrB1QhESY/N6JhTkU3r+O//vgBmetXJiXLy/nCrg6OrEmrbQGymUVq0ZzQ40A6xRV3WcN6RaLRPhu9m7sNvPwhdbRQZy7/jm+qq8wGjaeFBj2WAkTZ5YXjkQkxt4EBX6S/yZrtJM1oACW1MxrIT4EnHcBmF1aRNGje6zbOdFjdeZ72w7A3QzHSx1dC6X+8NpnKO9pMxg+vqaE2YYf7TtmUoBlclA4fpz/BvLlmRtifaHVMdfRWBQTFwSx2TYN9+ObNsPu4PEBITib/wb2JqSaFfSwuLqCv1SX4ue3LqF7ctTglBzo7oX3dx7C2zl7DO7BA9w88bc7X8G7W/ca9ea1JhIxczfpeIgVEC5DCIdhd83NKgNbzIikXWdkbga/vnMFKcHheDVlC2vHEUKgCIlAYmAI7rY3oqSt4ck2TSa1x0F5BrIj4lgdXGwFASCTMm9zV3jIYSiYAMSaEGFrTiTtszQM9aFlZBA74+TYHa9gHbrtxBLsS0xDZngsrjRWQSZ1wP6ktA1pcAIAdydn1kAWPjyFBREAqUSCACMxd0yYEknLhFavw+3WelT1deKQETdsdycZvpu9y+g79VSPxZUV3o6RMRW2mAZKKSYXLI8VEGS883f1MHsoXY+k/Un+CeyIlUNshpvV/GM37P8o+cqiFOzdE6P4+c1LNg1wiWYxfqnUq1AuW55EUhABYDPUUEpxtfERp8xfjlIpjiiyUXDwdSQEhJhVjoGZSfxHyVf4c+VdkxprRrWAT8pu49d3r2DEhoGta3YPZqNPvxHrI1cEmQJcWfwBF1dXUNJWj8reds6RtD4ubvh+3n50jA+vOUoszJlUFgJATEScbBGrWg2+aWvA3fbGDRHTEO8fzBo7wJdmVBABsGdRUKyfwbseSfuwuxXHOEbSxvkH458OBOJhdytuNtewHtbwNOFea7GBIUasb5RSizJ8CQWbwkyv16NphJ9UO4IIANuv7dmsGCOPI2nX8vhvgYfMsJ18LXNXEtJDo3C9uRrlPe2MCic3RxleTclCakik0e3owMwkii3I8ScUsX5BiGD5YbSPD/OSXg8QSADYdNdSlgiY+mciaY2lkJfZO+D19DzkRiaguL78SRCqnViMnXHJ2B1n/B3zy0u42vgIj/o7hWgCi5CIxDhqwAW8lMcUe4IIAFtuX0Px+RqdDrda61DV18n51xvg7okf7HgFTSP9aBsdxL6ENKOjiKGULxuFo6nZ8HN1Z7w2ODOJdh5jBQURADa3KDuxBO6OMswZWJErl1X4U8UdlD6OpDVmiCGEIDkonDVLyTpcU77YmrzoROREMmdZpZTiSmMVr98TRADYTLaEEIR4+mBu2PiWrH96Ar+8XYzM8Bjkyy07z3dUOYPiugpWU/VGITsiDkdTc1hHvoahPt5zLggiANOL81hSrzKqV2P9gjgrViiAqr5ONAz1YW9CKrbHmHbSiGp1BTeaax5bDc0znCQFhiExkBcHTFYICA4kpWNvgoK18xdXlwVJGy+IAFAAvVNjjGlP5UFh+KK2jFMW8HVWtRpcaaxCRU8bjiiykRhoOMOXTq9HWXcrbrTUPtl6moq/mweOKnIQ7Rtg8SHShvCSueBE5nZEGQii0VOKC5X3sLjKf54gwYxBraODjALg7OCI5OAw1A+abvmbVi3gdw9vIcY3EEdTc57L8UcpRef4CIrry806ZApYS8h4UJ6BHCOWQW6HRbALjrO9A3bGJSMvOtFgfoA17WkVY05BPhBMAJqG+nA8LZfR1r8nXoGGwV6z3eo6J0bwbze/QE5kPHbFpcDdSYYR5QxuNNeYnVZdRAi2RidifyI3yyCXpE1ilpFjd1wKThlIqv009zqaBD09TDABUKlX0TzcD0XI84dGBLp7IS00CjUD3Wa/fz18+2F3KwghFmUijfMPxhEF+9brWZbVatxurTN4j51YzLpeMXSC6DqUUpS01eNaU7XZ9eKCoLlJ7nU0ISU4gnEOPazIRsf4sMkmXybM7XwfFzccUWQj3j+Y80FTLSMDKK6vMHrat7uTs9lrB41Ohy9qHqKqr8PitjGGoAIwMDOJ9rEhxDNY81wcHPGd7F34+P51wdKgsuFgJ8X+xDTkRSdAzNEdbUw5i+K6cnRy3Eqa60k8ppzFnyvvmOUUYw6CZye63FCJGL8gRgfGWL8gvJ6eh4vVD6xSWUIIsiPicFCezjm40tyt5NNnC3Fh/fzCux2NvASUcEVwARifn8O9jkbsjlcwXs+OjAMAfF5TKuhIEOUTgKOp2ZzjFC3dSnLVHSypV1HR04a7HU02yaxmlfxkN5prEOcfzNr42ZFx8JA5408Vd3hvBE+ZCw6nbIE8KIzbPA+g43EW7wkzt5IR3n4GvYrVWi26JkZQP9iDxuE+XlLZmItVBECr1+OTshL8cO9R1kxXsX5BKDjwOorrylHHw8ki9hI77IlXGEz++CyTC0p8VV+BVhPPKn6W7TFyxv/r9Xqcv38dfVNjGyaNntUyFE4tzuP3Zbfx3raDrNsjFwdHvJWzG9tjklDSVo+W0UGTV/iOdlJsiYzDzthkztnBn2QP7WqxeP4NcveCPIj5QOiO8eENZ4+QwGphjmtZLz4pK8E7uXsM6vRDvXzxvbz9UC6p0DDci46xYQzMTLKamT1lLojw9kNCQAgSAkI5HyGrp3qzPZCZIFg7MJNtqiljSf5kSyQUUFsz807L6AA+fnAD7+buhaPUcGybm5MM22Pk2B4jB6UUi6srmF9eglqrASEEjnZSuDs5w97O9PCt7olRFNebF4PAxq74FISzrP7HlLNoFejwR0uQENB5gFg1+rFrYgS/LCnGu7l7jZ7Zsw4hBC4OjpyHdTZmVAu43FCJxqE+XusU5x+M/KQM1uvXm6utN9SagAQUEyAwLXCfByYXlPjF7UvIl2diW3Si4CFZq1oNSlrrca/D9HTvxgj39sM7uXtY69A5Prxhz0uUUIJ+AuTa4uManQ5f1Vegur8Th1O2INo3UBDT68jcND6+f0OQQxeSAkPx3exdrD6IqxoNLlaX8v5dPqAAxHknjiUD2GXLgiysLKO6vwud4yNwsLODt7MbrzkBne0dIRaJ0DM5ypuySSwSIV+egWNpuawLWkopPqt+gJ7JMRPfbh0I1haBtRsl/WLf9Dj6ysYhs3dAclAY4gNCEentZ3GWbEIItsUkISEgBF83VFkc6rVmPdzCelTeOvc7m1HT32XtZuQMBUAKigr9CDAKYKPIwbcgWAs183V1h4eTM5yk9rATS0BBodZqsLiygmnVAsbnZ3EoOROZ4bFG3zmqnMHDrlY0DPWybi2fRSqRIDkoHFujExHi4W10qqod6MafK+5syIXfs+2LgqLCJgLwl3/UVpUhBCcytyGLgxAAa/r+gZlJ9E+NY2x+FsplFVY0Gmh0OjjY2cHNUQY/V3eEe/khwseP88ke1X2dKHp03+pWTlOgeDwFPP77Ml4CAaCUoqjqPpRLKuxNSDX6KxWLRIjw9jPZcmfo+7db63C9ucbWTWGU9ZYRAQCh+AxW1AgKzfXmGvyu9JZVrWuLK8v4benNF6Lzn0YMALknjo6C4E0CCHMwjQ2YXFTiUV8nXB2c4O/mIZhnL6UU1f1d+N3DW1Zz4uCTJ61ScOH83xNC/o+tCyQE65lKY/2CeBMESilaRwdxs6UGQ7PczyPaaDxpjbMXzjuBkD4AtkuKJzD+bh7IjoiDIiTSbJWyclmFusEeVPa0Y4Jj0sqNzLd+DmcvFP4YBB/aulDCV5ogxNMbUb4BCPHwgd/jLaZELH4yQlBKodZpMataxPj8HAZnJtE9OfJC/9qZ2+IpCooKHQhFGwjCzH3hi4xUIlnb6tG1k1DYsn2/TDw3IZ69cP44CPkcG1QxtAm/iBj+8yUF/czWBdvEOjD+ys8WFXoCtBYgwobFbmJzGA3YH508PUNBTlLQjXUC9Ca8w+qFce7k6QqAvAdgY7ivbiIIBt1wzp08/ScAH+AlUhP/NcGl04z7YVHRLwD6ATZHghcOLts4zlu9gguFbxGCjwFszLTam5iFSXv9s0XncwEUAYSfQ+s2sTkmueJ+dPJMGSjSAHyOzXXBS4HJvtgfnTozJRbTNyhwigIb7Cy3TUzFInVvQVGhE6H4gBL8EwFsd7baJmbDi76/4EKhKwjeI6B/B5AYW1dqE+7wavApuHCeEELyKHCCUHoYhETw/Y1N+EWwzjn7aSGoCBEAckFpKgiJJ0AYpfAjBG5Y205uCgcD6x671uD/A/Ace12OlJpfAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTAyLTIxVDA4OjQ4OjQ3KzAwOjAwg+QcegAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0wMi0yMVQwODo0ODo0NyswMDowMPK5pMYAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjMtMDItMjFUMDg6NDg6NDcrMDA6MDClrIUZAAAAAElFTkSuQmCC" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="9235b216-f8ef-46e3-aba9-ef30bcd144d4" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h1 data-start="0" data-end="32">📘 UNIT 4: Data Manipulation</h1>
+<h3 data-start="33" data-end="97"><strong data-start="37" data-end="48">STATUS:</strong> Unit 4: Data Manipulation | Part 1 of 3 (Approx)</h3>
+<hr data-start="99" data-end="102">
+<p data-start="104" data-end="328">In this Unit, we move from basic Pandas understanding (Unit 3) to <strong data-start="170" data-end="197">practical data handling</strong>. Here, you will learn how to <strong data-start="227" data-end="279">create, slice, filter, and manipulate DataFrames</strong>, which is the heart of real-world data analysis.</p>
+<p data-start="330" data-end="347">This part covers:</p>
+<ol data-start="349" data-end="419">
+<li data-start="349" data-end="382">
+<p data-start="352" data-end="382">5 Ways to Create a DataFrame</p>
+</li>
+<li data-start="383" data-end="419">
+<p data-start="386" data-end="419">Slicing and Filtering DataFrame</p>
+</li>
+</ol>
+<hr data-start="421" data-end="424">
+<h1 data-start="426" data-end="463">1️⃣ Five Ways to Create a DataFrame</h1>
+<h2 data-start="465" data-end="483">🔹 Introduction</h2>
+<p data-start="485" data-end="663">A <strong data-start="487" data-end="500">DataFrame</strong> is the most important data structure in Pandas. It is a <strong data-start="557" data-end="599">two-dimensional labeled data structure</strong> with rows and columns — similar to an Excel sheet or SQL table.</p>
+<p data-start="665" data-end="680">Think of it as:</p>
+<blockquote data-start="682" data-end="741">
+<p data-start="684" data-end="741">📊 Rows = Records<br data-start="701" data-end="704">
+📊 Columns = Features / Variables</p>
+</blockquote>
+<p data-start="743" data-end="890">Understanding different ways to create a DataFrame is essential because data comes in multiple formats — lists, dictionaries, CSV files, APIs, etc.</p>
+<hr data-start="892" data-end="895">
+<h2 data-start="897" data-end="915">🔑 Key Concepts</h2>
+<ul data-start="917" data-end="1078">
+<li data-start="917" data-end="937">
+<p data-start="919" data-end="937"><strong data-start="919" data-end="937">pd.DataFrame()</strong></p>
+</li>
+<li data-start="938" data-end="962">
+<p data-start="940" data-end="962">Dictionary → DataFrame</p>
+</li>
+<li data-start="963" data-end="990">
+<p data-start="965" data-end="990">List of Lists → DataFrame</p>
+</li>
+<li data-start="991" data-end="1025">
+<p data-start="993" data-end="1025">List of Dictionaries → DataFrame</p>
+</li>
+<li data-start="1026" data-end="1044">
+<p data-start="1028" data-end="1044">From NumPy Array</p>
+</li>
+<li data-start="1045" data-end="1060">
+<p data-start="1047" data-end="1060">From CSV file</p>
+</li>
+<li data-start="1061" data-end="1068">
+<p data-start="1063" data-end="1068">Index</p>
+</li>
+<li data-start="1069" data-end="1078">
+<p data-start="1071" data-end="1078">Columns</p>
+</li>
+</ul>
+<hr data-start="1080" data-end="1083">
+<h2 data-start="1085" data-end="1111">🧠 Detailed Explanation</h2>
+<h3 data-start="1113" data-end="1153">✅ Method 1: From Dictionary of Lists</h3>
+<p data-start="1155" data-end="1183">This is the most common way.</p>
+<pre class="overflow-visible! px-0!" data-start="1185" data-end="1356"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">import</span></span><span> pandas </span><span><span class="hljs-keyword">as</span></span><span> pd
+
+data = {
+    </span><span><span class="hljs-string">"Name"</span></span><span>: [</span><span><span class="hljs-string">"Rahul"</span></span><span>, </span><span><span class="hljs-string">"Anita"</span></span><span>, </span><span><span class="hljs-string">"John"</span></span><span>],
+    </span><span><span class="hljs-string">"Age"</span></span><span>: [</span><span><span class="hljs-number">23</span></span><span>, </span><span><span class="hljs-number">25</span></span><span>, </span><span><span class="hljs-number">22</span></span><span>],
+    </span><span><span class="hljs-string">"Marks"</span></span><span>: [</span><span><span class="hljs-number">85</span></span><span>, </span><span><span class="hljs-number">90</span></span><span>, </span><span><span class="hljs-number">88</span></span><span>]
+}
+
+df = pd.DataFrame(data)
+</span><span><span class="hljs-built_in">print</span></span><span>(df)
+</span></span></code></div></div></pre>
+<h3 data-start="1358" data-end="1378">🔍 What Happens?</h3>
+<ul data-start="1380" data-end="1491">
+<li data-start="1380" data-end="1410">
+<p data-start="1382" data-end="1410">Keys become <strong data-start="1394" data-end="1410">column names</strong></p>
+</li>
+<li data-start="1411" data-end="1442">
+<p data-start="1413" data-end="1442">Values become <strong data-start="1427" data-end="1442">column data</strong></p>
+</li>
+<li data-start="1443" data-end="1491">
+<p data-start="1445" data-end="1491">Pandas automatically assigns row index (0,1,2)</p>
+</li>
+</ul>
+<h3 data-start="1493" data-end="1516">📊 Output Structure</h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1518" data-end="1677" class="w-fit min-w-(--thread-content-width)"><thead data-start="1518" data-end="1549"><tr data-start="1518" data-end="1549"><th data-start="1518" data-end="1526" data-col-size="sm" class="">Index</th><th data-start="1526" data-end="1534" data-col-size="sm" class="">Name</th><th data-start="1534" data-end="1540" data-col-size="sm" class="">Age</th><th data-start="1540" data-end="1549" data-col-size="sm" class="">Marks</th></tr></thead><tbody data-start="1582" data-end="1677"><tr data-start="1582" data-end="1613"><td data-start="1582" data-end="1590" data-col-size="sm">0</td><td data-start="1590" data-end="1598" data-col-size="sm">Rahul</td><td data-start="1598" data-end="1604" data-col-size="sm">23</td><td data-start="1604" data-end="1613" data-col-size="sm">85</td></tr><tr data-start="1614" data-end="1645"><td data-start="1614" data-end="1622" data-col-size="sm">1</td><td data-start="1622" data-end="1630" data-col-size="sm">Anita</td><td data-start="1630" data-end="1636" data-col-size="sm">25</td><td data-start="1636" data-end="1645" data-col-size="sm">90</td></tr><tr data-start="1646" data-end="1677"><td data-start="1646" data-end="1654" data-col-size="sm">2</td><td data-start="1654" data-end="1662" data-col-size="sm">John</td><td data-start="1662" data-end="1668" data-col-size="sm">22</td><td data-start="1668" data-end="1677" data-col-size="sm">88</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1679" data-end="1682">
+<h3 data-start="1684" data-end="1718">✅ Method 2: From List of Lists</h3>
+<pre class="overflow-visible! px-0!" data-start="1720" data-end="1870"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>data = [
+    [</span><span><span class="hljs-string">"Rahul"</span></span><span>, </span><span><span class="hljs-number">23</span></span><span>, </span><span><span class="hljs-number">85</span></span><span>],
+    [</span><span><span class="hljs-string">"Anita"</span></span><span>, </span><span><span class="hljs-number">25</span></span><span>, </span><span><span class="hljs-number">90</span></span><span>],
+    [</span><span><span class="hljs-string">"John"</span></span><span>, </span><span><span class="hljs-number">22</span></span><span>, </span><span><span class="hljs-number">88</span></span><span>]
+]
+
+df = pd.DataFrame(data, columns=[</span><span><span class="hljs-string">"Name"</span></span><span>, </span><span><span class="hljs-string">"Age"</span></span><span>, </span><span><span class="hljs-string">"Marks"</span></span><span>])
+</span></span></code></div></div></pre>
+<h3 data-start="1872" data-end="1894">🔍 Important Note:</h3>
+<p data-start="1896" data-end="1943">Here we must manually specify <strong data-start="1926" data-end="1942">column names</strong>.</p>
+<hr data-start="1945" data-end="1948">
+<h3 data-start="1950" data-end="1991">✅ Method 3: From List of Dictionaries</h3>
+<pre class="overflow-visible! px-0!" data-start="1993" data-end="2181"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>data = [
+    {</span><span><span class="hljs-string">"Name"</span></span><span>: </span><span><span class="hljs-string">"Rahul"</span></span><span>, </span><span><span class="hljs-string">"Age"</span></span><span>: </span><span><span class="hljs-number">23</span></span><span>, </span><span><span class="hljs-string">"Marks"</span></span><span>: </span><span><span class="hljs-number">85</span></span><span>},
+    {</span><span><span class="hljs-string">"Name"</span></span><span>: </span><span><span class="hljs-string">"Anita"</span></span><span>, </span><span><span class="hljs-string">"Age"</span></span><span>: </span><span><span class="hljs-number">25</span></span><span>, </span><span><span class="hljs-string">"Marks"</span></span><span>: </span><span><span class="hljs-number">90</span></span><span>},
+    {</span><span><span class="hljs-string">"Name"</span></span><span>: </span><span><span class="hljs-string">"John"</span></span><span>, </span><span><span class="hljs-string">"Age"</span></span><span>: </span><span><span class="hljs-number">22</span></span><span>, </span><span><span class="hljs-string">"Marks"</span></span><span>: </span><span><span class="hljs-number">88</span></span><span>}
+]
+
+df = pd.DataFrame(data)
+</span></span></code></div></div></pre>
+<p data-start="2183" data-end="2221">This is very useful when working with:</p>
+<ul data-start="2223" data-end="2251">
+<li data-start="2223" data-end="2235">
+<p data-start="2225" data-end="2235">JSON files</p>
+</li>
+<li data-start="2236" data-end="2251">
+<p data-start="2238" data-end="2251">API responses</p>
+</li>
+</ul>
+<hr data-start="2253" data-end="2256">
+<h3 data-start="2258" data-end="2290">✅ Method 4: From NumPy Array</h3>
+<pre class="overflow-visible! px-0!" data-start="2292" data-end="2474"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">import</span></span><span> numpy </span><span><span class="hljs-keyword">as</span></span><span> np
+
+array = np.array([
+    [</span><span><span class="hljs-string">"Rahul"</span></span><span>, </span><span><span class="hljs-number">23</span></span><span>, </span><span><span class="hljs-number">85</span></span><span>],
+    [</span><span><span class="hljs-string">"Anita"</span></span><span>, </span><span><span class="hljs-number">25</span></span><span>, </span><span><span class="hljs-number">90</span></span><span>],
+    [</span><span><span class="hljs-string">"John"</span></span><span>, </span><span><span class="hljs-number">22</span></span><span>, </span><span><span class="hljs-number">88</span></span><span>]
+])
+
+df = pd.DataFrame(array, columns=[</span><span><span class="hljs-string">"Name"</span></span><span>, </span><span><span class="hljs-string">"Age"</span></span><span>, </span><span><span class="hljs-string">"Marks"</span></span><span>])
+</span></span></code></div></div></pre>
+<p data-start="2476" data-end="2534">📌 Used when working with numerical computations in NumPy.</p>
+<hr data-start="2536" data-end="2539">
+<h3 data-start="2541" data-end="2570">✅ Method 5: From CSV File</h3>
+<pre class="overflow-visible! px-0!" data-start="2572" data-end="2618"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df = pd.read_csv(</span><span><span class="hljs-string">"students.csv"</span></span><span>)
+</span></span></code></div></div></pre>
+<p data-start="2620" data-end="2680">This is the <strong data-start="2632" data-end="2657">most practical method</strong> in business analytics.</p>
+<p data-start="2682" data-end="2687">Flow:</p>
+<p data-start="2689" data-end="2738">CSV File → <code data-start="2700" data-end="2715">pd.read_csv()</code> → DataFrame → Analysis</p>
+<hr data-start="2740" data-end="2743">
+<h2 data-start="2745" data-end="2767">🔄 Comparison Table</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2769" data-end="3127" class="w-fit min-w-(--thread-content-width)"><thead data-start="2769" data-end="2814"><tr data-start="2769" data-end="2814"><th data-start="2769" data-end="2778" data-col-size="sm" class="">Method</th><th data-start="2778" data-end="2792" data-col-size="sm" class="">When to Use</th><th data-start="2792" data-end="2814" data-col-size="sm" class="">Real-world Example</th></tr></thead><tbody data-start="2859" data-end="3127"><tr data-start="2859" data-end="2925"><td data-start="2859" data-end="2881" data-col-size="sm">Dictionary of Lists</td><td data-start="2881" data-end="2907" data-col-size="sm">Structured data in code</td><td data-start="2907" data-end="2925" data-col-size="sm">Manual dataset</td></tr><tr data-start="2926" data-end="2982"><td data-start="2926" data-end="2942" data-col-size="sm">List of Lists</td><td data-start="2942" data-end="2962" data-col-size="sm">Raw row-wise data</td><td data-start="2962" data-end="2982" data-col-size="sm">Survey responses</td></tr><tr data-start="2983" data-end="3026"><td data-start="2983" data-end="2998" data-col-size="sm">List of Dict</td><td data-start="2998" data-end="3014" data-col-size="sm">JSON/API data</td><td data-start="3014" data-end="3026" data-col-size="sm">Web data</td></tr><tr data-start="3027" data-end="3081"><td data-start="3027" data-end="3041" data-col-size="sm">NumPy Array</td><td data-start="3041" data-end="3059" data-col-size="sm">Scientific data</td><td data-start="3059" data-end="3081" data-col-size="sm">Numerical modeling</td></tr><tr data-start="3082" data-end="3127"><td data-start="3082" data-end="3093" data-col-size="sm">CSV File</td><td data-start="3093" data-end="3109" data-col-size="sm">Business data</td><td data-start="3109" data-end="3127" data-col-size="sm">Sales, Finance</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3129" data-end="3132">
+<h2 data-start="3134" data-end="3158">📌 Real-World Example</h2>
+<p data-start="3160" data-end="3195">Suppose a company gives you a file:</p>
+<p data-start="3197" data-end="3213"><code data-start="3197" data-end="3213">sales_2024.csv</code></p>
+<p data-start="3215" data-end="3233">You load it using:</p>
+<pre class="overflow-visible! px-0!" data-start="3235" data-end="3283"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df = pd.read_csv(</span><span><span class="hljs-string">"sales_2024.csv"</span></span><span>)
+</span></span></code></div></div></pre>
+<p data-start="3285" data-end="3340">Now the DataFrame becomes your working environment for:</p>
+<ul data-start="3342" data-end="3405">
+<li data-start="3342" data-end="3360">
+<p data-start="3344" data-end="3360">Revenue analysis</p>
+</li>
+<li data-start="3361" data-end="3381">
+<p data-start="3363" data-end="3381">Profit calculation</p>
+</li>
+<li data-start="3382" data-end="3405">
+<p data-start="3384" data-end="3405">Customer segmentation</p>
+</li>
+</ul>
+<hr data-start="3407" data-end="3410">
+<h2 data-start="3412" data-end="3437">📌 Summary (Section 1)</h2>
+<ul data-start="3439" data-end="3637">
+<li data-start="3439" data-end="3471">
+<p data-start="3441" data-end="3471">A <strong data-start="3443" data-end="3456">DataFrame</strong> is a 2D table.</p>
+</li>
+<li data-start="3472" data-end="3514">
+<p data-start="3474" data-end="3514">It can be created from multiple sources.</p>
+</li>
+<li data-start="3515" data-end="3578">
+<p data-start="3517" data-end="3578">The most commonly used method in industry is <strong data-start="3562" data-end="3577">CSV loading</strong>.</p>
+</li>
+<li data-start="3579" data-end="3637">
+<p data-start="3581" data-end="3637">Understanding structure is critical before manipulation.</p>
+</li>
+</ul>
+<hr data-start="3639" data-end="3642">
+<h1 data-start="3644" data-end="3681">2️⃣ Slicing and Filtering DataFrame</h1>
+<hr data-start="3683" data-end="3686">
+<h2 data-start="3688" data-end="3706">🔹 Introduction</h2>
+<p data-start="3708" data-end="3783">Once the DataFrame is created, the next step is to <strong data-start="3759" data-end="3782">extract useful data</strong>.</p>
+<p data-start="3785" data-end="3799">Slicing means:</p>
+<blockquote data-start="3801" data-end="3839">
+<p data-start="3803" data-end="3839">Selecting specific rows and columns.</p>
+</blockquote>
+<p data-start="3841" data-end="3857">Filtering means:</p>
+<blockquote data-start="3859" data-end="3896">
+<p data-start="3861" data-end="3896">Selecting rows based on conditions.</p>
+</blockquote>
+<p data-start="3898" data-end="3962">This is the foundation of <strong data-start="3924" data-end="3961">data analysis and decision making</strong>.</p>
+<hr data-start="3964" data-end="3967">
+<h2 data-start="3969" data-end="3987">🔑 Key Concepts</h2>
+<ul data-start="3989" data-end="4089">
+<li data-start="3989" data-end="3999">
+<p data-start="3991" data-end="3999"><code data-start="3991" data-end="3999">.loc[]</code></p>
+</li>
+<li data-start="4000" data-end="4011">
+<p data-start="4002" data-end="4011"><code data-start="4002" data-end="4011">.iloc[]</code></p>
+</li>
+<li data-start="4012" data-end="4030">
+<p data-start="4014" data-end="4030">Boolean Indexing</p>
+</li>
+<li data-start="4031" data-end="4054">
+<p data-start="4033" data-end="4054">Conditional Filtering</p>
+</li>
+<li data-start="4055" data-end="4073">
+<p data-start="4057" data-end="4073">Column Selection</p>
+</li>
+<li data-start="4074" data-end="4089">
+<p data-start="4076" data-end="4089">Row Selection</p>
+</li>
+</ul>
+<hr data-start="4091" data-end="4094">
+<h2 data-start="4096" data-end="4122">🧠 Detailed Explanation</h2>
+<p data-start="4124" data-end="4146">Assume this DataFrame:</p>
+<pre class="overflow-visible! px-0!" data-start="4148" data-end="4305"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>data = {
+    </span><span><span class="hljs-string">"Name"</span></span><span>: [</span><span><span class="hljs-string">"Rahul"</span></span><span>, </span><span><span class="hljs-string">"Anita"</span></span><span>, </span><span><span class="hljs-string">"John"</span></span><span>, </span><span><span class="hljs-string">"Priya"</span></span><span>],
+    </span><span><span class="hljs-string">"Age"</span></span><span>: [</span><span><span class="hljs-number">23</span></span><span>, </span><span><span class="hljs-number">25</span></span><span>, </span><span><span class="hljs-number">22</span></span><span>, </span><span><span class="hljs-number">24</span></span><span>],
+    </span><span><span class="hljs-string">"Marks"</span></span><span>: [</span><span><span class="hljs-number">85</span></span><span>, </span><span><span class="hljs-number">90</span></span><span>, </span><span><span class="hljs-number">88</span></span><span>, </span><span><span class="hljs-number">75</span></span><span>]
+}
+
+df = pd.DataFrame(data)
+</span></span></code></div></div></pre>
+<hr data-start="4307" data-end="4310">
+<h2 data-start="4312" data-end="4335">📌 Selecting Columns</h2>
+<h3 data-start="4337" data-end="4361">Select Single Column</h3>
+<pre class="overflow-visible! px-0!" data-start="4363" data-end="4388"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Marks"</span></span><span>]
+</span></span></code></div></div></pre>
+<h3 data-start="4390" data-end="4417">Select Multiple Columns</h3>
+<pre class="overflow-visible! px-0!" data-start="4419" data-end="4454"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[[</span><span><span class="hljs-string">"Name"</span></span><span>, </span><span><span class="hljs-string">"Marks"</span></span><span>]]
+</span></span></code></div></div></pre>
+<hr data-start="4456" data-end="4459">
+<h2 data-start="4461" data-end="4481">📌 Selecting Rows</h2>
+<h3 data-start="4483" data-end="4519">Using <code data-start="4493" data-end="4502">.iloc[]</code> (Index Location)</h3>
+<pre class="overflow-visible! px-0!" data-start="4521" data-end="4595"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df.iloc[</span><span><span class="hljs-number">0</span></span><span>]      </span><span><span class="hljs-comment"># First row</span></span><span>
+df.iloc[</span><span><span class="hljs-number">0</span></span><span>:</span><span><span class="hljs-number">2</span></span><span>]    </span><span><span class="hljs-comment"># First two rows</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="4597" data-end="4650">👉 <code data-start="4600" data-end="4609">.iloc[]</code> works with <strong data-start="4621" data-end="4650">numerical index positions</strong></p>
+<hr data-start="4652" data-end="4655">
+<h3 data-start="4657" data-end="4689">Using <code data-start="4667" data-end="4675">.loc[]</code> (Label Based)</h3>
+<pre class="overflow-visible! px-0!" data-start="4691" data-end="4726"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df.loc[</span><span><span class="hljs-number">0</span></span><span>]
+df.loc[</span><span><span class="hljs-number">0</span></span><span>:</span><span><span class="hljs-number">2</span></span><span>]
+</span></span></code></div></div></pre>
+<p data-start="4728" data-end="4767">👉 <code data-start="4731" data-end="4739">.loc[]</code> works with <strong data-start="4751" data-end="4767">index labels</strong></p>
+<hr data-start="4769" data-end="4772">
+<h2 data-start="4774" data-end="4818">📌 Conditional Filtering (Most Important)</h2>
+<h3 data-start="4820" data-end="4859">Example 1: Students with Marks &gt; 85</h3>
+<pre class="overflow-visible! px-0!" data-start="4861" data-end="4895"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[df[</span><span><span class="hljs-string">"Marks"</span></span><span>] &gt; </span><span><span class="hljs-number">85</span></span><span>]
+</span></span></code></div></div></pre>
+<h3 data-start="4897" data-end="4914">How It Works:</h3>
+<ol data-start="4916" data-end="5058">
+<li data-start="4916" data-end="4937">
+<p data-start="4919" data-end="4937"><code data-start="4919" data-end="4937">df["Marks"] &gt; 85</code></p>
+</li>
+<li data-start="4938" data-end="5012">
+<p data-start="4941" data-end="4964">Creates Boolean Series:</p>
+<pre class="overflow-visible! px-0!" data-start="4968" data-end="5012"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">graphql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-literal">False</span></span><span>
+</span><span><span class="hljs-literal">True</span></span><span>
+</span><span><span class="hljs-literal">True</span></span><span>
+</span><span><span class="hljs-literal">False</span></span><span>
+</span></span></code></div></div></pre>
+</li>
+<li data-start="5013" data-end="5058">
+<p data-start="5016" data-end="5058">Pandas selects rows where condition = True</p>
+</li>
+</ol>
+<hr data-start="5060" data-end="5063">
+<h2 data-start="5065" data-end="5090">📌 Multiple Conditions</h2>
+<h3 data-start="5092" data-end="5119">Marks &gt; 80 AND Age &lt; 25</h3>
+<pre class="overflow-visible! px-0!" data-start="5121" data-end="5176"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[(df[</span><span><span class="hljs-string">"Marks"</span></span><span>] &gt; </span><span><span class="hljs-number">80</span></span><span>) &amp; (df[</span><span><span class="hljs-string">"Age"</span></span><span>] &lt; </span><span><span class="hljs-number">25</span></span><span>)]
+</span></span></code></div></div></pre>
+<h3 data-start="5178" data-end="5202">Important Operators:</h3>
+<ul data-start="5204" data-end="5238">
+<li data-start="5204" data-end="5215">
+<p data-start="5206" data-end="5215"><code data-start="5206" data-end="5209">&amp;</code> → AND</p>
+</li>
+<li data-start="5216" data-end="5226">
+<p data-start="5218" data-end="5226"><code data-start="5218" data-end="5221">|</code> → OR</p>
+</li>
+<li data-start="5227" data-end="5238">
+<p data-start="5229" data-end="5238"><code data-start="5229" data-end="5232">~</code> → NOT</p>
+</li>
+</ul>
+<hr data-start="5240" data-end="5243">
+<h2 data-start="5245" data-end="5281">📌 Flowchart of Filtering Process</h2>
+<p data-start="5283" data-end="5394">Condition Applied<br data-start="5300" data-end="5303">
+↓<br data-start="5304" data-end="5307">
+Boolean Series Created<br data-start="5329" data-end="5332">
+↓<br data-start="5333" data-end="5336">
+True Rows Selected<br data-start="5354" data-end="5357">
+↓<br data-start="5358" data-end="5361">
+New Filtered DataFrame Returned</p>
+<hr data-start="5396" data-end="5399">
+<h2 data-start="5401" data-end="5431">📌 Real-World Business Case</h2>
+<p data-start="5433" data-end="5441">Imagine:</p>
+<p data-start="5443" data-end="5490">You are analyzing a company’s employee dataset.</p>
+<p data-start="5492" data-end="5501">You want:</p>
+<ul data-start="5503" data-end="5559">
+<li data-start="5503" data-end="5536">
+<p data-start="5505" data-end="5536">Employees with salary &gt; ₹50,000</p>
+</li>
+<li data-start="5537" data-end="5559">
+<p data-start="5539" data-end="5559">Department = "Sales"</p>
+</li>
+</ul>
+<pre class="overflow-visible! px-0!" data-start="5561" data-end="5633"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[(df[</span><span><span class="hljs-string">"Salary"</span></span><span>] &gt; </span><span><span class="hljs-number">50000</span></span><span>) &amp; (df[</span><span><span class="hljs-string">"Department"</span></span><span>] == </span><span><span class="hljs-string">"Sales"</span></span><span>)]
+</span></span></code></div></div></pre>
+<p data-start="5635" data-end="5657">This helps management:</p>
+<ul data-start="5659" data-end="5729">
+<li data-start="5659" data-end="5691">
+<p data-start="5661" data-end="5691">Identify high-performing teams</p>
+</li>
+<li data-start="5692" data-end="5711">
+<p data-start="5694" data-end="5711">Target incentives</p>
+</li>
+<li data-start="5712" data-end="5729">
+<p data-start="5714" data-end="5729">Plan promotions</p>
+</li>
+</ul>
+<hr data-start="5731" data-end="5734">
+<h2 data-start="5736" data-end="5756">⚠ Common Mistakes</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5758" data-end="5982" class="w-fit min-w-(--thread-content-width)"><thead data-start="5758" data-end="5782"><tr data-start="5758" data-end="5782"><th data-start="5758" data-end="5768" data-col-size="sm" class="">Mistake</th><th data-start="5768" data-end="5782" data-col-size="sm" class="">Correction</th></tr></thead><tbody data-start="5808" data-end="5982"><tr data-start="5808" data-end="5865"><td data-start="5808" data-end="5837" data-col-size="sm">Using <code data-start="5816" data-end="5821">and</code> instead of <code data-start="5833" data-end="5836">&amp;</code></td><td data-start="5837" data-end="5865" data-col-size="sm">Always use <code data-start="5850" data-end="5853">&amp;</code> in Pandas</td></tr><tr data-start="5866" data-end="5918"><td data-start="5866" data-end="5888" data-col-size="sm">Missing parentheses</td><td data-start="5888" data-end="5918" data-col-size="sm">Always wrap each condition</td></tr><tr data-start="5919" data-end="5982"><td data-start="5919" data-end="5950" data-col-size="sm">Confusing <code data-start="5931" data-end="5937">.loc</code> and <code data-start="5942" data-end="5949">.iloc</code></td><td data-start="5950" data-end="5982" data-col-size="sm">loc = label, iloc = position</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5984" data-end="5987">
+<h2 data-start="5989" data-end="6014">📌 Summary (Section 2)</h2>
+<ul data-start="6016" data-end="6193">
+<li data-start="6016" data-end="6057">
+<p data-start="6018" data-end="6057">Slicing extracts specific rows/columns.</p>
+</li>
+<li data-start="6058" data-end="6087">
+<p data-start="6060" data-end="6087"><code data-start="6060" data-end="6069">.iloc[]</code> → position-based.</p>
+</li>
+<li data-start="6088" data-end="6113">
+<p data-start="6090" data-end="6113"><code data-start="6090" data-end="6098">.loc[]</code> → label-based.</p>
+</li>
+<li data-start="6114" data-end="6150">
+<p data-start="6116" data-end="6150">Filtering uses Boolean conditions.</p>
+</li>
+<li data-start="6151" data-end="6193">
+<p data-start="6153" data-end="6193">Multiple conditions require <code data-start="6181" data-end="6184">&amp;</code> and <code data-start="6189" data-end="6192">|</code>.</p>
+</li>
+</ul>
+<hr data-start="6195" data-end="6198">
+<h1 data-start="6200" data-end="6230">📌 Overall Summary of Part 1</h1>
+<p data-start="6232" data-end="6257">In this part, we learned:</p>
+<p data-start="6259" data-end="6428">✔ Five ways to create a DataFrame<br data-start="6292" data-end="6295">
+✔ Importance of DataFrame structure<br data-start="6330" data-end="6333">
+✔ Column selection<br data-start="6351" data-end="6354">
+✔ Row slicing<br data-start="6367" data-end="6370">
+✔ Conditional filtering<br data-start="6393" data-end="6396">
+✔ Multiple condition filtering</p>
+<p data-start="6430" data-end="6492">These skills form the <strong data-start="6452" data-end="6481">core of data manipulation</strong> in Pandas.</p>
+<hr data-start="6494" data-end="6497">
+<blockquote data-start="6499" data-end="6550" data-is-last-node="" data-is-only-node="">
+<p data-start="6501" data-end="6550" data-is-last-node=""><strong data-start="6501" data-end="6550" data-is-last-node=""><em data-start="6503" data-end="6548">End of Unit 4 – Part 1. Continue to Part 2?</em></strong></p>
+</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="05d880e3-e706-4299-91d8-930282a8c76d" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h1 data-start="0" data-end="32">📘 UNIT 4: Data Manipulation</h1>
+<h3 data-start="33" data-end="97"><strong data-start="37" data-end="48">STATUS:</strong> Unit 4: Data Manipulation | Part 2 of 3 (Approx)</h3>
+<p data-start="99" data-end="128">In Part 1, we learned how to:</p>
+<p data-start="130" data-end="209">✔ Create DataFrames<br data-start="149" data-end="152">
+✔ Slice rows and columns<br data-start="176" data-end="179">
+✔ Apply filtering conditions</p>
+<p data-start="211" data-end="335">Now we move deeper into <strong data-start="235" data-end="286">functional transformation and conditional logic</strong>, which are heavily used in real-world analytics.</p>
+<p data-start="337" data-end="354">This part covers:</p>
+<ol start="3" data-start="356" data-end="398">
+<li data-start="356" data-end="367">
+<p data-start="359" data-end="367">Lambda</p>
+</li>
+<li data-start="368" data-end="398">
+<p data-start="371" data-end="398">Run If and Else Scenarios</p>
+</li>
+</ol>
+<hr data-start="400" data-end="403">
+<h1 data-start="405" data-end="427">3️⃣ Lambda in Pandas</h1>
+<hr data-start="429" data-end="432">
+<h2 data-start="434" data-end="452">🔹 Introduction</h2>
+<p data-start="454" data-end="489">In data analysis, we often need to:</p>
+<ul data-start="491" data-end="589">
+<li data-start="491" data-end="518">
+<p data-start="493" data-end="518">Transform column values</p>
+</li>
+<li data-start="519" data-end="541">
+<p data-start="521" data-end="541">Apply calculations</p>
+</li>
+<li data-start="542" data-end="564">
+<p data-start="544" data-end="564">Create new columns</p>
+</li>
+<li data-start="565" data-end="589">
+<p data-start="567" data-end="589">Modify existing data</p>
+</li>
+</ul>
+<p data-start="591" data-end="717">Instead of writing long functions, Python provides <strong data-start="642" data-end="662">Lambda functions</strong> — small, anonymous functions written in a single line.</p>
+<p data-start="719" data-end="757">In Pandas, lambda is mostly used with:</p>
+<ul data-start="759" data-end="798">
+<li data-start="759" data-end="771">
+<p data-start="761" data-end="771"><code data-start="761" data-end="771">.apply()</code></p>
+</li>
+<li data-start="772" data-end="782">
+<p data-start="774" data-end="782"><code data-start="774" data-end="782">.map()</code></p>
+</li>
+<li data-start="783" data-end="798">
+<p data-start="785" data-end="798"><code data-start="785" data-end="798">.applymap()</code></p>
+</li>
+</ul>
+<hr data-start="800" data-end="803">
+<h2 data-start="805" data-end="823">🔑 Key Concepts</h2>
+<ul data-start="825" data-end="934">
+<li data-start="825" data-end="846">
+<p data-start="827" data-end="846"><strong data-start="827" data-end="846">Lambda function</strong></p>
+</li>
+<li data-start="847" data-end="867">
+<p data-start="849" data-end="867">Anonymous function</p>
+</li>
+<li data-start="868" data-end="879">
+<p data-start="870" data-end="879"><code data-start="870" data-end="879">apply()</code></p>
+</li>
+<li data-start="880" data-end="889">
+<p data-start="882" data-end="889"><code data-start="882" data-end="889">map()</code></p>
+</li>
+<li data-start="890" data-end="913">
+<p data-start="892" data-end="913">Column transformation</p>
+</li>
+<li data-start="914" data-end="934">
+<p data-start="916" data-end="934">Row-wise operation</p>
+</li>
+</ul>
+<hr data-start="936" data-end="939">
+<h2 data-start="941" data-end="973">🧠 What is a Lambda Function?</h2>
+<p data-start="975" data-end="990">General Syntax:</p>
+<pre class="overflow-visible! px-0!" data-start="992" data-end="1034"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">lambda</span></span><span> arguments: expression
+</span></span></code></div></div></pre>
+<p data-start="1036" data-end="1044">Example:</p>
+<pre class="overflow-visible! px-0!" data-start="1046" data-end="1076"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">lambda</span></span><span> x: x + </span><span><span class="hljs-number">10</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="1078" data-end="1089">This means:</p>
+<blockquote data-start="1091" data-end="1124">
+<p data-start="1093" data-end="1124">Take x → add 10 → return result</p>
+</blockquote>
+<hr data-start="1126" data-end="1129">
+<h2 data-start="1131" data-end="1165">📌 Using Lambda with <code data-start="1155" data-end="1165">.apply()</code></h2>
+<p data-start="1167" data-end="1189">Assume this DataFrame:</p>
+<pre class="overflow-visible! px-0!" data-start="1191" data-end="1306"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>data = {
+    </span><span><span class="hljs-string">"Name"</span></span><span>: [</span><span><span class="hljs-string">"Rahul"</span></span><span>, </span><span><span class="hljs-string">"Anita"</span></span><span>, </span><span><span class="hljs-string">"John"</span></span><span>],
+    </span><span><span class="hljs-string">"Marks"</span></span><span>: [</span><span><span class="hljs-number">85</span></span><span>, </span><span><span class="hljs-number">90</span></span><span>, </span><span><span class="hljs-number">70</span></span><span>]
+}
+
+df = pd.DataFrame(data)
+</span></span></code></div></div></pre>
+<hr data-start="1308" data-end="1311">
+<h3 data-start="1313" data-end="1345">✅ Example 1: Add Bonus Marks</h3>
+<pre class="overflow-visible! px-0!" data-start="1347" data-end="1417"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Updated_Marks"</span></span><span>] = df[</span><span><span class="hljs-string">"Marks"</span></span><span>].apply(</span><span><span class="hljs-keyword">lambda</span></span><span> x: x + </span><span><span class="hljs-number">5</span></span><span>)
+</span></span></code></div></div></pre>
+<h3 data-start="1419" data-end="1450">🔍 What Happens Internally?</h3>
+<p data-start="1452" data-end="1540">Marks Column<br data-start="1464" data-end="1467">
+↓<br data-start="1468" data-end="1471">
+Each value passed to lambda<br data-start="1498" data-end="1501">
+↓<br data-start="1502" data-end="1505">
++5 added<br data-start="1513" data-end="1516">
+↓<br data-start="1517" data-end="1520">
+New column created</p>
+<hr data-start="1542" data-end="1545">
+<h2 data-start="1547" data-end="1587">📌 Example 2: Create Pass/Fail Column</h2>
+<pre class="overflow-visible! px-0!" data-start="1589" data-end="1676"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Result"</span></span><span>] = df[</span><span><span class="hljs-string">"Marks"</span></span><span>].apply(</span><span><span class="hljs-keyword">lambda</span></span><span> x: </span><span><span class="hljs-string">"Pass"</span></span><span> </span><span><span class="hljs-keyword">if</span></span><span> x &gt;= </span><span><span class="hljs-number">75</span></span><span> </span><span><span class="hljs-keyword">else</span></span><span> </span><span><span class="hljs-string">"Fail"</span></span><span>)
+</span></span></code></div></div></pre>
+<p data-start="1678" data-end="1722">This is <strong data-start="1686" data-end="1721">conditional logic inside lambda</strong>.</p>
+<hr data-start="1724" data-end="1727">
+<h2 data-start="1729" data-end="1754">📊 Flow Representation</h2>
+<p data-start="1756" data-end="1849">Marks Value<br data-start="1767" data-end="1770">
+↓<br data-start="1771" data-end="1774">
+Check: &gt;= 75?<br data-start="1787" data-end="1790">
+↓<br data-start="1791" data-end="1794">
+Yes → Pass<br data-start="1804" data-end="1807">
+No → Fail<br data-start="1816" data-end="1819">
+↓<br data-start="1820" data-end="1823">
+Store in "Result" column</p>
+<hr data-start="1851" data-end="1854">
+<h2 data-start="1856" data-end="1886">📌 Row-wise Lambda (axis=1)</h2>
+<p data-start="1888" data-end="1930">Sometimes we need to use multiple columns.</p>
+<pre class="overflow-visible! px-0!" data-start="1932" data-end="2053"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Performance"</span></span><span>] = df.apply(
+    </span><span><span class="hljs-keyword">lambda</span></span><span> row: </span><span><span class="hljs-string">"Excellent"</span></span><span> </span><span><span class="hljs-keyword">if</span></span><span> row[</span><span><span class="hljs-string">"Marks"</span></span><span>] &gt; </span><span><span class="hljs-number">85</span></span><span> </span><span><span class="hljs-keyword">else</span></span><span> </span><span><span class="hljs-string">"Average"</span></span><span>,
+    axis=</span><span><span class="hljs-number">1</span></span><span>
+)
+</span></span></code></div></div></pre>
+<h3 data-start="2055" data-end="2069">Important:</h3>
+<ul data-start="2071" data-end="2121">
+<li data-start="2071" data-end="2097">
+<p data-start="2073" data-end="2097"><code data-start="2073" data-end="2081">axis=0</code> → Column-wise</p>
+</li>
+<li data-start="2098" data-end="2121">
+<p data-start="2100" data-end="2121"><code data-start="2100" data-end="2108">axis=1</code> → Row-wise</p>
+</li>
+</ul>
+<hr data-start="2123" data-end="2126">
+<h2 data-start="2128" data-end="2180">📌 Using <code data-start="2140" data-end="2148">.map()</code> (For Single Column Replacement)</h2>
+<pre class="overflow-visible! px-0!" data-start="2182" data-end="2291"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>grade_map = {
+    </span><span><span class="hljs-number">90</span></span><span>: </span><span><span class="hljs-string">"A"</span></span><span>,
+    </span><span><span class="hljs-number">85</span></span><span>: </span><span><span class="hljs-string">"B"</span></span><span>,
+    </span><span><span class="hljs-number">70</span></span><span>: </span><span><span class="hljs-string">"C"</span></span><span>
+}
+
+df[</span><span><span class="hljs-string">"Grade"</span></span><span>] = df[</span><span><span class="hljs-string">"Marks"</span></span><span>].</span><span><span class="hljs-built_in">map</span></span><span>(grade_map)
+</span></span></code></div></div></pre>
+<hr data-start="2293" data-end="2296">
+<h2 data-start="2298" data-end="2332">📌 Difference: apply() vs map()</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2334" data-end="2519" class="w-fit min-w-(--thread-content-width)"><thead data-start="2334" data-end="2363"><tr data-start="2334" data-end="2363"><th data-start="2334" data-end="2344" data-col-size="sm" class="">Feature</th><th data-start="2344" data-end="2354" data-col-size="sm" class="">apply()</th><th data-start="2354" data-end="2363" data-col-size="sm" class="">map()</th></tr></thead><tbody data-start="2399" data-end="2519"><tr data-start="2399" data-end="2446"><td data-start="2399" data-end="2410" data-col-size="sm">Works on</td><td data-col-size="sm" data-start="2410" data-end="2431">Series &amp; DataFrame</td><td data-col-size="sm" data-start="2431" data-end="2446">Series only</td></tr><tr data-start="2447" data-end="2478"><td data-start="2447" data-end="2465" data-col-size="sm">Supports lambda</td><td data-col-size="sm" data-start="2465" data-end="2471">Yes</td><td data-col-size="sm" data-start="2471" data-end="2478">Yes</td></tr><tr data-start="2479" data-end="2519"><td data-start="2479" data-end="2498" data-col-size="sm">Multiple columns</td><td data-col-size="sm" data-start="2498" data-end="2513">Yes (axis=1)</td><td data-col-size="sm" data-start="2513" data-end="2519">No</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2521" data-end="2524">
+<h2 data-start="2526" data-end="2550">🏢 Real-World Example</h2>
+<p data-start="2552" data-end="2573">In a company dataset:</p>
+<ul data-start="2575" data-end="2640">
+<li data-start="2575" data-end="2612">
+<p data-start="2577" data-end="2612">Sales &gt; 1,00,000 → "High Performer"</p>
+</li>
+<li data-start="2613" data-end="2640">
+<p data-start="2615" data-end="2640">Else → "Normal Performer"</p>
+</li>
+</ul>
+<pre class="overflow-visible! px-0!" data-start="2642" data-end="2762"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Category"</span></span><span>] = df[</span><span><span class="hljs-string">"Sales"</span></span><span>].apply(
+    </span><span><span class="hljs-keyword">lambda</span></span><span> x: </span><span><span class="hljs-string">"High Performer"</span></span><span> </span><span><span class="hljs-keyword">if</span></span><span> x &gt; </span><span><span class="hljs-number">100000</span></span><span> </span><span><span class="hljs-keyword">else</span></span><span> </span><span><span class="hljs-string">"Normal Performer"</span></span><span>
+)
+</span></span></code></div></div></pre>
+<p data-start="2764" data-end="2815">This helps management classify employees instantly.</p>
+<hr data-start="2817" data-end="2820">
+<h2 data-start="2822" data-end="2852">📌 Summary (Lambda Section)</h2>
+<p data-start="2854" data-end="3021">✔ Lambda is a short function<br data-start="2882" data-end="2885">
+✔ Used with apply() and map()<br data-start="2914" data-end="2917">
+✔ Useful for column transformation<br data-start="2951" data-end="2954">
+✔ Supports conditional logic<br data-start="2982" data-end="2985">
+✔ Critical for feature engineering</p>
+<hr data-start="3023" data-end="3026">
+<h1 data-start="3028" data-end="3069">4️⃣ Run If and Else Scenarios in Pandas</h1>
+<hr data-start="3071" data-end="3074">
+<h2 data-start="3076" data-end="3094">🔹 Introduction</h2>
+<p data-start="3096" data-end="3139">Business decisions are based on conditions:</p>
+<ul data-start="3141" data-end="3243">
+<li data-start="3141" data-end="3172">
+<p data-start="3143" data-end="3172">If revenue &gt; target → Bonus</p>
+</li>
+<li data-start="3173" data-end="3207">
+<p data-start="3175" data-end="3207">If stock &lt; threshold → Reorder</p>
+</li>
+<li data-start="3208" data-end="3243">
+<p data-start="3210" data-end="3243">If loan amount &gt; limit → Reject</p>
+</li>
+</ul>
+<p data-start="3245" data-end="3310">In Pandas, conditional logic can be implemented in multiple ways.</p>
+<hr data-start="3312" data-end="3315">
+<h2 data-start="3317" data-end="3335">🔑 Key Concepts</h2>
+<ul data-start="3337" data-end="3444">
+<li data-start="3337" data-end="3356">
+<p data-start="3339" data-end="3356">if-else in Python</p>
+</li>
+<li data-start="3357" data-end="3377">
+<p data-start="3359" data-end="3377">Boolean conditions</p>
+</li>
+<li data-start="3378" data-end="3390">
+<p data-start="3380" data-end="3390">np.where()</p>
+</li>
+<li data-start="3391" data-end="3420">
+<p data-start="3393" data-end="3420">Conditional column creation</p>
+</li>
+<li data-start="3421" data-end="3444">
+<p data-start="3423" data-end="3444">Vectorized operations</p>
+</li>
+</ul>
+<hr data-start="3446" data-end="3449">
+<h2 data-start="3451" data-end="3494">🧠 Method 1: Using Lambda (Already Seen)</h2>
+<pre class="overflow-visible! px-0!" data-start="3496" data-end="3589"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Status"</span></span><span>] = df[</span><span><span class="hljs-string">"Marks"</span></span><span>].apply(
+    </span><span><span class="hljs-keyword">lambda</span></span><span> x: </span><span><span class="hljs-string">"Pass"</span></span><span> </span><span><span class="hljs-keyword">if</span></span><span> x &gt;= </span><span><span class="hljs-number">75</span></span><span> </span><span><span class="hljs-keyword">else</span></span><span> </span><span><span class="hljs-string">"Fail"</span></span><span>
+)
+</span></span></code></div></div></pre>
+<hr data-start="3591" data-end="3594">
+<h2 data-start="3596" data-end="3633">🧠 Method 2: Using NumPy <code data-start="3624" data-end="3633">where()</code></h2>
+<p data-start="3635" data-end="3672">This is faster and more professional.</p>
+<pre class="overflow-visible! px-0!" data-start="3674" data-end="3780"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">import</span></span><span> numpy </span><span><span class="hljs-keyword">as</span></span><span> np
+
+df[</span><span><span class="hljs-string">"Status"</span></span><span>] = np.where(
+    df[</span><span><span class="hljs-string">"Marks"</span></span><span>] &gt;= </span><span><span class="hljs-number">75</span></span><span>,
+    </span><span><span class="hljs-string">"Pass"</span></span><span>,
+    </span><span><span class="hljs-string">"Fail"</span></span><span>
+)
+</span></span></code></div></div></pre>
+<h3 data-start="3782" data-end="3793">Syntax:</h3>
+<pre class="overflow-visible! px-0!" data-start="3795" data-end="3859"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>np.where(condition, value_if_true, value_if_false)
+</span></span></code></div></div></pre>
+<hr data-start="3861" data-end="3864">
+<h2 data-start="3866" data-end="3888">📊 Internal Working</h2>
+<p data-start="3890" data-end="4004">Condition → Boolean Array<br data-start="3915" data-end="3918">
+↓<br data-start="3919" data-end="3922">
+True → Assign first value<br data-start="3947" data-end="3950">
+False → Assign second value<br data-start="3977" data-end="3980">
+↓<br data-start="3981" data-end="3984">
+New column created</p>
+<hr data-start="4006" data-end="4009">
+<h2 data-start="4011" data-end="4044">📌 Multiple Conditions Example</h2>
+<h3 data-start="4046" data-end="4079">Example: Grade Classification</h3>
+<pre class="overflow-visible! px-0!" data-start="4081" data-end="4212"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Grade"</span></span><span>] = np.where(
+    df[</span><span><span class="hljs-string">"Marks"</span></span><span>] &gt;= </span><span><span class="hljs-number">85</span></span><span>, </span><span><span class="hljs-string">"A"</span></span><span>,
+    np.where(
+        df[</span><span><span class="hljs-string">"Marks"</span></span><span>] &gt;= </span><span><span class="hljs-number">75</span></span><span>, </span><span><span class="hljs-string">"B"</span></span><span>,
+        </span><span><span class="hljs-string">"C"</span></span><span>
+    )
+)
+</span></span></code></div></div></pre>
+<hr data-start="4214" data-end="4217">
+<h2 data-start="4219" data-end="4252">📌 Alternative: Using <code data-start="4244" data-end="4252">.loc[]</code></h2>
+<pre class="overflow-visible! px-0!" data-start="4254" data-end="4367"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Grade"</span></span><span>] = </span><span><span class="hljs-string">"C"</span></span><span>
+df.loc[df[</span><span><span class="hljs-string">"Marks"</span></span><span>] &gt;= </span><span><span class="hljs-number">75</span></span><span>, </span><span><span class="hljs-string">"Grade"</span></span><span>] = </span><span><span class="hljs-string">"B"</span></span><span>
+df.loc[df[</span><span><span class="hljs-string">"Marks"</span></span><span>] &gt;= </span><span><span class="hljs-number">85</span></span><span>, </span><span><span class="hljs-string">"Grade"</span></span><span>] = </span><span><span class="hljs-string">"A"</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="4369" data-end="4403">This is cleaner for complex logic.</p>
+<hr data-start="4405" data-end="4408">
+<h2 data-start="4410" data-end="4435">📌 Business Case Study</h2>
+<h3 data-start="4437" data-end="4461">Loan Approval System</h3>
+<p data-start="4463" data-end="4469">Rules:</p>
+<ul data-start="4471" data-end="4544">
+<li data-start="4471" data-end="4524">
+<p data-start="4473" data-end="4524">Income &gt; 50,000 and Credit Score &gt; 700 → Approved</p>
+</li>
+<li data-start="4525" data-end="4544">
+<p data-start="4527" data-end="4544">Else → Rejected</p>
+</li>
+</ul>
+<pre class="overflow-visible! px-0!" data-start="4546" data-end="4679"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Loan_Status"</span></span><span>] = np.where(
+    (df[</span><span><span class="hljs-string">"Income"</span></span><span>] &gt; </span><span><span class="hljs-number">50000</span></span><span>) &amp; (df[</span><span><span class="hljs-string">"Credit_Score"</span></span><span>] &gt; </span><span><span class="hljs-number">700</span></span><span>),
+    </span><span><span class="hljs-string">"Approved"</span></span><span>,
+    </span><span><span class="hljs-string">"Rejected"</span></span><span>
+)
+</span></span></code></div></div></pre>
+<p data-start="4681" data-end="4735">This is how real banks build initial screening models.</p>
+<hr data-start="4737" data-end="4740">
+<h2 data-start="4742" data-end="4768">⚖ Comparison of Methods</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4770" data-end="5007" class="w-fit min-w-(--thread-content-width)"><thead data-start="4770" data-end="4813"><tr data-start="4770" data-end="4813"><th data-start="4770" data-end="4779" data-col-size="sm" class="">Method</th><th data-start="4779" data-end="4790" data-col-size="sm" class="">Best For</th><th data-start="4790" data-end="4798" data-col-size="sm" class="">Speed</th><th data-start="4798" data-end="4813" data-col-size="sm" class="">Readability</th></tr></thead><tbody data-start="4859" data-end="5007"><tr data-start="4859" data-end="4902"><td data-start="4859" data-end="4868" data-col-size="sm">Lambda</td><td data-col-size="sm" data-start="4868" data-end="4883">Simple logic</td><td data-col-size="sm" data-start="4883" data-end="4894">Moderate</td><td data-col-size="sm" data-start="4894" data-end="4902">High</td></tr><tr data-start="4903" data-end="4948"><td data-start="4903" data-end="4914" data-col-size="sm">np.where</td><td data-col-size="sm" data-start="4914" data-end="4931">Large datasets</td><td data-col-size="sm" data-start="4931" data-end="4938">Fast</td><td data-col-size="sm" data-start="4938" data-end="4948">Medium</td></tr><tr data-start="4949" data-end="5007"><td data-start="4949" data-end="4956" data-col-size="sm">.loc</td><td data-col-size="sm" data-start="4956" data-end="4983">Complex multi-rule logic</td><td data-col-size="sm" data-start="4983" data-end="4994">Moderate</td><td data-col-size="sm" data-start="4994" data-end="5007">Very High</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5009" data-end="5012">
+<h2 data-start="5014" data-end="5032">⚠ Common Errors</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5034" data-end="5228" class="w-fit min-w-(--thread-content-width)"><thead data-start="5034" data-end="5058"><tr data-start="5034" data-end="5058"><th data-start="5034" data-end="5044" data-col-size="sm" class="">Mistake</th><th data-start="5044" data-end="5058" data-col-size="sm" class="">Correction</th></tr></thead><tbody data-start="5085" data-end="5228"><tr data-start="5085" data-end="5132"><td data-start="5085" data-end="5114" data-col-size="sm">Using <code data-start="5093" data-end="5098">and</code> instead of <code data-start="5110" data-end="5113">&amp;</code></td><td data-col-size="sm" data-start="5114" data-end="5132">Always use <code data-start="5127" data-end="5130">&amp;</code></td></tr><tr data-start="5133" data-end="5181"><td data-start="5133" data-end="5158" data-col-size="sm">Forgetting parentheses</td><td data-col-size="sm" data-start="5158" data-end="5181">Wrap each condition</td></tr><tr data-start="5182" data-end="5228"><td data-start="5182" data-end="5204" data-col-size="sm">Not importing numpy</td><td data-col-size="sm" data-start="5204" data-end="5228"><code data-start="5206" data-end="5226">import numpy as np</code></td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5230" data-end="5233">
+<h2 data-start="5235" data-end="5266">📌 Summary (If-Else Section)</h2>
+<p data-start="5268" data-end="5469">✔ Conditional logic is core to analytics<br data-start="5308" data-end="5311">
+✔ Use lambda for simple conditions<br data-start="5345" data-end="5348">
+✔ Use np.where for performance<br data-start="5378" data-end="5381">
+✔ Use loc for complex rule systems<br data-start="5415" data-end="5418">
+✔ Widely used in finance, HR, marketing analytics</p>
+<hr data-start="5471" data-end="5474">
+<h1 data-start="5476" data-end="5506">📌 Overall Summary of Part 2</h1>
+<p data-start="5508" data-end="5533">In this part, we learned:</p>
+<p data-start="5535" data-end="5730">✔ Lambda functions in Pandas<br data-start="5563" data-end="5566">
+✔ apply(), map(), and row-wise operations<br data-start="5607" data-end="5610">
+✔ Conditional column creation<br data-start="5639" data-end="5642">
+✔ np.where() usage<br data-start="5660" data-end="5663">
+✔ Multi-condition classification<br data-start="5695" data-end="5698">
+✔ Real-world decision modeling</p>
+<p data-start="5732" data-end="5795">These tools help convert raw data into <strong data-start="5771" data-end="5794">actionable insights</strong>.</p>
+<hr data-start="5797" data-end="5800">
+<blockquote data-start="5802" data-end="5853" data-is-last-node="" data-is-only-node="">
+<p data-start="5804" data-end="5853" data-is-last-node=""><strong data-start="5804" data-end="5853" data-is-last-node=""><em data-start="5806" data-end="5851">End of Unit 4 – Part 2. Continue to Part 3?</em></strong></p>
+</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="cab0c48a-56fe-48ff-be00-c42ee483d81a" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h1 data-start="0" data-end="32">📘 UNIT 4: Data Manipulation</h1>
+<h3 data-start="33" data-end="96"><strong data-start="37" data-end="48">STATUS:</strong> Unit 4: Data Manipulation | Part 3 of 3 (Final)</h3>
+<p data-start="98" data-end="131">In Part 1 and Part 2, we covered:</p>
+<p data-start="133" data-end="223">✔ Creating DataFrames<br data-start="154" data-end="157">
+✔ Slicing &amp; Filtering<br data-start="178" data-end="181">
+✔ Lambda Functions<br data-start="199" data-end="202">
+✔ Conditional Logic</p>
+<p data-start="225" data-end="287">Now we move to the most practical and industry-focused topics:</p>
+<ol start="5" data-start="289" data-end="374">
+<li data-start="289" data-end="332">
+<p data-start="292" data-end="332">Gather and Manipulate Data with Pandas</p>
+</li>
+<li data-start="333" data-end="374">
+<p data-start="336" data-end="374">Analyze Business Data from CSV Files</p>
+</li>
+</ol>
+<p data-start="376" data-end="420">This is where <strong data-start="390" data-end="420">real data analysis begins.</strong></p>
+<hr data-start="422" data-end="425">
+<h1 data-start="427" data-end="471">5️⃣ Gather and Manipulate Data with Pandas</h1>
+<hr data-start="473" data-end="476">
+<h2 data-start="478" data-end="496">🔹 Introduction</h2>
+<p data-start="498" data-end="557">In real-world scenarios, data is rarely clean. It may have:</p>
+<ul data-start="559" data-end="660">
+<li data-start="559" data-end="577">
+<p data-start="561" data-end="577">Missing values</p>
+</li>
+<li data-start="578" data-end="599">
+<p data-start="580" data-end="599">Duplicate records</p>
+</li>
+<li data-start="600" data-end="621">
+<p data-start="602" data-end="621">Incorrect formats</p>
+</li>
+<li data-start="622" data-end="642">
+<p data-start="624" data-end="642">Mixed data types</p>
+</li>
+<li data-start="643" data-end="660">
+<p data-start="645" data-end="660">Extra columns</p>
+</li>
+</ul>
+<p data-start="662" data-end="687">Before analysis, we must:</p>
+<blockquote data-start="689" data-end="734">
+<p data-start="691" data-end="734"><strong data-start="691" data-end="734">Clean → Transform → Structure → Analyze</strong></p>
+</blockquote>
+<p data-start="736" data-end="798">This process is called <strong data-start="759" data-end="798">Data Manipulation (Data Wrangling).</strong></p>
+<hr data-start="800" data-end="803">
+<h2 data-start="805" data-end="823">🔑 Key Concepts</h2>
+<ul data-start="825" data-end="961">
+<li data-start="825" data-end="848">
+<p data-start="827" data-end="848"><code data-start="827" data-end="835">head()</code> and <code data-start="840" data-end="848">tail()</code></p>
+</li>
+<li data-start="849" data-end="859">
+<p data-start="851" data-end="859"><code data-start="851" data-end="859">info()</code></p>
+</li>
+<li data-start="860" data-end="874">
+<p data-start="862" data-end="874"><code data-start="862" data-end="874">describe()</code></p>
+</li>
+<li data-start="875" data-end="887">
+<p data-start="877" data-end="887"><code data-start="877" data-end="887">isnull()</code></p>
+</li>
+<li data-start="888" data-end="900">
+<p data-start="890" data-end="900"><code data-start="890" data-end="900">dropna()</code></p>
+</li>
+<li data-start="901" data-end="913">
+<p data-start="903" data-end="913"><code data-start="903" data-end="913">fillna()</code></p>
+</li>
+<li data-start="914" data-end="935">
+<p data-start="916" data-end="935"><code data-start="916" data-end="935">drop_duplicates()</code></p>
+</li>
+<li data-start="936" data-end="948">
+<p data-start="938" data-end="948"><code data-start="938" data-end="948">rename()</code></p>
+</li>
+<li data-start="949" data-end="961">
+<p data-start="951" data-end="961"><code data-start="951" data-end="961">astype()</code></p>
+</li>
+</ul>
+<hr data-start="963" data-end="966">
+<h2 data-start="968" data-end="998">🧠 Step 1: Inspect the Data</h2>
+<p data-start="1000" data-end="1015">Assume we load:</p>
+<pre class="overflow-visible! px-0!" data-start="1017" data-end="1065"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df = pd.read_csv(</span><span><span class="hljs-string">"sales_data.csv"</span></span><span>)
+</span></span></code></div></div></pre>
+<h3 data-start="1067" data-end="1091">🔍 View First 5 Rows</h3>
+<pre class="overflow-visible! px-0!" data-start="1093" data-end="1116"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df.head()
+</span></span></code></div></div></pre>
+<h3 data-start="1118" data-end="1158">🔍 Check Data Types &amp; Missing Values</h3>
+<pre class="overflow-visible! px-0!" data-start="1160" data-end="1183"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df.info()
+</span></span></code></div></div></pre>
+<h3 data-start="1185" data-end="1210">🔍 Summary Statistics</h3>
+<pre class="overflow-visible! px-0!" data-start="1212" data-end="1239"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df.describe()
+</span></span></code></div></div></pre>
+<hr data-start="1241" data-end="1244">
+<h2 data-start="1246" data-end="1283">📌 Step 2: Handling Missing Values</h2>
+<h3 data-start="1285" data-end="1309">Check Missing Values</h3>
+<pre class="overflow-visible! px-0!" data-start="1311" data-end="1342"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df.isnull().</span><span><span class="hljs-built_in">sum</span></span><span>()
+</span></span></code></div></div></pre>
+<h3 data-start="1344" data-end="1375">Option 1: Drop Missing Rows</h3>
+<pre class="overflow-visible! px-0!" data-start="1377" data-end="1407"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df = df.dropna()
+</span></span></code></div></div></pre>
+<h3 data-start="1409" data-end="1442">Option 2: Fill Missing Values</h3>
+<pre class="overflow-visible! px-0!" data-start="1444" data-end="1493"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Sales"</span></span><span>] = df[</span><span><span class="hljs-string">"Sales"</span></span><span>].fillna(</span><span><span class="hljs-number">0</span></span><span>)
+</span></span></code></div></div></pre>
+<p data-start="1495" data-end="1507">Or use mean:</p>
+<pre class="overflow-visible! px-0!" data-start="1509" data-end="1575"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Sales"</span></span><span>] = df[</span><span><span class="hljs-string">"Sales"</span></span><span>].fillna(df[</span><span><span class="hljs-string">"Sales"</span></span><span>].mean())
+</span></span></code></div></div></pre>
+<hr data-start="1577" data-end="1580">
+<h2 data-start="1582" data-end="1613">📌 Step 3: Remove Duplicates</h2>
+<pre class="overflow-visible! px-0!" data-start="1615" data-end="1654"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df = df.drop_duplicates()
+</span></span></code></div></div></pre>
+<hr data-start="1656" data-end="1659">
+<h2 data-start="1661" data-end="1689">📌 Step 4: Rename Columns</h2>
+<pre class="overflow-visible! px-0!" data-start="1691" data-end="1755"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df = df.rename(columns={</span><span><span class="hljs-string">"Cust_ID"</span></span><span>: </span><span><span class="hljs-string">"Customer_ID"</span></span><span>})
+</span></span></code></div></div></pre>
+<hr data-start="1757" data-end="1760">
+<h2 data-start="1762" data-end="1792">📌 Step 5: Change Data Type</h2>
+<pre class="overflow-visible! px-0!" data-start="1794" data-end="1847"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Sales"</span></span><span>] = df[</span><span><span class="hljs-string">"Sales"</span></span><span>].astype(</span><span><span class="hljs-built_in">float</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="1849" data-end="1852">
+<h2 data-start="1854" data-end="1882">🔄 Data Cleaning Workflow</h2>
+<p data-start="1884" data-end="2029">Raw Data<br data-start="1892" data-end="1895">
+↓<br data-start="1896" data-end="1899">
+Check Structure (<code data-start="1916" data-end="1924">info()</code>)<br data-start="1925" data-end="1928">
+↓<br data-start="1929" data-end="1932">
+Handle Missing Values<br data-start="1953" data-end="1956">
+↓<br data-start="1957" data-end="1960">
+Remove Duplicates<br data-start="1977" data-end="1980">
+↓<br data-start="1981" data-end="1984">
+Correct Data Types<br data-start="2002" data-end="2005">
+↓<br data-start="2006" data-end="2009">
+Ready for Analysis</p>
+<hr data-start="2031" data-end="2034">
+<h2 data-start="2036" data-end="2060">🏢 Real-World Example</h2>
+<p data-start="2062" data-end="2087">A retail company dataset:</p>
+<p data-start="2089" data-end="2098">Problems:</p>
+<ul data-start="2100" data-end="2179">
+<li data-start="2100" data-end="2129">
+<p data-start="2102" data-end="2129">Some sales values missing</p>
+</li>
+<li data-start="2130" data-end="2156">
+<p data-start="2132" data-end="2156">Dates stored as string</p>
+</li>
+<li data-start="2157" data-end="2179">
+<p data-start="2159" data-end="2179">Duplicate invoices</p>
+</li>
+</ul>
+<p data-start="2181" data-end="2196">Cleaning Steps:</p>
+<pre class="overflow-visible! px-0!" data-start="2198" data-end="2330"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Date"</span></span><span>] = pd.to_datetime(df[</span><span><span class="hljs-string">"Date"</span></span><span>])
+df[</span><span><span class="hljs-string">"Sales"</span></span><span>] = df[</span><span><span class="hljs-string">"Sales"</span></span><span>].fillna(df[</span><span><span class="hljs-string">"Sales"</span></span><span>].mean())
+df = df.drop_duplicates()
+</span></span></code></div></div></pre>
+<p data-start="2332" data-end="2376">Now dataset is reliable for decision-making.</p>
+<hr data-start="2378" data-end="2381">
+<h2 data-start="2383" data-end="2424">📌 Summary (Data Manipulation Section)</h2>
+<p data-start="2426" data-end="2561">✔ Always inspect data first<br data-start="2453" data-end="2456">
+✔ Handle missing values carefully<br data-start="2489" data-end="2492">
+✔ Remove duplicates<br data-start="2511" data-end="2514">
+✔ Correct column names<br data-start="2536" data-end="2539">
+✔ Convert data types</p>
+<p data-start="2563" data-end="2620">Data cleaning is <strong data-start="2580" data-end="2620">70% of real-world data science work.</strong></p>
+<hr data-start="2622" data-end="2625">
+<h1 data-start="2627" data-end="2669">6️⃣ Analyze Business Data from CSV Files</h1>
+<hr data-start="2671" data-end="2674">
+<h2 data-start="2676" data-end="2694">🔹 Introduction</h2>
+<p data-start="2696" data-end="2740">In business analytics, most data comes from:</p>
+<ul data-start="2742" data-end="2813">
+<li data-start="2742" data-end="2759">
+<p data-start="2744" data-end="2759">Sales systems</p>
+</li>
+<li data-start="2760" data-end="2776">
+<p data-start="2762" data-end="2776">ERP software</p>
+</li>
+<li data-start="2777" data-end="2796">
+<p data-start="2779" data-end="2796">Banking systems</p>
+</li>
+<li data-start="2797" data-end="2813">
+<p data-start="2799" data-end="2813">HR databases</p>
+</li>
+</ul>
+<p data-start="2815" data-end="2833">Usually stored as:</p>
+<blockquote data-start="2835" data-end="2869">
+<p data-start="2837" data-end="2869"><strong data-start="2837" data-end="2869">CSV (Comma Separated Values)</strong></p>
+</blockquote>
+<p data-start="2871" data-end="2913">Pandas makes analysis simple and powerful.</p>
+<hr data-start="2915" data-end="2918">
+<h2 data-start="2920" data-end="2938">🔑 Key Concepts</h2>
+<ul data-start="2940" data-end="3019">
+<li data-start="2940" data-end="2954">
+<p data-start="2942" data-end="2954"><code data-start="2942" data-end="2954">read_csv()</code></p>
+</li>
+<li data-start="2955" data-end="2968">
+<p data-start="2957" data-end="2968">Aggregation</p>
+</li>
+<li data-start="2969" data-end="2978">
+<p data-start="2971" data-end="2978">Groupby</p>
+</li>
+<li data-start="2979" data-end="2988">
+<p data-start="2981" data-end="2988">Sorting</p>
+</li>
+<li data-start="2989" data-end="3003">
+<p data-start="2991" data-end="3003">Value counts</p>
+</li>
+<li data-start="3004" data-end="3019">
+<p data-start="3006" data-end="3019">Business KPIs</p>
+</li>
+</ul>
+<hr data-start="3021" data-end="3024">
+<h2 data-start="3026" data-end="3053">🧠 Step 1: Load CSV File</h2>
+<pre class="overflow-visible! px-0!" data-start="3055" data-end="3106"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df = pd.read_csv(</span><span><span class="hljs-string">"business_data.csv"</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="3108" data-end="3111">
+<h2 data-start="3113" data-end="3141">🧠 Step 2: Basic Analysis</h2>
+<h3 data-start="3143" data-end="3158">Total Sales</h3>
+<pre class="overflow-visible! px-0!" data-start="3160" data-end="3191"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Sales"</span></span><span>].</span><span><span class="hljs-built_in">sum</span></span><span>()
+</span></span></code></div></div></pre>
+<h3 data-start="3193" data-end="3210">Average Sales</h3>
+<pre class="overflow-visible! px-0!" data-start="3212" data-end="3244"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Sales"</span></span><span>].mean()
+</span></span></code></div></div></pre>
+<h3 data-start="3246" data-end="3262">Maximum Sale</h3>
+<pre class="overflow-visible! px-0!" data-start="3264" data-end="3295"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Sales"</span></span><span>].</span><span><span class="hljs-built_in">max</span></span><span>()
+</span></span></code></div></div></pre>
+<hr data-start="3297" data-end="3300">
+<h2 data-start="3302" data-end="3332">🧠 Step 3: Groupby Analysis</h2>
+<h3 data-start="3334" data-end="3359">Total Sales by Region</h3>
+<pre class="overflow-visible! px-0!" data-start="3361" data-end="3410"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df.groupby(</span><span><span class="hljs-string">"Region"</span></span><span>)[</span><span><span class="hljs-string">"Sales"</span></span><span>].</span><span><span class="hljs-built_in">sum</span></span><span>()
+</span></span></code></div></div></pre>
+<hr data-start="3412" data-end="3415">
+<h2 data-start="3417" data-end="3437">📊 Example Output</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3439" data-end="3559" class="w-fit min-w-(--thread-content-width)"><thead data-start="3439" data-end="3463"><tr data-start="3439" data-end="3463"><th data-start="3439" data-end="3448" data-col-size="sm" class="">Region</th><th data-start="3448" data-end="3463" data-col-size="sm" class="">Total Sales</th></tr></thead><tbody data-start="3488" data-end="3559"><tr data-start="3488" data-end="3511"><td data-start="3488" data-end="3497" data-col-size="sm">North</td><td data-col-size="sm" data-start="3497" data-end="3511">2,50,000</td></tr><tr data-start="3512" data-end="3535"><td data-start="3512" data-end="3521" data-col-size="sm">South</td><td data-col-size="sm" data-start="3521" data-end="3535">1,80,000</td></tr><tr data-start="3536" data-end="3559"><td data-start="3536" data-end="3545" data-col-size="sm">West</td><td data-col-size="sm" data-start="3545" data-end="3559">3,10,000</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="3561" data-end="3583">This tells management:</p>
+<ul data-start="3585" data-end="3649">
+<li data-start="3585" data-end="3616">
+<p data-start="3587" data-end="3616">West region performing best</p>
+</li>
+<li data-start="3617" data-end="3649">
+<p data-start="3619" data-end="3649">South region needs attention</p>
+</li>
+</ul>
+<hr data-start="3651" data-end="3654">
+<h2 data-start="3656" data-end="3682">🧠 Step 4: Sorting Data</h2>
+<pre class="overflow-visible! px-0!" data-start="3684" data-end="3741"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df.sort_values(by=</span><span><span class="hljs-string">"Sales"</span></span><span>, ascending=</span><span><span class="hljs-literal">False</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="3743" data-end="3746">
+<h2 data-start="3748" data-end="3774">🧠 Step 5: Value Counts</h2>
+<pre class="overflow-visible! px-0!" data-start="3776" data-end="3818"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Product"</span></span><span>].value_counts()
+</span></span></code></div></div></pre>
+<p data-start="3820" data-end="3831">This shows:</p>
+<ul data-start="3833" data-end="3872">
+<li data-start="3833" data-end="3854">
+<p data-start="3835" data-end="3854">Most sold product</p>
+</li>
+<li data-start="3855" data-end="3872">
+<p data-start="3857" data-end="3872">Demand trends</p>
+</li>
+</ul>
+<hr data-start="3874" data-end="3877">
+<h2 data-start="3879" data-end="3905">📌 Business KPI Example</h2>
+<h3 data-start="3907" data-end="3927">Calculate Profit</h3>
+<pre class="overflow-visible! px-0!" data-start="3929" data-end="3984"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Profit"</span></span><span>] = df[</span><span><span class="hljs-string">"Revenue"</span></span><span>] - df[</span><span><span class="hljs-string">"Cost"</span></span><span>]
+</span></span></code></div></div></pre>
+<h3 data-start="3986" data-end="4003">Profit Margin</h3>
+<pre class="overflow-visible! px-0!" data-start="4005" data-end="4077"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>df[</span><span><span class="hljs-string">"Profit_Margin"</span></span><span>] = (df[</span><span><span class="hljs-string">"Profit"</span></span><span>] / df[</span><span><span class="hljs-string">"Revenue"</span></span><span>]) * </span><span><span class="hljs-number">100</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4079" data-end="4082">
+<h2 data-start="4084" data-end="4105">📊 Mini Case Study</h2>
+<h3 data-start="4107" data-end="4125">Company Wants:</h3>
+<ol data-start="4127" data-end="4202">
+<li data-start="4127" data-end="4154">
+<p data-start="4130" data-end="4154">Best performing region</p>
+</li>
+<li data-start="4155" data-end="4175">
+<p data-start="4158" data-end="4175">Top 5 customers</p>
+</li>
+<li data-start="4176" data-end="4202">
+<p data-start="4179" data-end="4202">Monthly revenue trend</p>
+</li>
+</ol>
+<p data-start="4204" data-end="4213">Solution:</p>
+<pre class="overflow-visible! px-0!" data-start="4215" data-end="4399"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-comment"># Best region</span></span><span>
+df.groupby(</span><span><span class="hljs-string">"Region"</span></span><span>)[</span><span><span class="hljs-string">"Sales"</span></span><span>].</span><span><span class="hljs-built_in">sum</span></span><span>()
+
+</span><span><span class="hljs-comment"># Top customers</span></span><span>
+df.sort_values(by=</span><span><span class="hljs-string">"Sales"</span></span><span>, ascending=</span><span><span class="hljs-literal">False</span></span><span>).head(</span><span><span class="hljs-number">5</span></span><span>)
+
+</span><span><span class="hljs-comment"># Monthly trend</span></span><span>
+df.groupby(</span><span><span class="hljs-string">"Month"</span></span><span>)[</span><span><span class="hljs-string">"Sales"</span></span><span>].</span><span><span class="hljs-built_in">sum</span></span><span>()
+</span></span></code></div></div></pre>
+<p data-start="4401" data-end="4453">This is how analysts prepare reports for management.</p>
+<hr data-start="4455" data-end="4458">
+<h2 data-start="4460" data-end="4491">📌 Flow of Business Analysis</h2>
+<p data-start="4493" data-end="4618">Load CSV<br data-start="4501" data-end="4504">
+↓<br data-start="4505" data-end="4508">
+Clean Data<br data-start="4518" data-end="4521">
+↓<br data-start="4522" data-end="4525">
+Calculate Metrics<br data-start="4542" data-end="4545">
+↓<br data-start="4546" data-end="4549">
+Group &amp; Aggregate<br data-start="4566" data-end="4569">
+↓<br data-start="4570" data-end="4573">
+Visualize (Next Unit)<br data-start="4594" data-end="4597">
+↓<br data-start="4598" data-end="4601">
+Decision Making</p>
+<hr data-start="4620" data-end="4623">
+<h1 data-start="4625" data-end="4653">📌 Final Summary of Unit 4</h1>
+<p data-start="4655" data-end="4678">In Unit 4, we mastered:</p>
+<p data-start="4680" data-end="4814">✔ Creating DataFrames<br data-start="4701" data-end="4704">
+✔ Slicing &amp; Filtering<br data-start="4725" data-end="4728">
+✔ Lambda Functions<br data-start="4746" data-end="4749">
+✔ Conditional Logic<br data-start="4768" data-end="4771">
+✔ Data Cleaning<br data-start="4786" data-end="4789">
+✔ Business CSV Analysis</p>
+<p data-start="4816" data-end="4893">You are now capable of performing <strong data-start="4850" data-end="4892">end-to-end data manipulation in Pandas</strong>.</p>
+<hr data-start="4895" data-end="4898">
+<h1 data-start="4900" data-end="4919">📝 Review Section</h1>
+<h2 data-start="4921" data-end="4952">🔹 Multiple Choice Questions</h2>
+<ol data-start="4954" data-end="5202">
+<li data-start="4954" data-end="5080">
+<p data-start="4957" data-end="5080">Which function is used to remove duplicates?<br data-start="5001" data-end="5004">
+a) remove()<br data-start="5018" data-end="5021">
+b) dropna()<br data-start="5035" data-end="5038">
+c) drop_duplicates()<br data-start="5061" data-end="5064">
+d) delete()</p>
+</li>
+<li data-start="5082" data-end="5202">
+<p data-start="5085" data-end="5202">Which function is faster for conditional assignment?<br data-start="5137" data-end="5140">
+a) lambda<br data-start="5152" data-end="5155">
+b) np.where<br data-start="5169" data-end="5172">
+c) for loop<br data-start="5186" data-end="5189">
+d) print</p>
+</li>
+</ol>
+<hr data-start="5204" data-end="5207">
+<h2 data-start="5209" data-end="5237">🔹 Short Answer Questions</h2>
+<ol data-start="5239" data-end="5339">
+<li data-start="5239" data-end="5280">
+<p data-start="5242" data-end="5280">Difference between apply() and map()</p>
+</li>
+<li data-start="5281" data-end="5308">
+<p data-start="5284" data-end="5308">What is data cleaning?</p>
+</li>
+<li data-start="5309" data-end="5339">
+<p data-start="5312" data-end="5339">Explain Boolean indexing.</p>
+</li>
+</ol>
+<hr data-start="5341" data-end="5344">
+<h2 data-start="5346" data-end="5373">🔹 Descriptive Questions</h2>
+<ol data-start="5375" data-end="5536">
+<li data-start="5375" data-end="5431">
+<p data-start="5378" data-end="5431">Explain 5 ways to create a DataFrame with examples.</p>
+</li>
+<li data-start="5432" data-end="5488">
+<p data-start="5435" data-end="5488">Explain conditional logic implementation in Pandas.</p>
+</li>
+<li data-start="5489" data-end="5536">
+<p data-start="5492" data-end="5536">How would you analyze a sales CSV dataset?</p>
+</li>
+</ol>
+<hr data-start="5538" data-end="5541">
+<blockquote data-start="5543" data-end="5605" data-is-last-node="" data-is-only-node="">
+<p data-start="5545" data-end="5605" data-is-last-node=""><strong data-start="5545" data-end="5567"><em data-start="5547" data-end="5565">Unit 4 Complete.</em></strong><br data-start="5567" data-end="5570">
+<strong data-start="5572" data-end="5605" data-is-last-node="">[Next Step]: Move to Unit 5?_</strong></p>
+</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

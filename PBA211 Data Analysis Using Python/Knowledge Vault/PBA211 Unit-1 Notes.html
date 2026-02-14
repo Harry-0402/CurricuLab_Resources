@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH5wIVCDAwLR4isAAAHepJREFUeNrtned/W9eZ538HAMEC9t57J0iwiqSoXmlZzUXSJi6fZCxlPOWTjYdKsi/2D5hxrJlJMjvJRPQmG6dYtGJbtKwuWo1iE3vvvVeQBAva2RcUNbJ0L3AB3AtQCr/vyNtOeXDK0w6BgJwtKvQGRQ4ITQMl8SAIA+BHATcCSAEQIb//4kAppUQNAiUBnQDQR4F2AlJLKS0/d+rMpFBf5rUDzv75Y0BEUyjBSYAeJiDJAERCN99LDYUeBI0UuAzQz0SE1v/sxA94ez0vAlBQdN6BUPI2CP4OQBpf793kOSiAOgD/SSn+cO7U6RVLX2hRRxUUFUoBvE8o/hcIAmzdOn9ljFLgnwnorz86eUZt7kvMFoCCosJ8AvwCQIytW+KvGQraSSh++NGpM9fMed5kASgoKnR93PHvmvP8JoJAKcXvAfrDc6fOzJvyoEkdeLbovIICFwlItK1rvAkjXZTixLlTp+u4PsB5hV5wofA4BSnd7PwNTTQBHpwtOn+c6wOcBKCg6Px7hOAiAWS2ruEmRiCQAeRiQVHhe9xuN0JB0fn3CMhvsLmff8GgegA/+OjkmY8N3WVQAAounD9OCLkIQGzr6mxiFjpK6ZvnTp35ku0GVgEoKDqfSkAeYHPYf9FRUSDv3MnT9UwXGQWgoOi8K0CqCbC54Hs56AJFxkenTj+3RWSc1wnwi83Of6mIxpru5jmeGwHOFhXmA7iCTSXPywalwKFzJ09/S2P4rU4uKCqUEqAJL5l6VyqRwE4sASig0Wmh1mltXSRb0QkK+UenTj+xHUieueF9vMCdLyIEoZ4+iPQJQIinN3xdPeDhJINEJAYha7JOKYVGp8Xs0iLGlHMYnJlE9+QIhmanbV18axBDCd7HU9PBkxGgoOi8A0B6CF48q16QuxeyI+OQHBwBZ3sHs96hXFKhbrAHFb3tmFxQ2rpKQjJKgchzJ9dMyU+NAOTtF63zo3wCsD8pDZHe/k9+4ebi5iTDzrhk7IiVo2VkADdaajAyN2PrKgpBAAF9G0Ah8HgE+PHFX4PqxTUASbN16bjg7iTD8dRcJAaGWtzxbOgpRVVvB75urMKyetXWVeYVCtQCSD938vTaCKDXSxQESLV1wbiQERaN42m5cLCTCvodESHIjoxDQkAIPq28i86JEVtXnTcIkApKUwA0iNb+QU9gg2/7RESEN9LzcCprh+Cd/zSujk44vSMfu+JSbN0EfEJAcBJ4vAagIIc3cu/bicV4d+s+xPsHc7pfrdWgZ3IM/dMTGJ+fg3J5CWqtBnZiMRykUng4OcPf1QPh3n4I8vCGyMg0IiIEr6Zkwd1Jhi9ry2zdHLxAgcMA/jcpKDrvQ4AxgGxIa59EJMbfbNuPGL8gwxWiFL1T4yjrbkXzSD80Oh2n97s4OCItNAq5UQnwdnY1en9pVwvudzbB39UDHjIXONs7QCqxAwGg1mmhWl3BrGoR4wtzmJxXgoLaugnZ0FPAnxRcKDxCCIptXRo23s7ZDUVIpMF7hmenUFxfgZ7JMbO/QwhBRmg0XknOhKujEy9lX9Go0TM5htbRQTQO90G1arETL69Q4Kg47+SRUwDZbevCMLE7PgXbY+Ss13V6Pa43VePTqnuYVS1a/L0R5Qwqe9vh5uCEADdPi3cYErEYPi5uSAwMxfaYJPi7eWJuaRHK5SWrtyUTBGiVUEriBdpJWUSIpw8OJmWwXl9Wr+L3ZbfRNTHK63dXNBpcb65BmLcfpymBK2KRGIqQCKQEh6N9bBhfN1RibH5WsPbjBEW8hABhti3F84gIwYnMbRCLmJclqtUV/ObeVd4VNVKJBHviFdgRK1+zHQgAIQTxAcGI8QvE3fZG3GipgU6vF+RbxgtDwyQg8LPN19nJjUpAgJsn4zWNTovflt7kvfMzwtbmfzdH6/i/iEUi7ElQINY/CJ+UlWBGtWCV734b4icB4GaDL7NiJxZjb0Iq6/VLteXon57g7Xuhnr44lpqNUC9fk56jlGJ+ZQlzSyqsaNaMa/YSO7g5yeDuKOO8fgj28MYP9x7Fb0tv8lovjrhJsBalu2HIDI+Fi4Mj47XW0UFU9LbzU3NHJxxKzkJaaBTnzlpcXUbDUB/aRgfRNzWOZQ1zRJa9xA5hXr6I8w+GIiTC6Kgis3fAD3bk47elN3lf0xhBKsEG0wDmRsUz/l+r0+ESD0oYO7EYO2OTsSs+BfYSO07PTC4ocbu1DnWDPZzm61WtBh3jw+gYH8blhkrIA8OwNyEVQR5erM9IJXb4Xt5+/NfdqxicESwa/FmIMCsdM5CKJUgIDIW/qwfj9Uf9nZi2cJ5UBEfg1ZQseMhcON2/pF7FzZZaPOxqgZ6ap9ChlKJxuA9Nw33IiojFqylb4CS1Z7zXXmKH7+ftw89vXbLaVtGmAuBgJ4UiJAKK4AhEePtDImb2PqeU4kFns9nfCXL3wtHUHET6+HO6X6/Xo6K3HdebqqHiyRJIAVT2dqBjbBjv5O5hXXO4ODjhrZzd+NWdK6BmCp0p2EQA3J1k2B2XgszwGEg5DMNDs1MYn58z+TvO9o7Il2cgKyLWqL5/na6JERTXlWNUKcwefW5ZhV/duYK3cnZBHhTOeE+Etz92xspxp71RkDI8jVUFQCqRYH9iGrZFJ7H+2ploGR006TtikQjbYpKwLyGVs+VwenEBlxsq0TTcJ3g7aPU6fFJWgne37kVSILMaZn9iOuoGezC3pBK0LFYTgCgff5zK2sF5/n2aXhN0/ImBoTiSsgXeLtx2t6saDUra6nGvowlaPTcDEh/oKcUfy+/gH3YfZlwcSiUS5Msz8WnlXUHLYRUB2BOvwEF5OkRmGBwppRhVGlf6+Lm642hqDmJ8Azlt6yilqOnvwpXGR5hfsY1uXqPT4g/lJfhg/3HGqTAtNBK3WmoxtWhSyL9JCCoAIkLwZsY2ZEXEmv0OtU6LJSMLsRAPb7y/61VIJdyq0z89geK6cgxYsN0iILyYeqcW53GzpQ6vpmQxtN/aVCakD4JgAkBA8J0tu5AaGmn03hWNGtOL8wjy8H7u2rLaePqbA0npnDpfuazClcZHqOnvMrteqSGR2JeYCl8Xd0wtzqOkrR7VfZ0WicL9ziZsjU6Ah5Pzc9fSQ6Nwub5SsOlJMAE4npZrtPNXNGp809aA0q4WZIRF4zUGAdBT44oXHxd3g9c1Oi3udTShpLXe7KCQYA9vHE3NQYT3f5tOfFzccCprB7ZGJeBSnfkqap1ej3sdTTiWmvPcNUepPWL9g9AyMmDWu40hiADkRMazavTWaRrux+c1pVhYWbb4e2xT/roS5uuGSsyY6S/g4uCIV+SZyAiPYd1Khnj64B92H0btQDeuNFaZpcSp7uvEoeRMRitkgn/IiyMA/q4eOJqazboQ0+v1uNxQifsWKHa4MD4/hy9qHqJ70jzdulgkwvYYOfYmKDhtJQkhSA+LhjwoDN+0NeBORyO0HN3SAGBZo0bH+DDjtpCrAssceBUAAoKTWdtZbelavQ5/LP8GTcP9glVoner+TrM7PykwFIcV2WY5hEgldjj4WPn0dUMVGoZ6OT/bMcYsAN4ubrCX2GFVq+G9nXgVgC0RsQjx9GG8RinFp5X3rNL55rI+ehlzQOWCp8wF7+TuQc/kKC7VlXPyX2DblYgIgbezK4bn+I9f5E0AJGIxDiSls16/1VqH+sEe3ivAB05SexxISkdOZDyrF9I6gzOTuNPeiOzIOMT4BYIYMaZG+gTgf+47hsreDlxvqsaiAcfQyQUlKKWM06e7k2xjC0BWeCyrN23/9ARuttTyXnhLERGC3KgEHEhMg5ORoNL55SVcbXr0ZMvXMNTLWesoIiLkRMZDERyBW611KO1sgY5hd7Oq1UCt0zKaqdksiJbCmwDkRScw/l9P9fhLdalVLFumEOsXhCOKbPi7eRi8T6vT4V7n2hby2Tm4ZWQA7WND2BadhH2Jxu0OjlJ7HFFkIzsyDl/VVaBtbOi5e9RaZgGQiITJ08WLAIR4+sCPxY5fO9DDSZVrLbydXXFYsQWJAYYDSymlaB7px+X6SoN+CDq9Hnc7GlHd34l8eSYny6Ovizv+ZtsBtI8Nobi+4lvh6GzPmuuPYAxeBCCZxaxJKcXd9gZBCm4q9hI77EtM5WSJHFPO4lJdmUnuWYurK7hY/QBl3a2cfA/WvINDEOMXhNKuFtxsqcWqVsM6iqxozU4IbhBeBCDOn3nVPDQ7JZhdnSsEQFZELPLlmay+hs/iKJWa7R08PDeNX935GimPvY88jVg/xSIRdsTKkR4WhdKuVtZF6MKy5QozJiwWAHuJHfxZXLgbrWBbN0SEtx+OpuYgmEHFbAg3Rxn+x5adT1S85hiNGoZ60TI6gJ2xydjNwf/Q2d4RB1l2UZRSwSyCFgtAgJsn67xlZQ/Xb7E1KhGvyDMtCu8K9fLFP+45gpqBblxpqDLZbKzV6XC7tQ6P+jrwSnIW0k3wQH4alXpFMJO1xQLg7cKsLdPp9Ri1YYoVdyfDQ/jEwhy+qquEzN4eh5KzWLewhBBkPFHx1uNuu+mOI8rlJXxaeRcPu1pwLDXH5BiE/inh4gUsFgBXB+aGUy6rrOphw5VltRq3Wmu/tRdvHO7D3vhUbI+Vw45lgWgvsUO+PBNbIuJwub7SrOltYGYSvyz5Culh0ThkQhRSx/iwYO1hsQA4sqxaN1ootJ7qUdXbgWsM2ji1VourTY9Q0duOI4otSAoMYx2qPWUueGfrHvRMjOFSXblZW9ya/i40DfVhT4KwcYhcsDgphIhl1aq1VcAjAz2TY/j5rWJcrC41qIqdUS3g/z28jd/cu2awYwkIonwD8KN9x/BGeh5kZqSmU+u0uNZUjXPXP0e3kbXSEUU2wk2cNrhisQCwRcpIRLZPODKrWsQfykrwqztfY8QEPXrXxAj+/eaX+KLmocGRTCQSIScqHj/NfxPbY5LM8nmcVi3gv+5exa3WOlZtqUQsxls5e+AogDrY4l5a1jD76zlz3HMLRf1gD352/SLqTTDHPo2eUjzsbsWH1y6id8qwV7Kj1B5HU3NQcOA1znmMnoaC4npTNf5SXcqq8XN3kjF6DFmKxQIwz+L94ubgxLqgsgbDc9Oc8wQZYkm9yjlzqK/rmor3vW0H4MPRLf1pKnrbUVxXzjoSpIdGIdKbX+cQiwWArXFEIhEC3b1MfNuLz7qKt+DAaziiyDY5pV1pVwvKe9pY332IwXvYEiwWgDHlLOs6INrX8syzUrFEMFOoJSyr1U/yAjAhFomxI1aOn77yJnIi401SABXXVWCCJRQuzMsXMb6BvNXDYgFQ67SsCyy22Dcm2OY+ZwdH/CT/TWyNSuAc32cNplXz+PDaRVT1dhi01DnbO+KNjDz8aN8xRHH07dPqdfii9iHrVLAtJom3evCyVG9nsGsDa1G5XKeB/ukJ1grL7B3wWvpWfLD/NV6l31IWVpZR9Og+fnm7GL1T4wbvDXT3wt/uPGQw+8nTdE2MonOcOT1tnH8wnO35WWTzIgANQ32MnUcIwa64ZE7vGFXOoKSt3qDjiL+bB87syMf3tu6DF48ZvCxlaHYK//nNZfyx/BvMLbG7nxNCcCApjTEAhIk7HcymdLFIBHlQKB9Fd+VFAEaVM6zTgCIkkvMocK2p2rgShhAkBYXh7IHX8WpKFucsH9agbrAHH167iBvNNVBrmQNQRESEYE9u1snO8RHW/IexZmw3GcvDV+UfdLWwVJjgjYw8k+Lz//3ml/jciBJGIhZjV1wKfvrKm2Zp4oRCo9PhZkstfnbtIjQ6diHgSvMIsxd1hBc/yd14E4Da/m7WVGehnj4GPYafRU8pyrpb8S9XP8ODzmaDeXlcHJw21Ciwztyyipf8f10saepl9g5w4yGlLW8CoKN6XG18xHp9T7wC6aFRJr1zWaPGpbpy/OuNL1gXmjbDSj6uwyxnGRFC4O1seYY/XhX2dYM9rBJLCMHJrB1QhESY/N6JhTkU3r+O//vgBmetXJiXLy/nCrg6OrEmrbQGymUVq0ZzQ40A6xRV3WcN6RaLRPhu9m7sNvPwhdbRQZy7/jm+qq8wGjaeFBj2WAkTZ5YXjkQkxt4EBX6S/yZrtJM1oACW1MxrIT4EnHcBmF1aRNGje6zbOdFjdeZ72w7A3QzHSx1dC6X+8NpnKO9pMxg+vqaE2YYf7TtmUoBlclA4fpz/BvLlmRtifaHVMdfRWBQTFwSx2TYN9+ObNsPu4PEBITib/wb2JqSaFfSwuLqCv1SX4ue3LqF7ctTglBzo7oX3dx7C2zl7DO7BA9w88bc7X8G7W/ca9ea1JhIxczfpeIgVEC5DCIdhd83NKgNbzIikXWdkbga/vnMFKcHheDVlC2vHEUKgCIlAYmAI7rY3oqSt4ck2TSa1x0F5BrIj4lgdXGwFASCTMm9zV3jIYSiYAMSaEGFrTiTtszQM9aFlZBA74+TYHa9gHbrtxBLsS0xDZngsrjRWQSZ1wP6ktA1pcAIAdydn1kAWPjyFBREAqUSCACMxd0yYEknLhFavw+3WelT1deKQETdsdycZvpu9y+g79VSPxZUV3o6RMRW2mAZKKSYXLI8VEGS883f1MHsoXY+k/Un+CeyIlUNshpvV/GM37P8o+cqiFOzdE6P4+c1LNg1wiWYxfqnUq1AuW55EUhABYDPUUEpxtfERp8xfjlIpjiiyUXDwdSQEhJhVjoGZSfxHyVf4c+VdkxprRrWAT8pu49d3r2DEhoGta3YPZqNPvxHrI1cEmQJcWfwBF1dXUNJWj8reds6RtD4ubvh+3n50jA+vOUoszJlUFgJATEScbBGrWg2+aWvA3fbGDRHTEO8fzBo7wJdmVBABsGdRUKyfwbseSfuwuxXHOEbSxvkH458OBOJhdytuNtewHtbwNOFea7GBIUasb5RSizJ8CQWbwkyv16NphJ9UO4IIANuv7dmsGCOPI2nX8vhvgYfMsJ18LXNXEtJDo3C9uRrlPe2MCic3RxleTclCakik0e3owMwkii3I8ScUsX5BiGD5YbSPD/OSXg8QSADYdNdSlgiY+mciaY2lkJfZO+D19DzkRiaguL78SRCqnViMnXHJ2B1n/B3zy0u42vgIj/o7hWgCi5CIxDhqwAW8lMcUe4IIAFtuX0Px+RqdDrda61DV18n51xvg7okf7HgFTSP9aBsdxL6ENKOjiKGULxuFo6nZ8HN1Z7w2ODOJdh5jBQURADa3KDuxBO6OMswZWJErl1X4U8UdlD6OpDVmiCGEIDkonDVLyTpcU77YmrzoROREMmdZpZTiSmMVr98TRADYTLaEEIR4+mBu2PiWrH96Ar+8XYzM8Bjkyy07z3dUOYPiugpWU/VGITsiDkdTc1hHvoahPt5zLggiANOL81hSrzKqV2P9gjgrViiAqr5ONAz1YW9CKrbHmHbSiGp1BTeaax5bDc0znCQFhiExkBcHTFYICA4kpWNvgoK18xdXlwVJGy+IAFAAvVNjjGlP5UFh+KK2jFMW8HVWtRpcaaxCRU8bjiiykRhoOMOXTq9HWXcrbrTUPtl6moq/mweOKnIQ7Rtg8SHShvCSueBE5nZEGQii0VOKC5X3sLjKf54gwYxBraODjALg7OCI5OAw1A+abvmbVi3gdw9vIcY3EEdTc57L8UcpRef4CIrry806ZApYS8h4UJ6BHCOWQW6HRbALjrO9A3bGJSMvOtFgfoA17WkVY05BPhBMAJqG+nA8LZfR1r8nXoGGwV6z3eo6J0bwbze/QE5kPHbFpcDdSYYR5QxuNNeYnVZdRAi2RidifyI3yyCXpE1ilpFjd1wKThlIqv009zqaBD09TDABUKlX0TzcD0XI84dGBLp7IS00CjUD3Wa/fz18+2F3KwghFmUijfMPxhEF+9brWZbVatxurTN4j51YzLpeMXSC6DqUUpS01eNaU7XZ9eKCoLlJ7nU0ISU4gnEOPazIRsf4sMkmXybM7XwfFzccUWQj3j+Y80FTLSMDKK6vMHrat7uTs9lrB41Ohy9qHqKqr8PitjGGoAIwMDOJ9rEhxDNY81wcHPGd7F34+P51wdKgsuFgJ8X+xDTkRSdAzNEdbUw5i+K6cnRy3Eqa60k8ppzFnyvvmOUUYw6CZye63FCJGL8gRgfGWL8gvJ6eh4vVD6xSWUIIsiPicFCezjm40tyt5NNnC3Fh/fzCux2NvASUcEVwARifn8O9jkbsjlcwXs+OjAMAfF5TKuhIEOUTgKOp2ZzjFC3dSnLVHSypV1HR04a7HU02yaxmlfxkN5prEOcfzNr42ZFx8JA5408Vd3hvBE+ZCw6nbIE8KIzbPA+g43EW7wkzt5IR3n4GvYrVWi26JkZQP9iDxuE+XlLZmItVBECr1+OTshL8cO9R1kxXsX5BKDjwOorrylHHw8ki9hI77IlXGEz++CyTC0p8VV+BVhPPKn6W7TFyxv/r9Xqcv38dfVNjGyaNntUyFE4tzuP3Zbfx3raDrNsjFwdHvJWzG9tjklDSVo+W0UGTV/iOdlJsiYzDzthkztnBn2QP7WqxeP4NcveCPIj5QOiO8eENZ4+QwGphjmtZLz4pK8E7uXsM6vRDvXzxvbz9UC6p0DDci46xYQzMTLKamT1lLojw9kNCQAgSAkI5HyGrp3qzPZCZIFg7MJNtqiljSf5kSyQUUFsz807L6AA+fnAD7+buhaPUcGybm5MM22Pk2B4jB6UUi6srmF9eglqrASEEjnZSuDs5w97O9PCt7olRFNebF4PAxq74FISzrP7HlLNoFejwR0uQENB5gFg1+rFrYgS/LCnGu7l7jZ7Zsw4hBC4OjpyHdTZmVAu43FCJxqE+XusU5x+M/KQM1uvXm6utN9SagAQUEyAwLXCfByYXlPjF7UvIl2diW3Si4CFZq1oNSlrrca/D9HTvxgj39sM7uXtY69A5Prxhz0uUUIJ+AuTa4uManQ5f1Vegur8Th1O2INo3UBDT68jcND6+f0OQQxeSAkPx3exdrD6IqxoNLlaX8v5dPqAAxHknjiUD2GXLgiysLKO6vwud4yNwsLODt7MbrzkBne0dIRaJ0DM5ypuySSwSIV+egWNpuawLWkopPqt+gJ7JMRPfbh0I1haBtRsl/WLf9Dj6ysYhs3dAclAY4gNCEentZ3GWbEIItsUkISEgBF83VFkc6rVmPdzCelTeOvc7m1HT32XtZuQMBUAKigr9CDAKYKPIwbcgWAs183V1h4eTM5yk9rATS0BBodZqsLiygmnVAsbnZ3EoOROZ4bFG3zmqnMHDrlY0DPWybi2fRSqRIDkoHFujExHi4W10qqod6MafK+5syIXfs+2LgqLCJgLwl3/UVpUhBCcytyGLgxAAa/r+gZlJ9E+NY2x+FsplFVY0Gmh0OjjY2cHNUQY/V3eEe/khwseP88ke1X2dKHp03+pWTlOgeDwFPP77Ml4CAaCUoqjqPpRLKuxNSDX6KxWLRIjw9jPZcmfo+7db63C9ucbWTWGU9ZYRAQCh+AxW1AgKzfXmGvyu9JZVrWuLK8v4benNF6Lzn0YMALknjo6C4E0CCHMwjQ2YXFTiUV8nXB2c4O/mIZhnL6UU1f1d+N3DW1Zz4uCTJ61ScOH83xNC/o+tCyQE65lKY/2CeBMESilaRwdxs6UGQ7PczyPaaDxpjbMXzjuBkD4AtkuKJzD+bh7IjoiDIiTSbJWyclmFusEeVPa0Y4Jj0sqNzLd+DmcvFP4YBB/aulDCV5ogxNMbUb4BCPHwgd/jLaZELH4yQlBKodZpMataxPj8HAZnJtE9OfJC/9qZ2+IpCooKHQhFGwjCzH3hi4xUIlnb6tG1k1DYsn2/TDw3IZ69cP44CPkcG1QxtAm/iBj+8yUF/czWBdvEOjD+ys8WFXoCtBYgwobFbmJzGA3YH508PUNBTlLQjXUC9Ca8w+qFce7k6QqAvAdgY7ivbiIIBt1wzp08/ScAH+AlUhP/NcGl04z7YVHRLwD6ATZHghcOLts4zlu9gguFbxGCjwFszLTam5iFSXv9s0XncwEUAYSfQ+s2sTkmueJ+dPJMGSjSAHyOzXXBS4HJvtgfnTozJRbTNyhwigIb7Cy3TUzFInVvQVGhE6H4gBL8EwFsd7baJmbDi76/4EKhKwjeI6B/B5AYW1dqE+7wavApuHCeEELyKHCCUHoYhETw/Y1N+EWwzjn7aSGoCBEAckFpKgiJJ0AYpfAjBG5Y205uCgcD6x671uD/A/Ace12OlJpfAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTAyLTIxVDA4OjQ4OjQ3KzAwOjAwg+QcegAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0wMi0yMVQwODo0ODo0NyswMDowMPK5pMYAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjMtMDItMjFUMDg6NDg6NDcrMDA6MDClrIUZAAAAAElFTkSuQmCC" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="d0bf7f6c-09b5-4078-9bfc-254134d5b54d" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h1 data-start="0" data-end="68"><strong data-start="2" data-end="13">STATUS:</strong> Unit 1 – Introduction to Python | Part 1 of 3 (Approx)</h1>
+<hr data-start="70" data-end="73">
+<h1 data-start="75" data-end="111"><strong data-start="77" data-end="111">Unit 1: Introduction to Python</strong></h1>
+<p data-start="113" data-end="373">In this unit, we begin our journey into Python programming. Python is one of the most powerful and beginner-friendly programming languages. It is widely used in <strong data-start="274" data-end="372">data analysis, machine learning, automation, finance, web development, and scientific research</strong>.</p>
+<p data-start="375" data-end="409">In this first part, we will cover:</p>
+<ul data-start="411" data-end="496">
+<li data-start="411" data-end="424">
+<p data-start="413" data-end="424">Variables</p>
+</li>
+<li data-start="425" data-end="460">
+<p data-start="427" data-end="460">Numeric Data Types: Int &amp; Float</p>
+</li>
+<li data-start="461" data-end="496">
+<p data-start="463" data-end="496">Sequential Types: String &amp; List</p>
+</li>
+</ul>
+<p data-start="498" data-end="550">These are the building blocks of Python programming.</p>
+<hr data-start="552" data-end="555">
+<h2 data-start="557" data-end="573">1️⃣ Variables</h2>
+<h3 data-start="575" data-end="595"><strong data-start="579" data-end="595">Introduction</strong></h3>
+<p data-start="597" data-end="762">A variable is like a container that stores data.<br data-start="645" data-end="648">
+In Python, you do not need to declare the type of variable explicitly. Python automatically detects the data type.</p>
+<p data-start="764" data-end="829">Think of a variable as a labeled box where you store information.</p>
+<hr data-start="831" data-end="834">
+<h3 data-start="836" data-end="856"><strong data-start="840" data-end="856">Key Concepts</strong></h3>
+<ul data-start="858" data-end="951">
+<li data-start="858" data-end="883">
+<p data-start="860" data-end="883">Variable naming rules</p>
+</li>
+<li data-start="884" data-end="911">
+<p data-start="886" data-end="911">Assignment operator <code data-start="906" data-end="909">=</code></p>
+</li>
+<li data-start="912" data-end="930">
+<p data-start="914" data-end="930">Dynamic typing</p>
+</li>
+<li data-start="931" data-end="951">
+<p data-start="933" data-end="951">Case sensitivity</p>
+</li>
+</ul>
+<hr data-start="953" data-end="956">
+<h3 data-start="958" data-end="986"><strong data-start="962" data-end="986">Detailed Explanation</strong></h3>
+<h3 data-start="988" data-end="1014">🔹 What is a Variable?</h3>
+<p data-start="1016" data-end="1042">A variable stores a value.</p>
+<p data-start="1044" data-end="1052">Example:</p>
+<pre class="overflow-visible! px-0!" data-start="1054" data-end="1074"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>x = </span><span><span class="hljs-number">10</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="1076" data-end="1081">Here:</p>
+<ul data-start="1082" data-end="1159">
+<li data-start="1082" data-end="1105">
+<p data-start="1084" data-end="1105"><code data-start="1084" data-end="1087">x</code> → Variable name</p>
+</li>
+<li data-start="1106" data-end="1135">
+<p data-start="1108" data-end="1135"><code data-start="1108" data-end="1111">=</code> → Assignment operator</p>
+</li>
+<li data-start="1136" data-end="1159">
+<p data-start="1138" data-end="1159"><code data-start="1138" data-end="1142">10</code> → Value stored</p>
+</li>
+</ul>
+<p data-start="1161" data-end="1182">Python reads it as:</p>
+<blockquote data-start="1183" data-end="1222">
+<p data-start="1185" data-end="1222">Store the value 10 inside variable x.</p>
+</blockquote>
+<hr data-start="1224" data-end="1227">
+<h3 data-start="1229" data-end="1262">🔹 Rules for Naming Variables</h3>
+<ol data-start="1264" data-end="1440">
+<li data-start="1264" data-end="1309">
+<p data-start="1267" data-end="1309">Must start with a letter or underscore <code data-start="1306" data-end="1309">_</code></p>
+</li>
+<li data-start="1310" data-end="1339">
+<p data-start="1313" data-end="1339">Cannot start with a number</p>
+</li>
+<li data-start="1340" data-end="1390">
+<p data-start="1343" data-end="1390">Cannot use keywords (like <code data-start="1369" data-end="1373">if</code>, <code data-start="1375" data-end="1380">for</code>, <code data-start="1382" data-end="1389">while</code>)</p>
+</li>
+<li data-start="1391" data-end="1440">
+<p data-start="1394" data-end="1440">Case-sensitive (<code data-start="1410" data-end="1415">age</code> and <code data-start="1420" data-end="1425">Age</code> are different)</p>
+</li>
+</ol>
+<p data-start="1442" data-end="1457">Valid examples:</p>
+<pre class="overflow-visible! px-0!" data-start="1459" data-end="1514"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>name = </span><span><span class="hljs-string">"Rahul"</span></span><span>
+_age = </span><span><span class="hljs-number">21</span></span><span>
+total_marks = </span><span><span class="hljs-number">95</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="1516" data-end="1532">Invalid example:</p>
+<pre class="overflow-visible! px-0!" data-start="1534" data-end="1566"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>2name = </span><span><span class="hljs-string">"Error"</span></span><span>  ❌
+</span></span></code></div></div></pre>
+<hr data-start="1568" data-end="1571">
+<h3 data-start="1573" data-end="1594">🔹 Dynamic Typing</h3>
+<p data-start="1596" data-end="1638">Python automatically understands the type:</p>
+<pre class="overflow-visible! px-0!" data-start="1640" data-end="1704"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>a = </span><span><span class="hljs-number">10</span></span><span>        </span><span><span class="hljs-comment"># Integer</span></span><span>
+a = </span><span><span class="hljs-string">"Hello"</span></span><span>   </span><span><span class="hljs-comment"># Now string</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="1706" data-end="1769">The same variable can store different types at different times.</p>
+<p data-start="1771" data-end="1805">This is called <strong data-start="1786" data-end="1804">Dynamic Typing</strong>.</p>
+<hr data-start="1807" data-end="1810">
+<h3 data-start="1812" data-end="1846">🔹 Memory Concept (Simplified)</h3>
+<p data-start="1848" data-end="1887">Variable → Reference → Object in Memory</p>
+<p data-start="1889" data-end="1894">Flow:</p>
+<pre class="overflow-visible! px-0!" data-start="1896" data-end="1936"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">makefile</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>x = 10
+x → [10 stored in memory]
+</span></span></code></div></div></pre>
+<hr data-start="1938" data-end="1941">
+<h3 data-start="1943" data-end="1971"><strong data-start="1947" data-end="1971">Example (Real-world)</strong></h3>
+<p data-start="1973" data-end="2008">Suppose you are calculating salary:</p>
+<pre class="overflow-visible! px-0!" data-start="2010" data-end="2093"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>basic_salary = </span><span><span class="hljs-number">25000</span></span><span>
+bonus = </span><span><span class="hljs-number">5000</span></span><span>
+total_salary = basic_salary + bonus
+</span></span></code></div></div></pre>
+<p data-start="2095" data-end="2143">Python computes and stores result automatically.</p>
+<hr data-start="2145" data-end="2148">
+<h3 data-start="2150" data-end="2178"><strong data-start="2154" data-end="2178">Summary of Variables</strong></h3>
+<ul data-start="2180" data-end="2297">
+<li data-start="2180" data-end="2203">
+<p data-start="2182" data-end="2203">Variables store data.</p>
+</li>
+<li data-start="2204" data-end="2234">
+<p data-start="2206" data-end="2234">Python is dynamically typed.</p>
+</li>
+<li data-start="2235" data-end="2267">
+<p data-start="2237" data-end="2267">Naming rules must be followed.</p>
+</li>
+<li data-start="2268" data-end="2297">
+<p data-start="2270" data-end="2297"><code data-start="2270" data-end="2273">=</code> is assignment operator.</p>
+</li>
+</ul>
+<hr data-start="2299" data-end="2302">
+<h1 data-start="2304" data-end="2341">2️⃣ Numeric Data Types: Int &amp; Float</h1>
+<hr data-start="2343" data-end="2346">
+<h2 data-start="2348" data-end="2367"><strong data-start="2351" data-end="2367">Introduction</strong></h2>
+<p data-start="2369" data-end="2484">In programming, numbers are extremely important.<br data-start="2417" data-end="2420">
+Python mainly supports two numeric types for basic calculations:</p>
+<ul data-start="2486" data-end="2534">
+<li data-start="2486" data-end="2505">
+<p data-start="2488" data-end="2505"><strong data-start="2488" data-end="2505">Integer (int)</strong></p>
+</li>
+<li data-start="2506" data-end="2534">
+<p data-start="2508" data-end="2534"><strong data-start="2508" data-end="2534">Floating-point (float)</strong></p>
+</li>
+</ul>
+<hr data-start="2536" data-end="2539">
+<h2 data-start="2541" data-end="2560"><strong data-start="2544" data-end="2560">Key Concepts</strong></h2>
+<ul data-start="2562" data-end="2636">
+<li data-start="2562" data-end="2573">
+<p data-start="2564" data-end="2573">Integer</p>
+</li>
+<li data-start="2574" data-end="2583">
+<p data-start="2576" data-end="2583">Float</p>
+</li>
+<li data-start="2584" data-end="2616">
+<p data-start="2586" data-end="2616">Type checking using <code data-start="2606" data-end="2614">type()</code></p>
+</li>
+<li data-start="2617" data-end="2636">
+<p data-start="2619" data-end="2636">Type conversion</p>
+</li>
+</ul>
+<hr data-start="2638" data-end="2641">
+<h2 data-start="2643" data-end="2670"><strong data-start="2646" data-end="2670">Detailed Explanation</strong></h2>
+<h3 data-start="2672" data-end="2692">🔹 Integer (int)</h3>
+<p data-start="2694" data-end="2721">Integers are whole numbers.</p>
+<p data-start="2723" data-end="2732">Examples:</p>
+<pre class="overflow-visible! px-0!" data-start="2734" data-end="2785"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>age = </span><span><span class="hljs-number">21</span></span><span>
+temperature = -</span><span><span class="hljs-number">5</span></span><span>
+year = </span><span><span class="hljs-number">2025</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="2787" data-end="2804">No decimal point.</p>
+<hr data-start="2806" data-end="2809">
+<h3 data-start="2811" data-end="2823">🔹 Float</h3>
+<p data-start="2825" data-end="2852">Floats are decimal numbers.</p>
+<p data-start="2854" data-end="2863">Examples:</p>
+<pre class="overflow-visible! px-0!" data-start="2865" data-end="2916"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>price = </span><span><span class="hljs-number">99.99</span></span><span>
+pi = </span><span><span class="hljs-number">3.14</span></span><span>
+weight = </span><span><span class="hljs-number">65.5</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="2918" data-end="2947">Floats contain decimal point.</p>
+<hr data-start="2949" data-end="2952">
+<h3 data-start="2954" data-end="2979">🔹 Checking Data Type</h3>
+<p data-start="2981" data-end="2994">Use <code data-start="2985" data-end="2993">type()</code>:</p>
+<pre class="overflow-visible! px-0!" data-start="2996" data-end="3094"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>x = </span><span><span class="hljs-number">10</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-built_in">type</span></span><span>(x))   </span><span><span class="hljs-comment"># &lt;class 'int'&gt;</span></span><span>
+
+y = </span><span><span class="hljs-number">10.5</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-built_in">type</span></span><span>(y))   </span><span><span class="hljs-comment"># &lt;class 'float'&gt;</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="3096" data-end="3099">
+<h3 data-start="3101" data-end="3133">🔹 Type Conversion (Casting)</h3>
+<p data-start="3135" data-end="3178">Sometimes we convert one type into another.</p>
+<pre class="overflow-visible! px-0!" data-start="3180" data-end="3237"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>x = </span><span><span class="hljs-number">10</span></span><span>
+y = </span><span><span class="hljs-built_in">float</span></span><span>(x)  </span><span><span class="hljs-comment"># Convert int to float</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="3239" data-end="3241">or</p>
+<pre class="overflow-visible! px-0!" data-start="3243" data-end="3310"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>z = </span><span><span class="hljs-number">5.7</span></span><span>
+a = </span><span><span class="hljs-built_in">int</span></span><span>(z)  </span><span><span class="hljs-comment"># Converts to 5 (decimal removed)</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="3312" data-end="3368">⚠ Important: <code data-start="3325" data-end="3332">int()</code> removes decimal part (no rounding).</p>
+<hr data-start="3370" data-end="3373">
+<h3 data-start="3375" data-end="3403">🔹 Arithmetic Operations</h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3405" data-end="3597" class="w-fit min-w-(--thread-content-width)"><thead data-start="3405" data-end="3427"><tr data-start="3405" data-end="3427"><th data-start="3405" data-end="3416" data-col-size="sm" class="">Operator</th><th data-start="3416" data-end="3427" data-col-size="sm" class="">Meaning</th></tr></thead><tbody data-start="3452" data-end="3597"><tr data-start="3452" data-end="3470"><td data-start="3452" data-end="3458" data-col-size="sm"><code data-start="3454" data-end="3457">+</code></td><td data-start="3458" data-end="3470" data-col-size="sm">Addition</td></tr><tr data-start="3471" data-end="3492"><td data-start="3471" data-end="3477" data-col-size="sm"><code data-start="3473" data-end="3476">-</code></td><td data-start="3477" data-end="3492" data-col-size="sm">Subtraction</td></tr><tr data-start="3493" data-end="3517"><td data-start="3493" data-end="3499" data-col-size="sm"><code data-start="3495" data-end="3498">*</code></td><td data-start="3499" data-end="3517" data-col-size="sm">Multiplication</td></tr><tr data-start="3518" data-end="3536"><td data-start="3518" data-end="3524" data-col-size="sm"><code data-start="3520" data-end="3523">/</code></td><td data-col-size="sm" data-start="3524" data-end="3536">Division</td></tr><tr data-start="3537" data-end="3562"><td data-start="3537" data-end="3544" data-col-size="sm"><code data-start="3539" data-end="3543">//</code></td><td data-col-size="sm" data-start="3544" data-end="3562">Floor Division</td></tr><tr data-start="3563" data-end="3580"><td data-start="3563" data-end="3569" data-col-size="sm"><code data-start="3565" data-end="3568">%</code></td><td data-col-size="sm" data-start="3569" data-end="3580">Modulus</td></tr><tr data-start="3581" data-end="3597"><td data-start="3581" data-end="3588" data-col-size="sm"><code data-start="3583" data-end="3587">**</code></td><td data-col-size="sm" data-start="3588" data-end="3597">Power</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="3599" data-end="3607">Example:</p>
+<pre class="overflow-visible! px-0!" data-start="3609" data-end="3740"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>a = </span><span><span class="hljs-number">10</span></span><span>
+b = </span><span><span class="hljs-number">3</span></span><span>
+
+</span><span><span class="hljs-built_in">print</span></span><span>(a + b)   </span><span><span class="hljs-comment"># 13</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(a / b)   </span><span><span class="hljs-comment"># 3.3333</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(a // b)  </span><span><span class="hljs-comment"># 3</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(a % b)   </span><span><span class="hljs-comment"># 1</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(a ** b)  </span><span><span class="hljs-comment"># 1000</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="3742" data-end="3745">
+<h3 data-start="3747" data-end="3776"><strong data-start="3751" data-end="3776">Real-World Case Study</strong></h3>
+<p data-start="3778" data-end="3804">Suppose you calculate EMI:</p>
+<p data-start="3806" data-end="3814">Formula:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mi>M</mi><mi>I</mi><mo>=</mo><mfrac><mrow><mi>P</mi><mo>×</mo><mi>R</mi><mo>×</mo><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>R</mi><msup><mo stretchy="false">)</mo><mi>N</mi></msup></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>R</mi><msup><mo stretchy="false">)</mo><mi>N</mi></msup><mo>−</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">EMI = \frac{P \times R \times (1+R)^N}{(1+R)^N - 1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">EM</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.4543em; vertical-align: -0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.5183em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.7673em;"><span style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.10903em;">N</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord">1</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8413em;"><span style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p data-start="3875" data-end="3881">Where:</p>
+<ul data-start="3882" data-end="3921">
+<li data-start="3882" data-end="3897">
+<p data-start="3884" data-end="3897">P = Principal</p>
+</li>
+<li data-start="3898" data-end="3908">
+<p data-start="3900" data-end="3908">R = Rate</p>
+</li>
+<li data-start="3909" data-end="3921">
+<p data-start="3911" data-end="3921">N = Months</p>
+</li>
+</ul>
+<p data-start="3923" data-end="3988">Python uses <strong data-start="3935" data-end="3952">int and float</strong> to compute such financial formulas.</p>
+<hr data-start="3990" data-end="3993">
+<h3 data-start="3995" data-end="4027"><strong data-start="3999" data-end="4027">Summary of Numeric Types</strong></h3>
+<ul data-start="4029" data-end="4153">
+<li data-start="4029" data-end="4054">
+<p data-start="4031" data-end="4054"><code data-start="4031" data-end="4036">int</code> → Whole numbers</p>
+</li>
+<li data-start="4055" data-end="4084">
+<p data-start="4057" data-end="4084"><code data-start="4057" data-end="4064">float</code> → Decimal numbers</p>
+</li>
+<li data-start="4085" data-end="4113">
+<p data-start="4087" data-end="4113">Type conversion possible</p>
+</li>
+<li data-start="4114" data-end="4153">
+<p data-start="4116" data-end="4153">Supports full arithmetic operations</p>
+</li>
+</ul>
+<hr data-start="4155" data-end="4158">
+<h1 data-start="4160" data-end="4197">3️⃣ Sequential Types: String &amp; List</h1>
+<hr data-start="4199" data-end="4202">
+<h2 data-start="4204" data-end="4223"><strong data-start="4207" data-end="4223">Introduction</strong></h2>
+<p data-start="4225" data-end="4273">Sequential types store multiple values in order.</p>
+<p data-start="4275" data-end="4307">In Unit 1 syllabus, we focus on:</p>
+<ul data-start="4309" data-end="4338">
+<li data-start="4309" data-end="4327">
+<p data-start="4311" data-end="4327"><strong data-start="4311" data-end="4327">String (str)</strong></p>
+</li>
+<li data-start="4328" data-end="4338">
+<p data-start="4330" data-end="4338"><strong data-start="4330" data-end="4338">List</strong></p>
+</li>
+</ul>
+<hr data-start="4340" data-end="4343">
+<h2 data-start="4345" data-end="4364"><strong data-start="4348" data-end="4364">Key Concepts</strong></h2>
+<ul data-start="4366" data-end="4438">
+<li data-start="4366" data-end="4388">
+<p data-start="4368" data-end="4388">Ordered collection</p>
+</li>
+<li data-start="4389" data-end="4401">
+<p data-start="4391" data-end="4401">Indexing</p>
+</li>
+<li data-start="4402" data-end="4413">
+<p data-start="4404" data-end="4413">Slicing</p>
+</li>
+<li data-start="4414" data-end="4438">
+<p data-start="4416" data-end="4438">Mutable vs Immutable</p>
+</li>
+</ul>
+<hr data-start="4440" data-end="4443">
+<h1 data-start="4445" data-end="4462">🔹 String (str)</h1>
+<hr data-start="4464" data-end="4467">
+<h3 data-start="4469" data-end="4489"><strong data-start="4473" data-end="4489">Introduction</strong></h3>
+<p data-start="4491" data-end="4528">A string is a sequence of characters.</p>
+<p data-start="4530" data-end="4538">Example:</p>
+<pre class="overflow-visible! px-0!" data-start="4540" data-end="4569"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>name = </span><span><span class="hljs-string">"Python"</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="4571" data-end="4599">Each character has an index.</p>
+<pre class="overflow-visible! px-0!" data-start="4601" data-end="4642"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">css</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-selector-tag">P</span></span><span>  </span><span><span class="hljs-attribute">y</span></span><span>  t  h  o  n
+</span><span><span class="hljs-number">0</span></span><span>  </span><span><span class="hljs-number">1</span></span><span>  </span><span><span class="hljs-number">2</span></span><span>  </span><span><span class="hljs-number">3</span></span><span>  </span><span><span class="hljs-number">4</span></span><span>  </span><span><span class="hljs-number">5</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4644" data-end="4647">
+<h3 data-start="4649" data-end="4677"><strong data-start="4653" data-end="4677">Detailed Explanation</strong></h3>
+<h3 data-start="4679" data-end="4694">🔸 Indexing</h3>
+<pre class="overflow-visible! px-0!" data-start="4696" data-end="4765"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>name = </span><span><span class="hljs-string">"Python"</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(name[</span><span><span class="hljs-number">0</span></span><span>])  </span><span><span class="hljs-comment"># P</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(name[</span><span><span class="hljs-number">3</span></span><span>])  </span><span><span class="hljs-comment"># h</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4767" data-end="4770">
+<h3 data-start="4772" data-end="4796">🔸 Negative Indexing</h3>
+<pre class="overflow-visible! px-0!" data-start="4798" data-end="4840"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">css</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-selector-tag">P</span></span><span>  </span><span><span class="hljs-attribute">y</span></span><span>  t  h  o  n
+-</span><span><span class="hljs-number">6</span></span><span> -</span><span><span class="hljs-number">5</span></span><span> -</span><span><span class="hljs-number">4</span></span><span> -</span><span><span class="hljs-number">3</span></span><span> -</span><span><span class="hljs-number">2</span></span><span> -</span><span><span class="hljs-number">1</span></span><span>
+</span></span></code></div></div></pre>
+<pre class="overflow-visible! px-0!" data-start="4842" data-end="4876"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-built_in">print</span></span><span>(name[-</span><span><span class="hljs-number">1</span></span><span>])  </span><span><span class="hljs-comment"># n</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4878" data-end="4881">
+<h3 data-start="4883" data-end="4897">🔸 Slicing</h3>
+<p data-start="4899" data-end="4906">Syntax:</p>
+<pre class="overflow-visible! px-0!" data-start="4908" data-end="4939"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>string[start:end]
+</span></span></code></div></div></pre>
+<p data-start="4941" data-end="4949">Example:</p>
+<pre class="overflow-visible! px-0!" data-start="4951" data-end="4989"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-built_in">print</span></span><span>(name[</span><span><span class="hljs-number">0</span></span><span>:</span><span><span class="hljs-number">4</span></span><span>])  </span><span><span class="hljs-comment"># Pyth</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4991" data-end="4994">
+<h3 data-start="4996" data-end="5022">🔸 String is Immutable</h3>
+<p data-start="5024" data-end="5053">You cannot change characters:</p>
+<pre class="overflow-visible! px-0!" data-start="5055" data-end="5092"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>name[</span><span><span class="hljs-number">0</span></span><span>] = </span><span><span class="hljs-string">"J"</span></span><span>   ❌ Error
+</span></span></code></div></div></pre>
+<p data-start="5094" data-end="5120">Strings are <strong data-start="5106" data-end="5119">immutable</strong>.</p>
+<hr data-start="5122" data-end="5125">
+<h1 data-start="5127" data-end="5136">🔹 List</h1>
+<hr data-start="5138" data-end="5141">
+<h3 data-start="5143" data-end="5163"><strong data-start="5147" data-end="5163">Introduction</strong></h3>
+<p data-start="5165" data-end="5218">A list stores multiple values inside square brackets.</p>
+<p data-start="5220" data-end="5228">Example:</p>
+<pre class="overflow-visible! px-0!" data-start="5230" data-end="5268"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>marks = [</span><span><span class="hljs-number">85</span></span><span>, </span><span><span class="hljs-number">90</span></span><span>, </span><span><span class="hljs-number">78</span></span><span>, </span><span><span class="hljs-number">92</span></span><span>]
+</span></span></code></div></div></pre>
+<p data-start="5270" data-end="5303">Lists are ordered and changeable.</p>
+<hr data-start="5305" data-end="5308">
+<h3 data-start="5310" data-end="5338"><strong data-start="5314" data-end="5338">Detailed Explanation</strong></h3>
+<h3 data-start="5340" data-end="5355">🔸 Indexing</h3>
+<pre class="overflow-visible! px-0!" data-start="5357" data-end="5392"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-built_in">print</span></span><span>(marks[</span><span><span class="hljs-number">1</span></span><span>])  </span><span><span class="hljs-comment"># 90</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="5394" data-end="5397">
+<h3 data-start="5399" data-end="5421">🔸 List is Mutable</h3>
+<pre class="overflow-visible! px-0!" data-start="5423" data-end="5463"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>marks[</span><span><span class="hljs-number">0</span></span><span>] = </span><span><span class="hljs-number">88</span></span><span>
+</span><span><span class="hljs-built_in">print</span></span><span>(marks)
+</span></span></code></div></div></pre>
+<p data-start="5465" data-end="5487">Lists can be modified.</p>
+<hr data-start="5489" data-end="5492">
+<h3 data-start="5494" data-end="5516">🔸 List Operations</h3>
+<pre class="overflow-visible! px-0!" data-start="5518" data-end="5615"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>marks.append(</span><span><span class="hljs-number">95</span></span><span>)    </span><span><span class="hljs-comment"># Add</span></span><span>
+marks.remove(</span><span><span class="hljs-number">78</span></span><span>)    </span><span><span class="hljs-comment"># Remove</span></span><span>
+</span><span><span class="hljs-built_in">len</span></span><span>(marks)          </span><span><span class="hljs-comment"># Length</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="5617" data-end="5620">
+<h3 data-start="5622" data-end="5655"><strong data-start="5626" data-end="5655">String vs List Comparison</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5657" data-end="5806" class="w-fit min-w-(--thread-content-width)"><thead data-start="5657" data-end="5684"><tr data-start="5657" data-end="5684"><th data-start="5657" data-end="5667" data-col-size="sm" class="">Feature</th><th data-start="5667" data-end="5676" data-col-size="sm" class="">String</th><th data-start="5676" data-end="5684" data-col-size="sm" class="">List</th></tr></thead><tbody data-start="5717" data-end="5806"><tr data-start="5717" data-end="5739"><td data-start="5717" data-end="5728" data-col-size="sm">Brackets</td><td data-col-size="sm" data-start="5728" data-end="5733">""</td><td data-col-size="sm" data-start="5733" data-end="5739">[]</td></tr><tr data-start="5740" data-end="5766"><td data-start="5740" data-end="5750" data-col-size="sm">Mutable</td><td data-col-size="sm" data-start="5750" data-end="5757">❌ No</td><td data-col-size="sm" data-start="5757" data-end="5766">✅ Yes</td></tr><tr data-start="5767" data-end="5806"><td data-start="5767" data-end="5776" data-col-size="sm">Stores</td><td data-col-size="sm" data-start="5776" data-end="5789">Characters</td><td data-col-size="sm" data-start="5789" data-end="5806">Any data type</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5808" data-end="5811">
+<h3 data-start="5813" data-end="5839"><strong data-start="5817" data-end="5839">Real-world Example</strong></h3>
+<p data-start="5841" data-end="5873">Suppose you store monthly sales:</p>
+<pre class="overflow-visible! px-0!" data-start="5875" data-end="5925"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>sales = [</span><span><span class="hljs-number">12000</span></span><span>, </span><span><span class="hljs-number">15000</span></span><span>, </span><span><span class="hljs-number">18000</span></span><span>, </span><span><span class="hljs-number">17000</span></span><span>]
+</span></span></code></div></div></pre>
+<p data-start="5927" data-end="5945">You can calculate:</p>
+<pre class="overflow-visible! px-0!" data-start="5947" data-end="5979"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>total = </span><span><span class="hljs-built_in">sum</span></span><span>(sales)
+</span></span></code></div></div></pre>
+<p data-start="5981" data-end="6017">This is useful in <strong data-start="5999" data-end="6016">data analysis</strong>.</p>
+<hr data-start="6019" data-end="6022">
+<h1 data-start="6024" data-end="6054">✅ Summary of Unit 1 – Part 1</h1>
+<p data-start="6056" data-end="6081">In this part, we covered:</p>
+<p data-start="6083" data-end="6264">✔ Variables and dynamic typing<br data-start="6113" data-end="6116">
+✔ Numeric data types: int and float<br data-start="6151" data-end="6154">
+✔ Arithmetic operations<br data-start="6177" data-end="6180">
+✔ String (immutable sequence)<br data-start="6209" data-end="6212">
+✔ List (mutable sequence)<br data-start="6237" data-end="6240">
+✔ Indexing and slicing</p>
+<p data-start="6266" data-end="6364">These are foundational concepts. Without mastering them, advanced data analysis becomes difficult.</p>
+<hr data-start="6366" data-end="6369">
+<p data-start="6371" data-end="6402"><strong data-start="6371" data-end="6400"><em data-start="6373" data-end="6398">End of Unit 1 – Part 1.</em></strong></p>
+<p data-start="6404" data-end="6427" data-is-last-node="" data-is-only-node=""><strong data-start="6404" data-end="6427" data-is-last-node="">Continue to Part 2?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="a424e4e0-7404-4c0f-91ff-43f63cee8fe9" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h1 data-start="0" data-end="68"><strong data-start="2" data-end="13">STATUS:</strong> Unit 1 – Introduction to Python | Part 2 of 3 (Approx)</h1>
+<hr data-start="70" data-end="73">
+<p data-start="75" data-end="123">In this part, we will continue Unit 1 and cover:</p>
+<ul data-start="125" data-end="205">
+<li data-start="125" data-end="156">
+<p data-start="127" data-end="156">Definite Loops: <strong data-start="143" data-end="156">For Loops</strong></p>
+</li>
+<li data-start="157" data-end="181">
+<p data-start="159" data-end="181"><strong data-start="159" data-end="181">If–Else Statements</strong></p>
+</li>
+<li data-start="182" data-end="205">
+<p data-start="184" data-end="205">Data Type: <strong data-start="195" data-end="205">Tuples</strong></p>
+</li>
+</ul>
+<p data-start="207" data-end="297">These concepts introduce decision-making and repetition — two core pillars of programming.</p>
+<hr data-start="299" data-end="302">
+<h1 data-start="304" data-end="335">4️⃣ Definite Loops: For Loops</h1>
+<hr data-start="337" data-end="340">
+<h2 data-start="342" data-end="361"><strong data-start="345" data-end="361">Introduction</strong></h2>
+<p data-start="363" data-end="425">In programming, we often need to repeat a task multiple times.</p>
+<p data-start="427" data-end="435">Example:</p>
+<ul data-start="436" data-end="518">
+<li data-start="436" data-end="464">
+<p data-start="438" data-end="464">Print numbers from 1 to 10</p>
+</li>
+<li data-start="465" data-end="494">
+<p data-start="467" data-end="494">Process each item in a list</p>
+</li>
+<li data-start="495" data-end="518">
+<p data-start="497" data-end="518">Calculate total marks</p>
+</li>
+</ul>
+<p data-start="520" data-end="587">Instead of writing the same code again and again, we use <strong data-start="577" data-end="586">loops</strong>.</p>
+<p data-start="589" data-end="706">A <strong data-start="591" data-end="603">for loop</strong> is used when we know how many times the loop should run. That is why it is called a <strong data-start="688" data-end="705">definite loop</strong>.</p>
+<hr data-start="708" data-end="711">
+<h2 data-start="713" data-end="732"><strong data-start="716" data-end="732">Key Concepts</strong></h2>
+<ul data-start="734" data-end="813">
+<li data-start="734" data-end="747">
+<p data-start="736" data-end="747">Iteration</p>
+</li>
+<li data-start="748" data-end="760">
+<p data-start="750" data-end="760">Iterable</p>
+</li>
+<li data-start="761" data-end="783">
+<p data-start="763" data-end="783"><code data-start="763" data-end="772">range()</code> function</p>
+</li>
+<li data-start="784" data-end="797">
+<p data-start="786" data-end="797">Loop body</p>
+</li>
+<li data-start="798" data-end="813">
+<p data-start="800" data-end="813">Indentation</p>
+</li>
+</ul>
+<hr data-start="815" data-end="818">
+<h2 data-start="820" data-end="847"><strong data-start="823" data-end="847">Detailed Explanation</strong></h2>
+<h3 data-start="849" data-end="868">🔹 Basic Syntax</h3>
+<pre class="overflow-visible! px-0!" data-start="870" data-end="926"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">for</span></span><span> variable </span><span><span class="hljs-keyword">in</span></span><span> sequence:
+    </span><span><span class="hljs-comment"># code block</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="928" data-end="960">Flowchart (Text Representation):</p>
+<pre class="overflow-visible! px-0!" data-start="962" data-end="1070"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Start</span></span><span>
+   ↓
+Pick first element
+   ↓
+</span><span><span class="hljs-keyword">Execute</span></span><span> code
+   ↓
+Next element
+   ↓
+</span><span><span class="hljs-keyword">Until</span></span><span> </span><span><span class="hljs-keyword">sequence</span></span><span> ends
+   ↓
+Stop
+</span></span></code></div></div></pre>
+<hr data-start="1072" data-end="1075">
+<h3 data-start="1077" data-end="1112">🔹 Example 1: Loop Through List</h3>
+<pre class="overflow-visible! px-0!" data-start="1114" data-end="1182"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>marks = [</span><span><span class="hljs-number">85</span></span><span>, </span><span><span class="hljs-number">90</span></span><span>, </span><span><span class="hljs-number">78</span></span><span>, </span><span><span class="hljs-number">92</span></span><span>]
+
+</span><span><span class="hljs-keyword">for</span></span><span> m </span><span><span class="hljs-keyword">in</span></span><span> marks:
+    </span><span><span class="hljs-built_in">print</span></span><span>(m)
+</span></span></code></div></div></pre>
+<p data-start="1184" data-end="1189">Here:</p>
+<ul data-start="1190" data-end="1257">
+<li data-start="1190" data-end="1210">
+<p data-start="1192" data-end="1210"><code data-start="1192" data-end="1199">marks</code> → iterable</p>
+</li>
+<li data-start="1211" data-end="1237">
+<p data-start="1213" data-end="1237"><code data-start="1213" data-end="1216">m</code> → temporary variable</p>
+</li>
+<li data-start="1238" data-end="1257">
+<p data-start="1240" data-end="1257">Loop runs 4 times</p>
+</li>
+</ul>
+<hr data-start="1259" data-end="1262">
+<h3 data-start="1264" data-end="1295">🔹 Example 2: Using range()</h3>
+<p data-start="1297" data-end="1325"><code data-start="1297" data-end="1306">range()</code> generates numbers.</p>
+<pre class="overflow-visible! px-0!" data-start="1327" data-end="1372"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">for</span></span><span> i </span><span><span class="hljs-keyword">in</span></span><span> </span><span><span class="hljs-built_in">range</span></span><span>(</span><span><span class="hljs-number">5</span></span><span>):
+    </span><span><span class="hljs-built_in">print</span></span><span>(i)
+</span></span></code></div></div></pre>
+<p data-start="1374" data-end="1381">Output:</p>
+<pre class="overflow-visible! px-0!" data-start="1382" data-end="1399"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1"></div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>0
+1
+2
+3
+4
+</span></span></code></div></div></pre>
+<p data-start="1401" data-end="1411">Important:</p>
+<ul data-start="1412" data-end="1487">
+<li data-start="1412" data-end="1433">
+<p data-start="1414" data-end="1433"><code data-start="1414" data-end="1424">range(5)</code> → 0 to 4</p>
+</li>
+<li data-start="1434" data-end="1457">
+<p data-start="1436" data-end="1457"><code data-start="1436" data-end="1448">range(1,6)</code> → 1 to 5</p>
+</li>
+<li data-start="1458" data-end="1487">
+<p data-start="1460" data-end="1487"><code data-start="1460" data-end="1475">range(1,10,2)</code> → step of 2</p>
+</li>
+</ul>
+<hr data-start="1489" data-end="1492">
+<h3 data-start="1494" data-end="1525">🔹 Example 3: Calculate Sum</h3>
+<pre class="overflow-visible! px-0!" data-start="1527" data-end="1628"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>numbers = [</span><span><span class="hljs-number">10</span></span><span>, </span><span><span class="hljs-number">20</span></span><span>, </span><span><span class="hljs-number">30</span></span><span>]
+total = </span><span><span class="hljs-number">0</span></span><span>
+
+</span><span><span class="hljs-keyword">for</span></span><span> n </span><span><span class="hljs-keyword">in</span></span><span> numbers:
+    total = total + n
+
+</span><span><span class="hljs-built_in">print</span></span><span>(total)
+</span></span></code></div></div></pre>
+<p data-start="1630" data-end="1637">Output:</p>
+<pre class="overflow-visible! px-0!" data-start="1638" data-end="1648"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1"></div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>60
+</span></span></code></div></div></pre>
+<hr data-start="1650" data-end="1653">
+<h3 data-start="1655" data-end="1697">🔹 Indentation Rule (Very Important ⚠)</h3>
+<p data-start="1699" data-end="1752">Python uses <strong data-start="1711" data-end="1726">indentation</strong> instead of brackets <code data-start="1747" data-end="1751">{}</code>.</p>
+<p data-start="1754" data-end="1760">Wrong:</p>
+<pre class="overflow-visible! px-0!" data-start="1762" data-end="1807"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">for</span></span><span> i </span><span><span class="hljs-keyword">in</span></span><span> </span><span><span class="hljs-built_in">range</span></span><span>(</span><span><span class="hljs-number">3</span></span><span>):
+</span><span><span class="hljs-built_in">print</span></span><span>(i)   ❌
+</span></span></code></div></div></pre>
+<p data-start="1809" data-end="1817">Correct:</p>
+<pre class="overflow-visible! px-0!" data-start="1819" data-end="1864"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">for</span></span><span> i </span><span><span class="hljs-keyword">in</span></span><span> </span><span><span class="hljs-built_in">range</span></span><span>(</span><span><span class="hljs-number">3</span></span><span>):
+    </span><span><span class="hljs-built_in">print</span></span><span>(i)
+</span></span></code></div></div></pre>
+<hr data-start="1866" data-end="1869">
+<h3 data-start="1871" data-end="1893">🔹 Real-World Case</h3>
+<p data-start="1895" data-end="1933">Suppose a company records daily sales:</p>
+<pre class="overflow-visible! px-0!" data-start="1935" data-end="1981"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>sales = [</span><span><span class="hljs-number">1200</span></span><span>, </span><span><span class="hljs-number">1500</span></span><span>, </span><span><span class="hljs-number">1100</span></span><span>, </span><span><span class="hljs-number">1800</span></span><span>]
+</span></span></code></div></div></pre>
+<p data-start="1983" data-end="2023">Using a loop, we calculate weekly total.</p>
+<p data-start="2025" data-end="2074">This concept is fundamental in <strong data-start="2056" data-end="2073">data analysis</strong>.</p>
+<hr data-start="2076" data-end="2079">
+<h2 data-start="2081" data-end="2106">✅ Summary of For Loops</h2>
+<ul data-start="2108" data-end="2251">
+<li data-start="2108" data-end="2151">
+<p data-start="2110" data-end="2151">Used when number of repetitions is known.</p>
+</li>
+<li data-start="2152" data-end="2187">
+<p data-start="2154" data-end="2187">Works with lists, strings, range.</p>
+</li>
+<li data-start="2188" data-end="2218">
+<p data-start="2190" data-end="2218">Requires proper indentation.</p>
+</li>
+<li data-start="2219" data-end="2251">
+<p data-start="2221" data-end="2251">Essential for data processing.</p>
+</li>
+</ul>
+<hr data-start="2253" data-end="2256">
+<h1 data-start="2258" data-end="2282">5️⃣ If–Else Statements</h1>
+<hr data-start="2284" data-end="2287">
+<h2 data-start="2289" data-end="2308"><strong data-start="2292" data-end="2308">Introduction</strong></h2>
+<p data-start="2310" data-end="2339">Programs must make decisions.</p>
+<p data-start="2341" data-end="2349">Example:</p>
+<ul data-start="2350" data-end="2423">
+<li data-start="2350" data-end="2372">
+<p data-start="2352" data-end="2372">If marks ≥ 40 → Pass</p>
+</li>
+<li data-start="2373" data-end="2400">
+<p data-start="2375" data-end="2400">If temperature &gt; 30 → Hot</p>
+</li>
+<li data-start="2401" data-end="2423">
+<p data-start="2403" data-end="2423">If profit &gt; 0 → Gain</p>
+</li>
+</ul>
+<p data-start="2425" data-end="2483">This decision-making is done using <strong data-start="2460" data-end="2482">if–else statements</strong>.</p>
+<hr data-start="2485" data-end="2488">
+<h2 data-start="2490" data-end="2509"><strong data-start="2493" data-end="2509">Key Concepts</strong></h2>
+<ul data-start="2511" data-end="2604">
+<li data-start="2511" data-end="2532">
+<p data-start="2513" data-end="2532">Boolean condition</p>
+</li>
+<li data-start="2533" data-end="2557">
+<p data-start="2535" data-end="2557">Comparison operators</p>
+</li>
+<li data-start="2558" data-end="2579">
+<p data-start="2560" data-end="2579">Logical operators</p>
+</li>
+<li data-start="2580" data-end="2604">
+<p data-start="2582" data-end="2604"><code data-start="2582" data-end="2586">if</code>, <code data-start="2588" data-end="2594">elif</code>, <code data-start="2596" data-end="2602">else</code></p>
+</li>
+</ul>
+<hr data-start="2606" data-end="2609">
+<h2 data-start="2611" data-end="2638"><strong data-start="2614" data-end="2638">Detailed Explanation</strong></h2>
+<h3 data-start="2640" data-end="2659">🔹 Basic Syntax</h3>
+<pre class="overflow-visible! px-0!" data-start="2661" data-end="2722"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">if</span></span><span> condition:
+    statement
+</span><span><span class="hljs-keyword">else</span></span><span>:
+    statement
+</span></span></code></div></div></pre>
+<hr data-start="2724" data-end="2727">
+<h3 data-start="2729" data-end="2756">🔹 Comparison Operators</h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2758" data-end="2938" class="w-fit min-w-(--thread-content-width)"><thead data-start="2758" data-end="2780"><tr data-start="2758" data-end="2780"><th data-start="2758" data-end="2769" data-col-size="sm" class="">Operator</th><th data-start="2769" data-end="2780" data-col-size="sm" class="">Meaning</th></tr></thead><tbody data-start="2805" data-end="2938"><tr data-start="2805" data-end="2821"><td data-start="2805" data-end="2812" data-col-size="sm"><code data-start="2807" data-end="2811">==</code></td><td data-start="2812" data-end="2821" data-col-size="sm">Equal</td></tr><tr data-start="2822" data-end="2842"><td data-start="2822" data-end="2829" data-col-size="sm"><code data-start="2824" data-end="2828">!=</code></td><td data-start="2829" data-end="2842" data-col-size="sm">Not Equal</td></tr><tr data-start="2843" data-end="2865"><td data-start="2843" data-end="2849" data-col-size="sm"><code data-start="2845" data-end="2848">&gt;</code></td><td data-start="2849" data-end="2865" data-col-size="sm">Greater than</td></tr><tr data-start="2866" data-end="2885"><td data-start="2866" data-end="2872" data-col-size="sm"><code data-start="2868" data-end="2871">&lt;</code></td><td data-start="2872" data-end="2885" data-col-size="sm">Less than</td></tr><tr data-start="2886" data-end="2913"><td data-start="2886" data-end="2893" data-col-size="sm"><code data-start="2888" data-end="2892">&gt;=</code></td><td data-start="2893" data-end="2913" data-col-size="sm">Greater or Equal</td></tr><tr data-start="2914" data-end="2938"><td data-start="2914" data-end="2921" data-col-size="sm"><code data-start="2916" data-end="2920">&lt;=</code></td><td data-col-size="sm" data-start="2921" data-end="2938">Less or Equal</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2940" data-end="2943">
+<h3 data-start="2945" data-end="2979">🔹 Example 1: Simple Condition</h3>
+<pre class="overflow-visible! px-0!" data-start="2981" data-end="3064"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>marks = </span><span><span class="hljs-number">45</span></span><span>
+
+</span><span><span class="hljs-keyword">if</span></span><span> marks &gt;= </span><span><span class="hljs-number">40</span></span><span>:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"Pass"</span></span><span>)
+</span><span><span class="hljs-keyword">else</span></span><span>:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"Fail"</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="3066" data-end="3069">
+<h3 data-start="3071" data-end="3115">🔹 Example 2: Multiple Conditions (elif)</h3>
+<pre class="overflow-visible! px-0!" data-start="3117" data-end="3281"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>marks = </span><span><span class="hljs-number">75</span></span><span>
+
+</span><span><span class="hljs-keyword">if</span></span><span> marks &gt;= </span><span><span class="hljs-number">90</span></span><span>:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"A Grade"</span></span><span>)
+</span><span><span class="hljs-keyword">elif</span></span><span> marks &gt;= </span><span><span class="hljs-number">75</span></span><span>:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"B Grade"</span></span><span>)
+</span><span><span class="hljs-keyword">elif</span></span><span> marks &gt;= </span><span><span class="hljs-number">50</span></span><span>:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"C Grade"</span></span><span>)
+</span><span><span class="hljs-keyword">else</span></span><span>:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"Fail"</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="3283" data-end="3286">
+<h3 data-start="3288" data-end="3312">🔹 Logical Operators</h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3314" data-end="3441" class="w-fit min-w-(--thread-content-width)"><thead data-start="3314" data-end="3336"><tr data-start="3314" data-end="3336"><th data-start="3314" data-end="3325" data-col-size="sm" class="">Operator</th><th data-start="3325" data-end="3336" data-col-size="sm" class="">Meaning</th></tr></thead><tbody data-start="3361" data-end="3441"><tr data-start="3361" data-end="3382"><td data-start="3361" data-end="3369" data-col-size="sm"><code data-start="3363" data-end="3368">and</code></td><td data-col-size="sm" data-start="3369" data-end="3382">Both true</td></tr><tr data-start="3383" data-end="3411"><td data-start="3383" data-end="3390" data-col-size="sm"><code data-start="3385" data-end="3389">or</code></td><td data-col-size="sm" data-start="3390" data-end="3411">At least one true</td></tr><tr data-start="3412" data-end="3441"><td data-start="3412" data-end="3420" data-col-size="sm"><code data-start="3414" data-end="3419">not</code></td><td data-col-size="sm" data-start="3420" data-end="3441">Reverse condition</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="3443" data-end="3451">Example:</p>
+<pre class="overflow-visible! px-0!" data-start="3453" data-end="3547"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>age = </span><span><span class="hljs-number">20</span></span><span>
+citizen = </span><span><span class="hljs-literal">True</span></span><span>
+
+</span><span><span class="hljs-keyword">if</span></span><span> age &gt;= </span><span><span class="hljs-number">18</span></span><span> </span><span><span class="hljs-keyword">and</span></span><span> citizen:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"Eligible to vote"</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="3549" data-end="3552">
+<h3 data-start="3554" data-end="3576">🔹 Flow of If–Else</h3>
+<pre class="overflow-visible! px-0!" data-start="3578" data-end="3641"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Condition</span></span><span>?
+   ↓
+</span><span><span class="hljs-literal">True</span></span><span> → </span><span><span class="hljs-keyword">Execute</span></span><span> Block
+</span><span><span class="hljs-literal">False</span></span><span> → Go </span><span><span class="hljs-keyword">to</span></span><span> </span><span><span class="hljs-keyword">Else</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="3643" data-end="3646">
+<h3 data-start="3648" data-end="3690">🔹 Real-World Example (Business Logic)</h3>
+<p data-start="3692" data-end="3700">Suppose:</p>
+<ul data-start="3701" data-end="3745">
+<li data-start="3701" data-end="3727">
+<p data-start="3703" data-end="3727">If sales &gt; 50000 → Bonus</p>
+</li>
+<li data-start="3728" data-end="3745">
+<p data-start="3730" data-end="3745">Else → No bonus</p>
+</li>
+</ul>
+<pre class="overflow-visible! px-0!" data-start="3747" data-end="3849"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>sales = </span><span><span class="hljs-number">60000</span></span><span>
+
+</span><span><span class="hljs-keyword">if</span></span><span> sales &gt; </span><span><span class="hljs-number">50000</span></span><span>:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"Bonus Eligible"</span></span><span>)
+</span><span><span class="hljs-keyword">else</span></span><span>:
+    </span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"No Bonus"</span></span><span>)
+</span></span></code></div></div></pre>
+<p data-start="3851" data-end="3907">This logic is heavily used in <strong data-start="3881" data-end="3906">finance and analytics</strong>.</p>
+<hr data-start="3909" data-end="3912">
+<h2 data-start="3914" data-end="3937">✅ Summary of If–Else</h2>
+<ul data-start="3939" data-end="4060">
+<li data-start="3939" data-end="3966">
+<p data-start="3941" data-end="3966">Used for decision-making.</p>
+</li>
+<li data-start="3967" data-end="3997">
+<p data-start="3969" data-end="3997">Based on Boolean conditions.</p>
+</li>
+<li data-start="3998" data-end="4032">
+<p data-start="4000" data-end="4032">Can combine multiple conditions.</p>
+</li>
+<li data-start="4033" data-end="4060">
+<p data-start="4035" data-end="4060">Core logic-building tool.</p>
+</li>
+</ul>
+<hr data-start="4062" data-end="4065">
+<h1 data-start="4067" data-end="4090">6️⃣ Data Type: Tuples</h1>
+<hr data-start="4092" data-end="4095">
+<h2 data-start="4097" data-end="4116"><strong data-start="4100" data-end="4116">Introduction</strong></h2>
+<p data-start="4118" data-end="4177">A tuple is similar to a list but with one major difference:</p>
+<blockquote data-start="4179" data-end="4206">
+<p data-start="4181" data-end="4206">Tuples are <strong data-start="4192" data-end="4205">immutable</strong>.</p>
+</blockquote>
+<p data-start="4208" data-end="4248">They are written using parentheses <code data-start="4243" data-end="4247">()</code>.</p>
+<hr data-start="4250" data-end="4253">
+<h2 data-start="4255" data-end="4274"><strong data-start="4258" data-end="4274">Key Concepts</strong></h2>
+<ul data-start="4276" data-end="4338">
+<li data-start="4276" data-end="4287">
+<p data-start="4278" data-end="4287">Ordered</p>
+</li>
+<li data-start="4288" data-end="4301">
+<p data-start="4290" data-end="4301">Immutable</p>
+</li>
+<li data-start="4302" data-end="4314">
+<p data-start="4304" data-end="4314">Indexing</p>
+</li>
+<li data-start="4315" data-end="4338">
+<p data-start="4317" data-end="4338">Packing &amp; Unpacking</p>
+</li>
+</ul>
+<hr data-start="4340" data-end="4343">
+<h2 data-start="4345" data-end="4372"><strong data-start="4348" data-end="4372">Detailed Explanation</strong></h2>
+<h3 data-start="4374" data-end="4395">🔹 Creating Tuple</h3>
+<pre class="overflow-visible! px-0!" data-start="4397" data-end="4433"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>numbers = (</span><span><span class="hljs-number">10</span></span><span>, </span><span><span class="hljs-number">20</span></span><span>, </span><span><span class="hljs-number">30</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="4435" data-end="4438">
+<h3 data-start="4440" data-end="4455">🔹 Indexing</h3>
+<pre class="overflow-visible! px-0!" data-start="4457" data-end="4494"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-built_in">print</span></span><span>(numbers[</span><span><span class="hljs-number">0</span></span><span>])  </span><span><span class="hljs-comment"># 10</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4496" data-end="4499">
+<h3 data-start="4501" data-end="4526">🔹 Immutable Property</h3>
+<pre class="overflow-visible! px-0!" data-start="4528" data-end="4567"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>numbers[</span><span><span class="hljs-number">0</span></span><span>] = </span><span><span class="hljs-number">50</span></span><span>   ❌ Error
+</span></span></code></div></div></pre>
+<p data-start="4569" data-end="4610">Once created, tuple values cannot change.</p>
+<hr data-start="4612" data-end="4615">
+<h3 data-start="4617" data-end="4645">🔹 Packing and Unpacking</h3>
+<pre class="overflow-visible! px-0!" data-start="4647" data-end="4727"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>person = (</span><span><span class="hljs-string">"Rahul"</span></span><span>, </span><span><span class="hljs-number">21</span></span><span>, </span><span><span class="hljs-string">"Engineer"</span></span><span>)
+
+name, age, profession = person
+</span></span></code></div></div></pre>
+<p data-start="4729" data-end="4733">Now:</p>
+<ul data-start="4734" data-end="4789">
+<li data-start="4734" data-end="4750">
+<p data-start="4736" data-end="4750"><code data-start="4736" data-end="4750">name = Rahul</code></p>
+</li>
+<li data-start="4751" data-end="4763">
+<p data-start="4753" data-end="4763"><code data-start="4753" data-end="4763">age = 21</code></p>
+</li>
+<li data-start="4764" data-end="4789">
+<p data-start="4766" data-end="4789"><code data-start="4766" data-end="4789">profession = Engineer</code></p>
+</li>
+</ul>
+<hr data-start="4791" data-end="4794">
+<h3 data-start="4796" data-end="4827">🔹 Tuple vs List Comparison</h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4829" data-end="5016" class="w-fit min-w-(--thread-content-width)"><thead data-start="4829" data-end="4855"><tr data-start="4829" data-end="4855"><th data-start="4829" data-end="4839" data-col-size="sm" class="">Feature</th><th data-start="4839" data-end="4847" data-col-size="sm" class="">Tuple</th><th data-start="4847" data-end="4855" data-col-size="sm" class="">List</th></tr></thead><tbody data-start="4886" data-end="5016"><tr data-start="4886" data-end="4908"><td data-start="4886" data-end="4897" data-col-size="sm">Brackets</td><td data-col-size="sm" data-start="4897" data-end="4902">()</td><td data-col-size="sm" data-start="4902" data-end="4908">[]</td></tr><tr data-start="4909" data-end="4935"><td data-start="4909" data-end="4919" data-col-size="sm">Mutable</td><td data-col-size="sm" data-start="4919" data-end="4926">❌ No</td><td data-col-size="sm" data-start="4926" data-end="4935">✅ Yes</td></tr><tr data-start="4936" data-end="4972"><td data-start="4936" data-end="4945" data-col-size="sm">Faster</td><td data-col-size="sm" data-start="4945" data-end="4953">✅ Yes</td><td data-col-size="sm" data-start="4953" data-end="4972">Slightly slower</td></tr><tr data-start="4973" data-end="5016"><td data-start="4973" data-end="4984" data-col-size="sm">Use Case</td><td data-col-size="sm" data-start="4984" data-end="4997">Fixed data</td><td data-col-size="sm" data-start="4997" data-end="5016">Changeable data</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5018" data-end="5021">
+<h3 data-start="5023" data-end="5049">🔹 Real-World Use Case</h3>
+<p data-start="5051" data-end="5063">Coordinates:</p>
+<pre class="overflow-visible! px-0!" data-start="5065" data-end="5108"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>location = (</span><span><span class="hljs-number">19.0760</span></span><span>, </span><span><span class="hljs-number">72.8777</span></span><span>)
+</span></span></code></div></div></pre>
+<p data-start="5110" data-end="5157">Since coordinates never change, tuple is ideal.</p>
+<hr data-start="5159" data-end="5162">
+<h1 data-start="5164" data-end="5194">✅ Summary of Unit 1 – Part 2</h1>
+<p data-start="5196" data-end="5221">In this part, we learned:</p>
+<p data-start="5223" data-end="5380">✔ For loops (definite loops)<br data-start="5251" data-end="5254">
+✔ range() function<br data-start="5272" data-end="5275">
+✔ If–Else decision-making<br data-start="5300" data-end="5303">
+✔ Logical operators<br data-start="5322" data-end="5325">
+✔ Tuple data type<br data-start="5342" data-end="5345">
+✔ Mutable vs Immutable comparison</p>
+<p data-start="5382" data-end="5409">These concepts allow us to:</p>
+<ul data-start="5410" data-end="5499">
+<li data-start="5410" data-end="5437">
+<p data-start="5412" data-end="5437">Automate repetitive tasks</p>
+</li>
+<li data-start="5438" data-end="5469">
+<p data-start="5440" data-end="5469">Build decision-based programs</p>
+</li>
+<li data-start="5470" data-end="5499">
+<p data-start="5472" data-end="5499">Store fixed structured data</p>
+</li>
+</ul>
+<hr data-start="5501" data-end="5504">
+<p data-start="5506" data-end="5535"><strong data-start="5506" data-end="5535"><em data-start="5508" data-end="5533">End of Unit 1 – Part 2.</em></strong></p>
+<p data-start="5537" data-end="5600" data-is-last-node="" data-is-only-node="">Continue to <strong data-start="5549" data-end="5600" data-is-last-node="">Part 3 (Build Mortgage Calculator with Python)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="41824a87-1d6c-4864-bc8b-6db73f3d5d2e" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><h1 data-start="0" data-end="68"><strong data-start="2" data-end="13">STATUS:</strong> Unit 1 – Introduction to Python | Part 3 of 3 (Approx)</h1>
+<hr data-start="70" data-end="73">
+<p data-start="75" data-end="181">In this final part of Unit 1, we apply everything we have learned so far to build a practical application:</p>
+<h1 data-start="183" data-end="225">🏦 Build Mortgage Calculator with Python</h1>
+<p data-start="227" data-end="251">This project integrates:</p>
+<ul data-start="253" data-end="381">
+<li data-start="253" data-end="266">
+<p data-start="255" data-end="266">Variables</p>
+</li>
+<li data-start="267" data-end="282">
+<p data-start="269" data-end="282">int &amp; float</p>
+</li>
+<li data-start="283" data-end="307">
+<p data-start="285" data-end="307">Arithmetic operators</p>
+</li>
+<li data-start="308" data-end="325">
+<p data-start="310" data-end="325">If–Else logic</p>
+</li>
+<li data-start="326" data-end="366">
+<p data-start="328" data-end="366">For loops (conceptual understanding)</p>
+</li>
+<li data-start="367" data-end="381">
+<p data-start="369" data-end="381">User input</p>
+</li>
+</ul>
+<p data-start="383" data-end="440">This is our first real-world financial computation model.</p>
+<hr data-start="442" data-end="445">
+<h1 data-start="447" data-end="490">7️⃣ Build Mortgage Calculator with Python</h1>
+<hr data-start="492" data-end="495">
+<h2 data-start="497" data-end="516"><strong data-start="500" data-end="516">Introduction</strong></h2>
+<p data-start="518" data-end="628">A <strong data-start="520" data-end="543">Mortgage Calculator</strong> calculates the EMI (Equated Monthly Installment) that a borrower must pay to a bank.</p>
+<p data-start="630" data-end="707">In finance and business analytics, such calculations are extremely important.</p>
+<p data-start="709" data-end="728">The EMI formula is:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mi>M</mi><mi>I</mi><mo>=</mo><mfrac><mrow><mi>P</mi><mo>×</mo><mi>R</mi><mo>×</mo><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>R</mi><msup><mo stretchy="false">)</mo><mi>N</mi></msup></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>R</mi><msup><mo stretchy="false">)</mo><mi>N</mi></msup><mo>−</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">EMI = \frac{P \times R \times (1+R)^N}{(1+R)^N - 1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">EM</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.4543em; vertical-align: -0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.5183em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.7673em;"><span style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.10903em;">N</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord">1</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8413em;"><span style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p data-start="789" data-end="795">Where:</p>
+<ul data-start="797" data-end="893">
+<li data-start="797" data-end="830">
+<p data-start="799" data-end="830"><strong data-start="799" data-end="804">P</strong> = Principal Loan Amount</p>
+</li>
+<li data-start="831" data-end="864">
+<p data-start="833" data-end="864"><strong data-start="833" data-end="838">R</strong> = Monthly Interest Rate</p>
+</li>
+<li data-start="865" data-end="893">
+<p data-start="867" data-end="893"><strong data-start="867" data-end="872">N</strong> = Number of Months</p>
+</li>
+</ul>
+<hr data-start="895" data-end="898">
+<h2 data-start="900" data-end="924"><strong data-start="903" data-end="924">Key Concepts Used</strong></h2>
+<ul data-start="926" data-end="1037">
+<li data-start="926" data-end="946">
+<p data-start="928" data-end="946">Float arithmetic</p>
+</li>
+<li data-start="947" data-end="970">
+<p data-start="949" data-end="970">Power operator <code data-start="964" data-end="968">**</code></p>
+</li>
+<li data-start="971" data-end="985">
+<p data-start="973" data-end="985">User input</p>
+</li>
+<li data-start="986" data-end="1005">
+<p data-start="988" data-end="1005">Type conversion</p>
+</li>
+<li data-start="1006" data-end="1037">
+<p data-start="1008" data-end="1037">Financial computation logic</p>
+</li>
+</ul>
+<hr data-start="1039" data-end="1042">
+<h2 data-start="1044" data-end="1073"><strong data-start="1047" data-end="1073">Step-by-Step Breakdown</strong></h2>
+<hr data-start="1075" data-end="1078">
+<h3 data-start="1080" data-end="1110">🔹 Step 1: Take User Input</h3>
+<pre class="overflow-visible! px-0!" data-start="1112" data-end="1286"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>principal = </span><span><span class="hljs-built_in">float</span></span><span>(</span><span><span class="hljs-built_in">input</span></span><span>(</span><span><span class="hljs-string">"Enter loan amount: "</span></span><span>))
+annual_rate = </span><span><span class="hljs-built_in">float</span></span><span>(</span><span><span class="hljs-built_in">input</span></span><span>(</span><span><span class="hljs-string">"Enter annual interest rate (%): "</span></span><span>))
+years = </span><span><span class="hljs-built_in">int</span></span><span>(</span><span><span class="hljs-built_in">input</span></span><span>(</span><span><span class="hljs-string">"Enter loan tenure (years): "</span></span><span>))
+</span></span></code></div></div></pre>
+<p data-start="1288" data-end="1298">Important:</p>
+<ul data-start="1300" data-end="1372">
+<li data-start="1300" data-end="1334">
+<p data-start="1302" data-end="1334"><code data-start="1302" data-end="1311">input()</code> always returns string.</p>
+</li>
+<li data-start="1335" data-end="1372">
+<p data-start="1337" data-end="1372">We convert to <code data-start="1351" data-end="1360">float()</code> or <code data-start="1364" data-end="1371">int()</code>.</p>
+</li>
+</ul>
+<hr data-start="1374" data-end="1377">
+<h3 data-start="1379" data-end="1429">🔹 Step 2: Convert Annual Rate to Monthly Rate</h3>
+<p data-start="1431" data-end="1461">Annual rate must be converted:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mo>=</mo><mfrac><mrow><mi>A</mi><mi>n</mi><mi>n</mi><mi>u</mi><mi>a</mi><mi>l</mi><mtext>&nbsp;</mtext><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi></mrow><mrow><mn>12</mn><mo>×</mo><mn>100</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">R = \frac{Annual\ Rate}{12 \times 100}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.1408em; vertical-align: -0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3714em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">12</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord">100</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="mord mathnormal">nn</span><span class="mord mathnormal">u</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right: 0.01968em;">l</span><span class="mspace">&nbsp;</span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<pre class="overflow-visible! px-0!" data-start="1509" data-end="1562"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>monthly_rate = annual_rate / (</span><span><span class="hljs-number">12</span></span><span> * </span><span><span class="hljs-number">100</span></span><span>)
+</span></span></code></div></div></pre>
+<hr data-start="1564" data-end="1567">
+<h3 data-start="1569" data-end="1607">🔹 Step 3: Convert Years to Months</h3>
+<pre class="overflow-visible! px-0!" data-start="1609" data-end="1642"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>months = years * </span><span><span class="hljs-number">12</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="1644" data-end="1647">
+<h3 data-start="1649" data-end="1681">🔹 Step 4: Apply EMI Formula</h3>
+<pre class="overflow-visible! px-0!" data-start="1683" data-end="1805"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>emi = (principal * monthly_rate * (</span><span><span class="hljs-number">1</span></span><span> + monthly_rate) ** months) / \
+      ((</span><span><span class="hljs-number">1</span></span><span> + monthly_rate) ** months - </span><span><span class="hljs-number">1</span></span><span>)
+</span></span></code></div></div></pre>
+<p data-start="1807" data-end="1814">Notice:</p>
+<ul data-start="1815" data-end="1882">
+<li data-start="1815" data-end="1840">
+<p data-start="1817" data-end="1840"><code data-start="1817" data-end="1821">**</code> is power operator.</p>
+</li>
+<li data-start="1841" data-end="1882">
+<p data-start="1843" data-end="1882">Entire formula uses float calculations.</p>
+</li>
+</ul>
+<hr data-start="1884" data-end="1887">
+<h3 data-start="1889" data-end="1916">🔹 Step 5: Print Result</h3>
+<pre class="overflow-visible! px-0!" data-start="1918" data-end="1976"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"Your Monthly EMI is:"</span></span><span>, </span><span><span class="hljs-built_in">round</span></span><span>(emi, </span><span><span class="hljs-number">2</span></span><span>))
+</span></span></code></div></div></pre>
+<p data-start="1978" data-end="2019"><code data-start="1978" data-end="1993">round(emi, 2)</code> → Shows 2 decimal places.</p>
+<hr data-start="2021" data-end="2024">
+<h1 data-start="2026" data-end="2047">🧠 Complete Program</h1>
+<pre class="overflow-visible! px-0!" data-start="2049" data-end="2440"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span>principal = </span><span><span class="hljs-built_in">float</span></span><span>(</span><span><span class="hljs-built_in">input</span></span><span>(</span><span><span class="hljs-string">"Enter loan amount: "</span></span><span>))
+annual_rate = </span><span><span class="hljs-built_in">float</span></span><span>(</span><span><span class="hljs-built_in">input</span></span><span>(</span><span><span class="hljs-string">"Enter annual interest rate (%): "</span></span><span>))
+years = </span><span><span class="hljs-built_in">int</span></span><span>(</span><span><span class="hljs-built_in">input</span></span><span>(</span><span><span class="hljs-string">"Enter loan tenure (years): "</span></span><span>))
+
+monthly_rate = annual_rate / (</span><span><span class="hljs-number">12</span></span><span> * </span><span><span class="hljs-number">100</span></span><span>)
+months = years * </span><span><span class="hljs-number">12</span></span><span>
+
+emi = (principal * monthly_rate * (</span><span><span class="hljs-number">1</span></span><span> + monthly_rate) ** months) / \
+      ((</span><span><span class="hljs-number">1</span></span><span> + monthly_rate) ** months - </span><span><span class="hljs-number">1</span></span><span>)
+
+</span><span><span class="hljs-built_in">print</span></span><span>(</span><span><span class="hljs-string">"Your Monthly EMI is:"</span></span><span>, </span><span><span class="hljs-built_in">round</span></span><span>(emi, </span><span><span class="hljs-number">2</span></span><span>))
+</span></span></code></div></div></pre>
+<hr data-start="2442" data-end="2445">
+<h1 data-start="2447" data-end="2469">📊 Example Execution</h1>
+<p data-start="2471" data-end="2477">Input:</p>
+<pre class="overflow-visible! px-0!" data-start="2479" data-end="2521"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">ini</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-attr">Loan</span></span><span> = </span><span><span class="hljs-number">500000</span></span><span>
+</span><span><span class="hljs-attr">Rate</span></span><span> = </span><span><span class="hljs-number">10</span></span><span>%
+</span><span><span class="hljs-attr">Years</span></span><span> = </span><span><span class="hljs-number">5</span></span><span>
+</span></span></code></div></div></pre>
+<p data-start="2523" data-end="2530">Output:</p>
+<pre class="overflow-visible! px-0!" data-start="2532" data-end="2569"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">csharp</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Your Monthly EMI </span><span><span class="hljs-keyword">is</span></span><span>: </span><span><span class="hljs-number">10624.67</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="2571" data-end="2574">
+<h1 data-start="2576" data-end="2613">🔎 Flowchart of Mortgage Calculator</h1>
+<pre class="overflow-visible! px-0!" data-start="2615" data-end="2759"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Start</span></span><span>
+   ↓
+Input P, Rate, Years
+   ↓
+</span><span><span class="hljs-keyword">Convert</span></span><span> Rate → Monthly
+   ↓
+</span><span><span class="hljs-keyword">Convert</span></span><span> Years → Months
+   ↓
+Apply EMI Formula
+   ↓
+Display EMI
+   ↓
+</span><span><span class="hljs-keyword">End</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="2761" data-end="2764">
+<h1 data-start="2766" data-end="2795">🔬 Conceptual Understanding</h1>
+<p data-start="2797" data-end="2834">Let us understand the formula deeply.</p>
+<h3 data-start="2836" data-end="2864">Why do we use <code data-start="2854" data-end="2863">(1+R)^N</code>?</h3>
+<p data-start="2866" data-end="2874">Because:</p>
+<ul data-start="2875" data-end="2974">
+<li data-start="2875" data-end="2904">
+<p data-start="2877" data-end="2904">Interest compounds monthly.</p>
+</li>
+<li data-start="2905" data-end="2936">
+<p data-start="2907" data-end="2936">Each month interest is added.</p>
+</li>
+<li data-start="2937" data-end="2974">
+<p data-start="2939" data-end="2974">Compound growth formula is applied.</p>
+</li>
+</ul>
+<hr data-start="2976" data-end="2979">
+<h1 data-start="2981" data-end="3010">📈 Financial Interpretation</h1>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3012" data-end="3170" class="w-fit min-w-(--thread-content-width)"><thead data-start="3012" data-end="3035"><tr data-start="3012" data-end="3035"><th data-start="3012" data-end="3024" data-col-size="sm" class="">Component</th><th data-start="3024" data-end="3035" data-col-size="sm" class="">Meaning</th></tr></thead><tbody data-start="3061" data-end="3170"><tr data-start="3061" data-end="3088"><td data-start="3061" data-end="3073" data-col-size="sm">Principal</td><td data-col-size="sm" data-start="3073" data-end="3088">Loan amount</td></tr><tr data-start="3089" data-end="3117"><td data-start="3089" data-end="3096" data-col-size="sm">Rate</td><td data-col-size="sm" data-start="3096" data-end="3117">Cost of borrowing</td></tr><tr data-start="3118" data-end="3142"><td data-start="3118" data-end="3127" data-col-size="sm">Tenure</td><td data-col-size="sm" data-start="3127" data-end="3142">Time period</td></tr><tr data-start="3143" data-end="3170"><td data-start="3143" data-end="3149" data-col-size="sm">EMI</td><td data-col-size="sm" data-start="3149" data-end="3170">Monthly repayment</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="3172" data-end="3198">Banks use this formula in:</p>
+<ul data-start="3199" data-end="3247">
+<li data-start="3199" data-end="3213">
+<p data-start="3201" data-end="3213">Home loans</p>
+</li>
+<li data-start="3214" data-end="3227">
+<p data-start="3216" data-end="3227">Car loans</p>
+</li>
+<li data-start="3228" data-end="3247">
+<p data-start="3230" data-end="3247">Education loans</p>
+</li>
+</ul>
+<hr data-start="3249" data-end="3252">
+<h1 data-start="3254" data-end="3292">⚠ Edge Case Handling (Using If–Else)</h1>
+<p data-start="3294" data-end="3321">What if interest rate is 0?</p>
+<pre class="overflow-visible! px-0!" data-start="3323" data-end="3510"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">python</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-python"><span><span><span class="hljs-keyword">if</span></span><span> monthly_rate == </span><span><span class="hljs-number">0</span></span><span>:
+    emi = principal / months
+</span><span><span class="hljs-keyword">else</span></span><span>:
+    emi = (principal * monthly_rate * (</span><span><span class="hljs-number">1</span></span><span> + monthly_rate) ** months) / \
+          ((</span><span><span class="hljs-number">1</span></span><span> + monthly_rate) ** months - </span><span><span class="hljs-number">1</span></span><span>)
+</span></span></code></div></div></pre>
+<p data-start="3512" data-end="3549">This prevents division by zero error.</p>
+<hr data-start="3551" data-end="3554">
+<h1 data-start="3556" data-end="3601">🏦 Real-World Extension (Advanced Thinking)</h1>
+<p data-start="3603" data-end="3632">Using loops, we can generate:</p>
+<ul data-start="3634" data-end="3711">
+<li data-start="3634" data-end="3657">
+<p data-start="3636" data-end="3657">Amortization schedule</p>
+</li>
+<li data-start="3658" data-end="3679">
+<p data-start="3660" data-end="3679">Total interest paid</p>
+</li>
+<li data-start="3680" data-end="3711">
+<p data-start="3682" data-end="3711">Principal remaining per month</p>
+</li>
+</ul>
+<p data-start="3713" data-end="3727">Example logic:</p>
+<pre class="overflow-visible! px-0!" data-start="3729" data-end="3825"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">For</span></span><span> </span><span><span class="hljs-keyword">each</span></span><span> </span><span><span class="hljs-keyword">month</span></span><span>:
+    Calculate interest </span><span><span class="hljs-keyword">portion</span></span><span>
+    Subtract principal
+    </span><span><span class="hljs-keyword">Update</span></span><span> balance
+</span></span></code></div></div></pre>
+<p data-start="3827" data-end="3897">This forms the foundation of <strong data-start="3856" data-end="3896">financial data analysis using Python</strong>.</p>
+<hr data-start="3899" data-end="3902">
+<h1 data-start="3904" data-end="3935">🎯 What We Achieved in Unit 1</h1>
+<p data-start="3937" data-end="3980">We have now completed all topics in Unit 1:</p>
+<p data-start="3982" data-end="4105">✔ Variables<br data-start="3993" data-end="3996">
+✔ Numeric Types<br data-start="4011" data-end="4014">
+✔ Strings &amp; Lists<br data-start="4031" data-end="4034">
+✔ For Loops<br data-start="4045" data-end="4048">
+✔ If–Else<br data-start="4057" data-end="4060">
+✔ Tuples<br data-start="4068" data-end="4071">
+✔ Real-world Mortgage Calculator</p>
+<hr data-start="4107" data-end="4110">
+<h1 data-start="4112" data-end="4140">🧪 Review Section – Unit 1</h1>
+<hr data-start="4142" data-end="4145">
+<h2 data-start="4147" data-end="4157">🔹 MCQs</h2>
+<ol data-start="4159" data-end="4401">
+<li data-start="4159" data-end="4235">
+<p data-start="4162" data-end="4235">Which operator is used for power?<br>
+a) ^<br data-start="4203" data-end="4206">
+b) **<br data-start="4214" data-end="4217">
+c) //<br data-start="4225" data-end="4228">
+d) %</p>
+</li>
+<li data-start="4237" data-end="4327">
+<p data-start="4240" data-end="4327">Which data type is immutable?<br>
+a) List<br data-start="4280" data-end="4283">
+b) Dictionary<br data-start="4299" data-end="4302">
+c) Tuple<br data-start="4313" data-end="4316">
+d) Set</p>
+</li>
+<li data-start="4329" data-end="4401">
+<p data-start="4332" data-end="4401"><code data-start="4332" data-end="4342">range(5)</code> generates:<br>
+a) 1–5<br data-start="4363" data-end="4366">
+b) 0–5<br data-start="4375" data-end="4378">
+c) 0–4<br data-start="4387" data-end="4390">
+d) 1–4</p>
+</li>
+</ol>
+<hr data-start="4403" data-end="4406">
+<h2 data-start="4408" data-end="4436">🔹 Short Answer Questions</h2>
+<ol data-start="4438" data-end="4545">
+<li data-start="4438" data-end="4466">
+<p data-start="4441" data-end="4466">Explain dynamic typing.</p>
+</li>
+<li data-start="4467" data-end="4509">
+<p data-start="4470" data-end="4509">Differentiate between list and tuple.</p>
+</li>
+<li data-start="4510" data-end="4545">
+<p data-start="4513" data-end="4545">What is indentation in Python?</p>
+</li>
+</ol>
+<hr data-start="4547" data-end="4550">
+<h2 data-start="4552" data-end="4579">🔹 Descriptive Questions</h2>
+<ol data-start="4581" data-end="4726">
+<li data-start="4581" data-end="4617">
+<p data-start="4584" data-end="4617">Explain for loop with examples.</p>
+</li>
+<li data-start="4618" data-end="4675">
+<p data-start="4621" data-end="4675">Write a Python program to calculate simple interest.</p>
+</li>
+<li data-start="4676" data-end="4726">
+<p data-start="4679" data-end="4726">Explain EMI formula with Python implementation.</p>
+</li>
+</ol>
+<hr data-start="4728" data-end="4731">
+<h1 data-start="4733" data-end="4756">✅ <strong data-start="4737" data-end="4756">Unit 1 Complete</strong></h1>
+<p data-start="4758" data-end="4808">You now have a strong foundation in Python basics.</p>
+<hr data-start="4810" data-end="4813">
+<h1 data-start="4815" data-end="4830">🚀 Next Step:</h1>
+<p data-start="4832" data-end="4885" data-is-last-node="" data-is-only-node="">Shall we begin <strong data-start="4847" data-end="4884">Unit 2 – Advanced Python (Part 1)</strong>?</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
