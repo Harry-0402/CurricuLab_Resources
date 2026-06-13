@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1: Introduction to Data Management and Data Warehousing</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 1: Introduction to Data Management and Data Warehousing</h1>
+    
+    <h2>Introduction</h2>
+    <p>In the digital era, organizations generate and store vast amounts of data from customers, employees, transactions, websites, and business operations. Proper management of this data is essential for effective decision-making, operational efficiency, and competitive advantage.</p>
+    <p>Data Management ensures that data is collected, stored, processed, and maintained efficiently. Data Warehousing provides a centralized repository where data from multiple sources can be stored and analyzed for business intelligence and decision-making.</p>
+    <p>This unit introduces the fundamentals of Data Management, Data Lifecycle, Data Models, Database Management Systems (DBMS), Data Warehousing, OLTP, OLAP, and Data Warehouse Architecture.</p>
+
+    <h1>Part A: Introduction to Data Management</h1>
+    
+    <h2>Topic 1: Importance of Data Management in Organizations</h2>
+    <h3>Explanation</h3>
+    <p>Data Management refers to the process of collecting, storing, organizing, protecting, and maintaining data throughout its lifecycle.</p>
+    <p>Organizations rely on data for:</p>
+    <ul>
+      <li>Decision-making</li>
+      <li>Customer management</li>
+      <li>Financial planning</li>
+      <li>Operational efficiency</li>
+      <li>Strategic growth</li>
+    </ul>
+
+    <h3>Why Data Management is Important</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Better Decision Making</strong></td>
+          <td>Provides accurate information</td>
+        </tr>
+        <tr>
+          <td><strong>Improved Efficiency</strong></td>
+          <td>Reduces duplication and errors</td>
+        </tr>
+        <tr>
+          <td><strong>Data Security</strong></td>
+          <td>Protects sensitive information</td>
+        </tr>
+        <tr>
+          <td><strong>Regulatory Compliance</strong></td>
+          <td>Meets legal requirements</td>
+        </tr>
+        <tr>
+          <td><strong>Business Growth</strong></td>
+          <td>Supports strategic planning</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Objectives of Data Management</h3>
+    <ul>
+      <li>Ensure data accuracy.</li>
+      <li>Maintain data consistency.</li>
+      <li>Improve accessibility.</li>
+      <li>Protect organizational information.</li>
+      <li>Support business intelligence initiatives.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Amazon manages customer, inventory, and transaction data to ensure efficient operations and personalized recommendations.</p>
+    <p><strong>Example 2 (Practical):</strong> A college maintains student records, attendance, and examination results through proper data management systems.</p>
+
+    <h2>Topic 2: Data Lifecycle and Data Management Processes</h2>
+    <h3>Explanation</h3>
+    <p>The Data Lifecycle represents the journey of data from creation to disposal.</p>
+
+    <h3>Stages of Data Lifecycle</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Creation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Storage</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Processing</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Analysis</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Sharing</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Archiving</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Disposal</div>
+    </div>
+
+    <h3>Data Management Processes</h3>
+    <p><strong>1. Data Collection</strong><br>Gathering information from various sources.</p>
+    <p><strong>2. Data Storage</strong><br>Saving data in databases or data warehouses.</p>
+    <p><strong>3. Data Processing</strong><br>Converting raw data into useful information.</p>
+    <p><strong>4. Data Analysis</strong><br>Extracting insights and patterns.</p>
+    <p><strong>5. Data Security</strong><br>Protecting data from unauthorized access.</p>
+
+    <p><strong>Example 1 (Business):</strong> A bank collects customer transaction data, stores it securely, processes it for reporting, and archives old records.</p>
+    <p><strong>Example 2 (Practical):</strong> A mobile application collects user activity data and stores it for future analysis.</p>
+
+    <h2>Topic 3: Types of Data Models</h2>
+    <h3>Explanation</h3>
+    <p>A Data Model defines how data is organized, stored, and related within a database. The syllabus covers three major data models:</p>
+    <ul>
+      <li>Hierarchical Model</li>
+      <li>Network Model</li>
+      <li>Relational Model</li>
+    </ul>
+
+    <h3>A. Hierarchical Data Model</h3>
+    <h4>Explanation</h4>
+    <p>The Hierarchical Model organizes data in a tree-like structure.</p>
+
+    <h4>Characteristics</h4>
+    <ul>
+      <li>Parent-child relationship.</li>
+      <li>One parent can have multiple children.</li>
+      <li>Each child has only one parent.</li>
+    </ul>
+
+    <h4>Structure</h4>
+    <div class="flow-container">
+      <div class="flow-step">Company</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Department</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Employee</div>
+    </div>
+
+    <h4>Advantages</h4>
+    <ul>
+      <li>Simple structure.</li>
+      <li>Fast access for hierarchical data.</li>
+    </ul>
+
+    <h4>Limitations</h4>
+    <ul>
+      <li>Inflexible relationships.</li>
+      <li>Difficult modifications.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> An organization's structure showing CEO &rarr; Managers &rarr; Employees.</p>
+    <p><strong>Example 2 (Practical):</strong> Folders and subfolders in a computer system.</p>
+
+    <h3>B. Network Data Model</h3>
+    <h4>Explanation</h4>
+    <p>The Network Model allows many-to-many relationships among records.</p>
+
+    <h4>Characteristics</h4>
+    <ul>
+      <li>Flexible relationships.</li>
+      <li>Multiple parent records possible.</li>
+      <li>Graph-like structure.</li>
+    </ul>
+
+    <h4>Structure</h4>
+    <div class="flow-container">
+      <div class="flow-step">Student</div>
+      <div class="flow-arrow">&updownarrow;</div>
+      <div class="flow-step">Course</div>
+      <div class="flow-arrow">&updownarrow;</div>
+      <div class="flow-step">Instructor</div>
+    </div>
+
+    <h4>Advantages</h4>
+    <ul>
+      <li>Greater flexibility.</li>
+      <li>Supports complex relationships.</li>
+    </ul>
+
+    <h4>Limitations</h4>
+    <ul>
+      <li>Complex design.</li>
+      <li>Difficult maintenance.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Employees working on multiple projects simultaneously.</p>
+    <p><strong>Example 2 (Practical):</strong> Social networking platforms where users connect with multiple people.</p>
+
+    <h3>C. Relational Data Model</h3>
+    <h4>Explanation</h4>
+    <p>The Relational Model organizes data into tables (relations). It is the most widely used data model today.</p>
+
+    <h4>Characteristics</h4>
+    <ul>
+      <li>Data stored in rows and columns.</li>
+      <li>Uses primary and foreign keys.</li>
+      <li>Supports SQL queries.</li>
+    </ul>
+
+    <h4>Sample Table</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Course</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>101</td>
+          <td>Rahul</td>
+          <td>MBA</td>
+        </tr>
+        <tr>
+          <td>102</td>
+          <td>Priya</td>
+          <td>MBA</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Advantages</h4>
+    <ul>
+      <li>Easy to understand.</li>
+      <li>Flexible querying.</li>
+      <li>High data integrity.</li>
+    </ul>
+
+    <h4>Limitations</h4>
+    <ul>
+      <li>Performance issues with very large datasets.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A banking database storing customer information in tables.</p>
+    <p><strong>Example 2 (Practical):</strong> A school maintaining student records in database tables.</p>
+
+    <h3>Comparison of Data Models</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Hierarchical</th>
+          <th>Network</th>
+          <th>Relational</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Structure</strong></td>
+          <td>Tree</td>
+          <td>Graph</td>
+          <td>Tables</td>
+        </tr>
+        <tr>
+          <td><strong>Relationship</strong></td>
+          <td>One-to-Many</td>
+          <td>Many-to-Many</td>
+          <td>Flexible</td>
+        </tr>
+        <tr>
+          <td><strong>Complexity</strong></td>
+          <td>Low</td>
+          <td>High</td>
+          <td>Moderate</td>
+        </tr>
+        <tr>
+          <td><strong>Usage</strong></td>
+          <td>Limited</td>
+          <td>Specialized</td>
+          <td>Most Common</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Topic 4: Introduction to Database Management Systems (DBMS)</h2>
+    <h3>Explanation</h3>
+    <p>A Database Management System (DBMS) is software used to create, manage, and control databases.</p>
+
+    <h3>Functions of DBMS</h3>
+    <ul>
+      <li>Data Storage</li>
+      <li>Data Retrieval</li>
+      <li>Data Security</li>
+      <li>Data Backup</li>
+      <li>Data Integrity</li>
+    </ul>
+
+    <h3>Components of DBMS</h3>
+    <div class="flow-container">
+      <div class="flow-step">Users</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">DBMS Software</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Database</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Storage System</div>
+    </div>
+
+    <h3>Advantages</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Advantage</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Reduced Redundancy</strong></td>
+          <td>Eliminates duplicate data</td>
+        </tr>
+        <tr>
+          <td><strong>Data Security</strong></td>
+          <td>Protects information</td>
+        </tr>
+        <tr>
+          <td><strong>Data Sharing</strong></td>
+          <td>Supports multiple users</td>
+        </tr>
+        <tr>
+          <td><strong>Data Integrity</strong></td>
+          <td>Ensures consistency</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Examples of DBMS</h3>
+    <ul>
+      <li>MySQL</li>
+      <li>Oracle Database</li>
+      <li>Microsoft SQL Server</li>
+      <li>PostgreSQL</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Oracle Corporation provides DBMS solutions used by enterprises worldwide.</p>
+    <p><strong>Example 2 (Practical):</strong> A library management system stores book and member records using a DBMS.</p>
+
+    <h1>Part B: Basic Concepts of Data Warehousing</h1>
+    
+    <h2>Topic 5: Definition and Purpose of Data Warehousing</h2>
+    <h3>Explanation</h3>
+    <p>A Data Warehouse is a centralized repository designed to store large volumes of historical data from multiple sources.</p>
+
+    <h3>Definition</h3>
+    <p>A Data Warehouse is a subject-oriented, integrated, time-variant, and non-volatile collection of data used for decision support.</p>
+
+    <h3>Purpose</h3>
+    <ul>
+      <li>Support business intelligence.</li>
+      <li>Improve decision-making.</li>
+      <li>Enable historical analysis.</li>
+      <li>Consolidate data from multiple sources.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Walmart uses data warehouses to analyze customer purchasing behavior.</p>
+    <p><strong>Example 2 (Practical):</strong> A university stores admission, attendance, and examination data in a centralized warehouse for reporting.</p>
+
+    <h2>Topic 6: Data Warehousing Characteristics</h2>
+    <h3>Explanation</h3>
+    <p>A Data Warehouse possesses four key characteristics.</p>
+    
+    <p><strong>Subject-Oriented</strong><br>Organized around major business subjects.</p>
+    <p><strong>Integrated</strong><br>Combines data from multiple sources.</p>
+    <p><strong>Time-Variant</strong><br>Stores historical information.</p>
+    <p><strong>Non-Volatile</strong><br>Data is stable and not frequently modified.</p>
+
+    <h3>Characteristics Table</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Characteristic</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Subject-Oriented</strong></td>
+          <td>Focused on business subjects</td>
+        </tr>
+        <tr>
+          <td><strong>Integrated</strong></td>
+          <td>Consolidated data</td>
+        </tr>
+        <tr>
+          <td><strong>Time-Variant</strong></td>
+          <td>Historical data available</td>
+        </tr>
+        <tr>
+          <td><strong>Non-Volatile</strong></td>
+          <td>Stable data storage</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A retail company stores sales data from several years for trend analysis.</p>
+    <p><strong>Example 2 (Practical):</strong> A university keeps historical student performance records.</p>
+
+    <h2>Topic 7: Online Transaction Processing (OLTP)</h2>
+    <h3>Explanation</h3>
+    <p>OLTP systems manage day-to-day business transactions.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li>High transaction volume.</li>
+      <li>Real-time processing.</li>
+      <li>Fast updates.</li>
+      <li>Supports operational activities.</li>
+    </ul>
+
+    <h3>Examples</h3>
+    <ul>
+      <li>ATM transactions</li>
+      <li>Online shopping orders</li>
+      <li>Airline reservations</li>
+      <li>Banking systems</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A bank processes thousands of customer transactions daily using OLTP systems.</p>
+    <p><strong>Example 2 (Practical):</strong> An online ticket booking system records transactions instantly.</p>
+
+    <h2>Topic 8: Data Warehousing Models</h2>
+    <h3>Explanation</h3>
+    <p>Data Warehouses can be implemented using different models.</p>
+    
+    <p><strong>1. Enterprise Data Warehouse (EDW)</strong><br>Organization-wide repository.</p>
+    <p><strong>2. Data Mart</strong><br>Department-specific warehouse.</p>
+    <p><strong>3. Virtual Warehouse</strong><br>Logical view of operational databases.</p>
+
+    <h3>Comparison</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Scope</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>EDW</strong></td>
+          <td>Entire Organization</td>
+        </tr>
+        <tr>
+          <td><strong>Data Mart</strong></td>
+          <td>Specific Department</td>
+        </tr>
+        <tr>
+          <td><strong>Virtual Warehouse</strong></td>
+          <td>Virtual Data Access</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A multinational company maintains an Enterprise Data Warehouse for global reporting.</p>
+    <p><strong>Example 2 (Practical):</strong> The HR department uses a Data Mart for employee analytics.</p>
+
+    <h2>Topic 9: Data Warehouse Architecture</h2>
+    <h3>Explanation</h3>
+    <p>Data Warehouse Architecture defines how data flows from sources to analytical tools.</p>
+
+    <h3>Basic Architecture</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">ETL Process</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Warehouse</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Marts</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">BI &amp; Analytics Tools</div>
+    </div>
+
+    <h3>Components</h3>
+    <p><strong>Data Sources</strong><br>Operational databases and external systems.</p>
+    <p><strong>ETL Layer</strong><br>Extracts, transforms, and loads data.</p>
+    <p><strong>Data Warehouse</strong><br>Central repository.</p>
+    <p><strong>BI Layer</strong><br>Reporting and analytics tools.</p>
+
+    <p><strong>Example 1 (Business):</strong> A retailer collects sales data from stores and loads it into a warehouse for reporting.</p>
+    <p><strong>Example 2 (Practical):</strong> A university integrates student data from multiple departments into a central system.</p>
+
+    <h2>Topic 10: Differences Between OLTP and OLAP Systems</h2>
+    <h3>Explanation</h3>
+    <p>OLTP and OLAP serve different purposes.</p>
+    <p><strong>OLAP (Online Analytical Processing)</strong><br>Used for analysis and decision-making.</p>
+
+    <h3>Comparison of OLTP and OLAP</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>OLTP</th>
+          <th>OLAP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Purpose</strong></td>
+          <td>Transaction Processing</td>
+          <td>Data Analysis</td>
+        </tr>
+        <tr>
+          <td><strong>Users</strong></td>
+          <td>Operational Staff</td>
+          <td>Managers &amp; Analysts</td>
+        </tr>
+        <tr>
+          <td><strong>Data</strong></td>
+          <td>Current</td>
+          <td>Historical</td>
+        </tr>
+        <tr>
+          <td><strong>Queries</strong></td>
+          <td>Simple</td>
+          <td>Complex</td>
+        </tr>
+        <tr>
+          <td><strong>Updates</strong></td>
+          <td>Frequent</td>
+          <td>Rare</td>
+        </tr>
+        <tr>
+          <td><strong>Speed</strong></td>
+          <td>Fast Transactions</td>
+          <td>Fast Analysis</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> An online banking system uses OLTP, while management dashboards use OLAP.</p>
+    <p><strong>Example 2 (Practical):</strong> A store records daily sales through OLTP and analyzes yearly sales trends through OLAP.</p>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Data Management ensures proper handling of organizational data.</li>
+      <li>The Data Lifecycle includes creation, storage, processing, analysis, and disposal.</li>
+      <li>Hierarchical, Network, and Relational are major data models.</li>
+      <li>DBMS manages databases efficiently.</li>
+      <li>Data Warehouses store integrated historical data.</li>
+      <li>OLTP supports daily transactions.</li>
+      <li>OLAP supports analytical decision-making.</li>
+      <li>Data Warehouse Architecture includes data sources, ETL, warehouses, and BI tools.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Data Management</strong></td>
+          <td>Process of managing organizational data</td>
+        </tr>
+        <tr>
+          <td><strong>Data Lifecycle</strong></td>
+          <td>Stages through which data passes</td>
+        </tr>
+        <tr>
+          <td><strong>Hierarchical Model</strong></td>
+          <td>Tree-based data structure</td>
+        </tr>
+        <tr>
+          <td><strong>Network Model</strong></td>
+          <td>Graph-based data structure</td>
+        </tr>
+        <tr>
+          <td><strong>Relational Model</strong></td>
+          <td>Table-based data structure</td>
+        </tr>
+        <tr>
+          <td><strong>DBMS</strong></td>
+          <td>Software for managing databases</td>
+        </tr>
+        <tr>
+          <td><strong>Data Warehouse</strong></td>
+          <td>Central repository of integrated historical data</td>
+        </tr>
+        <tr>
+          <td><strong>OLTP</strong></td>
+          <td>Online Transaction Processing</td>
+        </tr>
+        <tr>
+          <td><strong>OLAP</strong></td>
+          <td>Online Analytical Processing</td>
+        </tr>
+        <tr>
+          <td><strong>Data Mart</strong></td>
+          <td>Department-specific warehouse</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>Exploratory Data Analysis Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Cleaning</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Exploration</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Visualization</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Pattern Discovery</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Insights</div>
+    </div>
+
+    <h4>Data Science Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Problem Definition</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Cleaning</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">EDA</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Model Building</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Evaluation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Deployment</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitoring</div>
+    </div>
+
+    <h4>Ethical Data Science Framework</h4>
+    <div class="flow-container">
+      <div class="flow-step">Responsible Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Privacy Protection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Security</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Bias Prevention</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Transparency</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ethical Use</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Data Management?</li>
+      <li>Explain the Data Lifecycle.</li>
+      <li>What is a Hierarchical Data Model?</li>
+      <li>Define Network Data Model.</li>
+      <li>What is a Relational Data Model?</li>
+      <li>What is DBMS?</li>
+      <li>Define Data Warehouse.</li>
+      <li>What is OLTP?</li>
+      <li>What is OLAP?</li>
+      <li>Explain Data Mart.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the importance of Data Management in organizations.</li>
+      <li>Discuss the Data Lifecycle and Data Management Processes.</li>
+      <li>Compare Hierarchical, Network, and Relational Data Models.</li>
+      <li>Explain the components and advantages of DBMS.</li>
+      <li>Discuss the concept and characteristics of Data Warehousing.</li>
+      <li>Explain Data Warehouse Architecture with a diagram.</li>
+      <li>Differentiate between OLTP and OLAP systems.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A university wants to centralize data from admissions, examinations, and placements. Explain how a Data Warehouse can help.</li>
+      <li>A bank processes millions of transactions daily while also generating management reports. Explain the roles of OLTP and OLAP systems.</li>
+      <li>A company is selecting a data model for managing customer and product information. Compare the available data models and recommend the most suitable option.</li>
+    </ol>
+  </div>
+</body>
+</html>

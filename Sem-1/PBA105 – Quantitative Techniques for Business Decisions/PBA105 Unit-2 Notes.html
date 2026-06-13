@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Assignment Models and Transportation Models</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 2: Assignment Models and Transportation Models</h1>
+
+<h2>Introduction</h2>
+
+<p>Organizations frequently face allocation and distribution problems. For example, a company may need to assign employees to jobs, machines to tasks, or distribute products from factories to warehouses at minimum cost.</p>
+
+<p><strong>Assignment Models</strong> help allocate resources efficiently, while <strong>Transportation Models</strong> help determine the most economical method of transporting goods from sources to destinations. Both techniques are important tools in Operations Research and managerial decision-making.</p>
+
+<h1>Part A: Assignment Models</h1>
+
+<h1>Topic 1: Concept and Approach of Assignment Model</h1>
+
+<h2>Explanation</h2>
+
+<p>An Assignment Problem is a special type of Linear Programming Problem where resources are assigned to tasks in the most efficient way.</p>
+
+<p>The objective may be:</p>
+
+<ul>
+<li>Minimize cost</li>
+<li>Minimize time</li>
+<li>Maximize profit</li>
+<li>Maximize efficiency</li>
+</ul>
+
+<h2>Characteristics of Assignment Problems</h2>
+
+<ul>
+<li>Equal number of resources and tasks (in balanced cases).</li>
+<li>One resource assigned to one task.</li>
+<li>One task assigned to one resource.</li>
+<li>Costs or profits are known.</li>
+</ul>
+
+<h2>General Assignment Structure</h2>
+
+<table>
+<tr>
+<th>Resource</th>
+<th>Job 1</th>
+<th>Job 2</th>
+<th>Job 3</th>
+</tr>
+<tr>
+<td>A</td>
+<td>5</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>B</td>
+<td>4</td>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>C</td>
+<td>6</td>
+<td>5</td>
+<td>4</td>
+</tr>
+</table>
+
+<p>The objective is to find the best assignment.</p>
+
+<h2>Applications</h2>
+
+<ul>
+<li>Employee assignment</li>
+<li>Machine scheduling</li>
+<li>Project allocation</li>
+<li>Sales territory allocation</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A company assigns salespersons to different regions to maximize sales performance.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A school assigns teachers to classes based on expertise.</p>
+
+<h1>Topic 2: Hungarian Method (Flood's Technique)</h1>
+
+<h2>Explanation</h2>
+
+<p>The Hungarian Method is the most widely used technique for solving assignment problems.</p>
+
+<p>It systematically reduces the cost matrix to identify the optimal assignment.</p>
+
+<h2>Steps of Hungarian Method</h2>
+
+<h3>Step 1: Row Reduction</h3>
+<p>Subtract the smallest element in each row from all elements of that row.</p>
+
+<h3>Step 2: Column Reduction</h3>
+<p>Subtract the smallest element in each column from all elements of that column.</p>
+
+<h3>Step 3: Cover Zeros</h3>
+<p>Draw minimum number of lines covering all zeros.</p>
+
+<h3>Step 4: Test Optimality</h3>
+<p>If the number of lines equals the order of the matrix, an optimal solution exists.</p>
+
+<h3>Step 5: Adjust Matrix</h3>
+<p>If optimality is not achieved, revise the matrix and repeat.</p>
+
+<h2>Flowchart</h2>
+
+<pre>Construct Cost Matrix
+↓
+Row Reduction
+↓
+Column Reduction
+↓
+Cover Zeros
+↓
+Check Optimality
+↓
+Optimal Assignment</pre>
+
+<h3>Example 1 (Business)</h3>
+<p>A manufacturing company assigns machines to production jobs using the Hungarian Method.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A university assigns invigilators to examination halls to minimize supervision costs.</p>
+
+<h1>Topic 3: Minimization Assignment Problems</h1>
+
+<h2>Explanation</h2>
+
+<p>In minimization problems, the objective is to minimize total cost, time, or effort.</p>
+
+<h2>Objective</h2>
+
+<p>Minimize:</p>
+
+<p>Total Assignment Cost</p>
+
+<h2>Applications</h2>
+
+<ul>
+<li>Transportation scheduling</li>
+<li>Labor allocation</li>
+<li>Machine assignment</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A logistics company assigns drivers to routes to minimize transportation cost.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A hospital assigns nurses to wards to reduce workload imbalance.</p>
+
+<h1>Topic 4: Maximization Assignment Problems</h1>
+
+<h2>Explanation</h2>
+
+<p>In maximization problems, the objective is to maximize profit, productivity, or benefits.</p>
+
+<p>These problems are converted into minimization problems before applying the Hungarian Method.</p>
+
+<h2>Conversion Procedure</h2>
+
+<p>Highest Value − Individual Value</p>
+
+<p>This converts profit values into cost values.</p>
+
+<h3>Example 1 (Business)</h3>
+<p>A company assigns sales executives to territories to maximize revenue.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A sports coach assigns players to positions to maximize team performance.</p>
+
+<h1>Topic 5: Unbalanced Assignment Problems</h1>
+
+<h2>Explanation</h2>
+
+<p>An Assignment Problem is unbalanced when the number of resources and tasks are unequal.</p>
+
+<h2>Solution</h2>
+
+<p>Introduce a dummy row or dummy column with zero cost.</p>
+
+<h2>Example</h2>
+
+<table>
+<tr>
+<th>Employees</th>
+<th>Job A</th>
+<th>Job B</th>
+</tr>
+<tr>
+<td>E1</td>
+<td>5</td>
+<td>4</td>
+</tr>
+<tr>
+<td>E2</td>
+<td>7</td>
+<td>6</td>
+</tr>
+<tr>
+<td>E3</td>
+<td>3</td>
+<td>5</td>
+</tr>
+</table>
+
+<p>Since employees exceed jobs, a dummy job is added.</p>
+
+<h3>Example 1 (Business)</h3>
+<p>A company has more workers than available projects.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A school has more teachers than subjects to be assigned.</p>
+
+<h1>Topic 6: Restricted Assignment Problems</h1>
+
+<h2>Explanation</h2>
+
+<p>In some situations, certain assignments are prohibited.</p>
+
+<p>These are called restricted assignments.</p>
+
+<h2>Handling Restrictions</h2>
+
+<p>A very large cost (M) is assigned to prohibited cells.</p>
+
+<p>This prevents the assignment from being selected.</p>
+
+<h3>Example 1 (Business)</h3>
+<p>A machine cannot perform a specific task due to technical limitations.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A teacher cannot supervise an examination due to scheduling conflicts.</p>
+
+<h1>Part B: Transportation Models</h1>
+
+<h1>Topic 7: Concept and Formulation of Transportation Model</h1>
+
+<h2>Explanation</h2>
+
+<p>The Transportation Model determines the most economical way to transport goods from multiple sources to multiple destinations.</p>
+
+<h2>Objectives</h2>
+
+<ul>
+<li>Minimize transportation cost.</li>
+<li>Minimize transportation time.</li>
+<li>Maximize profit.</li>
+</ul>
+
+<h2>Transportation Structure</h2>
+
+<pre>Sources
+↓
+Transportation Routes
+↓
+Destinations</pre>
+
+<h2>Components</h2>
+
+<h3>Sources</h3>
+<p>Supply points.</p>
+
+<h3>Destinations</h3>
+<p>Demand points.</p>
+
+<h3>Transportation Cost</h3>
+<p>Cost per unit transported.</p>
+
+<h3>Example 1 (Business)</h3>
+<p>A company transports products from factories to warehouses.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A dairy distributes milk from processing plants to retail stores.</p>
+
+<h1>Topic 8: Types of Transportation Problems</h1>
+
+<h2>A. Balanced Transportation Problem</h2>
+
+<h3>Explanation</h3>
+
+<p>Total Supply = Total Demand</p>
+
+<h3>Example</h3>
+
+<p>Supply = 100 Units</p>
+<p>Demand = 100 Units</p>
+
+<p>Balanced problem.</p>
+
+<h2>B. Unbalanced Transportation Problem</h2>
+
+<h3>Explanation</h3>
+
+<p>Total Supply ≠ Total Demand</p>
+
+<h3>Solution</h3>
+
+<p>Add a dummy source or destination.</p>
+
+<h3>Example</h3>
+
+<p>Supply = 120 Units</p>
+<p>Demand = 100 Units</p>
+
+<p>Add dummy destination for 20 units.</p>
+
+<h2>C. Minimization Transportation Problem</h2>
+
+<p>Objective: Minimize transportation cost.</p>
+
+<h2>D. Maximization Transportation Problem</h2>
+
+<p>Objective: Maximize profit.</p>
+
+<p>Requires conversion into minimization form.</p>
+
+<h3>Example 1 (Business)</h3>
+<p>A company minimizes freight expenses between warehouses.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A delivery service optimizes routes to reduce fuel costs.</p>
+
+<h1>Topic 9: Initial Basic Feasible Solutions (IBFS)</h1>
+
+<h2>Explanation</h2>
+
+<p>Before finding the optimal solution, an initial feasible solution must be obtained.</p>
+
+<h1>A. North-West Corner Method (NWCM)</h1>
+
+<h2>Explanation</h2>
+
+<p>Allocation begins from the top-left corner of the transportation table.</p>
+
+<h3>Procedure</h3>
+
+<pre>Start at North-West Cell
+↓
+Allocate Maximum Possible Units
+↓
+Adjust Supply and Demand
+↓
+Move to Next Cell</pre>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Very simple.</li>
+<li>Fast computation.</li>
+</ul>
+
+<h3>Limitation</h3>
+
+<ul>
+<li>May not produce low-cost solutions.</li>
+</ul>
+
+<h1>B. Least Cost Method (LCM)</h1>
+
+<h2>Explanation</h2>
+
+<p>Allocation is made to the cell with the lowest transportation cost.</p>
+
+<h3>Procedure</h3>
+
+<pre>Identify Lowest Cost Cell
+↓
+Allocate Maximum Quantity
+↓
+Adjust Supply and Demand
+↓
+Repeat</pre>
+
+<h3>Advantages</h3>
+
+<p>Produces better solutions than NWCM.</p>
+
+<h1>C. Vogel's Approximation Method (VAM)</h1>
+
+<h2>Explanation</h2>
+
+<p>VAM generally provides the best initial solution.</p>
+
+<h3>Procedure</h3>
+
+<pre>Compute Penalties
+↓
+Select Highest Penalty
+↓
+Allocate to Lowest Cost Cell
+↓
+Adjust Supply and Demand
+↓
+Repeat</pre>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Usually closest to optimal solution.</li>
+<li>Reduces total transportation cost.</li>
+</ul>
+
+<h2>Comparison of IBFS Methods</h2>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Complexity</th>
+<th>Solution Quality</th>
+</tr>
+<tr>
+<td>NWCM</td>
+<td>Easy</td>
+<td>Lowest</td>
+</tr>
+<tr>
+<td>LCM</td>
+<td>Moderate</td>
+<td>Better</td>
+</tr>
+<tr>
+<td>VAM</td>
+<td>Higher</td>
+<td>Best</td>
+</tr>
+</table>
+
+<h1>Topic 10: Optimal Solution Using MODI Method</h1>
+
+<h2>Explanation</h2>
+
+<p>After obtaining an initial feasible solution, optimality is tested using the MODI (Modified Distribution) Method.</p>
+
+<h2>MODI Procedure</h2>
+
+<pre>Obtain IBFS
+↓
+Calculate Opportunity Costs
+↓
+Test Optimality
+↓
+Improve Allocation
+↓
+Reach Optimal Solution</pre>
+
+<h2>Advantages</h2>
+
+<ul>
+<li>Efficient.</li>
+<li>Widely accepted.</li>
+<li>Provides optimal transportation plan.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A logistics company minimizes total freight cost using MODI.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A distributor determines the least-cost route network for product delivery.</p>
+
+<h1>Topic 11: Special Cases in Transportation Problems</h1>
+
+<h2>Explanation</h2>
+
+<p>Certain special situations may arise.</p>
+
+<h2>1. Degeneracy</h2>
+
+<p>Occurs when occupied cells are fewer than required.</p>
+
+<h2>2. Multiple Optimal Solutions</h2>
+
+<p>More than one optimal solution exists.</p>
+
+<h2>3. Unbalanced Problems</h2>
+
+<p>Supply and demand are unequal.</p>
+
+<h2>4. Maximization Problems</h2>
+
+<p>Need conversion into minimization form.</p>
+
+<h3>Example 1 (Business)</h3>
+<p>A transportation network may have several equally economical shipping plans.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A warehouse distribution system may require dummy destinations to balance demand.</p>
+
+<h1>Quick Revision Summary</h1>
+
+<ul>
+<li>Assignment Models allocate resources efficiently.</li>
+<li>Hungarian Method is the standard technique for assignment problems.</li>
+<li>Assignment problems may be minimization, maximization, unbalanced, or restricted.</li>
+<li>Transportation Models optimize distribution costs.</li>
+<li>Transportation problems may be balanced or unbalanced.</li>
+<li>NWCM, LCM, and VAM provide initial feasible solutions.</li>
+<li>MODI Method is used to find optimal transportation solutions.</li>
+<li>Special cases include degeneracy and multiple optimal solutions.</li>
+</ul>
+
+<h1>Important Terms and Definitions</h1>
+
+<table>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+<tr>
+<td>Assignment Problem</td>
+<td>Allocation of resources to tasks</td>
+</tr>
+<tr>
+<td>Hungarian Method</td>
+<td>Technique for solving assignment problems</td>
+</tr>
+<tr>
+<td>Unbalanced Assignment</td>
+<td>Unequal resources and tasks</td>
+</tr>
+<tr>
+<td>Restricted Assignment</td>
+<td>Prohibited allocation</td>
+</tr>
+<tr>
+<td>Transportation Model</td>
+<td>Distribution optimization model</td>
+</tr>
+<tr>
+<td>Balanced Problem</td>
+<td>Supply equals demand</td>
+</tr>
+<tr>
+<td>NWCM</td>
+<td>North-West Corner Method</td>
+</tr>
+<tr>
+<td>LCM</td>
+<td>Least Cost Method</td>
+</tr>
+<tr>
+<td>VAM</td>
+<td>Vogel's Approximation Method</td>
+</tr>
+<tr>
+<td>MODI</td>
+<td>Modified Distribution Method</td>
+</tr>
+</table>
+
+<h1>Important Flowcharts</h1>
+
+<h3>Assignment Solution Procedure</h3>
+
+<pre>Cost Matrix
+↓
+Row Reduction
+↓
+Column Reduction
+↓
+Cover Zeros
+↓
+Optimal Assignment</pre>
+
+<h3>Transportation Problem</h3>
+
+<pre>Supply Sources
+↓
+Allocation
+↓
+Destinations
+↓
+Transportation Cost Minimization</pre>
+
+<h3>MODI Method</h3>
+
+<pre>Initial Solution
+↓
+Opportunity Cost Calculation
+↓
+Optimality Test
+↓
+Improvement
+↓
+Optimal Solution</pre>
+
+<h1>Short Answer Questions</h1>
+
+<ol>
+<li>What is an Assignment Problem?</li>
+<li>Explain the Hungarian Method.</li>
+<li>What is a minimization assignment problem?</li>
+<li>What is a maximization assignment problem?</li>
+<li>Define an unbalanced assignment problem.</li>
+<li>What is a restricted assignment problem?</li>
+<li>What is a transportation model?</li>
+<li>Differentiate between balanced and unbalanced transportation problems.</li>
+<li>Explain NWCM.</li>
+<li>What is the MODI Method?</li>
+</ol>
+
+<h1>Long Answer Questions</h1>
+
+<ol>
+<li>Explain the concept and applications of Assignment Models.</li>
+<li>Discuss the Hungarian Method with suitable steps.</li>
+<li>Explain minimization and maximization assignment problems.</li>
+<li>Discuss unbalanced and restricted assignment problems.</li>
+<li>Explain the formulation of Transportation Models.</li>
+<li>Compare NWCM, LCM, and VAM methods.</li>
+<li>Explain the MODI Method and special cases in transportation problems.</li>
+</ol>
+
+<h1>Case-Based Questions</h1>
+
+<ol>
+<li>
+<p>A company wants to assign four employees to four projects while minimizing total cost. Explain how the Hungarian Method can be used.</p>
+</li>
+<li>
+<p>A manufacturing firm ships products from three factories to four warehouses. Explain how VAM and MODI methods can help determine the least-cost transportation plan.</p>
+</li>
+<li>
+<p>A logistics company has supply greater than demand. Explain how an unbalanced transportation problem is converted into a balanced one and solved.</p>
+</li>
+</ol>
+
+</div>
+</body>
+</html>

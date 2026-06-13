@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 5: Data Governance and Security</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 5: Data Governance and Security</h1>
+    
+    <h2>Introduction</h2>
+    <p>Data has become one of the most valuable assets for modern organizations. Businesses rely on data for decision-making, customer management, operations, analytics, and strategic planning. However, as the volume of data grows, organizations face challenges related to data quality, compliance, privacy, security, and accountability.</p>
+    <p>To address these challenges, organizations implement Data Governance and Data Security practices. Data Governance ensures that data is managed properly throughout its lifecycle, while Data Security protects data from unauthorized access, misuse, loss, and cyber threats.</p>
+    <p>This unit covers the principles of data governance, governance frameworks, best practices, data security challenges, and solutions.</p>
+
+    <h1>Part A: Introduction to Data Governance</h1>
+    
+    <h2>Topic 1: Principles of Data Governance</h2>
+    <h3>Explanation</h3>
+    <p>Data Governance refers to the collection of policies, processes, standards, and responsibilities that ensure data is managed effectively and securely throughout an organization.</p>
+
+    <h3>Definition</h3>
+    <p>Data Governance is a framework that defines how data is created, stored, accessed, maintained, and protected.</p>
+
+    <h3>Objectives of Data Governance</h3>
+    <ul>
+      <li>Improve data quality.</li>
+      <li>Ensure compliance.</li>
+      <li>Define accountability.</li>
+      <li>Protect sensitive information.</li>
+      <li>Support business decision-making.</li>
+    </ul>
+
+    <h3>Core Principles of Data Governance</h3>
+    <p><strong>1. Accountability</strong><br>Every data asset should have a responsible owner.</p>
+    <p><strong>2. Transparency</strong><br>Data policies and procedures should be clearly defined.</p>
+    <p><strong>3. Integrity</strong><br>Data must remain accurate and consistent.</p>
+    <p><strong>4. Compliance</strong><br>Data management should comply with legal and regulatory requirements.</p>
+    <p><strong>5. Security</strong><br>Data should be protected against unauthorized access.</p>
+    <p><strong>6. Availability</strong><br>Authorized users should have access to required data when needed.</p>
+
+    <h3>Data Governance Principles Flow</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Ownership</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Policies &amp; Standards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Quality</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Compliance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Security</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Business Value</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> Microsoft implements governance policies to ensure responsible handling of customer and enterprise data.</p>
+    <p><strong>Example 2 (Practical):</strong> A university assigns responsibility for maintaining student records to specific administrative departments.</p>
+
+    <h2>Topic 2: Data Governance Frameworks</h2>
+    <h3>Explanation</h3>
+    <p>A Data Governance Framework provides a structured approach for managing organizational data. It defines roles, responsibilities, policies, standards, and processes.</p>
+
+    <h3>Components of a Data Governance Framework</h3>
+    <p><strong>Data Policies</strong><br>Rules governing data usage.</p>
+    <p><strong>Data Standards</strong><br>Guidelines for maintaining consistency.</p>
+    <p><strong>Data Stewardship</strong><br>Individuals responsible for managing data quality.</p>
+    <p><strong>Data Quality Management</strong><br>Processes ensuring data accuracy.</p>
+    <p><strong>Compliance Management</strong><br>Monitoring adherence to regulations.</p>
+    <p><strong>Security Management</strong><br>Protection of organizational information.</p>
+
+    <h3>Governance Framework Structure</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Policies</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Standards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Stewardship</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Quality Management</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Compliance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Security</div>
+    </div>
+
+    <h3>Benefits</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Better Data Quality</strong></td>
+          <td>Improved accuracy</td>
+        </tr>
+        <tr>
+          <td><strong>Regulatory Compliance</strong></td>
+          <td>Meets legal requirements</td>
+        </tr>
+        <tr>
+          <td><strong>Increased Trust</strong></td>
+          <td>Reliable information</td>
+        </tr>
+        <tr>
+          <td><strong>Improved Decision Making</strong></td>
+          <td>Better insights</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A multinational company establishes a governance framework to standardize customer data across countries.</p>
+    <p><strong>Example 2 (Practical):</strong> A hospital implements data governance policies to maintain patient information consistently.</p>
+
+    <h2>Topic 3: Data Governance Best Practices</h2>
+    <h3>Explanation</h3>
+    <p>Best practices help organizations successfully implement governance initiatives.</p>
+
+    <h3>Major Best Practices</h3>
+    <p><strong>1. Define Clear Data Ownership</strong><br>Assign responsibility for data assets.</p>
+    <p><strong>2. Establish Data Standards</strong><br>Use consistent formats and definitions.</p>
+    <p><strong>3. Monitor Data Quality</strong><br>Conduct regular audits and assessments.</p>
+    <p><strong>4. Implement Access Controls</strong><br>Restrict access based on roles.</p>
+    <p><strong>5. Train Employees</strong><br>Educate staff on governance policies.</p>
+    <p><strong>6. Maintain Documentation</strong><br>Document policies, procedures, and standards.</p>
+    <p><strong>7. Ensure Regulatory Compliance</strong><br>Follow applicable laws and regulations.</p>
+
+    <h3>Governance Best Practice Cycle</h3>
+    <div class="flow-container">
+      <div class="flow-step">Define Policies</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Assign Ownership</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitor Quality</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ensure Compliance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Review &amp; Improve</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> IBM follows governance best practices by assigning data stewards and maintaining enterprise-wide standards.</p>
+    <p><strong>Example 2 (Practical):</strong> A school establishes clear procedures for maintaining student records and controlling access.</p>
+
+    <h1>Part B: Data Security</h1>
+
+    <h2>Topic 4: Data Security Challenges</h2>
+    <h3>Explanation</h3>
+    <p>As organizations become increasingly dependent on digital data, they face numerous security threats. Data Security aims to protect information from unauthorized access, disclosure, modification, or destruction.</p>
+
+    <h3>Major Data Security Challenges</h3>
+    <p><strong>1. Cyberattacks</strong><br>Malicious attempts to gain unauthorized access.<br><em>Examples:</em> Hacking, Malware, Ransomware</p>
+    <p><strong>2. Data Breaches</strong><br>Unauthorized exposure of sensitive information.<br><em>Examples:</em> Customer records leaked online, Financial information stolen</p>
+    <p><strong>3. Insider Threats</strong><br>Employees intentionally or unintentionally compromising security.</p>
+    <p><strong>4. Weak Access Controls</strong><br>Unauthorized users gaining access to systems.</p>
+    <p><strong>5. Data Loss</strong><br>Loss of data due to hardware failure, disasters, or human error.</p>
+    <p><strong>6. Compliance Violations</strong><br>Failure to follow data protection regulations.</p>
+
+    <h3>Security Threat Flow</h3>
+    <div class="flow-container">
+      <div class="flow-step">Threat</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Vulnerability</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Attack</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Compromise</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Business Impact</div>
+    </div>
+
+    <h3>Impact of Security Challenges</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Impact</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Financial Loss</strong></td>
+          <td>Direct monetary damage</td>
+        </tr>
+        <tr>
+          <td><strong>Reputation Damage</strong></td>
+          <td>Loss of customer trust</td>
+        </tr>
+        <tr>
+          <td><strong>Legal Penalties</strong></td>
+          <td>Regulatory fines</td>
+        </tr>
+        <tr>
+          <td><strong>Operational Disruption</strong></td>
+          <td>Interrupted business activities</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A company suffers a ransomware attack that encrypts critical business data and demands payment for recovery.</p>
+    <p><strong>Example 2 (Practical):</strong> A student accidentally shares a password, allowing unauthorized access to personal information.</p>
+
+    <h2>Topic 5: Data Security Solutions</h2>
+    <h3>Explanation</h3>
+    <p>Organizations implement various security measures to protect information assets.</p>
+
+    <h3>Major Data Security Solutions</h3>
+    <p><strong>1. Authentication</strong><br>Verifying user identity.<br><em>Examples:</em> Passwords, Biometrics, Multi-Factor Authentication (MFA)</p>
+    <p><strong>2. Authorization</strong><br>Controlling access based on user roles.<br><em>Example:</em> Only HR staff can access employee records.</p>
+    <p><strong>3. Encryption</strong><br>Converting data into unreadable format for unauthorized users.</p>
+    <p><strong>4. Backup and Recovery</strong><br>Creating copies of data for restoration after failures.</p>
+    <p><strong>5. Firewalls</strong><br>Protecting networks from unauthorized access.</p>
+    <p><strong>6. Antivirus and Anti-Malware Software</strong><br>Detecting and removing malicious software.</p>
+    <p><strong>7. Security Audits</strong><br>Regular evaluation of security controls.</p>
+    <p><strong>8. Employee Awareness Training</strong><br>Educating employees about cybersecurity risks.</p>
+
+    <h3>Data Security Framework</h3>
+    <div class="flow-container">
+      <div class="flow-step">Authentication</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Authorization</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Encryption</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitoring</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Backup &amp; Recovery</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Continuous Improvement</div>
+    </div>
+
+    <h3>Benefits of Data Security</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Confidentiality</strong></td>
+          <td>Protects sensitive information</td>
+        </tr>
+        <tr>
+          <td><strong>Integrity</strong></td>
+          <td>Prevents unauthorized changes</td>
+        </tr>
+        <tr>
+          <td><strong>Availability</strong></td>
+          <td>Ensures data access when needed</td>
+        </tr>
+        <tr>
+          <td><strong>Compliance</strong></td>
+          <td>Meets regulatory requirements</td>
+        </tr>
+        <tr>
+          <td><strong>Trust</strong></td>
+          <td>Builds customer confidence</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Google uses encryption, multi-factor authentication, and security monitoring to protect user information.</p>
+    <p><strong>Example 2 (Practical):</strong> A bank uses OTP-based authentication to secure online transactions.</p>
+
+    <h2>Comparison: Data Governance vs Data Security</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>Data Governance</th>
+          <th>Data Security</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Purpose</strong></td>
+          <td>Manage Data Effectively</td>
+          <td>Protect Data</td>
+        </tr>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Policies and Standards</td>
+          <td>Threat Prevention</td>
+        </tr>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td>Data Quality, Ownership, Compliance</td>
+          <td>Confidentiality, Integrity, Availability</td>
+        </tr>
+        <tr>
+          <td><strong>Responsibility</strong></td>
+          <td>Governance Team</td>
+          <td>Security Team</td>
+        </tr>
+        <tr>
+          <td><strong>Outcome</strong></td>
+          <td>Trusted Data</td>
+          <td>Protected Data</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Relationship Between Data Governance and Security</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Governance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Policies &amp; Standards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Quality</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Security Controls</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Protected &amp; Reliable Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Business Value</div>
+    </div>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Data Governance ensures proper management and accountability of organizational data.</li>
+      <li>Governance principles include accountability, transparency, integrity, compliance, security, and availability.</li>
+      <li>Governance frameworks define policies, standards, stewardship, and compliance processes.</li>
+      <li>Best practices include clear ownership, quality monitoring, access control, and employee training.</li>
+      <li>Major security challenges include cyberattacks, data breaches, insider threats, and data loss.</li>
+      <li>Security solutions include authentication, authorization, encryption, backups, and audits.</li>
+      <li>Data Governance focuses on managing data, while Data Security focuses on protecting it.</li>
+      <li>Strong governance and security practices improve trust, compliance, and business performance.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Data Governance</strong></td>
+          <td>Framework for managing organizational data</td>
+        </tr>
+        <tr>
+          <td><strong>Data Stewardship</strong></td>
+          <td>Responsibility for maintaining data quality</td>
+        </tr>
+        <tr>
+          <td><strong>Data Policy</strong></td>
+          <td>Rules governing data usage</td>
+        </tr>
+        <tr>
+          <td><strong>Data Security</strong></td>
+          <td>Protection of data from threats</td>
+        </tr>
+        <tr>
+          <td><strong>Authentication</strong></td>
+          <td>Verification of user identity</td>
+        </tr>
+        <tr>
+          <td><strong>Authorization</strong></td>
+          <td>Permission to access resources</td>
+        </tr>
+        <tr>
+          <td><strong>Encryption</strong></td>
+          <td>Conversion of data into secure format</td>
+        </tr>
+        <tr>
+          <td><strong>Data Breach</strong></td>
+          <td>Unauthorized disclosure of information</td>
+        </tr>
+        <tr>
+          <td><strong>Cyberattack</strong></td>
+          <td>Malicious attempt to compromise systems</td>
+        </tr>
+        <tr>
+          <td><strong>Compliance</strong></td>
+          <td>Adherence to regulations and policies</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>Data Governance Framework</h4>
+    <div class="flow-container">
+      <div class="flow-step">Policies</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Standards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ownership</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Quality Management</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Compliance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Security</div>
+    </div>
+
+    <h4>Data Security Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Authentication</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Authorization</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Encryption</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitoring</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Backup</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Recovery</div>
+    </div>
+
+    <h4>Governance Best Practice Cycle</h4>
+    <div class="flow-container">
+      <div class="flow-step">Define Policies</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Assign Ownership</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitor Quality</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ensure Compliance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Improve Continuously</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Data Governance?</li>
+      <li>Define Data Security.</li>
+      <li>What is Data Stewardship?</li>
+      <li>Explain Accountability in Data Governance.</li>
+      <li>What is Authentication?</li>
+      <li>What is Authorization?</li>
+      <li>Define Encryption.</li>
+      <li>What is a Data Breach?</li>
+      <li>State two Data Governance best practices.</li>
+      <li>Name two Data Security challenges.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the concept and importance of Data Governance.</li>
+      <li>Discuss the principles of Data Governance.</li>
+      <li>Explain the components of a Data Governance Framework.</li>
+      <li>Discuss Data Governance best practices.</li>
+      <li>Explain major Data Security challenges faced by organizations.</li>
+      <li>Discuss various Data Security solutions and their benefits.</li>
+      <li>Differentiate between Data Governance and Data Security.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A multinational company faces inconsistent customer data across departments. Explain how a Data Governance Framework can address this issue.</li>
+      <li>A financial institution experiences repeated phishing attacks and unauthorized account access. Recommend suitable Data Security solutions.</li>
+      <li>A healthcare organization stores sensitive patient information. Explain how Data Governance and Data Security together can ensure compliance, privacy, and data protection.</li>
+    </ol>
+  </div>
+</body>
+</html>

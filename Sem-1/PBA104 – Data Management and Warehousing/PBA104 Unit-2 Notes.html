@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 2: Introduction to ETL</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 2: Introduction to ETL</h1>
+    
+    <h2>Introduction</h2>
+    <p>Organizations collect data from multiple sources such as databases, websites, ERP systems, CRM systems, social media, and spreadsheets. Before this data can be used in a Data Warehouse for reporting and analysis, it must be gathered, cleaned, standardized, and stored properly.</p>
+    <p>This process is known as ETL (Extract, Transform, Load). ETL is the backbone of Data Warehousing because it ensures that data from different sources becomes consistent, accurate, and ready for analysis.</p>
+    <p>This unit covers the ETL process, its importance, ETL tools, extraction methods, transformation techniques, and data loading strategies.</p>
+
+    <h2>Topic 1: Extract, Transform, Load (ETL) Process Overview</h2>
+    <h3>Explanation</h3>
+    <p>ETL stands for:</p>
+    <ul>
+      <li><strong>Extract</strong> – Collect data from various sources.</li>
+      <li><strong>Transform</strong> – Convert data into a consistent and usable format.</li>
+      <li><strong>Load</strong> – Store transformed data into a Data Warehouse.</li>
+    </ul>
+
+    <h3>Definition</h3>
+    <p>ETL is a process used to move data from multiple source systems into a centralized data warehouse after cleaning and transformation.</p>
+
+    <h3>ETL Process Flow</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Extract</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Transform</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Load</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Warehouse</div>
+    </div>
+
+    <h3>Purpose of ETL</h3>
+    <ul>
+      <li>Consolidate data from multiple sources.</li>
+      <li>Improve data quality.</li>
+      <li>Standardize information.</li>
+      <li>Support business intelligence.</li>
+      <li>Enable accurate reporting.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Amazon extracts customer, inventory, and sales data from different systems, transforms it into a standard format, and loads it into a data warehouse.</p>
+    <p><strong>Example 2 (Practical):</strong> A university collects student information from admission, examination, and attendance systems and combines it into a central database.</p>
+
+    <h2>Topic 2: Importance of ETL in Data Warehousing</h2>
+    <h3>Explanation</h3>
+    <p>A Data Warehouse is only useful if the data stored inside it is accurate and consistent. ETL ensures that this happens.</p>
+
+    <h3>Importance of ETL</h3>
+    <p><strong>1. Data Integration</strong><br>Combines data from different sources.</p>
+    <p><strong>2. Data Quality Improvement</strong><br>Removes errors and inconsistencies.</p>
+    <p><strong>3. Data Standardization</strong><br>Ensures uniform formats.</p>
+    <p><strong>4. Faster Reporting</strong><br>Provides ready-to-use analytical data.</p>
+    <p><strong>5. Better Decision Making</strong><br>Supports accurate business insights.</p>
+
+    <h3>Benefits of ETL</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Data Consistency</strong></td>
+          <td>Uniform information</td>
+        </tr>
+        <tr>
+          <td><strong>Improved Accuracy</strong></td>
+          <td>Reduced errors</td>
+        </tr>
+        <tr>
+          <td><strong>Better Reporting</strong></td>
+          <td>Reliable analytics</td>
+        </tr>
+        <tr>
+          <td><strong>Faster Access</strong></td>
+          <td>Centralized storage</td>
+        </tr>
+        <tr>
+          <td><strong>Business Intelligence</strong></td>
+          <td>Enhanced decision-making</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A multinational company integrates sales data from different countries into a single data warehouse using ETL.</p>
+    <p><strong>Example 2 (Practical):</strong> A hospital combines patient information from various departments for comprehensive reporting.</p>
+
+    <h2>Topic 3: Common ETL Tools</h2>
+    <h3>Explanation</h3>
+    <p>ETL tools automate extraction, transformation, and loading activities. They reduce manual effort and improve efficiency.</p>
+
+    <h3>A. Informatica</h3>
+    <h4>Explanation</h4>
+    <p>Informatica is one of the most popular enterprise ETL tools.</p>
+
+    <h4>Features</h4>
+    <ul>
+      <li>Data Integration</li>
+      <li>Data Quality Management</li>
+      <li>Real-Time Processing</li>
+      <li>Metadata Management</li>
+    </ul>
+
+    <h4>Advantages</h4>
+    <ul>
+      <li>Highly scalable</li>
+      <li>Enterprise-level support</li>
+      <li>User-friendly interface</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Large banks use Informatica to integrate customer and transaction data.</p>
+    <p><strong>Example 2 (Practical):</strong> A university uses Informatica to consolidate student information from multiple campuses.</p>
+
+    <h3>B. Talend</h3>
+    <h4>Explanation</h4>
+    <p>Talend is an open-source ETL and data integration platform.</p>
+
+    <h4>Features</h4>
+    <ul>
+      <li>Open Source</li>
+      <li>Cloud Integration</li>
+      <li>Data Quality Tools</li>
+      <li>Big Data Support</li>
+    </ul>
+
+    <h4>Advantages</h4>
+    <ul>
+      <li>Cost-effective</li>
+      <li>Flexible</li>
+      <li>Easy customization</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Startups use Talend because it offers powerful integration features at lower costs.</p>
+    <p><strong>Example 2 (Practical):</strong> A small business integrates sales and accounting data using Talend.</p>
+
+    <h3>C. Apache NiFi</h3>
+    <h4>Explanation</h4>
+    <p>Apache NiFi is a data flow automation tool used for moving and transforming data.</p>
+
+    <h4>Features</h4>
+    <ul>
+      <li>Real-time data flow</li>
+      <li>Visual interface</li>
+      <li>Data routing</li>
+      <li>Data transformation</li>
+    </ul>
+
+    <h4>Advantages</h4>
+    <ul>
+      <li>Easy monitoring</li>
+      <li>High scalability</li>
+      <li>Strong automation capabilities</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> IoT companies use Apache NiFi to process sensor data streams.</p>
+    <p><strong>Example 2 (Practical):</strong> A smart city project uses NiFi to collect and route traffic data.</p>
+
+    <h3>Comparison of ETL Tools</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Informatica</th>
+          <th>Talend</th>
+          <th>Apache NiFi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Type</strong></td>
+          <td>Commercial</td>
+          <td>Open Source</td>
+          <td>Open Source</td>
+        </tr>
+        <tr>
+          <td><strong>Ease of Use</strong></td>
+          <td>High</td>
+          <td>Moderate</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td><strong>Cost</strong></td>
+          <td>High</td>
+          <td>Low</td>
+          <td>Low</td>
+        </tr>
+        <tr>
+          <td><strong>Real-Time Processing</strong></td>
+          <td>Yes</td>
+          <td>Limited</td>
+          <td>Excellent</td>
+        </tr>
+        <tr>
+          <td><strong>Enterprise Support</strong></td>
+          <td>Strong</td>
+          <td>Moderate</td>
+          <td>Moderate</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Topic 4: Data Extraction Methods</h2>
+    <h3>Explanation</h3>
+    <p>Extraction is the first stage of ETL where data is collected from source systems.</p>
+
+    <h3>Types of Data Extraction</h3>
+    <h4>A. Full Extraction</h4>
+    <p>Entire dataset is extracted every time.</p>
+    <p><strong>Advantages:</strong> Simple process; complete data availability.</p>
+    <p><strong>Disadvantages:</strong> Time-consuming; higher resource usage.</p>
+
+    <h4>B. Incremental Extraction</h4>
+    <p>Only newly added or modified data is extracted.</p>
+    <p><strong>Advantages:</strong> Faster processing; reduced storage requirements.</p>
+    <p><strong>Disadvantages:</strong> More complex implementation.</p>
+
+    <h3>Extraction Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Identify Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Select Extraction Method</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Extract Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Validate Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Send for Transformation</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> An e-commerce company extracts daily sales data from transaction systems.</p>
+    <p><strong>Example 2 (Practical):</strong> A school extracts newly added student records each day.</p>
+
+    <h2>Topic 5: Data Transformation Techniques</h2>
+    <h3>Explanation</h3>
+    <p>Transformation converts extracted data into a suitable format before loading it into a warehouse.</p>
+
+    <h3>Common Transformation Techniques</h3>
+    <p><strong>1. Data Cleaning</strong><br>Removing errors and inconsistencies.<br><em>Example:</em> Correcting misspelled customer names.</p>
+    <p><strong>2. Data Filtering</strong><br>Selecting only relevant data.<br><em>Example:</em> Keeping only active customer records.</p>
+    <p><strong>3. Data Aggregation</strong><br>Combining detailed records into summaries.<br><em>Example:</em> Monthly sales totals.</p>
+    <p><strong>4. Data Standardization</strong><br>Converting data into a common format.<br><em>Example:</em> Changing all dates to DD/MM/YYYY format.</p>
+    <p><strong>5. Data Validation</strong><br>Checking data accuracy.<br><em>Example:</em> Verifying email formats.</p>
+
+    <h3>Transformation Flow</h3>
+    <div class="flow-container">
+      <div class="flow-step">Raw Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Cleaning</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Filtering</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Standardization</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Validation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ready Data</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> A company standardizes customer addresses before loading them into the warehouse.</p>
+    <p><strong>Example 2 (Practical):</strong> A college removes duplicate student records from its database.</p>
+
+    <h2>Topic 6: Data Loading Strategies</h2>
+    <h3>Explanation</h3>
+    <p>Loading is the final stage of ETL where transformed data is stored in the data warehouse.</p>
+
+    <h3>Types of Loading Strategies</h3>
+    <h4>A. Initial Load</h4>
+    <p>Loads data into an empty warehouse for the first time.</p>
+    <p><strong>Features:</strong> Large volume of data; one-time activity.</p>
+
+    <h4>B. Incremental Load</h4>
+    <p>Loads only new or updated records.</p>
+    <p><strong>Features:</strong> Faster processing; regular updates.</p>
+
+    <h4>C. Full Refresh Load</h4>
+    <p>Existing data is removed and replaced with fresh data.</p>
+    <p><strong>Features:</strong> Complete update; high processing time.</p>
+
+    <h3>Loading Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Transformed Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Load Strategy Selection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Warehouse Loading</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Verification</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Reporting &amp; Analysis</div>
+    </div>
+
+    <h3>Comparison of Loading Strategies</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Strategy</th>
+          <th>Data Volume</th>
+          <th>Speed</th>
+          <th>Usage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Initial Load</strong></td>
+          <td>Very High</td>
+          <td>Slow</td>
+          <td>First Setup</td>
+        </tr>
+        <tr>
+          <td><strong>Incremental Load</strong></td>
+          <td>Low</td>
+          <td>Fast</td>
+          <td>Daily Updates</td>
+        </tr>
+        <tr>
+          <td><strong>Full Refresh</strong></td>
+          <td>High</td>
+          <td>Slow</td>
+          <td>Periodic Refresh</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A retailer updates daily sales records through incremental loading.</p>
+    <p><strong>Example 2 (Practical):</strong> A university loads all student records into a new warehouse during initial implementation.</p>
+
+    <h2>ETL Architecture Overview</h2>
+    <div class="flow-container">
+      <div class="flow-step">Source Systems</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Extraction</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Transformation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Loading</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Warehouse</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Business Intelligence Tools</div>
+    </div>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>ETL stands for Extract, Transform, and Load.</li>
+      <li>ETL integrates data from multiple sources into a Data Warehouse.</li>
+      <li>ETL improves data quality and consistency.</li>
+      <li>Informatica, Talend, and Apache NiFi are popular ETL tools.</li>
+      <li>Data extraction can be Full or Incremental.</li>
+      <li>Transformation includes cleaning, filtering, standardization, and validation.</li>
+      <li>Loading strategies include Initial Load, Incremental Load, and Full Refresh Load.</li>
+      <li>ETL is essential for Business Intelligence and Data Warehousing.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ETL</strong></td>
+          <td>Extract, Transform, Load process</td>
+        </tr>
+        <tr>
+          <td><strong>Data Extraction</strong></td>
+          <td>Collecting data from source systems</td>
+        </tr>
+        <tr>
+          <td><strong>Data Transformation</strong></td>
+          <td>Converting data into usable format</td>
+        </tr>
+        <tr>
+          <td><strong>Data Loading</strong></td>
+          <td>Storing transformed data in warehouse</td>
+        </tr>
+        <tr>
+          <td><strong>Informatica</strong></td>
+          <td>Enterprise ETL tool</td>
+        </tr>
+        <tr>
+          <td><strong>Talend</strong></td>
+          <td>Open-source ETL platform</td>
+        </tr>
+        <tr>
+          <td><strong>Apache NiFi</strong></td>
+          <td>Data flow automation tool</td>
+        </tr>
+        <tr>
+          <td><strong>Incremental Load</strong></td>
+          <td>Loading only changed records</td>
+        </tr>
+        <tr>
+          <td><strong>Full Extraction</strong></td>
+          <td>Extracting entire dataset</td>
+        </tr>
+        <tr>
+          <td><strong>Data Cleaning</strong></td>
+          <td>Removing errors and inconsistencies</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is ETL?</li>
+      <li>Explain the Extract stage of ETL.</li>
+      <li>What is Data Transformation?</li>
+      <li>What is Data Loading?</li>
+      <li>Why is ETL important in Data Warehousing?</li>
+      <li>Name three ETL tools.</li>
+      <li>What is Full Extraction?</li>
+      <li>What is Incremental Extraction?</li>
+      <li>Explain Data Cleaning.</li>
+      <li>What is Incremental Loading?</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the ETL process with a suitable diagram.</li>
+      <li>Discuss the importance of ETL in Data Warehousing.</li>
+      <li>Compare Informatica, Talend, and Apache NiFi.</li>
+      <li>Explain various Data Extraction methods.</li>
+      <li>Discuss common Data Transformation techniques.</li>
+      <li>Explain different Data Loading strategies.</li>
+      <li>Describe the ETL Architecture used in Data Warehousing.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A retail company receives data from stores, websites, and mobile applications. Explain how ETL can help integrate this information into a Data Warehouse.</li>
+      <li>A university wants to eliminate duplicate student records before creating reports. Which transformation techniques should be used and why?</li>
+      <li>A multinational organization updates millions of transaction records daily. Recommend an appropriate extraction and loading strategy with justification.</li>
+    </ol>
+  </div>
+</body>
+</html>

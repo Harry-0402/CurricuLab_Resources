@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4: PERT, CPM and Sequencing Problems</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 4: PERT, CPM and Sequencing Problems</h1>
+
+<h2>Introduction</h2>
+
+<p>Organizations frequently undertake projects such as construction, software development, product launches, infrastructure development, and research projects. Managing these projects effectively requires proper planning, scheduling, monitoring, and control.</p>
+
+<p><strong>PERT (Program Evaluation and Review Technique)</strong> and <strong>CPM (Critical Path Method)</strong> are project management tools that help managers estimate project completion time, identify critical activities, allocate resources efficiently, and control project progress.</p>
+
+<p>In addition, organizations often face situations where multiple jobs must be processed on multiple machines. <strong>Sequencing Techniques</strong> help determine the optimal order of jobs to minimize total processing time and maximize efficiency.</p>
+
+<p>This unit covers PERT, CPM, network diagrams, scheduling concepts, project completion probabilities, and sequencing problems.</p>
+
+<h1>Part A: PERT and CPM</h1>
+
+<h1>Topic 1: Introduction to PERT and CPM</h1>
+
+<h2>Explanation</h2>
+
+<p>PERT and CPM are network-based project management techniques used for planning, scheduling, and controlling projects.</p>
+
+<h2>PERT (Program Evaluation and Review Technique)</h2>
+
+<p>PERT is mainly used when activity times are uncertain.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Probabilistic approach.</li>
+<li>Suitable for research and development projects.</li>
+<li>Focuses on time estimation.</li>
+</ul>
+
+<h2>CPM (Critical Path Method)</h2>
+
+<p>CPM is used when activity times are known with certainty.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Deterministic approach.</li>
+<li>Suitable for construction and manufacturing projects.</li>
+<li>Focuses on cost and time optimization.</li>
+</ul>
+
+<h2>Comparison of PERT and CPM</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>PERT</th>
+<th>CPM</th>
+</tr>
+<tr>
+<td>Nature</td>
+<td>Probabilistic</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>Time Estimates</td>
+<td>Three</td>
+<td>One</td>
+</tr>
+<tr>
+<td>Focus</td>
+<td>Time</td>
+<td>Time and Cost</td>
+</tr>
+<tr>
+<td>Suitable For</td>
+<td>R&amp;D Projects</td>
+<td>Construction Projects</td>
+</tr>
+</table>
+
+<h3>Example 1 (Business)</h3>
+<p>A pharmaceutical company uses PERT for new drug development.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A construction company uses CPM to manage building construction activities.</p>
+
+<h1>Topic 2: Network Diagram Construction</h1>
+
+<h2>Explanation</h2>
+
+<p>A Network Diagram is a graphical representation of project activities and their relationships.</p>
+
+<p>It helps identify activity sequences and project duration.</p>
+
+<h2>Components of Network Diagram</h2>
+
+<h3>Activity</h3>
+<p>Task to be completed.</p>
+
+<h3>Event (Node)</h3>
+<p>Starting or ending point of an activity.</p>
+
+<h3>Arrow</h3>
+<p>Represents activity flow.</p>
+
+<h2>Steps in Network Construction</h2>
+
+<pre>Identify Activities
+↓
+Determine Precedence Relationships
+↓
+Draw Network
+↓
+Assign Activity Times
+↓
+Analyze Network</pre>
+
+<h2>Example Network</h2>
+
+<pre>Start
+↓
+Activity A
+↓
+Activity B
+↓
+Activity C
+↓
+Finish</pre>
+
+<h3>Example 1 (Business)</h3>
+<p>A software company maps activities required for application development.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student prepares a project plan showing assignment stages and deadlines.</p>
+
+<h1>Topic 3: Earliest Start Time (EST)</h1>
+
+<h2>Explanation</h2>
+
+<p>Earliest Start Time (EST) is the earliest time an activity can begin without violating project constraints.</p>
+
+<p>It is calculated using a <strong>Forward Pass</strong> through the network.</p>
+
+<h2>Formula</h2>
+
+<pre>ESTj = max(EFTi)</pre>
+
+<p>where all predecessor activities are considered.</p>
+
+<h2>Importance</h2>
+
+<ul>
+<li>Determines earliest project completion.</li>
+<li>Helps schedule activities efficiently.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A construction project calculates EST to determine when foundation work can begin.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student identifies the earliest date to begin report writing after completing research.</p>
+
+<h1>Topic 4: Earliest Finish Time (EFT)</h1>
+
+<h2>Explanation</h2>
+
+<p>Earliest Finish Time represents the earliest time an activity can be completed.</p>
+
+<h2>Formula</h2>
+
+<pre>EFT = EST + Activity Duration</pre>
+
+<h2>Importance</h2>
+
+<ul>
+<li>Supports project scheduling.</li>
+<li>Helps estimate project duration.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A software development team calculates EFT for coding activities.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student estimates assignment completion dates.</p>
+
+<h1>Topic 5: Latest Start Time (LST)</h1>
+
+<h2>Explanation</h2>
+
+<p>Latest Start Time is the latest an activity can start without delaying the project.</p>
+
+<p>It is calculated using a <strong>Backward Pass</strong>.</p>
+
+<h2>Formula</h2>
+
+<pre>LST = LFT - Activity Duration</pre>
+
+<h2>Importance</h2>
+
+<ul>
+<li>Identifies scheduling flexibility.</li>
+<li>Helps resource allocation.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A factory determines the latest start date for machine installation.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>An event organizer identifies the latest date for venue booking.</p>
+
+<h1>Topic 6: Latest Finish Time (LFT)</h1>
+
+<h2>Explanation</h2>
+
+<p>Latest Finish Time is the latest an activity can finish without delaying project completion.</p>
+
+<h2>Formula</h2>
+
+<pre>LFT = min(LST of Successor Activities)</pre>
+
+<h2>Importance</h2>
+
+<ul>
+<li>Helps identify critical activities.</li>
+<li>Supports project monitoring.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A project manager calculates LFT for procurement activities.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student determines the latest completion date for data collection.</p>
+
+<h1>Topic 7: Slack and Float</h1>
+
+<h2>Explanation</h2>
+
+<p>Slack and Float indicate the amount of time an activity can be delayed without affecting project completion.</p>
+
+<h2>Slack</h2>
+
+<p>Difference between latest and earliest event times.</p>
+
+<h3>Formula</h3>
+
+<pre>Slack = LFT - EFT</pre>
+
+<h2>Float</h2>
+
+<p>Difference between latest and earliest activity times.</p>
+
+<h3>Formula</h3>
+
+<pre>Float = LST - EST</pre>
+
+<h2>Importance</h2>
+
+<ul>
+<li>Identifies scheduling flexibility.</li>
+<li>Helps prioritize activities.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A project manager delays a non-critical task because it has available float.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student postpones proofreading because extra time is available before submission.</p>
+
+<h1>Topic 8: Critical Path</h1>
+
+<h2>Explanation</h2>
+
+<p>The Critical Path is the longest path through the network.</p>
+
+<p>Activities on the critical path have:</p>
+
+<ul>
+<li>Zero Slack</li>
+<li>Zero Float</li>
+</ul>
+
+<p>Any delay in these activities delays the entire project.</p>
+
+<h2>Critical Path Process</h2>
+
+<pre>Construct Network
+↓
+Forward Pass
+↓
+Backward Pass
+↓
+Calculate Slack
+↓
+Identify Zero-Slack Activities
+↓
+Critical Path</pre>
+
+<h2>Importance</h2>
+
+<ul>
+<li>Determines project duration.</li>
+<li>Highlights critical activities.</li>
+<li>Supports project control.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A construction company monitors critical activities daily to avoid delays.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student identifies essential project tasks that must be completed on time.</p>
+
+<h1>Topic 9: Probability of Project Completion (PERT)</h1>
+
+<h2>Explanation</h2>
+
+<p>PERT uses three time estimates:</p>
+
+<h3>Optimistic Time (To)</h3>
+<p>Best possible duration.</p>
+
+<h3>Most Likely Time (Tm)</h3>
+<p>Most expected duration.</p>
+
+<h3>Pessimistic Time (Tp)</h3>
+<p>Worst possible duration.</p>
+
+<h2>Expected Time Formula</h2>
+
+<pre>Te = (To + 4Tm + Tp) / 6</pre>
+
+<h2>Variance Formula</h2>
+
+<pre>Variance = ((Tp - To) / 6)²</pre>
+
+<h2>Importance</h2>
+
+<ul>
+<li>Handles uncertainty.</li>
+<li>Estimates project completion probability.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A pharmaceutical firm estimates project completion for drug development.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student estimates completion time for a research project.</p>
+
+<h1>Part B: Sequencing Problems</h1>
+
+<h1>Topic 10: Introduction to Sequencing</h1>
+
+<h2>Explanation</h2>
+
+<p>Sequencing determines the order in which jobs should be processed on machines.</p>
+
+<p>The objective is to minimize total processing time and idle time.</p>
+
+<h2>Applications</h2>
+
+<ul>
+<li>Manufacturing</li>
+<li>Service Operations</li>
+<li>Scheduling Systems</li>
+<li>Project Management</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A factory schedules production jobs to minimize machine idle time.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A hospital schedules diagnostic tests efficiently.</p>
+
+<h1>Topic 11: n Jobs – 2 Machines Problem</h1>
+
+<h2>Explanation</h2>
+
+<p>This problem involves processing multiple jobs through two machines in a fixed order.</p>
+
+<h3>Johnson's Rule</h3>
+
+<ol>
+<li>Identify the smallest processing time.</li>
+<li>If it belongs to Machine 1, schedule the job first.</li>
+<li>If it belongs to Machine 2, schedule the job last.</li>
+<li>Repeat until all jobs are assigned.</li>
+</ol>
+
+<h2>Flowchart</h2>
+
+<pre>Find Smallest Time
+↓
+Machine 1 → Earliest Position
+OR
+Machine 2 → Latest Position
+↓
+Repeat
+↓
+Final Sequence</pre>
+
+<h3>Example 1 (Business)</h3>
+<p>A manufacturing unit schedules production jobs through cutting and assembly machines.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A printing shop sequences jobs through printing and binding processes.</p>
+
+<h1>Topic 12: n Jobs – 3 Machines Problem</h1>
+
+<h2>Explanation</h2>
+
+<p>Three-machine sequencing problems can often be reduced to two-machine problems under certain conditions.</p>
+
+<h3>Conditions</h3>
+
+<p>The minimum processing time on the first machine must be greater than or equal to the maximum processing time on the second machine, or vice versa.</p>
+
+<h3>Example 1 (Business)</h3>
+<p>A factory schedules jobs through cutting, drilling, and polishing machines.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A publishing company sequences editing, formatting, and printing activities.</p>
+
+<h1>Topic 13: n Jobs – m Machines Problem</h1>
+
+<h2>Explanation</h2>
+
+<p>This is a generalized sequencing problem involving multiple jobs and multiple machines.</p>
+
+<h2>Objectives</h2>
+
+<ul>
+<li>Minimize total elapsed time.</li>
+<li>Reduce machine idle time.</li>
+<li>Improve resource utilization.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>An automobile manufacturer schedules production across multiple workstations.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A hospital schedules patients through registration, diagnosis, testing, and treatment stages.</p>
+
+<h1>Topic 14: Comparison of Priority Sequencing Rules</h1>
+
+<h2>Explanation</h2>
+
+<p>Priority rules determine the order in which jobs are processed.</p>
+
+<h2>Common Rules</h2>
+
+<h3>FCFS (First Come First Serve)</h3>
+<p>Jobs processed in arrival order.</p>
+
+<h3>SPT (Shortest Processing Time)</h3>
+<p>Shortest job processed first.</p>
+
+<h3>EDD (Earliest Due Date)</h3>
+<p>Job with earliest deadline processed first.</p>
+
+<h3>CR (Critical Ratio)</h3>
+<p>Priority based on urgency.</p>
+
+<h2>Comparison</h2>
+
+<table>
+<tr>
+<th>Rule</th>
+<th>Main Objective</th>
+</tr>
+<tr>
+<td>FCFS</td>
+<td>Fairness</td>
+</tr>
+<tr>
+<td>SPT</td>
+<td>Minimize Waiting Time</td>
+</tr>
+<tr>
+<td>EDD</td>
+<td>Meet Deadlines</td>
+</tr>
+<tr>
+<td>CR</td>
+<td>Manage Urgency</td>
+</tr>
+</table>
+
+<h3>Example 1 (Business)</h3>
+<p>Manufacturing firms use SPT to reduce average completion time.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>Hospitals use priority rules for patient scheduling.</p>
+
+<h1>Quick Revision Summary</h1>
+
+<ul>
+<li>PERT and CPM are project management techniques.</li>
+<li>PERT uses probabilistic time estimates; CPM uses deterministic estimates.</li>
+<li>Network diagrams represent project activities and relationships.</li>
+<li>EST, EFT, LST, and LFT help schedule activities.</li>
+<li>Slack and Float indicate scheduling flexibility.</li>
+<li>Critical Path determines project duration.</li>
+<li>PERT calculates project completion probabilities.</li>
+<li>Sequencing problems optimize job order on machines.</li>
+<li>Johnson's Rule solves n-job, 2-machine sequencing problems.</li>
+</ul>
+
+<h1>Important Terms and Definitions</h1>
+
+<table>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+<tr>
+<td>PERT</td>
+<td>Program Evaluation and Review Technique</td>
+</tr>
+<tr>
+<td>CPM</td>
+<td>Critical Path Method</td>
+</tr>
+<tr>
+<td>Network Diagram</td>
+<td>Graphical representation of project activities</td>
+</tr>
+<tr>
+<td>EST</td>
+<td>Earliest Start Time</td>
+</tr>
+<tr>
+<td>EFT</td>
+<td>Earliest Finish Time</td>
+</tr>
+<tr>
+<td>LST</td>
+<td>Latest Start Time</td>
+</tr>
+<tr>
+<td>LFT</td>
+<td>Latest Finish Time</td>
+</tr>
+<tr>
+<td>Slack</td>
+<td>Extra time available at an event</td>
+</tr>
+<tr>
+<td>Float</td>
+<td>Delay allowed for an activity</td>
+</tr>
+<tr>
+<td>Critical Path</td>
+<td>Longest project path with zero slack</td>
+</tr>
+<tr>
+<td>Sequencing</td>
+<td>Determining job processing order</td>
+</tr>
+</table>
+
+<h1>Short Answer Questions</h1>
+
+<ol>
+<li>What is PERT?</li>
+<li>Define CPM.</li>
+<li>What is a Network Diagram?</li>
+<li>Explain EST.</li>
+<li>What is EFT?</li>
+<li>Define LST.</li>
+<li>What is Slack?</li>
+<li>What is Float?</li>
+<li>What is the Critical Path?</li>
+<li>Explain Johnson's Rule.</li>
+</ol>
+
+<h1>Long Answer Questions</h1>
+
+<ol>
+<li>Compare PERT and CPM.</li>
+<li>Explain Network Diagram construction.</li>
+<li>Discuss EST, EFT, LST, and LFT.</li>
+<li>Explain Slack, Float, and Critical Path.</li>
+<li>Discuss probability of project completion in PERT.</li>
+<li>Explain sequencing problems and Johnson's Rule.</li>
+<li>Compare various priority sequencing rules.</li>
+</ol>
+
+<h1>Case-Based Questions</h1>
+
+<ol>
+<li>A construction company wants to complete a project within a specified deadline. Explain how PERT and CPM can be used to monitor project progress.</li>
+
+<li>A manufacturing firm processes several jobs on two machines. Explain how Johnson's Rule can help minimize total processing time.</li>
+
+<li>A software development project contains several dependent activities. Explain how the critical path can be identified and why it is important.</li>
+</ol>
+
+</div>
+</body>
+</html>

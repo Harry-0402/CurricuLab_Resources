@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3: Decision Theory and Game Theory</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+code {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 14px;
+  background: #f3f4f6;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #ef4444;
+}
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 3: Decision Theory and Game Theory</h1>
+
+<h2>Introduction</h2>
+
+<p>Managers frequently make decisions under different conditions such as certainty, risk, and uncertainty. In many business situations, the future cannot be predicted with complete accuracy. Therefore, quantitative techniques are used to evaluate alternatives and select the best course of action.</p>
+
+<p><strong>Decision Theory</strong> provides systematic methods for making decisions under risk and uncertainty, while <strong>Game Theory</strong> helps analyze competitive situations where the outcome depends on the actions of competitors.</p>
+
+<p>These techniques are widely used in marketing, finance, operations, strategic planning, and competitive business environments.</p>
+
+<h1>Part A: Decision Theory</h1>
+
+<h1>Topic 1: Concept of Decision Theory</h1>
+
+<h2>Explanation</h2>
+
+<p>Decision Theory is a branch of quantitative analysis that helps decision-makers choose the best alternative among several possible options.</p>
+
+<h3>Definition</h3>
+
+<p>Decision Theory is the systematic approach to making decisions by evaluating alternatives, outcomes, and uncertainties.</p>
+
+<h2>Elements of Decision Theory</h2>
+
+<h3>1. Decision Maker</h3>
+<p>The person responsible for making decisions.</p>
+
+<h3>2. Alternatives</h3>
+<p>Different courses of action available.</p>
+
+<h3>3. States of Nature</h3>
+<p>Possible future events beyond the decision maker's control.</p>
+
+<h3>4. Payoffs</h3>
+<p>Results obtained from selecting an alternative.</p>
+
+<h2>Decision-Making Process</h2>
+
+<pre>Identify Problem
+↓
+Generate Alternatives
+↓
+Analyze Outcomes
+↓
+Select Best Alternative
+↓
+Implement Decision
+↓
+Review Results</pre>
+
+<h2>Importance</h2>
+
+<ul>
+<li>Reduces uncertainty.</li>
+<li>Improves decision quality.</li>
+<li>Supports rational choices.</li>
+<li>Helps evaluate risks.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A company decides whether to launch a new product based on expected market demand.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student chooses between preparing for a job interview or pursuing higher education.</p>
+
+<h1>Topic 2: Decision Making Under Risk</h1>
+
+<h2>Explanation</h2>
+
+<p>Decision making under risk occurs when probabilities of future events are known.</p>
+
+<p>The decision maker can estimate the likelihood of each possible outcome.</p>
+
+<h2>Characteristics</h2>
+
+<ul>
+<li>Probabilities are available.</li>
+<li>Outcomes are uncertain.</li>
+<li>Statistical methods can be applied.</li>
+</ul>
+
+<h2>Common Approach</h2>
+
+<p>Expected Monetary Value (EMV)</p>
+
+<h2>Decision Under Risk Flow</h2>
+
+<pre>Identify Alternatives
+↓
+Assign Probabilities
+↓
+Calculate Expected Outcomes
+↓
+Compare Alternatives
+↓
+Select Best Decision</pre>
+
+<h3>Example 1 (Business)</h3>
+<p>A company estimates a 70% chance of high demand and a 30% chance of low demand before launching a product.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A farmer estimates rainfall probabilities before selecting crops.</p>
+
+<h1>Topic 3: Expected Monetary Value (EMV)</h1>
+
+<h2>Explanation</h2>
+
+<p>Expected Monetary Value (EMV) is one of the most important decision criteria under risk.</p>
+
+<p>It measures the average expected payoff considering probabilities.</p>
+
+<h3>Formula</h3>
+
+<pre>EMV = Σ(Pi × Vi)</pre>
+
+<p>Where:</p>
+
+<ul>
+<li>(Pi) = Probability of outcome</li>
+<li>(Vi) = Value (payoff) of outcome</li>
+</ul>
+
+<h2>Steps for EMV Calculation</h2>
+
+<pre>Identify Outcomes
+↓
+Assign Probabilities
+↓
+Multiply Payoffs by Probabilities
+↓
+Sum Results
+↓
+Select Highest EMV</pre>
+
+<h2>Example</h2>
+
+<p>A company has two alternatives:</p>
+
+<h3>Alternative A</h3>
+
+<ul>
+<li>Profit ₹100,000 with probability 0.6</li>
+<li>Profit ₹40,000 with probability 0.4</li>
+</ul>
+
+<p>EMV = (0.6 × 100,000) + (0.4 × 40,000)</p>
+
+<p>= 60,000 + 16,000</p>
+
+<p>= ₹76,000</p>
+
+<h2>Advantages</h2>
+
+<ul>
+<li>Simple and logical.</li>
+<li>Considers probabilities.</li>
+<li>Widely used in business decisions.</li>
+</ul>
+
+<h2>Limitations</h2>
+
+<ul>
+<li>Requires accurate probabilities.</li>
+<li>Ignores risk preferences.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>An investment company evaluates different investment opportunities using EMV.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student estimates expected outcomes of various career options.</p>
+
+<h1>Topic 4: Decision Making Under Uncertainty</h1>
+
+<h2>Explanation</h2>
+
+<p>Decision making under uncertainty occurs when probabilities of future events are unknown.</p>
+
+<p>The decision maker cannot estimate the likelihood of outcomes.</p>
+
+<h2>Characteristics</h2>
+
+<ul>
+<li>No probability information.</li>
+<li>Future conditions unknown.</li>
+<li>Greater decision complexity.</li>
+</ul>
+
+<h2>Common Decision Criteria</h2>
+
+<h3>1. Maximax Criterion (Optimistic)</h3>
+<p>Choose alternative with highest possible payoff.</p>
+
+<h3>2. Maximin Criterion (Pessimistic)</h3>
+<p>Choose alternative with best worst-case payoff.</p>
+
+<h3>3. Minimax Regret Criterion</h3>
+<p>Minimize maximum regret.</p>
+
+<h3>4. Laplace Criterion</h3>
+<p>Assume equal probability for all outcomes.</p>
+
+<h2>Comparison of Criteria</h2>
+
+<table>
+<tr>
+<th>Criterion</th>
+<th>Approach</th>
+</tr>
+<tr>
+<td>Maximax</td>
+<td>Most Optimistic</td>
+</tr>
+<tr>
+<td>Maximin</td>
+<td>Most Conservative</td>
+</tr>
+<tr>
+<td>Minimax Regret</td>
+<td>Least Regret</td>
+</tr>
+<tr>
+<td>Laplace</td>
+<td>Equal Probability</td>
+</tr>
+</table>
+
+<h3>Example 1 (Business)</h3>
+<p>A company entering a new market where demand probabilities are unavailable.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A student choosing a career path without reliable future information.</p>
+
+<h1>Part B: Game Theory</h1>
+
+<h1>Topic 5: Concept of Game Theory</h1>
+
+<h2>Explanation</h2>
+
+<p>Game Theory is a mathematical technique used to analyze situations involving competition between two or more decision makers.</p>
+
+<p>Each participant attempts to maximize their gains while considering competitors' actions.</p>
+
+<h3>Definition</h3>
+
+<p>Game Theory is the study of strategic interactions where the outcome for one participant depends on the actions of others.</p>
+
+<h2>Components of Game Theory</h2>
+
+<h3>Players</h3>
+<p>Participants in the game.</p>
+
+<h3>Strategies</h3>
+<p>Possible actions available.</p>
+
+<h3>Payoffs</h3>
+<p>Rewards or losses resulting from strategies.</p>
+
+<h3>Rules</h3>
+<p>Conditions governing the game.</p>
+
+<h2>Game Theory Process</h2>
+
+<pre>Identify Players
+↓
+Identify Strategies
+↓
+Construct Payoff Matrix
+↓
+Analyze Outcomes
+↓
+Select Optimal Strategy</pre>
+
+<h3>Example 1 (Business)</h3>
+<p>Two competing companies decide whether to reduce prices.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>Two students compete for the highest examination rank.</p>
+
+<h1>Topic 6: 2 × 2 Zero Sum Games</h1>
+
+<h2>Explanation</h2>
+
+<p>A Zero Sum Game is a situation where one player's gain equals another player's loss.</p>
+
+<p>The total gain and loss equals zero.</p>
+
+<h2>Structure</h2>
+
+<table>
+<tr>
+<th>Player A / Player B</th>
+<th>B1</th>
+<th>B2</th>
+</tr>
+<tr>
+<td>A1</td>
+<td>5</td>
+<td>-2</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>-1</td>
+<td>4</td>
+</tr>
+</table>
+
+<p>Positive values represent gains for Player A.</p>
+
+<p>Negative values represent losses for Player A.</p>
+
+<h2>Characteristics</h2>
+
+<ul>
+<li>Competitive environment.</li>
+<li>One winner and one loser.</li>
+<li>Total payoff equals zero.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>Two firms compete for the same market share.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A chess match where one player's victory is another's defeat.</p>
+
+<h1>Topic 7: Pure Strategy</h1>
+
+<h2>Explanation</h2>
+
+<p>A Pure Strategy occurs when a player consistently chooses a particular strategy.</p>
+
+<p>The optimal solution exists at a saddle point.</p>
+
+<h2>Saddle Point</h2>
+
+<p>A saddle point exists when:</p>
+
+<pre>Maximum of row minima = Minimum of column maxima</pre>
+
+<h2>Decision Process</h2>
+
+<pre>Construct Payoff Matrix
+↓
+Find Row Minimums
+↓
+Find Column Maximums
+↓
+Identify Saddle Point
+↓
+Select Strategy</pre>
+
+<h3>Example 1 (Business)</h3>
+<p>A company consistently chooses a stable pricing strategy.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A player repeatedly selects the same move because it provides the best outcome.</p>
+
+<h1>Topic 8: Mixed Strategy</h1>
+
+<h2>Explanation</h2>
+
+<p>When no saddle point exists, players use a Mixed Strategy.</p>
+
+<p>A mixed strategy involves selecting strategies according to probabilities.</p>
+
+<h2>Characteristics</h2>
+
+<ul>
+<li>Randomized decisions.</li>
+<li>Prevents predictability.</li>
+<li>Used in competitive environments.</li>
+</ul>
+
+<h2>Process</h2>
+
+<pre>No Saddle Point
+↓
+Determine Probabilities
+↓
+Calculate Expected Payoffs
+↓
+Choose Optimal Mix</pre>
+
+<h3>Example 1 (Business)</h3>
+<p>Companies vary advertising campaigns to avoid predictable competitor responses.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A cricket bowler alternates between different bowling styles.</p>
+
+<h1>Topic 9: Dominance Principle</h1>
+
+<h2>Explanation</h2>
+
+<p>The Dominance Principle simplifies game problems by eliminating inferior strategies.</p>
+
+<p>A strategy is dominated if another strategy performs equally well or better in all situations.</p>
+
+<h2>Procedure</h2>
+
+<pre>Construct Payoff Matrix
+↓
+Identify Dominated Rows/Columns
+↓
+Eliminate Inferior Strategies
+↓
+Reduce Matrix
+↓
+Solve Game</pre>
+
+<h2>Advantages</h2>
+
+<ul>
+<li>Simplifies calculations.</li>
+<li>Reduces matrix size.</li>
+<li>Speeds up analysis.</li>
+</ul>
+
+<h3>Example 1 (Business)</h3>
+<p>A company eliminates pricing strategies that consistently produce lower profits.</p>
+
+<h3>Example 2 (Practical)</h3>
+<p>A sports team removes ineffective game plans before a match.</p>
+
+<h1>Comparison: Decision Making Under Risk vs Uncertainty</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Risk</th>
+<th>Uncertainty</th>
+</tr>
+<tr>
+<td>Probabilities Known</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>EMV Applicable</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Predictability</td>
+<td>Higher</td>
+<td>Lower</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Moderate</td>
+<td>High</td>
+</tr>
+</table>
+
+<h1>Comparison: Pure Strategy vs Mixed Strategy</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Pure Strategy</th>
+<th>Mixed Strategy</th>
+</tr>
+<tr>
+<td>Strategy Choice</td>
+<td>Fixed</td>
+<td>Probabilistic</td>
+</tr>
+<tr>
+<td>Saddle Point</td>
+<td>Exists</td>
+<td>Does Not Exist</td>
+</tr>
+<tr>
+<td>Predictability</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Usage</td>
+<td>Stable Situations</td>
+<td>Competitive Situations</td>
+</tr>
+</table>
+
+<h1>Quick Revision Summary</h1>
+
+<ul>
+<li>Decision Theory helps choose the best alternative among several options.</li>
+<li>Decision making under risk uses known probabilities.</li>
+<li>EMV evaluates alternatives using expected payoffs.</li>
+<li>Decision making under uncertainty occurs when probabilities are unknown.</li>
+<li>Game Theory studies competitive decision-making.</li>
+<li>Zero Sum Games involve one player's gain and another player's loss.</li>
+<li>Pure Strategies are used when saddle points exist.</li>
+<li>Mixed Strategies are used when saddle points do not exist.</li>
+<li>Dominance Principle simplifies game analysis.</li>
+</ul>
+
+<h1>Important Terms and Definitions</h1>
+
+<table>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+<tr>
+<td>Decision Theory</td>
+<td>Systematic approach to decision-making</td>
+</tr>
+<tr>
+<td>Alternative</td>
+<td>Available course of action</td>
+</tr>
+<tr>
+<td>State of Nature</td>
+<td>Future event beyond control</td>
+</tr>
+<tr>
+<td>EMV</td>
+<td>Expected Monetary Value</td>
+</tr>
+<tr>
+<td>Risk</td>
+<td>Situation with known probabilities</td>
+</tr>
+<tr>
+<td>Uncertainty</td>
+<td>Situation with unknown probabilities</td>
+</tr>
+<tr>
+<td>Game Theory</td>
+<td>Study of competitive decision-making</td>
+</tr>
+<tr>
+<td>Zero Sum Game</td>
+<td>One player's gain equals another player's loss</td>
+</tr>
+<tr>
+<td>Pure Strategy</td>
+<td>Fixed strategy choice</td>
+</tr>
+<tr>
+<td>Mixed Strategy</td>
+<td>Probability-based strategy choice</td>
+</tr>
+<tr>
+<td>Dominance Principle</td>
+<td>Elimination of inferior strategies</td>
+</tr>
+</table>
+
+<h1>Important Flowcharts</h1>
+
+<h3>Decision-Making Process</h3>
+
+<pre>Problem
+↓
+Alternatives
+↓
+Outcome Analysis
+↓
+Decision
+↓
+Implementation</pre>
+
+<h3>EMV Calculation</h3>
+
+<pre>Alternatives
+↓
+Probabilities
+↓
+Expected Values
+↓
+EMV
+↓
+Best Choice</pre>
+
+<h3>Game Theory Analysis</h3>
+
+<pre>Players
+↓
+Strategies
+↓
+Payoff Matrix
+↓
+Analysis
+↓
+Optimal Strategy</pre>
+
+<h1>Short Answer Questions</h1>
+
+<ol>
+<li>What is Decision Theory?</li>
+<li>Define Risk in decision-making.</li>
+<li>What is EMV?</li>
+<li>Explain decision making under uncertainty.</li>
+<li>What is Game Theory?</li>
+<li>Define a Zero Sum Game.</li>
+<li>What is a saddle point?</li>
+<li>Explain Pure Strategy.</li>
+<li>What is Mixed Strategy?</li>
+<li>State the Dominance Principle.</li>
+</ol>
+
+<h1>Long Answer Questions</h1>
+
+<ol>
+<li>Explain the concept and importance of Decision Theory.</li>
+<li>Discuss decision making under risk with EMV.</li>
+<li>Explain decision making under uncertainty and its criteria.</li>
+<li>Discuss the concept of Game Theory.</li>
+<li>Explain 2 × 2 Zero Sum Games.</li>
+<li>Differentiate between Pure and Mixed Strategies.</li>
+<li>Explain the Dominance Principle with examples.</li>
+</ol>
+
+<h1>Case-Based Questions</h1>
+
+<ol>
+<li>A company must choose between two investment projects with known probabilities of success. Explain how EMV can be used to make the decision.</li>
+
+<li>Two competing firms are deciding whether to lower prices or maintain existing prices. Explain how Game Theory can help analyze the situation.</li>
+
+<li>A business faces uncertain market demand and cannot estimate probabilities. Discuss how decision-making under uncertainty can be applied.</li>
+</ol>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 3: Data Integration and Data Quality</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 3: Data Integration and Data Quality</h1>
+    
+    <h2>Introduction</h2>
+    <p>Organizations often store data in multiple systems such as databases, ERP systems, CRM applications, spreadsheets, websites, and cloud platforms. For effective analysis and decision-making, this data must be combined into a unified view. This process is known as Data Integration.</p>
+    <p>However, integrated data is useful only when it is accurate, complete, consistent, and reliable. Therefore, organizations focus heavily on Data Quality Management, which includes data cleansing, assessment, and continuous improvement.</p>
+    <p>This unit covers Data Integration, integration techniques and tools, dimensions of data quality, data cleansing techniques, and methods for assessing and improving data quality.</p>
+
+    <h2>Topic 1: Importance of Data Integration</h2>
+    <h3>Explanation</h3>
+    <p>Data Integration is the process of combining data from multiple sources into a unified and consistent format.</p>
+    <p>Organizations generate data from:</p>
+    <ul>
+      <li>ERP Systems</li>
+      <li>CRM Systems</li>
+      <li>Accounting Software</li>
+      <li>Social Media</li>
+      <li>Mobile Applications</li>
+      <li>Databases</li>
+    </ul>
+    <p>Without integration, information remains fragmented and difficult to analyze.</p>
+
+    <h3>Objectives of Data Integration</h3>
+    <ul>
+      <li>Create a unified view of data.</li>
+      <li>Improve decision-making.</li>
+      <li>Eliminate data silos.</li>
+      <li>Enhance operational efficiency.</li>
+      <li>Support business intelligence.</li>
+    </ul>
+
+    <h3>Benefits of Data Integration</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Better Decision Making</strong></td>
+          <td>Complete information available</td>
+        </tr>
+        <tr>
+          <td><strong>Improved Data Accessibility</strong></td>
+          <td>Easier access to data</td>
+        </tr>
+        <tr>
+          <td><strong>Enhanced Efficiency</strong></td>
+          <td>Reduced duplication</td>
+        </tr>
+        <tr>
+          <td><strong>Better Analytics</strong></td>
+          <td>More reliable insights</td>
+        </tr>
+        <tr>
+          <td><strong>Increased Productivity</strong></td>
+          <td>Faster reporting</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Data Integration Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Extraction</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Transformation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Integration</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Central Repository</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Reporting &amp; Analytics</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> Amazon integrates customer, sales, inventory, and logistics data to gain a complete view of business operations.</p>
+    <p><strong>Example 2 (Practical):</strong> A university combines data from admissions, attendance, and examinations to generate student performance reports.</p>
+
+    <h2>Topic 2: Data Integration Techniques and Tools</h2>
+    <h3>Explanation</h3>
+    <p>Organizations use various techniques and tools to integrate data efficiently.</p>
+    
+    <h3>Data Integration Techniques</h3>
+    <h4>1. Manual Data Integration</h4>
+    <p>Data is collected and combined manually.</p>
+    <p><strong>Advantages:</strong> Simple; Low initial cost</p>
+    <p><strong>Disadvantages:</strong> Time-consuming; Error-prone</p>
+
+    <h4>2. Middleware Integration</h4>
+    <p>Software acts as an intermediary between systems.</p>
+    <p><strong>Advantages:</strong> Automated communication; Improved consistency</p>
+
+    <h4>3. Application-Based Integration</h4>
+    <p>Applications exchange data directly.</p>
+    <p><em>Example:</em> ERP and CRM integration.</p>
+
+    <h4>4. Data Warehousing Integration</h4>
+    <p>Data from multiple sources is stored in a centralized warehouse.</p>
+    <p><strong>Advantages:</strong> Better reporting; Historical analysis</p>
+
+    <h4>5. Data Virtualization</h4>
+    <p>Provides a virtual view of integrated data without physically moving it.</p>
+
+    <h3>Common Data Integration Tools</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Informatica</strong></td>
+          <td>Enterprise Data Integration</td>
+        </tr>
+        <tr>
+          <td><strong>Talend</strong></td>
+          <td>Open-source Data Integration</td>
+        </tr>
+        <tr>
+          <td><strong>Apache NiFi</strong></td>
+          <td>Data Flow Automation</td>
+        </tr>
+        <tr>
+          <td><strong>Microsoft SSIS</strong></td>
+          <td>ETL and Integration</td>
+        </tr>
+        <tr>
+          <td><strong>IBM DataStage</strong></td>
+          <td>Enterprise Integration</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A multinational company uses Informatica to integrate financial data from different countries.</p>
+    <p><strong>Example 2 (Practical):</strong> A school integrates student information from different departments into one system.</p>
+
+    <h2>Topic 3: Dimensions of Data Quality</h2>
+    <h3>Explanation</h3>
+    <p>Data Quality refers to the condition of data based on its suitability for use. High-quality data leads to accurate decisions, while poor-quality data can result in costly mistakes. The syllabus specifies four major dimensions:</p>
+    <ul>
+      <li>Accuracy</li>
+      <li>Completeness</li>
+      <li>Consistency</li>
+      <li>Timeliness</li>
+    </ul>
+
+    <h3>A. Accuracy</h3>
+    <h4>Explanation</h4>
+    <p>Accuracy means data correctly represents real-world values.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Accurate Customer Age = 25 Years</li>
+      <li>Incorrect Customer Age = 250 Years</li>
+    </ul>
+    
+    <h4>Importance</h4>
+    <ul>
+      <li>Reliable decisions</li>
+      <li>Reduced errors</li>
+      <li>Better reporting</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A bank must maintain accurate customer account balances.</p>
+    <p><strong>Example 2 (Practical):</strong> A college must correctly record student examination marks.</p>
+
+    <h3>B. Completeness</h3>
+    <h4>Explanation</h4>
+    <p>Completeness means all required information is available.</p>
+    <p><em>Example:</em> A customer record should contain: Name, Address, Phone Number, and Email. Missing information reduces usefulness.</p>
+
+    <p><strong>Example 1 (Business):</strong> An online retailer requires complete customer shipping information.</p>
+    <p><strong>Example 2 (Practical):</strong> A hospital requires complete patient records for treatment.</p>
+
+    <h3>C. Consistency</h3>
+    <h4>Explanation</h4>
+    <p>Consistency means data remains uniform across systems.</p>
+    <p><em>Example:</em> Customer Name in CRM = Rahul Sharma; Customer Name in Billing System = Rahul Sharma. Both systems should match.</p>
+
+    <p><strong>Example 1 (Business):</strong> A company's inventory quantity should be identical in warehouse and accounting systems.</p>
+    <p><strong>Example 2 (Practical):</strong> A student's name should appear consistently across all university records.</p>
+
+    <h3>D. Timeliness</h3>
+    <h4>Explanation</h4>
+    <p>Timeliness means data is available when needed and is up to date.</p>
+
+    <h4>Importance</h4>
+    <ul>
+      <li>Faster decisions</li>
+      <li>Better responsiveness</li>
+      <li>Improved operations</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Real-time stock information helps retailers avoid stock shortages.</p>
+    <p><strong>Example 2 (Practical):</strong> Live traffic updates help navigation applications suggest better routes.</p>
+
+    <h3>Comparison of Data Quality Dimensions</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Accuracy</strong></td>
+          <td>Correct Data</td>
+        </tr>
+        <tr>
+          <td><strong>Completeness</strong></td>
+          <td>No Missing Information</td>
+        </tr>
+        <tr>
+          <td><strong>Consistency</strong></td>
+          <td>Uniform Across Systems</td>
+        </tr>
+        <tr>
+          <td><strong>Timeliness</strong></td>
+          <td>Up-to-Date Information</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Topic 4: Data Cleansing Techniques</h2>
+    <h3>Explanation</h3>
+    <p>Data Cleansing (Data Cleaning) is the process of detecting and correcting errors, inconsistencies, and inaccuracies in data.</p>
+    
+    <h3>Objectives</h3>
+    <ul>
+      <li>Improve data quality.</li>
+      <li>Remove duplicates.</li>
+      <li>Correct errors.</li>
+      <li>Standardize formats.</li>
+    </ul>
+
+    <h3>Common Data Cleansing Techniques</h3>
+    <p><strong>1. Duplicate Removal</strong><br>Removing repeated records.<br><em>Example:</em> Same customer entered multiple times.</p>
+    <p><strong>2. Error Correction</strong><br>Fixing incorrect values.<br><em>Example:</em> Correcting spelling mistakes.</p>
+    <p><strong>3. Standardization</strong><br>Applying uniform formats.<br><em>Example:</em> Date format conversion.</p>
+    <p><strong>4. Missing Value Handling</strong><br>Completing or removing incomplete records.<br><em>Example:</em> Filling missing phone numbers.</p>
+    <p><strong>5. Validation Rules</strong><br>Checking data against predefined rules.<br><em>Example:</em> Email address format verification.</p>
+
+    <h3>Data Cleansing Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Identify Errors</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Remove Duplicates</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Correct Values</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Standardize Formats</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Validate Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Store Clean Data</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> A telecom company removes duplicate customer accounts before generating reports.</p>
+    <p><strong>Example 2 (Practical):</strong> A college corrects spelling errors in student records.</p>
+
+    <h2>Topic 5: Data Quality Assessment</h2>
+    <h3>Explanation</h3>
+    <p>Data Quality Assessment evaluates the condition of data and identifies areas requiring improvement.</p>
+    
+    <h3>Objectives</h3>
+    <ul>
+      <li>Measure data quality.</li>
+      <li>Detect weaknesses.</li>
+      <li>Improve reliability.</li>
+      <li>Support decision-making.</li>
+    </ul>
+
+    <h3>Assessment Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Define Quality Standards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Measure Current Quality</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Identify Issues</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Analyze Causes</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Recommend Improvements</div>
+    </div>
+
+    <h3>Assessment Metrics</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Accuracy Rate</strong></td>
+          <td>Correctness</td>
+        </tr>
+        <tr>
+          <td><strong>Completeness Rate</strong></td>
+          <td>Missing Data Analysis</td>
+        </tr>
+        <tr>
+          <td><strong>Consistency Rate</strong></td>
+          <td>Uniformity Check</td>
+        </tr>
+        <tr>
+          <td><strong>Timeliness Score</strong></td>
+          <td>Freshness of Data</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A bank regularly audits customer data to maintain quality standards.</p>
+    <p><strong>Example 2 (Practical):</strong> A university reviews student records before generating official reports.</p>
+
+    <h2>Topic 6: Data Quality Improvement</h2>
+    <h3>Explanation</h3>
+    <p>Data Quality Improvement is a continuous process aimed at maintaining high-quality data.</p>
+    
+    <h3>Strategies for Improvement</h3>
+    <p><strong>Data Governance</strong><br>Establish policies and standards.</p>
+    <p><strong>Employee Training</strong><br>Educate users about data quality.</p>
+    <p><strong>Automated Validation</strong><br>Use software tools for checking accuracy.</p>
+    <p><strong>Regular Audits</strong><br>Conduct periodic reviews.</p>
+    <p><strong>Standardized Processes</strong><br>Ensure consistency across systems.</p>
+
+    <h3>Continuous Improvement Cycle</h3>
+    <div class="flow-container">
+      <div class="flow-step">Assess Data Quality</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Identify Problems</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Implement Solutions</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitor Results</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Reassess Quality</div>
+    </div>
+
+    <h3>Benefits</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Better Decisions</strong></td>
+          <td>Accurate information</td>
+        </tr>
+        <tr>
+          <td><strong>Reduced Costs</strong></td>
+          <td>Fewer errors</td>
+        </tr>
+        <tr>
+          <td><strong>Increased Efficiency</strong></td>
+          <td>Improved processes</td>
+        </tr>
+        <tr>
+          <td><strong>Regulatory Compliance</strong></td>
+          <td>Better governance</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Microsoft uses automated validation systems to improve data quality across services.</p>
+    <p><strong>Example 2 (Practical):</strong> A hospital conducts regular audits of patient records to maintain accuracy.</p>
+
+    <h2>Comparison: Data Integration vs Data Quality</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Data Integration</th>
+          <th>Data Quality</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Purpose</strong></td>
+          <td>Combine Data</td>
+          <td>Improve Data</td>
+        </tr>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Multiple Sources</td>
+          <td>Data Accuracy</td>
+        </tr>
+        <tr>
+          <td><strong>Outcome</strong></td>
+          <td>Unified View</td>
+          <td>Reliable Data</td>
+        </tr>
+        <tr>
+          <td><strong>Activities</strong></td>
+          <td>ETL, Consolidation</td>
+          <td>Cleansing, Validation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Data Integration combines data from multiple sources.</li>
+      <li>Integration supports business intelligence and decision-making.</li>
+      <li>Major integration techniques include middleware, warehousing, and virtualization.</li>
+      <li>Data Quality ensures data is accurate, complete, consistent, and timely.</li>
+      <li>Data Cleansing removes errors and duplicates.</li>
+      <li>Data Quality Assessment measures data reliability.</li>
+      <li>Continuous improvement maintains long-term data quality.</li>
+      <li>High-quality data leads to better business decisions.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Data Integration</strong></td>
+          <td>Combining data from multiple sources</td>
+        </tr>
+        <tr>
+          <td><strong>Data Quality</strong></td>
+          <td>Fitness of data for use</td>
+        </tr>
+        <tr>
+          <td><strong>Accuracy</strong></td>
+          <td>Correct representation of data</td>
+        </tr>
+        <tr>
+          <td><strong>Completeness</strong></td>
+          <td>Availability of all required information</td>
+        </tr>
+        <tr>
+          <td><strong>Consistency</strong></td>
+          <td>Uniformity across systems</td>
+        </tr>
+        <tr>
+          <td><strong>Timeliness</strong></td>
+          <td>Data availability when needed</td>
+        </tr>
+        <tr>
+          <td><strong>Data Cleansing</strong></td>
+          <td>Correction of errors and inconsistencies</td>
+        </tr>
+        <tr>
+          <td><strong>Data Validation</strong></td>
+          <td>Verification against predefined rules</td>
+        </tr>
+        <tr>
+          <td><strong>Data Governance</strong></td>
+          <td>Policies for managing data</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>Data Integration Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Extraction</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Transformation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Integration</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Central Repository</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Analytics</div>
+    </div>
+
+    <h4>Data Cleansing Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Identify Errors</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Remove Duplicates</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Correct Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Standardize</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Validate</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Store</div>
+    </div>
+
+    <h4>Data Quality Improvement Cycle</h4>
+    <div class="flow-container">
+      <div class="flow-step">Assessment</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Problem Identification</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Improvement</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitoring</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Reassessment</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Data Integration?</li>
+      <li>Why is Data Integration important?</li>
+      <li>Define Data Quality.</li>
+      <li>Explain Accuracy in Data Quality.</li>
+      <li>What is Completeness?</li>
+      <li>What is Consistency?</li>
+      <li>Define Timeliness.</li>
+      <li>What is Data Cleansing?</li>
+      <li>Explain Data Quality Assessment.</li>
+      <li>What is Data Quality Improvement?</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the concept and importance of Data Integration.</li>
+      <li>Discuss various Data Integration techniques and tools.</li>
+      <li>Explain the dimensions of Data Quality.</li>
+      <li>Discuss Data Cleansing techniques with examples.</li>
+      <li>Explain the process of Data Quality Assessment.</li>
+      <li>Discuss strategies for Data Quality Improvement.</li>
+      <li>Differentiate between Data Integration and Data Quality.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A multinational company stores customer information across multiple systems. Explain how Data Integration can create a unified customer view.</li>
+      <li>A hospital discovers duplicate patient records and incomplete information in its database. Explain how Data Cleansing can solve these issues.</li>
+      <li>A bank wants to improve the accuracy and consistency of customer data. Design a Data Quality Improvement strategy for the organization.</li>
+    </ol>
+  </div>
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1: Linear Programming, Markov Chains and Simulation Techniques</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 1: Linear Programming, Markov Chains and Simulation Techniques</h1>
+    
+    <h2>Introduction</h2>
+    <p>Managers often face situations where they must make the best possible decision using limited resources such as money, manpower, machinery, and time. Quantitative techniques provide mathematical tools that help managers solve such problems scientifically.</p>
+    <p>This unit introduces Linear Programming (LP), which helps optimize resources, Markov Chains, which assist in predicting future states based on current conditions, and Simulation Techniques, which help analyze complex business situations through experimentation and modeling. These techniques are widely used in production, marketing, finance, human resources, and operations management.</p>
+
+    <h1>Topic 1: Linear Programming (LP)</h1>
+    <h3>Explanation</h3>
+    <p>Linear Programming (LP) is a mathematical technique used to determine the best possible solution to a problem involving limited resources.</p>
+    <p>The objective may be:</p>
+    <ul>
+      <li>Maximization of profit</li>
+      <li>Minimization of cost</li>
+      <li>Maximization of production</li>
+      <li>Optimal utilization of resources</li>
+    </ul>
+
+    <h3>Definition</h3>
+    <p>Linear Programming is a technique for allocating limited resources among competing activities in an optimal manner.</p>
+
+    <h3>Components of Linear Programming</h3>
+    <p><strong>1. Decision Variables</strong><br>
+    Variables whose values need to be determined.<br>
+    <em>Example:</em> Number of units of Product A and Product B.</p>
+    
+    <p><strong>2. Objective Function</strong><br>
+    Represents the goal to be achieved.<br>
+    <em>Example:</em> Maximize Profit</p>
+    
+    <p><strong>3. Constraints</strong><br>
+    Limitations on resources.<br>
+    <em>Example:</em> Labor hours, machine hours, raw materials.</p>
+    
+    <p><strong>4. Non-Negativity Restrictions</strong><br>
+    Decision variables cannot be negative.</p>
+
+    <h3>Mathematical Form</h3>
+    <p>Maximize:</p>
+    <p>$$Z = aX + bY$$</p>
+    <p>Subject to:</p>
+    <p>$$cX + dY \le \text{Resource } 1$$</p>
+    <p>$$eX + fY \le \text{Resource } 2$$</p>
+    <p>$$X \ge 0, Y \ge 0$$</p>
+
+    <h3>Assumptions of Linear Programming</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Assumption</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Linearity</strong></td>
+          <td>Relationships are linear</td>
+        </tr>
+        <tr>
+          <td><strong>Certainty</strong></td>
+          <td>Parameters are known</td>
+        </tr>
+        <tr>
+          <td><strong>Divisibility</strong></td>
+          <td>Variables can take fractional values</td>
+        </tr>
+        <tr>
+          <td><strong>Non-Negativity</strong></td>
+          <td>Variables cannot be negative</td>
+        </tr>
+        <tr>
+          <td><strong>Additivity</strong></td>
+          <td>Total effect is sum of individual effects</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A furniture company produces tables and chairs. LP helps determine the number of tables and chairs to manufacture for maximum profit.</p>
+    <p><strong>Example 2 (Practical):</strong> A student has limited study hours and must allocate time among subjects to maximize exam performance.</p>
+
+    <h2>Topic 2: Formulation of Linear Programming Problem (LPP)</h2>
+    <h3>Explanation</h3>
+    <p>Formulation means converting a business problem into mathematical equations.</p>
+    
+    <h3>Steps in Formulation</h3>
+    <div class="flow-container">
+      <div class="flow-step">Identify Decision Variables</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Construct Objective Function</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Identify Constraints</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Apply Non-Negativity Conditions</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Develop LPP Model</div>
+    </div>
+
+    <h3>Illustration</h3>
+    <p>A company manufactures Product A and Product B.</p>
+    <p>Profit:</p>
+    <ul>
+      <li>Product A = ₹40 per unit</li>
+      <li>Product B = ₹30 per unit</li>
+    </ul>
+    <p>Machine Time Constraint:</p>
+    <p>$$2A + B \le 100$$</p>
+    <p>Labor Constraint:</p>
+    <p>$$A + B \le 80$$</p>
+    
+    <p>Objective Function:</p>
+    <p>Maximize:</p>
+    <p>$$Z = 40A + 30B$$</p>
+    <p>Subject to:</p>
+    <p>$$2A + B \le 100$$</p>
+    <p>$$A + B \le 80$$</p>
+    <p>$$A \ge 0$$</p>
+    <p>$$B \ge 0$$</p>
+
+    <p><strong>Example 1 (Business):</strong> A manufacturing company formulates an LP model to maximize profit using limited machine hours.</p>
+    <p><strong>Example 2 (Practical):</strong> A farmer allocates land among crops to maximize income.</p>
+
+    <h2>Topic 3: Graphical Solution of Linear Programming</h2>
+    <h3>Explanation</h3>
+    <p>The Graphical Method is used when there are only two decision variables. The feasible region is determined graphically and the optimal solution is found at corner points.</p>
+    
+    <h3>Steps</h3>
+    <div class="flow-container">
+      <div class="flow-step">Formulate LPP</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Draw Constraint Lines</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Identify Feasible Region</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Determine Corner Points</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Evaluate Objective Function</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Select Optimal Solution</div>
+    </div>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Easy visualization</li>
+      <li>Simple calculations</li>
+      <li>Useful for learning LP concepts</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Applicable only for two variables</li>
+      <li>Not suitable for complex problems</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A factory determines the optimum production mix using graphical analysis.</p>
+    <p><strong>Example 2 (Practical):</strong> A student allocates time between study and part-time work to maximize benefits.</p>
+
+    <h2>Topic 4: Markov Chains</h2>
+    <h3>Explanation</h3>
+    <p>Markov Chains are mathematical models used to study systems that move from one state to another over time. The future state depends only on the present state and not on past states.</p>
+
+    <h3>Definition</h3>
+    <p>A Markov Chain is a stochastic process where the probability of moving to the next state depends only on the current state.</p>
+
+    <h3>Characteristics</h3>
+    <ul>
+      <li>State-based process</li>
+      <li>Probabilistic transitions</li>
+      <li>Memoryless property</li>
+      <li>Useful for forecasting</li>
+    </ul>
+
+    <h3>Markov Process Flow</h3>
+    <div class="flow-container">
+      <div class="flow-step">Current State</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Transition Probability</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Future State</div>
+    </div>
+
+    <h3>Transition Probability Matrix</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Current State</th>
+          <th>State A</th>
+          <th>State B</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>State A</strong></td>
+          <td>0.8</td>
+          <td>0.2</td>
+        </tr>
+        <tr>
+          <td><strong>State B</strong></td>
+          <td>0.3</td>
+          <td>0.7</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><em>The probabilities in each row must sum to 1.</em></p>
+
+    <p><strong>Example 1 (Business):</strong> A telecom company studies customer switching behavior between competing service providers.</p>
+    <p><strong>Example 2 (Practical):</strong> A student analyzes the probability of choosing different transportation modes daily.</p>
+
+    <h2>Topic 5: Applications of Markov Chains in Management</h2>
+    <h3>Explanation</h3>
+    <p>Markov Chains help managers predict future behavior and make better decisions.</p>
+    
+    <h3>Applications</h3>
+    <p><strong>Marketing</strong><br>
+    Customer brand switching.</p>
+    
+    <p><strong>Human Resources</strong><br>
+    Employee promotion and transfer analysis.</p>
+    
+    <p><strong>Finance</strong><br>
+    Credit rating transitions.</p>
+    
+    <p><strong>Operations</strong><br>
+    Machine maintenance and replacement decisions.</p>
+    
+    <p><strong>Inventory Management</strong><br>
+    Stock movement forecasting.</p>
+
+    <p><strong>Example 1 (Business):</strong> A company predicts future market share based on customer switching patterns.</p>
+    <p><strong>Example 2 (Practical):</strong> A retailer estimates repeat customer behavior.</p>
+
+    <h2>Topic 6: Steady State Probabilities</h2>
+    <h3>Explanation</h3>
+    <p>Steady State Probability represents the long-run probability of being in a particular state after many transitions. When the system stabilizes, probabilities become constant.</p>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Long-term forecasting</li>
+      <li>Market share estimation</li>
+      <li>Resource planning</li>
+      <li>Strategic decision-making</li>
+    </ul>
+
+    <h3>Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Transition Matrix</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Repeated Transitions</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Stable Distribution</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Steady State Probabilities</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> A company predicts long-term customer distribution among competing brands.</p>
+    <p><strong>Example 2 (Practical):</strong> A transport authority estimates long-term passenger preferences.</p>
+
+    <h2>Topic 7: Decision-Making Based on Markov Analysis</h2>
+    <h3>Explanation</h3>
+    <p>Managers use Markov results to make strategic decisions.</p>
+    
+    <h3>Uses</h3>
+    <ul>
+      <li>Customer retention planning</li>
+      <li>Market share forecasting</li>
+      <li>Workforce planning</li>
+      <li>Product strategy development</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company identifies future customer losses and launches retention campaigns.</p>
+    <p><strong>Example 2 (Practical):</strong> A college predicts student enrollment patterns for future planning.</p>
+
+    <h2>Topic 8: Simulation Techniques</h2>
+    <h3>Explanation</h3>
+    <p>Simulation is a technique that imitates real-world systems to study their behavior under different conditions. It is particularly useful when analytical solutions are difficult or impossible.</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Analyze complex systems.</li>
+      <li>Evaluate alternatives.</li>
+      <li>Reduce risk.</li>
+      <li>Improve decisions.</li>
+    </ul>
+
+    <h3>Simulation Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Problem Definition</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Model Development</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Simulation Execution</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Analysis</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Decision Making</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> An airline simulates passenger arrivals to improve scheduling.</p>
+    <p><strong>Example 2 (Practical):</strong> A traffic management system simulates vehicle movement to reduce congestion.</p>
+
+    <h2>Topic 9: Monte Carlo Simulation</h2>
+    <h3>Explanation</h3>
+    <p>Monte Carlo Simulation uses random numbers and probability distributions to model uncertainty. It performs repeated experiments to estimate possible outcomes.</p>
+    
+    <h3>Steps</h3>
+    <div class="flow-container">
+      <div class="flow-step">Define Problem</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Assign Probability Distribution</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Generate Random Numbers</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Run Simulation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Analyze Results</div>
+    </div>
+
+    <h3>Applications</h3>
+    <ul>
+      <li>Risk Analysis</li>
+      <li>Inventory Management</li>
+      <li>Project Planning</li>
+      <li>Financial Forecasting</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Banks use Monte Carlo Simulation to assess investment risks.</p>
+    <p><strong>Example 2 (Practical):</strong> A student estimates examination outcomes under different preparation scenarios.</p>
+
+    <h2>Topic 10: Scope of Simulation</h2>
+    <h3>Explanation</h3>
+    <p>Simulation can be applied across many business functions.</p>
+    
+    <h3>Areas of Application</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Application</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Finance</strong></td>
+          <td>Investment Analysis</td>
+        </tr>
+        <tr>
+          <td><strong>Marketing</strong></td>
+          <td>Demand Forecasting</td>
+        </tr>
+        <tr>
+          <td><strong>Production</strong></td>
+          <td>Capacity Planning</td>
+        </tr>
+        <tr>
+          <td><strong>HR</strong></td>
+          <td>Workforce Planning</td>
+        </tr>
+        <tr>
+          <td><strong>Logistics</strong></td>
+          <td>Supply Chain Optimization</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Manufacturing firms simulate production schedules before implementation.</p>
+    <p><strong>Example 2 (Practical):</strong> Hospitals simulate patient arrivals to optimize staffing.</p>
+
+    <h2>Topic 11: Limitations of Simulation</h2>
+    <h3>Explanation</h3>
+    <p>Although simulation is powerful, it has certain limitations.</p>
+    
+    <h3>Limitations</h3>
+    <p><strong>High Cost</strong><br>
+    Requires software and expertise.</p>
+    
+    <p><strong>Time Consuming</strong><br>
+    Complex simulations may take significant time.</p>
+    
+    <p><strong>Dependence on Data Quality</strong><br>
+    Poor input data leads to poor results.</p>
+    
+    <p><strong>No Guaranteed Optimal Solution</strong><br>
+    Provides estimates rather than exact answers.</p>
+
+    <p><strong>Example 1 (Business):</strong> An inaccurate demand forecast can produce misleading simulation results.</p>
+    <p><strong>Example 2 (Practical):</strong> A traffic simulation may fail if vehicle data is incomplete.</p>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Linear Programming optimizes limited resources.</li>
+      <li>LP consists of decision variables, objective function, and constraints.</li>
+      <li>Graphical Method solves LP problems with two variables.</li>
+      <li>Markov Chains predict future states using transition probabilities.</li>
+      <li>Steady State Probabilities represent long-run behavior.</li>
+      <li>Simulation models real-world systems.</li>
+      <li>Monte Carlo Simulation uses random numbers and probabilities.</li>
+      <li>Simulation supports decision-making but depends on data quality.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Linear Programming</strong></td>
+          <td>Technique for optimal resource allocation</td>
+        </tr>
+        <tr>
+          <td><strong>Objective Function</strong></td>
+          <td>Goal to be maximized or minimized</td>
+        </tr>
+        <tr>
+          <td><strong>Constraint</strong></td>
+          <td>Limitation on resources</td>
+        </tr>
+        <tr>
+          <td><strong>Feasible Region</strong></td>
+          <td>Area satisfying all constraints</td>
+        </tr>
+        <tr>
+          <td><strong>Markov Chain</strong></td>
+          <td>Process where future depends only on present state</td>
+        </tr>
+        <tr>
+          <td><strong>Transition Probability</strong></td>
+          <td>Probability of moving between states</td>
+        </tr>
+        <tr>
+          <td><strong>Steady State Probability</strong></td>
+          <td>Long-run probability distribution</td>
+        </tr>
+        <tr>
+          <td><strong>Simulation</strong></td>
+          <td>Imitation of a real-world system</td>
+        </tr>
+        <tr>
+          <td><strong>Monte Carlo Simulation</strong></td>
+          <td>Simulation using random numbers</td>
+        </tr>
+        <tr>
+          <td><strong>Decision Variable</strong></td>
+          <td>Variable whose value must be determined</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>LP Formulation Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Identify Variables</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Form Objective Function</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Identify Constraints</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Apply Non-Negativity</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Solve Model</div>
+    </div>
+
+    <h4>Markov Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Current State</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Transition Probability</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Next State</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Steady State</div>
+    </div>
+
+    <h4>Monte Carlo Simulation</h4>
+    <div class="flow-container">
+      <div class="flow-step">Define Problem</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Assign Probabilities</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Generate Random Numbers</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Run Simulation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Analyze Results</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Linear Programming?</li>
+      <li>Define Objective Function.</li>
+      <li>What are Decision Variables?</li>
+      <li>What is a Constraint?</li>
+      <li>Explain Markov Chains.</li>
+      <li>What is a Transition Probability Matrix?</li>
+      <li>Define Steady State Probability.</li>
+      <li>What is Simulation?</li>
+      <li>Explain Monte Carlo Simulation.</li>
+      <li>State two limitations of Simulation.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the concept and assumptions of Linear Programming.</li>
+      <li>Discuss the formulation of a Linear Programming Problem.</li>
+      <li>Explain the Graphical Method of solving LP problems.</li>
+      <li>Discuss Markov Chains and their applications in management.</li>
+      <li>Explain Steady State Probabilities and their significance.</li>
+      <li>Describe Monte Carlo Simulation and its applications.</li>
+      <li>Discuss the scope and limitations of Simulation Techniques.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A manufacturing company produces two products using limited labor and machine hours. Formulate an LP model to maximize profit.</li>
+      <li>A telecom company wants to analyze customer switching behavior between two service providers. Explain how Markov Chains can be used for forecasting market share.</li>
+      <li>A bank is evaluating investment risk under uncertain market conditions. Explain how Monte Carlo Simulation can support decision-making.</li>
+    </ol>
+  </div>
+</body>
+</html>
