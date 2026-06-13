@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 4: Cash Flow Statement and Inventory Valuation</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 4: Cash Flow Statement and Inventory Valuation</h1>
+    
+    <h2>Introduction</h2>
+    <p>Profit alone does not indicate the financial health of a business. A company may show profits but still face cash shortages. Therefore, managers need to understand how cash moves into and out of the business. The Cash Flow Statement helps in analyzing cash movements, while Inventory Valuation helps determine the value of stock and its impact on profits.</p>
+    <p>This unit covers the preparation and interpretation of Cash Flow Statements (Indirect Method) and various Inventory Valuation methods such as FIFO, LIFO, and Weighted Average Cost.</p>
+
+    <h1>Part A: Cash Flow Statement</h1>
+
+    <h2>Topic 1: Introduction to Cash Flow Statement</h2>
+    <h3>Explanation</h3>
+    <p>A Cash Flow Statement is a financial statement that shows the inflow and outflow of cash and cash equivalents during a specific accounting period. It explains how cash is generated and used by a business.</p>
+
+    <h3>Definition</h3>
+    <p>According to accounting standards, a Cash Flow Statement summarizes cash receipts and cash payments during a period.</p>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Measures liquidity position.</li>
+      <li>Helps in financial planning.</li>
+      <li>Assesses ability to pay debts.</li>
+      <li>Assists investors and creditors.</li>
+      <li>Evaluates cash management efficiency.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Apple Inc. generates huge profits, but investors also examine its cash flow statement to assess actual cash generation.</p>
+    <p><strong>Example 2 (Practical):</strong> A shopkeeper may earn profits on credit sales but still lack cash to pay suppliers. Cash flow analysis helps identify such situations.</p>
+
+    <h2>Topic 2: Purpose and Structure of Cash Flow Statement</h2>
+    <h3>Explanation</h3>
+    <p>The main purpose of the Cash Flow Statement is to explain changes in cash during a period.</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Determine sources of cash.</li>
+      <li>Determine uses of cash.</li>
+      <li>Assess liquidity.</li>
+      <li>Evaluate financial flexibility.</li>
+      <li>Support decision-making.</li>
+    </ul>
+
+    <h3>Structure of Cash Flow Statement</h3>
+    <div class="flow-container">
+      <div class="flow-step">Cash Flow Statement</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Operating Activities</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Investing Activities</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Financing Activities</div>
+    </div>
+
+    <h3>A. Operating Activities</h3>
+    <p>Activities related to normal business operations.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Cash received from customers</li>
+      <li>Cash paid to suppliers</li>
+      <li>Salary payments</li>
+      <li>Rent payments</li>
+    </ul>
+
+    <h3>B. Investing Activities</h3>
+    <p>Activities involving acquisition and disposal of long-term assets.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Purchase of machinery</li>
+      <li>Sale of equipment</li>
+      <li>Purchase of investments</li>
+      <li>Sale of investments</li>
+    </ul>
+
+    <h3>C. Financing Activities</h3>
+    <p>Activities involving capital and borrowing.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Issue of shares</li>
+      <li>Taking loans</li>
+      <li>Repayment of loans</li>
+      <li>Payment of dividends</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A manufacturing company purchases machinery worth ₹10 lakh. This is recorded under investing activities.</p>
+    <p><strong>Example 2 (Practical):</strong> An entrepreneur obtains a bank loan to start a business. This appears under financing activities.</p>
+
+    <h2>Topic 3: Indirect Method of Cash Flow Statement</h2>
+    <h3>Explanation</h3>
+    <p>The syllabus specifies preparation of Cash Flow Statement using the Indirect Method only. Under this method, cash flow from operating activities starts with net profit and adjusts for non-cash and non-operating items.</p>
+
+    <h3>Steps</h3>
+    <div class="flow-container">
+      <div class="flow-step">Net Profit Before Tax</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Add Non-Cash Expenses</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Adjust Non-Operating Items</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Adjust Changes in Working Capital</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Net Cash from Operating Activities</div>
+    </div>
+
+    <h3>Adjustments Required</h3>
+    
+    <h4>Add Back Non-Cash Expenses</h4>
+    <ul>
+      <li>Depreciation</li>
+      <li>Amortization</li>
+      <li>Goodwill written off</li>
+    </ul>
+
+    <h4>Deduct Non-Operating Incomes</h4>
+    <ul>
+      <li>Profit on sale of assets</li>
+      <li>Dividend income</li>
+      <li>Interest received</li>
+    </ul>
+
+    <h4>Working Capital Adjustments</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Increase In</th>
+          <th>Effect</th>
+          <th>Decrease In</th>
+          <th>Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Current Assets</strong></td>
+          <td>Deduct</td>
+          <td><strong>Current Assets</strong></td>
+          <td>Add</td>
+        </tr>
+        <tr>
+          <td><strong>Current Liabilities</strong></td>
+          <td>Add</td>
+          <td><strong>Current Liabilities</strong></td>
+          <td>Deduct</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A company adds depreciation of ₹50,000 back to net profit because depreciation does not involve cash outflow.</p>
+    <p><strong>Example 2 (Practical):</strong> A business records profit on credit sales, but actual cash has not yet been received. Working capital adjustments account for this difference.</p>
+
+    <h2>Topic 4: Computing Net Cash Flow from Operating Activities</h2>
+    <h3>Explanation</h3>
+    <p>Operating activities represent the primary revenue-generating activities of a business.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{Net Profit Before Tax}$$</p>
+    <p>$$+ \text{ Non-Cash Expenses}$$</p>
+    <p>$$\pm \text{ Working Capital Changes}$$</p>
+    <p>$$= \text{ Net Cash Flow from Operating Activities}$$</p>
+
+    <h3>Illustration</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Particulars</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Net Profit</td>
+          <td>1,00,000</td>
+        </tr>
+        <tr>
+          <td>Add: Depreciation</td>
+          <td>20,000</td>
+        </tr>
+        <tr>
+          <td>Less: Increase in Debtors</td>
+          <td>(10,000)</td>
+        </tr>
+        <tr>
+          <td>Add: Increase in Creditors</td>
+          <td>5,000</td>
+        </tr>
+        <tr style="font-weight: bold; border-top: 2px solid #e5e7eb;">
+          <td>Net Operating Cash Flow</td>
+          <td>1,15,000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A company with high depreciation expenses may report strong operating cash flow despite moderate accounting profits.</p>
+    <p><strong>Example 2 (Practical):</strong> A retailer receives advance payments from customers, increasing operating cash flow.</p>
+
+    <h2>Topic 5: Computing Cash Flow from Investing Activities</h2>
+    <h3>Explanation</h3>
+    <p>Investing activities involve long-term assets and investments.</p>
+
+    <h3>Cash Inflows</h3>
+    <ul>
+      <li>Sale of machinery</li>
+      <li>Sale of investments</li>
+      <li>Interest received</li>
+      <li>Dividend received</li>
+    </ul>
+
+    <h3>Cash Outflows</h3>
+    <ul>
+      <li>Purchase of machinery</li>
+      <li>Purchase of buildings</li>
+      <li>Purchase of investments</li>
+    </ul>
+
+    <h3>Illustration</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Particulars</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sale of Equipment</td>
+          <td>+50,000</td>
+        </tr>
+        <tr>
+          <td>Purchase of Machinery</td>
+          <td>-1,20,000</td>
+        </tr>
+        <tr style="font-weight: bold; border-top: 2px solid #e5e7eb;">
+          <td>Net Investing Cash Flow</td>
+          <td>-70,000</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><em>Negative cash flow often indicates expansion and growth.</em></p>
+
+    <p><strong>Example 1 (Business):</strong> Tata Steel purchases new production equipment, resulting in investing cash outflow.</p>
+    <p><strong>Example 2 (Practical):</strong> A shop owner purchases a delivery vehicle, creating an investing activity outflow.</p>
+
+    <h2>Topic 6: Computing Cash Flow from Financing Activities</h2>
+    <h3>Explanation</h3>
+    <p>Financing activities relate to sources and repayment of long-term funds.</p>
+
+    <h3>Cash Inflows</h3>
+    <ul>
+      <li>Issue of shares</li>
+      <li>Issue of debentures</li>
+      <li>Bank loans</li>
+    </ul>
+
+    <h3>Cash Outflows</h3>
+    <ul>
+      <li>Loan repayment</li>
+      <li>Redemption of debentures</li>
+      <li>Dividend payments</li>
+    </ul>
+
+    <h3>Illustration</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Particulars</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Issue of Shares</td>
+          <td>+2,00,000</td>
+        </tr>
+        <tr>
+          <td>Loan Repaid</td>
+          <td>-50,000</td>
+        </tr>
+        <tr>
+          <td>Dividend Paid</td>
+          <td>-20,000</td>
+        </tr>
+        <tr style="font-weight: bold; border-top: 2px solid #e5e7eb;">
+          <td>Net Financing Cash Flow</td>
+          <td>+1,30,000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A company raises funds through a public issue of shares.</p>
+    <p><strong>Example 2 (Practical):</strong> A startup secures a bank loan for expansion.</p>
+
+    <h2>Topic 7: Interpretation of Cash Flow Statement</h2>
+    <h3>Explanation</h3>
+    <p>Interpretation helps understand a company's financial strength and cash management efficiency.</p>
+
+    <h3>Positive Indicators</h3>
+    <ul>
+      <li>Positive operating cash flow</li>
+      <li>Adequate liquidity</li>
+      <li>Ability to repay debts</li>
+      <li>Capacity for expansion</li>
+    </ul>
+
+    <h3>Warning Signals</h3>
+    <ul>
+      <li>Negative operating cash flow</li>
+      <li>Excessive borrowing</li>
+      <li>Frequent cash shortages</li>
+    </ul>
+
+    <h3>Typical Interpretation</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Situation</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Positive Operating Cash Flow</strong></td>
+          <td>Healthy operations</td>
+        </tr>
+        <tr>
+          <td><strong>Negative Investing Cash Flow</strong></td>
+          <td>Expansion activities</td>
+        </tr>
+        <tr>
+          <td><strong>Positive Financing Cash Flow</strong></td>
+          <td>New funding raised</td>
+        </tr>
+        <tr>
+          <td><strong>Negative Financing Cash Flow</strong></td>
+          <td>Debt repayment</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A company generating positive operating cash flow for several years is generally considered financially stable.</p>
+    <p><strong>Example 2 (Practical):</strong> A small business relying continuously on loans may face future repayment difficulties.</p>
+
+    <h1>Part B: Inventory Valuation</h1>
+
+    <h2>Topic 8: Inventory Valuation and Income Measurement</h2>
+    <h3>Explanation</h3>
+    <p>Inventory refers to goods held for sale or used in production. Inventory valuation affects:</p>
+    <ul>
+      <li>Cost of Goods Sold (COGS)</li>
+      <li>Gross Profit</li>
+      <li>Net Profit</li>
+      <li>Closing Stock Value</li>
+    </ul>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Accurate profit measurement</li>
+      <li>Proper financial reporting</li>
+      <li>Effective inventory management</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A supermarket values unsold goods at year-end to determine closing inventory.</p>
+    <p><strong>Example 2 (Practical):</strong> A stationery shop counts remaining stock before calculating annual profit.</p>
+
+    <h2>Topic 9: Effect of Inventory Valuation Errors on Reported Earnings</h2>
+    <h3>Explanation</h3>
+    <p>Errors in inventory valuation directly affect profits.</p>
+
+    <h3>Understatement of Closing Inventory</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Effect</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>COGS</td>
+          <td>Increases</td>
+        </tr>
+        <tr>
+          <td>Profit</td>
+          <td>Decreases</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Overstatement of Closing Inventory</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Effect</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>COGS</td>
+          <td>Decreases</td>
+        </tr>
+        <tr>
+          <td>Profit</td>
+          <td>Increases</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A company accidentally omits inventory worth ₹1 lakh, causing profit to be understated.</p>
+    <p><strong>Example 2 (Practical):</strong> A retailer counts damaged goods incorrectly, affecting inventory valuation.</p>
+
+    <h2>Topic 10: Inventory Valuation under Perpetual Inventory System</h2>
+    <h3>Explanation</h3>
+    <p>Under the Perpetual Inventory System, inventory records are updated continuously after each transaction.</p>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Real-time stock information</li>
+      <li>Better inventory control</li>
+      <li>Reduced stock shortages</li>
+      <li>Improved decision-making</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Modern retail chains use barcode systems for perpetual inventory tracking.</p>
+    <p><strong>Example 2 (Practical):</strong> An online store updates inventory automatically after each sale.</p>
+
+    <h2>Topic 11: FIFO Method (First In, First Out)</h2>
+    <h3>Explanation</h3>
+    <p>FIFO assumes that goods purchased first are sold first.</p>
+
+    <h3>Characteristics</h3>
+    <ul>
+      <li>Oldest inventory issued first.</li>
+      <li>Closing stock consists of latest purchases.</li>
+    </ul>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Simple to understand.</li>
+      <li>Inventory reflects recent costs.</li>
+      <li>Suitable for perishable goods.</li>
+    </ul>
+
+    <h3>Example</h3>
+    <p><strong>Purchase:</strong><br>
+    100 Units @ ₹10<br>
+    100 Units @ ₹12</p>
+    <p><strong>Sold:</strong> 150 Units</p>
+    <p><strong>FIFO Cost:</strong></p>
+    <p>$$100 \times \text{₹}10 = \text{₹}1,000$$</p>
+    <p>$$50 \times \text{₹}12 = \text{₹}600$$</p>
+    <p>$$\text{COGS} = \text{₹}1,600$$</p>
+    <p>$$\text{Closing Stock} = 50 \times \text{₹}12 = \text{₹}600$$</p>
+
+    <p><strong>Example 1 (Business):</strong> Reliance Retail may use FIFO for products with expiry dates.</p>
+    <p><strong>Example 2 (Practical):</strong> A dairy shop sells older milk packets before newly arrived stock.</p>
+
+    <h2>Topic 12: LIFO Method (Last In, First Out)</h2>
+    <h3>Explanation</h3>
+    <p>LIFO assumes latest inventory purchased is sold first.</p>
+
+    <h3>Characteristics</h3>
+    <ul>
+      <li>Newest inventory issued first.</li>
+      <li>Oldest inventory remains in stock.</li>
+    </ul>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Matches current costs with revenues.</li>
+      <li>Useful during inflation.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Closing inventory may be outdated.</li>
+      <li>Not permitted under Ind AS/IFRS for external reporting.</li>
+    </ul>
+
+    <h3>Example</h3>
+    <p><strong>Purchase:</strong><br>
+    100 Units @ ₹10<br>
+    100 Units @ ₹12</p>
+    <p><strong>Sold:</strong> 150 Units</p>
+    <p><strong>LIFO Cost:</strong></p>
+    <p>$$100 \times \text{₹}12 = \text{₹}1,200$$</p>
+    <p>$$50 \times \text{₹}10 = \text{₹}500$$</p>
+    <p>$$\text{COGS} = \text{₹}1,700$$</p>
+    <p>$$\text{Closing Stock} = 50 \times \text{₹}10 = \text{₹}500$$</p>
+
+    <p><strong>Example 1 (Business):</strong> Some firms use LIFO internally for managerial analysis during inflationary periods.</p>
+    <p><strong>Example 2 (Practical):</strong> A warehouse hypothetically dispatching newly arrived stock first follows LIFO.</p>
+
+    <h2>Topic 13: Weighted Average Cost Method</h2>
+    <h3>Explanation</h3>
+    <p>Under this method, inventory is valued using average cost.</p>
+
+    <h3>Formula</h3>
+    <p><strong>Average Cost per Unit</strong></p>
+    <p>$$\text{Weighted Average Cost} = \frac{\text{Total Cost of Inventory}}{\text{Total Units Available}}$$</p>
+
+    <h3>Illustration</h3>
+    <p>100 Units @ ₹10 = ₹1,000<br>
+    100 Units @ ₹12 = ₹1,200</p>
+    <p>$$\text{Total Cost} = \text{₹}2,200$$</p>
+    <p>$$\text{Total Units} = 200$$</p>
+    <p>$$\text{Average Cost} = \text{₹}11 \text{ per unit}$$</p>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Simple and logical.</li>
+      <li>Reduces price fluctuation effects.</li>
+      <li>Widely accepted.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Manufacturing firms often use weighted average cost for raw material valuation.</p>
+    <p><strong>Example 2 (Practical):</strong> A hardware store averages costs when identical items are purchased at different prices.</p>
+
+    <h2>Comparison of FIFO, LIFO, and Weighted Average</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>FIFO</th>
+          <th>LIFO</th>
+          <th>Weighted Average</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Goods Issued</strong></td>
+          <td>Oldest First</td>
+          <td>Latest First</td>
+          <td>Average Cost</td>
+        </tr>
+        <tr>
+          <td><strong>Closing Stock Value</strong></td>
+          <td>Highest (during inflation)</td>
+          <td>Lowest</td>
+          <td>Moderate</td>
+        </tr>
+        <tr>
+          <td><strong>Profit During Inflation</strong></td>
+          <td>Higher</td>
+          <td>Lower</td>
+          <td>Moderate</td>
+        </tr>
+        <tr>
+          <td><strong>Complexity</strong></td>
+          <td>Easy</td>
+          <td>Moderate</td>
+          <td>Easy</td>
+        </tr>
+        <tr>
+          <td><strong>Ind AS/IFRS Acceptance</strong></td>
+          <td>Allowed</td>
+          <td>Not Allowed</td>
+          <td>Allowed</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Cash Flow Statement shows inflow and outflow of cash.</li>
+      <li>It consists of operating, investing, and financing activities.</li>
+      <li>The syllabus requires the Indirect Method for operating cash flow.</li>
+      <li>Positive operating cash flow indicates healthy business operations.</li>
+      <li>Inventory valuation affects profit measurement.</li>
+      <li>Inventory valuation errors directly impact reported earnings.</li>
+      <li>FIFO assumes first purchased goods are sold first.</li>
+      <li>LIFO assumes latest purchased goods are sold first.</li>
+      <li>Weighted Average uses average inventory cost.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cash Flow Statement</strong></td>
+          <td>Statement showing cash inflows and outflows</td>
+        </tr>
+        <tr>
+          <td><strong>Operating Activities</strong></td>
+          <td>Day-to-day business activities</td>
+        </tr>
+        <tr>
+          <td><strong>Investing Activities</strong></td>
+          <td>Purchase and sale of long-term assets</td>
+        </tr>
+        <tr>
+          <td><strong>Financing Activities</strong></td>
+          <td>Capital and borrowing-related activities</td>
+        </tr>
+        <tr>
+          <td><strong>Inventory</strong></td>
+          <td>Goods held for sale or production</td>
+        </tr>
+        <tr>
+          <td><strong>FIFO</strong></td>
+          <td>First In, First Out</td>
+        </tr>
+        <tr>
+          <td><strong>LIFO</strong></td>
+          <td>Last In, First Out</td>
+        </tr>
+        <tr>
+          <td><strong>Weighted Average Cost</strong></td>
+          <td>Inventory valuation using average cost</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Formulae</h2>
+    
+    <p><strong>Operating Cash Flow</strong></p>
+    <p>$$\text{Net Operating Cash Flow} = \text{Net Profit} + \text{Adjustments} \pm \text{Working Capital Changes}$$</p>
+
+    <p><strong>Weighted Average Cost</strong></p>
+    <p>$$\text{Weighted Average Cost} = \frac{\text{Total Cost of Inventory}}{\text{Total Units Available}}$$</p>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is a Cash Flow Statement?</li>
+      <li>State the objectives of a Cash Flow Statement.</li>
+      <li>What are operating activities?</li>
+      <li>What are investing activities?</li>
+      <li>What are financing activities?</li>
+      <li>Explain FIFO.</li>
+      <li>Explain LIFO.</li>
+      <li>What is Weighted Average Cost?</li>
+      <li>What is inventory valuation?</li>
+      <li>How does inventory valuation affect profits?</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the purpose and structure of a Cash Flow Statement.</li>
+      <li>Discuss the preparation of Cash Flow Statement using the indirect method.</li>
+      <li>Explain operating, investing, and financing activities with examples.</li>
+      <li>Describe the interpretation of Cash Flow Statements.</li>
+      <li>Explain inventory valuation and income measurement.</li>
+      <li>Discuss FIFO, LIFO, and Weighted Average Cost methods.</li>
+      <li>Explain the impact of inventory valuation errors on financial statements.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A company reports Net Profit of ₹2,00,000, Depreciation of ₹30,000, Increase in Debtors of ₹20,000, and Increase in Creditors of ₹10,000. Calculate Net Cash Flow from Operating Activities.</li>
+      <li>A retailer purchased 100 units at ₹20 and another 100 units at ₹25. If 150 units are sold, calculate the cost of goods sold under FIFO and LIFO.</li>
+      <li>A company has positive operating cash flow but negative investing cash flow. Interpret the situation and explain whether it indicates financial strength or weakness.</li>
+    </ol>
+  </div>
+</body>
+</html>

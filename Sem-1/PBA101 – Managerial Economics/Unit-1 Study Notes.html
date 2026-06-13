@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1: Nature and Scope of Economics</title>
+  <!-- Exact requested CSS styling -->
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Supplementary UI polish for structures like flowcharts and lists */
+    h4 {
+      font-size: 1.1em;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #374151;
+    }
+    @media (prefers-color-scheme: dark) {
+      h4 { color: #d1d5db; }
+    }
+    ul, ol {
+      padding-left: 24px;
+      margin: 16px 0;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    .flowchart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 32px 0;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 1px dashed #d1d5db;
+    }
+    @media (prefers-color-scheme: dark) {
+      .flowchart-container {
+        background: #1f2937;
+        border-color: #4b5563;
+      }
+    }
+    .flowchart-step {
+      background: #3b82f6;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      text-align: center;
+      min-width: 280px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .flowchart-arrow {
+      font-size: 20px;
+      color: #3b82f6;
+      margin: 8px 0;
+      font-weight: bold;
+    }
+    .formula-card {
+      background: #f3f4f6;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      margin: 20px 0;
+      border-left: 4px solid #ef4444;
+    }
+    @media (prefers-color-scheme: dark) {
+      .formula-card {
+        background: #1e1e1e;
+        border-left-color: #fca5a5;
+      }
+    }
+  </style>
+  <!-- MathJax for rendering equations cleanly -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <div class="message-content">
+    <h1>Unit 1: Nature and Scope of Economics</h1>
+    
+    <h2>Introduction</h2>
+    <p>Economics is the study of how individuals, businesses, and governments utilize limited resources to satisfy unlimited wants. In today's business environment, managers are required to make decisions regarding pricing, production, investment, expansion, and resource allocation. Managerial Economics applies economic principles and analytical tools to assist managers in making effective business decisions.</p>
+    <p>This unit introduces the basic concepts of economics, distinguishes between micro and macro economics, and explains the principles of managerial economics that guide business decision-making.</p>
+
+    <h2>Topic 1: Nature and Scope of Economics</h2>
+    <h3>Explanation</h3>
+    <p>Economics is a social science that studies human behavior concerning the production, distribution, and consumption of goods and services.</p>
+    <p>Human wants are unlimited, while resources such as land, labor, capital, and time are limited. Economics helps society and organizations make the best use of scarce resources.</p>
+
+    <h3>Definitions of Economics</h3>
+    <p><strong>Adam Smith:</strong><br>Economics is the study of wealth.</p>
+    <p><strong>Alfred Marshall:</strong><br>Economics is the study of mankind in the ordinary business of life.</p>
+    <p><strong>Lionel Robbins:</strong><br>Economics is the science that studies human behavior as a relationship between unlimited wants and scarce means having alternative uses.</p>
+
+    <h3>Nature of Economics</h3>
+    <ul>
+      <li>Economics is a social science.</li>
+      <li>It studies human behavior.</li>
+      <li>It deals with scarcity and choice.</li>
+      <li>It is both a positive and normative science.</li>
+      <li>It helps in decision-making.</li>
+      <li>It studies resource allocation.</li>
+    </ul>
+
+    <h3>Scope of Economics</h3>
+    <p>The scope of economics can be divided into:</p>
+    <ul>
+      <li>Micro Economics</li>
+      <li>Macro Economics</li>
+    </ul>
+
+    <h3>Example 1 (Business)</h3>
+    <p>A manufacturing company has limited capital but several investment opportunities. Economics helps management select the most profitable investment.</p>
+
+    <h3>Example 2 (Daily Life)</h3>
+    <p>A student has limited monthly pocket money and decides how much to spend on books, food, and entertainment.</p>
+
+    <h2>Topic 2: Micro Economics</h2>
+    <h3>Explanation</h3>
+    <p>Micro Economics studies the behavior of individual economic units such as consumers, firms, industries, and markets.</p>
+    <p>It focuses on individual decision-making and resource allocation.</p>
+
+    <h3>Areas Covered in Micro Economics</h3>
+    <ul>
+      <li>Consumer behavior</li>
+      <li>Demand and supply</li>
+      <li>Price determination</li>
+      <li>Production decisions</li>
+      <li>Cost analysis</li>
+      <li>Market structures</li>
+      <li>Profit maximization</li>
+    </ul>
+
+    <h3>Features of Micro Economics</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Unit of Study</strong></td>
+          <td>Individual consumer or firm</td>
+        </tr>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Small economic units</td>
+        </tr>
+        <tr>
+          <td><strong>Objective</strong></td>
+          <td>Efficient allocation of resources</td>
+        </tr>
+        <tr>
+          <td><strong>Nature</strong></td>
+          <td>Specific and detailed</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Importance of Micro Economics</h3>
+    <ul>
+      <li>Helps firms determine prices.</li>
+      <li>Assists in production planning.</li>
+      <li>Helps understand consumer behavior.</li>
+      <li>Supports profit maximization.</li>
+    </ul>
+
+    <h3>Example 1 (Business)</h3>
+    <p>A mobile phone company studies customer preferences before launching a new smartphone model.</p>
+
+    <h3>Example 2 (Daily Life)</h3>
+    <p>A consumer compares prices of different brands before purchasing a television.</p>
+
+    <h2>Topic 3: Macro Economics</h2>
+    <h3>Explanation</h3>
+    <p>Macro Economics studies the economy as a whole rather than individual units.</p>
+    <p>It examines aggregate economic variables such as national income, employment, inflation, and economic growth.</p>
+
+    <h3>Areas Covered in Macro Economics</h3>
+    <ul>
+      <li>National Income</li>
+      <li>Inflation</li>
+      <li>Unemployment</li>
+      <li>Economic Growth</li>
+      <li>Monetary Policy</li>
+      <li>Fiscal Policy</li>
+      <li>International Trade</li>
+    </ul>
+
+    <h3>Features of Macro Economics</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Unit of Study</strong></td>
+          <td>Entire economy</td>
+        </tr>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Aggregate variables</td>
+        </tr>
+        <tr>
+          <td><strong>Objective</strong></td>
+          <td>Economic stability and growth</td>
+        </tr>
+        <tr>
+          <td><strong>Nature</strong></td>
+          <td>Broad and general</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Importance of Macro Economics</h3>
+    <ul>
+      <li>Helps governments formulate policies.</li>
+      <li>Measures economic performance.</li>
+      <li>Controls inflation and unemployment.</li>
+      <li>Promotes economic growth.</li>
+    </ul>
+
+    <h3>Example 1 (Business)</h3>
+    <p>A company monitors inflation rates before deciding employee salary increments.</p>
+
+    <h3>Example 2 (Daily Life)</h3>
+    <p>People reduce spending when the economy experiences recession and unemployment rises.</p>
+
+    <h2>Topic 4: Managerial Economics and its Relevance in Business Decisions</h2>
+    <h3>Explanation</h3>
+    <p>Managerial Economics is the application of economic theories, concepts, and analytical tools to solve managerial problems and make business decisions.</p>
+    <p>It bridges economic theory and business practice.</p>
+
+    <h3>Definition</h3>
+    <p>Managerial Economics helps managers make decisions regarding production, pricing, investment, marketing, and resource allocation.</p>
+
+    <h3>Objectives of Managerial Economics</h3>
+    <ul>
+      <li>Profit maximization</li>
+      <li>Cost minimization</li>
+      <li>Efficient resource utilization</li>
+      <li>Business growth</li>
+      <li>Risk management</li>
+    </ul>
+
+    <h3>Areas of Application</h3>
+    <ul>
+      <li>Demand Analysis</li>
+      <li>Production Decisions</li>
+      <li>Pricing Decisions</li>
+      <li>Cost Analysis</li>
+      <li>Investment Decisions</li>
+      <li>Profit Planning</li>
+    </ul>
+
+    <h3>Importance in Business</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Business Area</th>
+          <th>Role of Managerial Economics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Marketing</strong></td>
+          <td>Forecasts demand</td>
+        </tr>
+        <tr>
+          <td><strong>Production</strong></td>
+          <td>Determines output level</td>
+        </tr>
+        <tr>
+          <td><strong>Finance</strong></td>
+          <td>Evaluates investment proposals</td>
+        </tr>
+        <tr>
+          <td><strong>Human Resources</strong></td>
+          <td>Labor cost decisions</td>
+        </tr>
+        <tr>
+          <td><strong>Strategic Planning</strong></td>
+          <td>Long-term growth decisions</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Example 1 (Business)</h3>
+    <p>A car manufacturer estimates future demand before expanding production capacity.</p>
+
+    <h3>Example 2 (Daily Life)</h3>
+    <p>A shopkeeper decides the quantity of stock to purchase based on expected customer demand.</p>
+
+    <h2>Topic 5: Fundamental Principles of Managerial Economics</h2>
+    
+    <h3>A. Incremental Principle</h3>
+    <h4>Explanation</h4>
+    <p>The Incremental Principle states that managers should consider only the additional costs and additional revenues resulting from a decision.</p>
+    <p><strong>Decision Rule:</strong><br>Incremental Revenue &gt; Incremental Cost<br>Then the decision should be accepted.</p>
+
+    <h4>Importance</h4>
+    <ul>
+      <li>Helps evaluate alternatives.</li>
+      <li>Supports profit-maximizing decisions.</li>
+      <li>Avoids considering irrelevant costs.</li>
+    </ul>
+
+    <h4>Example 1 (Business)</h4>
+    <p>A company accepts a special export order because additional revenue exceeds additional production cost.</p>
+
+    <h4>Example 2 (Daily Life)</h4>
+    <p>A student takes a part-time job because additional income is greater than travel expenses.</p>
+
+    <h3>B. Marginal Principle</h3>
+    <h4>Explanation</h4>
+    <p>The Marginal Principle states that decisions should be based on additional benefits and additional costs associated with one more unit of activity.</p>
+    <p><strong>Decision Rule:</strong><br>Marginal Benefit = Marginal Cost<br>The optimum decision occurs at this point.</p>
+
+    <h4>Importance</h4>
+    <ul>
+      <li>Helps determine production levels.</li>
+      <li>Supports pricing decisions.</li>
+      <li>Improves resource allocation.</li>
+    </ul>
+
+    <h4>Example 1 (Business)</h4>
+    <p>A factory increases production until the revenue from one extra unit equals its production cost.</p>
+
+    <h4>Example 2 (Daily Life)</h4>
+    <p>A person studies one extra hour only if the expected benefit exceeds the effort involved.</p>
+
+    <h3>C. Opportunity Cost Principle</h3>
+    <h4>Explanation</h4>
+    <p>Opportunity Cost refers to the value of the next best alternative sacrificed when a choice is made.</p>
+
+    <h4>Formula</h4>
+    <p>Opportunity Cost = Benefit of Best Alternative Forgone</p>
+
+    <h4>Importance</h4>
+    <ul>
+      <li>Improves resource allocation.</li>
+      <li>Helps compare alternatives.</li>
+      <li>Assists investment decisions.</li>
+    </ul>
+
+    <h4>Example 1 (Business)</h4>
+    <p>A company uses land for a warehouse instead of renting it out. The rental income forgone is the opportunity cost.</p>
+
+    <h4>Example 2 (Daily Life)</h4>
+    <p>A student spends time watching television instead of studying. The learning opportunity lost is the opportunity cost.</p>
+
+    <h3>D. Discounting Principle</h3>
+    <h4>Explanation</h4>
+    <p>Money received today is more valuable than the same amount received in the future because current money can be invested and earn returns.</p>
+    <p>This concept is called the Time Value of Money.</p>
+
+    <h4>Present Value Formula</h4>
+    <div class="formula-card">
+      $$PV=\frac{FV}{(1+r)^n}$$
+    </div>
+    <p>Where:</p>
+    <ul>
+      <li>$PV$ = Present Value</li>
+      <li>$FV$ = Future Value</li>
+      <li>$r$ = Rate of Interest</li>
+      <li>$n$ = Number of Years</li>
+    </ul>
+
+    <h4>Importance</h4>
+    <ul>
+      <li>Capital budgeting</li>
+      <li>Investment appraisal</li>
+      <li>Project evaluation</li>
+    </ul>
+
+    <h4>Example 1 (Business)</h4>
+    <p>A company evaluates future cash flows before investing in a new plant.</p>
+
+    <h4>Example 2 (Daily Life)</h4>
+    <p>A person compares a lump-sum payment today with installments received over several years.</p>
+
+    <h3>E. Concept of Time Perspective</h3>
+    <h4>Explanation</h4>
+    <p>Managers should consider both short-term and long-term effects of decisions.</p>
+    <p>A decision that provides immediate profit may create future losses, while a short-term sacrifice may generate long-term benefits.</p>
+
+    <h4>Importance</h4>
+    <ul>
+      <li>Strategic planning</li>
+      <li>Sustainable growth</li>
+      <li>Long-term profitability</li>
+    </ul>
+
+    <h4>Example 1 (Business)</h4>
+    <p>A company invests heavily in research and development, reducing current profits but increasing future earnings.</p>
+
+    <h4>Example 2 (Daily Life)</h4>
+    <p>A student spends time preparing for competitive exams rather than seeking immediate employment.</p>
+
+    <h3>F. Equi-Marginal Principle</h3>
+    <h4>Explanation</h4>
+    <p>According to this principle, resources should be allocated among different activities in such a way that marginal benefits from each activity become equal.</p>
+
+    <h4>Objective</h4>
+    <p>To maximize total satisfaction or profit from available resources.</p>
+
+    <h4>Importance</h4>
+    <ul>
+      <li>Budget allocation</li>
+      <li>Advertising expenditure</li>
+      <li>Investment planning</li>
+    </ul>
+
+    <h4>Example 1 (Business)</h4>
+    <p>A company distributes its advertising budget among television, newspapers, and digital media until marginal returns from each are equal.</p>
+
+    <h4>Example 2 (Daily Life)</h4>
+    <p>A consumer allocates monthly income among food, education, and entertainment to maximize overall satisfaction.</p>
+
+    <h2>Comparison: Micro Economics vs Macro Economics</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>Micro Economics</th>
+          <th>Macro Economics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td>Individual units</td>
+          <td>Entire economy</td>
+        </tr>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Consumers and firms</td>
+          <td>National economy</td>
+        </tr>
+        <tr>
+          <td><strong>Objective</strong></td>
+          <td>Resource allocation</td>
+          <td>Economic stability and growth</td>
+        </tr>
+        <tr>
+          <td><strong>Variables</strong></td>
+          <td>Individual prices</td>
+          <td>Aggregate prices</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>Price of a product</td>
+          <td>Inflation rate</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Flowchart: Managerial Decision-Making Process</h2>
+    <div class="flowchart-container">
+      <div class="flowchart-step">Problem Identification</div>
+      <div class="flowchart-arrow">↓</div>
+      <div class="flowchart-step">Collection of Information</div>
+      <div class="flowchart-arrow">↓</div>
+      <div class="flowchart-step">Analysis of Alternatives</div>
+      <div class="flowchart-arrow">↓</div>
+      <div class="flowchart-step">Application of Economic Principles</div>
+      <div class="flowchart-arrow">↓</div>
+      <div class="flowchart-step">Selection of Best Alternative</div>
+      <div class="flowchart-arrow">↓</div>
+      <div class="flowchart-step">Implementation</div>
+      <div class="flowchart-arrow">↓</div>
+      <div class="flowchart-step">Evaluation of Results</div>
+    </div>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Economics studies allocation of scarce resources.</li>
+      <li>Micro Economics focuses on individual units.</li>
+      <li>Macro Economics focuses on the economy as a whole.</li>
+      <li>Managerial Economics applies economic principles to business decisions.</li>
+      <li>Incremental Principle compares additional costs and revenues.</li>
+      <li>Marginal Principle uses marginal cost and marginal benefit.</li>
+      <li>Opportunity Cost is the value of the next best alternative forgone.</li>
+      <li>Discounting Principle recognizes the time value of money.</li>
+      <li>Time Perspective balances short-term and long-term goals.</li>
+      <li>Equi-Marginal Principle helps achieve optimum resource allocation.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <ul>
+      <li><strong>Economics:</strong> Study of allocation of scarce resources among unlimited wants.</li>
+      <li><strong>Micro Economics:</strong> Study of individual economic units.</li>
+      <li><strong>Macro Economics:</strong> Study of aggregate economic variables.</li>
+      <li><strong>Managerial Economics:</strong> Application of economic principles to managerial decision-making.</li>
+      <li><strong>Opportunity Cost:</strong> Value of the best alternative forgone.</li>
+      <li><strong>Marginal Cost:</strong> Additional cost of producing one more unit.</li>
+      <li><strong>Marginal Benefit:</strong> Additional benefit from one more unit.</li>
+      <li><strong>Present Value:</strong> Current value of future cash flows.</li>
+      <li><strong>Equi-Marginal Principle:</strong> Allocation of resources where marginal benefits are equal.</li>
+    </ul>
+
+    <h2>Important Formulae</h2>
+    <h3>Present Value Formula</h3>
+    <div class="formula-card">
+      $$PV=\frac{FV}{(1+r)^n}$$
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>Define Economics.</li>
+      <li>What is Managerial Economics?</li>
+      <li>Distinguish between Micro and Macro Economics.</li>
+      <li>Explain Opportunity Cost.</li>
+      <li>What is the Incremental Principle?</li>
+      <li>Define Marginal Principle.</li>
+      <li>What is the Discounting Principle?</li>
+      <li>Explain Equi-Marginal Principle.</li>
+      <li>What is Time Perspective?</li>
+      <li>State the scope of Economics.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the nature and scope of Economics.</li>
+      <li>Discuss the importance of Managerial Economics in business decision-making.</li>
+      <li>Differentiate between Micro Economics and Macro Economics.</li>
+      <li>Explain the fundamental principles of Managerial Economics with examples.</li>
+      <li>Discuss the Opportunity Cost Principle and its significance.</li>
+      <li>Explain the Discounting Principle and Time Value of Money.</li>
+      <li>Describe the Equi-Marginal Principle and its applications.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A manufacturing company receives a special export order at a lower price. Using the Incremental Principle, explain how management should decide whether to accept the order.</li>
+      <li>A firm has limited funds to allocate among advertising, employee training, and product development. Explain how the Equi-Marginal Principle can help management.</li>
+      <li>A company is deciding whether to invest in a project that will generate cash flows after five years. Explain how the Discounting Principle can be used to evaluate the project.</li>
+    </ol>
+  </div>
+
+</body>
+</html>

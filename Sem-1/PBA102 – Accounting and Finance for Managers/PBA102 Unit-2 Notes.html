@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 2: Financial Statements</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+    
+    /* Visual workflow styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 2: Financial Statements</h1>
+    
+    <h2>Introduction</h2>
+    <p>Financial statements are formal records that summarize the financial activities and position of a business. They provide useful information to owners, investors, creditors, managers, and government authorities for decision-making.</p>
+    <p>The main financial statements are the Trial Balance, Profit &amp; Loss Account, Profit &amp; Loss Appropriation Account, and Balance Sheet. These statements help in assessing profitability, financial stability, and operational efficiency.</p>
+
+    <h2>Topic 1: Trial Balance</h2>
+    <h3>Explanation</h3>
+    <p>A Trial Balance is a statement prepared to verify the arithmetic accuracy of ledger accounts. It lists all account balances on a particular date.</p>
+
+    <h3>Objectives of Trial Balance</h3>
+    <ul>
+      <li>Check accuracy of ledger postings.</li>
+      <li>Detect arithmetic errors.</li>
+      <li>Facilitate preparation of final accounts.</li>
+      <li>Summarize ledger balances.</li>
+    </ul>
+
+    <h3>Format of Trial Balance</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Account Name</th>
+          <th>Debit (₹)</th>
+          <th>Credit (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cash A/c</td>
+          <td>xxx</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Capital A/c</td>
+          <td></td>
+          <td>xxx</td>
+        </tr>
+        <tr>
+          <td>Sales A/c</td>
+          <td></td>
+          <td>xxx</td>
+        </tr>
+        <tr>
+          <td>Purchases A/c</td>
+          <td>xxx</td>
+          <td></td>
+        </tr>
+        <tr style="font-weight: bold; border-top: 2px solid #e5e7eb;">
+          <td>Total</td>
+          <td>xxx</td>
+          <td>xxx</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Features</h3>
+    <ul>
+      <li>Prepared after ledger balancing.</li>
+      <li>Total debits must equal total credits.</li>
+      <li>Acts as a bridge between ledger and final accounts.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <p>Trial Balance cannot detect:</p>
+    <ul>
+      <li>Errors of omission</li>
+      <li>Errors of principle</li>
+      <li>Compensating errors</li>
+      <li>Errors of commission in some cases</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A manufacturing company prepares a trial balance at the end of the month before preparing financial statements.</p>
+    <p><strong>Example 2 (Practical):</strong> A retail shop owner checks whether total debit balances equal total credit balances before calculating profit.</p>
+
+    <h2>Topic 2: Preparation of Final Accounts</h2>
+    <h3>Explanation</h3>
+    <p>Final Accounts are prepared at the end of an accounting period to determine profit or loss and financial position.</p>
+
+    <h3>Components of Final Accounts</h3>
+    <div class="flow-container">
+      <div class="flow-step">Trading Account</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Profit &amp; Loss Account</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Profit &amp; Loss Appropriation Account</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Balance Sheet</div>
+    </div>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Determine profitability.</li>
+      <li>Assess financial position.</li>
+      <li>Provide information to stakeholders.</li>
+      <li>Support business decisions.</li>
+    </ul>
+
+    <h3>Steps in Preparation</h3>
+    <div class="flow-container">
+      <div class="flow-step">Journal Entries</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ledger Accounts</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Trial Balance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Final Accounts</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Financial Analysis</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> A company prepares annual final accounts to report its performance to shareholders.</p>
+    <p><strong>Example 2 (Practical):</strong> A small business owner calculates annual profit and prepares a balance sheet to evaluate business growth.</p>
+
+    <h2>Topic 3: Profit &amp; Loss Account</h2>
+    <h3>Explanation</h3>
+    <p>The Profit &amp; Loss Account is prepared to determine the net profit or net loss of a business during an accounting period.</p>
+
+    <h3>Purpose</h3>
+    <ul>
+      <li>Measure profitability.</li>
+      <li>Record indirect expenses.</li>
+      <li>Record indirect incomes.</li>
+      <li>Determine net profit or loss.</li>
+    </ul>
+
+    <h3>Structure</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Expenses</th>
+          <th>Amount (₹)</th>
+          <th>Incomes</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Salaries</td>
+          <td>xxx</td>
+          <td>Commission Received</td>
+          <td>xxx</td>
+        </tr>
+        <tr>
+          <td>Rent</td>
+          <td>xxx</td>
+          <td>Interest Received</td>
+          <td>xxx</td>
+        </tr>
+        <tr>
+          <td>Depreciation</td>
+          <td>xxx</td>
+          <td>Other Income</td>
+          <td>xxx</td>
+        </tr>
+        <tr style="font-weight: bold; border-top: 1px solid #e5e7eb;">
+          <td>Net Profit</td>
+          <td>xxx</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Formula</h3>
+    <p>$$\text{Net Profit} = \text{Total Income} - \text{Total Expenses}$$</p>
+    <p>If expenses exceed income, the result is a net loss.</p>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Measures operating efficiency.</li>
+      <li>Assists management decisions.</li>
+      <li>Helps investors evaluate performance.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Hindustan Unilever prepares a Profit &amp; Loss Account annually to determine profitability and report earnings.</p>
+    <p><strong>Example 2 (Practical):</strong> A coaching institute calculates annual income from fees and deducts rent, salaries, and utilities to determine profit.</p>
+
+    <h2>Topic 4: Profit &amp; Loss Appropriation Account</h2>
+    <h3>Explanation</h3>
+    <p>The Profit &amp; Loss Appropriation Account shows how the net profit is distributed among owners, partners, or shareholders. It is prepared after the Profit &amp; Loss Account.</p>
+
+    <h3>Items Included</h3>
+    <ul>
+      <li>Transfer to reserves</li>
+      <li>Dividend payment</li>
+      <li>Partner's salary</li>
+      <li>Interest on capital</li>
+      <li>Retained earnings</li>
+    </ul>
+
+    <h3>Format</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Particulars</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Net Profit</td>
+          <td>xxx</td>
+        </tr>
+        <tr>
+          <td>Less: Dividends</td>
+          <td>xxx</td>
+        </tr>
+        <tr>
+          <td>Less: Reserves</td>
+          <td>xxx</td>
+        </tr>
+        <tr style="font-weight: bold; border-top: 2px solid #e5e7eb;">
+          <td>Balance Carried Forward</td>
+          <td>xxx</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Shows utilization of profits.</li>
+      <li>Indicates retained earnings.</li>
+      <li>Helps assess dividend policy.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> ITC Limited allocates part of its profits as dividends and retains the remaining amount for expansion.</p>
+    <p><strong>Example 2 (Practical):</strong> Partners in a firm divide annual profits according to the partnership agreement.</p>
+
+    <h2>Topic 5: Balance Sheet</h2>
+    <h3>Explanation</h3>
+    <p>A Balance Sheet is a statement showing the financial position of a business on a specific date. It presents assets, liabilities, and owner's equity.</p>
+
+    <h3>Basic Equation</h3>
+    <p>$$\text{Assets} = \text{Liabilities} + \text{Equity}$$</p>
+
+    <h3>Structure</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Liabilities</th>
+          <th>Amount (₹)</th>
+          <th>Assets</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Capital</td>
+          <td>xxx</td>
+          <td>Cash</td>
+          <td>xxx</td>
+        </tr>
+        <tr>
+          <td>Loans</td>
+          <td>xxx</td>
+          <td>Inventory</td>
+          <td>xxx</td>
+        </tr>
+        <tr>
+          <td>Creditors</td>
+          <td>xxx</td>
+          <td>Machinery</td>
+          <td>xxx</td>
+        </tr>
+        <tr style="font-weight: bold; border-top: 2px solid #e5e7eb;">
+          <td>Total</td>
+          <td>xxx</td>
+          <td>Total</td>
+          <td>xxx</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Determine financial position.</li>
+      <li>Assess solvency.</li>
+      <li>Assist investors and creditors.</li>
+      <li>Support financial planning.</li>
+    </ul>
+
+    <h3>Characteristics</h3>
+    <ul>
+      <li>Prepared on a particular date.</li>
+      <li>Summarizes assets and liabilities.</li>
+      <li>Reflects business net worth.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Asian Paints reports its assets, liabilities, and shareholder equity in its annual balance sheet.</p>
+    <p><strong>Example 2 (Practical):</strong> A shopkeeper prepares a balance sheet to determine total assets and outstanding loans.</p>
+
+    <h2>Topic 6: Understanding Items Appearing in Financial Statements</h2>
+    <h3>Explanation</h3>
+    <p>Financial statements contain various items that help users understand the financial health of a business.</p>
+
+    <h3>Major Categories</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Examples</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Assets</strong></td>
+          <td>Cash, Inventory, Machinery</td>
+        </tr>
+        <tr>
+          <td><strong>Liabilities</strong></td>
+          <td>Loans, Creditors</td>
+        </tr>
+        <tr>
+          <td><strong>Income</strong></td>
+          <td>Sales Revenue, Interest Income</td>
+        </tr>
+        <tr>
+          <td><strong>Expenses</strong></td>
+          <td>Salaries, Rent, Depreciation</td>
+        </tr>
+        <tr>
+          <td><strong>Equity</strong></td>
+          <td>Capital, Retained Earnings</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Improves financial understanding.</li>
+      <li>Supports decision-making.</li>
+      <li>Facilitates performance evaluation.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Investors analyze revenue growth and debt levels before investing in a company.</p>
+    <p><strong>Example 2 (Practical):</strong> A bank reviews an applicant's financial statements before approving a loan.</p>
+
+    <h2>Topic 7: Different Types of Assets and Liabilities</h2>
+    <h3>Explanation</h3>
+    <p>Assets and liabilities can be classified into different categories depending on their purpose and nature.</p>
+    
+    <h3>A. Financial Assets</h3>
+    <p>Financial assets represent contractual claims to receive cash or another financial asset.</p>
+
+    <h4>Examples</h4>
+    <ul>
+      <li>Cash</li>
+      <li>Bank Deposits</li>
+      <li>Investments</li>
+      <li>Accounts Receivable</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company invests surplus funds in government securities.</p>
+    <p><strong>Example 2 (Practical):</strong> Money deposited in a savings account is a financial asset.</p>
+
+    <h3>B. Operating Investments</h3>
+    <p>Investments used to support core business operations.</p>
+
+    <h4>Examples</h4>
+    <ul>
+      <li>Production Equipment</li>
+      <li>Technology Systems</li>
+      <li>Warehouses</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> An automobile company purchases robots for manufacturing.</p>
+    <p><strong>Example 2 (Practical):</strong> A bakery buys an oven to increase production capacity.</p>
+
+    <h3>C. Operating Liabilities</h3>
+    <p>Liabilities arising from daily business operations.</p>
+
+    <h4>Examples</h4>
+    <ul>
+      <li>Trade Creditors</li>
+      <li>Outstanding Salaries</li>
+      <li>Outstanding Rent</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company purchases raw materials on credit from suppliers.</p>
+    <p><strong>Example 2 (Practical):</strong> A shop owes one month's rent to the landlord.</p>
+
+    <h3>D. Financial Liabilities</h3>
+    <p>Obligations involving repayment of borrowed funds.</p>
+
+    <h4>Examples</h4>
+    <ul>
+      <li>Bank Loans</li>
+      <li>Debentures</li>
+      <li>Bonds Payable</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company takes a term loan from a bank for expansion.</p>
+    <p><strong>Example 2 (Practical):</strong> An entrepreneur borrows money from a bank to start a business.</p>
+
+    <h3>E. Equity</h3>
+    <p>Equity represents the owner's residual interest in the business.</p>
+
+    <h4>Components</h4>
+    <ul>
+      <li>Share Capital</li>
+      <li>Retained Earnings</li>
+      <li>Reserves and Surplus</li>
+    </ul>
+
+    <h4>Formula</h4>
+    <p>$$\text{Equity} = \text{Assets} - \text{Liabilities}$$</p>
+
+    <p><strong>Example 1 (Business):</strong> Shareholders of Wipro collectively own the company's equity.</p>
+    <p><strong>Example 2 (Practical):</strong> If a business has assets worth ₹10 lakh and liabilities worth ₹4 lakh, equity equals ₹6 lakh.</p>
+
+    <h3>Comparison of Assets and Liabilities</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>Assets</th>
+          <th>Liabilities</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Meaning</strong></td>
+          <td>Resources owned</td>
+          <td>Obligations owed</td>
+        </tr>
+        <tr>
+          <td><strong>Future Benefit</strong></td>
+          <td>Expected inflow</td>
+          <td>Expected outflow</td>
+        </tr>
+        <tr>
+          <td><strong>Examples</strong></td>
+          <td>Cash, Machinery</td>
+          <td>Loans, Creditors</td>
+        </tr>
+        <tr>
+          <td><strong>Balance Sheet Position</strong></td>
+          <td>Asset Side</td>
+          <td>Liability Side</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Trial Balance verifies arithmetic accuracy of ledger accounts.</li>
+      <li>Final Accounts include Profit &amp; Loss Account, Profit &amp; Loss Appropriation Account, and Balance Sheet.</li>
+      <li>Profit &amp; Loss Account determines net profit or net loss.</li>
+      <li>Profit appropriation shows distribution of profits.</li>
+      <li>Balance Sheet shows financial position on a specific date.</li>
+      <li>Assets and liabilities are classified into various categories.</li>
+      <li>Equity represents the owner's residual claim.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Trial Balance</strong></td>
+          <td>Statement of ledger balances prepared to verify arithmetic accuracy</td>
+        </tr>
+        <tr>
+          <td><strong>Final Accounts</strong></td>
+          <td>Statements prepared to determine profit and financial position</td>
+        </tr>
+        <tr>
+          <td><strong>Profit &amp; Loss Account</strong></td>
+          <td>Statement showing net profit or loss</td>
+        </tr>
+        <tr>
+          <td><strong>Profit Appropriation Account</strong></td>
+          <td>Statement showing distribution of profits</td>
+        </tr>
+        <tr>
+          <td><strong>Balance Sheet</strong></td>
+          <td>Statement of assets, liabilities, and equity</td>
+        </tr>
+        <tr>
+          <td><strong>Financial Asset</strong></td>
+          <td>Asset representing a contractual right to receive cash</td>
+        </tr>
+        <tr>
+          <td><strong>Financial Liability</strong></td>
+          <td>Obligation to repay borrowed funds</td>
+        </tr>
+        <tr>
+          <td><strong>Equity</strong></td>
+          <td>Residual interest in assets after deducting liabilities</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Formulae</h2>
+    <p><strong>Net Profit</strong></p>
+    <p>$$\text{Net Profit} = \text{Total Income} - \text{Total Expenses}$$</p>
+
+    <p><strong>Balance Sheet Equation</strong></p>
+    <p>$$\text{Assets} = \text{Liabilities} + \text{Equity}$$</p>
+
+    <p><strong>Equity Formula</strong></p>
+    <p>$$\text{Equity} = \text{Assets} - \text{Liabilities}$$</p>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is a Trial Balance?</li>
+      <li>State the objectives of preparing a Trial Balance.</li>
+      <li>What are Final Accounts?</li>
+      <li>Define Profit &amp; Loss Account.</li>
+      <li>What is a Profit &amp; Loss Appropriation Account?</li>
+      <li>Define Balance Sheet.</li>
+      <li>What is Equity?</li>
+      <li>Explain Financial Assets.</li>
+      <li>What are Operating Liabilities?</li>
+      <li>State any two limitations of Trial Balance.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the preparation and objectives of a Trial Balance.</li>
+      <li>Discuss the components of Final Accounts.</li>
+      <li>Explain the format and importance of the Profit &amp; Loss Account.</li>
+      <li>Describe the purpose and preparation of the Profit &amp; Loss Appropriation Account.</li>
+      <li>Explain the Balance Sheet with suitable examples.</li>
+      <li>Discuss different types of assets and liabilities.</li>
+      <li>Explain the importance of financial statements for stakeholders.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A company reports total assets of ₹50 lakh and total liabilities of ₹20 lakh. Calculate equity and explain its significance.</li>
+      <li>A manufacturing firm earned revenue of ₹25 lakh and incurred expenses of ₹18 lakh. Prepare a simple Profit &amp; Loss calculation and interpret the result.</li>
+      <li>A bank is evaluating a company's loan application. Explain how the Balance Sheet and Profit &amp; Loss Account help in decision-making.</li>
+    </ol>
+  </div>
+</body>
+</html>

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - CaseOrbit | Unit I: Understanding Digital Transformation</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <!-- Conversation Summary -->
+  <!-- Table of Contents -->
+  
+  
+  <div class="header">
+    <h1>PBA205 - Unit I: Understanding Digital Transformation</h1>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">CaseOrbit said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="5f269458-6c86-4f79-84b3-aa55ae01d9ec" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="171">I will <strong data-start="7" data-end="67">start with Unit I – Understanding Digital Transformation</strong> and generate <strong data-start="81" data-end="121">exactly THREE MBA-level case studies</strong>, fully aligned with <strong data-start="142" data-end="152">PBA205</strong> and your syllabus.</p>
+<hr data-start="173" data-end="176">
+<h2 data-start="178" data-end="266"><strong data-start="181" data-end="266">Case Study 1: Amazon’s Enterprise-Wide Digital Transformation for Scalable Growth</strong></h2>
+<h3 data-start="268" data-end="286"><strong data-start="272" data-end="284">1. Title</strong></h3>
+<p data-start="287" data-end="344">Rebuilding Scale through Digital Transformation at Amazon</p>
+<h3 data-start="346" data-end="392"><strong data-start="350" data-end="390">2. Company Background (80–100 words)</strong></h3>
+<p data-start="393" data-end="1007">Amazon is a global technology and e-commerce company operating across online retail, cloud computing (AWS), digital streaming, and logistics. Founded in 1994, Amazon follows a platform-based, customer-centric business model focused on scale, speed, and data-driven decision-making. With revenues exceeding USD 500 billion globally, Amazon has consistently invested in digital capabilities to improve efficiency and customer experience. While the company continues to grow rapidly, rising operational complexity and cost pressures have forced leadership to continuously reassess its digital transformation strategy.</p>
+<h3 data-start="1009" data-end="1053"><strong data-start="1013" data-end="1051">3. Business Context (80–100 words)</strong></h3>
+<p data-start="1054" data-end="1697">The global e-commerce industry has become intensely competitive, with customers expecting faster delivery, personalized experiences, and seamless omnichannel engagement. Post-pandemic demand normalization increased pressure on margins, while logistics costs and labor expenses rose sharply. Simultaneously, competitors adopted advanced analytics and automation technologies. Amazon’s leadership recognized that incremental technology upgrades were insufficient. The firm needed a structured digital transformation framework to align technology investments with strategic goals, improve scalability, and sustain long-term competitive advantage.</p>
+<h3 data-start="1699" data-end="1748"><strong data-start="1703" data-end="1746">4. Core Business Problem (90–110 words)</strong></h3>
+<p data-start="1749" data-end="2387">Amazon faced the challenge of balancing rapid growth with operational efficiency. Despite advanced technology adoption, several business units operated in silos, leading to duplicated systems, inconsistent data standards, and uneven customer experiences across regions. Senior management questioned whether existing digital initiatives were delivering measurable business value. The core problem was defining the scope and priorities of digital transformation—whether to focus on cost optimization, customer experience, or innovation—and how to evaluate transformation success across diverse business units without slowing down execution.</p>
+<h3 data-start="2389" data-end="2438"><strong data-start="2393" data-end="2436">5. Key Data and Metrics (110–140 words)</strong></h3>
+<p data-start="2439" data-end="3029">Internal analytics showed that fulfillment costs as a percentage of revenue increased from 21% to 26% over three years. Customer satisfaction scores varied by up to 15% across regions due to inconsistent delivery performance. Cloud and automation investments grew at 18% annually, but ROI varied significantly across departments. Data revealed that business units using integrated digital platforms achieved 12% faster order processing and 9% higher customer retention. However, nearly 30% of legacy systems were still in use, limiting real-time data visibility and slowing decision-making.</p>
+<h3 data-start="3031" data-end="3076"><strong data-start="3035" data-end="3074">6. Decision Situation (60–80 words)</strong></h3>
+<p data-start="3077" data-end="3466">Amazon’s leadership team must decide how to redefine its digital transformation roadmap. Choices include prioritizing enterprise-wide integration, investing further in automation and AI, or focusing on customer-facing digital enhancements. Each option requires trade-offs between speed, cost, and organizational complexity, while ensuring alignment with Amazon’s long-term growth strategy.</p>
+<h3 data-start="3468" data-end="3501"><strong data-start="3472" data-end="3499">7. Analytical Questions</strong></h3>
+<ol data-start="3502" data-end="3886">
+<li data-start="3502" data-end="3583">
+<p data-start="3505" data-end="3583">How should Amazon define the scope of its digital transformation initiative?</p>
+</li>
+<li data-start="3584" data-end="3664">
+<p data-start="3587" data-end="3664">Which KPIs best measure digital transformation success at enterprise scale?</p>
+</li>
+<li data-start="3665" data-end="3733">
+<p data-start="3668" data-end="3733">How can Amazon evaluate ROI across diverse digital initiatives?</p>
+</li>
+<li data-start="3734" data-end="3804">
+<p data-start="3737" data-end="3804">What risks arise from continuing with fragmented digital systems?</p>
+</li>
+<li data-start="3805" data-end="3886">
+<p data-start="3808" data-end="3886">How should Amazon prioritize transformation initiatives across business units?</p>
+</li>
+</ol>
+<h3 data-start="3888" data-end="3914"><strong data-start="3892" data-end="3912">8. Model Answers</strong></h3>
+<ul data-start="3915" data-end="4291">
+<li data-start="3915" data-end="4072">
+<p data-start="3917" data-end="4072">A clear transformation scope should align technology initiatives with strategic objectives such as scalability, cost efficiency, and customer experience.</p>
+</li>
+<li data-start="4073" data-end="4198">
+<p data-start="4075" data-end="4198">Enterprise KPIs should include fulfillment cost ratios, system integration levels, and customer satisfaction consistency.</p>
+</li>
+<li data-start="4199" data-end="4291">
+<p data-start="4201" data-end="4291">ROI assessment must combine financial metrics with operational performance improvements.</p>
+</li>
+</ul>
+<h3 data-start="4293" data-end="4320"><strong data-start="4297" data-end="4318">9. Learning Focus</strong></h3>
+<p data-start="4321" data-end="4548">This case tests students’ ability to define digital transformation scope and assess value using enterprise-level metrics.<br data-start="4442" data-end="4445">
+<strong data-start="4445" data-end="4466">Primary Concepts:</strong> Digital transformation scope, drivers, benefits, frameworks, performance metrics.</p>
+<hr data-start="4550" data-end="4553">
+<h2 data-start="4555" data-end="4641"><strong data-start="4558" data-end="4641">Case Study 2: Walmart’s Digital Transformation to Compete in Omnichannel Retail</strong></h2>
+<h3 data-start="4643" data-end="4661"><strong data-start="4647" data-end="4659">1. Title</strong></h3>
+<p data-start="4662" data-end="4737">From Physical Retail to Digital Ecosystem: Walmart’s Transformation Journey</p>
+<h3 data-start="4739" data-end="4785"><strong data-start="4743" data-end="4783">2. Company Background (80–100 words)</strong></h3>
+<p data-start="4786" data-end="5302">Walmart is the world’s largest retailer, operating over 10,000 stores globally with revenues exceeding USD 600 billion. Traditionally known for cost leadership and physical retail dominance, Walmart follows a high-volume, low-margin business model. In recent years, the company has invested heavily in digital platforms, e-commerce, and data analytics to remain competitive against digital-native rivals. Despite its scale, Walmart has faced challenges integrating digital capabilities across its vast store network.</p>
+<h3 data-start="5304" data-end="5348"><strong data-start="5308" data-end="5346">3. Business Context (80–100 words)</strong></h3>
+<p data-start="5349" data-end="5838">Retail customers increasingly demand seamless shopping experiences across online and offline channels. Digital-native competitors set new benchmarks in personalization, delivery speed, and pricing transparency. Walmart’s legacy systems were optimized for store operations, not real-time digital engagement. Market data showed online sales growing faster than in-store sales, forcing Walmart to accelerate digital transformation to protect market share while maintaining its cost advantage.</p>
+<h3 data-start="5840" data-end="5889"><strong data-start="5844" data-end="5887">4. Core Business Problem (90–110 words)</strong></h3>
+<p data-start="5890" data-end="6437">Walmart struggled to clearly articulate what digital transformation meant for a traditionally physical retailer. Multiple digital initiatives—mobile apps, online marketplaces, data platforms—were launched independently, leading to inconsistent execution. Leadership needed to determine whether digital transformation should primarily enhance store productivity, drive e-commerce growth, or enable a unified omnichannel model. The lack of a coherent transformation framework made it difficult to prioritize investments and measure strategic impact.</p>
+<h3 data-start="6439" data-end="6488"><strong data-start="6443" data-end="6486">5. Key Data and Metrics (110–140 words)</strong></h3>
+<p data-start="6489" data-end="6912">E-commerce revenue grew at 20% annually, while store sales grew at 4%. Omnichannel customers spent 1.6 times more than single-channel customers. However, order fulfillment costs for online orders were 30% higher than store purchases. Data integration issues caused inventory accuracy gaps of nearly 10%. Stores using digital inventory systems reported 8% higher shelf availability and improved customer satisfaction scores.</p>
+<h3 data-start="6914" data-end="6959"><strong data-start="6918" data-end="6957">6. Decision Situation (60–80 words)</strong></h3>
+<p data-start="6960" data-end="7175">Walmart’s executives must decide how to structure digital transformation priorities—store digitization, e-commerce scaling, or backend data integration—while controlling costs and maintaining operational simplicity.</p>
+<h3 data-start="7177" data-end="7210"><strong data-start="7181" data-end="7208">7. Analytical Questions</strong></h3>
+<ol data-start="7211" data-end="7485">
+<li data-start="7211" data-end="7277">
+<p data-start="7214" data-end="7277">What are the key drivers of Walmart’s digital transformation?</p>
+</li>
+<li data-start="7278" data-end="7351">
+<p data-start="7281" data-end="7351">Which digital benefits should Walmart prioritize for maximum impact?</p>
+</li>
+<li data-start="7352" data-end="7417">
+<p data-start="7355" data-end="7417">How should omnichannel performance be measured analytically?</p>
+</li>
+<li data-start="7418" data-end="7485">
+<p data-start="7421" data-end="7485">What risks exist in over-investing in one transformation area?</p>
+</li>
+</ol>
+<h3 data-start="7487" data-end="7513"><strong data-start="7491" data-end="7511">8. Model Answers</strong></h3>
+<ul data-start="7514" data-end="7771">
+<li data-start="7514" data-end="7616">
+<p data-start="7516" data-end="7616">Digital drivers include changing customer behavior and competitive pressure from online retailers.</p>
+</li>
+<li data-start="7617" data-end="7707">
+<p data-start="7619" data-end="7707">Omnichannel metrics should capture customer lifetime value and fulfillment efficiency.</p>
+</li>
+<li data-start="7708" data-end="7771">
+<p data-start="7710" data-end="7771">Balanced investment reduces operational and strategic risk.</p>
+</li>
+</ul>
+<h3 data-start="7773" data-end="7800"><strong data-start="7777" data-end="7798">9. Learning Focus</strong></h3>
+<p data-start="7801" data-end="7999">Focuses on identifying digital transformation drivers and benefits in traditional industries.<br data-start="7894" data-end="7897">
+<strong data-start="7897" data-end="7918">Primary Concepts:</strong> Digital drivers, benefits realization, transformation frameworks, KPI alignment.</p>
+<hr data-start="8001" data-end="8004">
+<h2 data-start="8006" data-end="8090"><strong data-start="8009" data-end="8090">Case Study 3: JPMorgan Chase and Digital Transformation in Financial Services</strong></h2>
+<h3 data-start="8092" data-end="8110"><strong data-start="8096" data-end="8108">1. Title</strong></h3>
+<p data-start="8111" data-end="8178">Redefining Banking through Digital Transformation at JPMorgan Chase</p>
+<h3 data-start="8180" data-end="8226"><strong data-start="8184" data-end="8224">2. Company Background (80–100 words)</strong></h3>
+<p data-start="8227" data-end="8645">JPMorgan Chase is one of the world’s largest financial institutions, offering retail banking, investment banking, and asset management services. The bank serves millions of customers globally and operates in a highly regulated environment. Its business model relies on trust, risk management, and scale. In recent years, JPMorgan has invested heavily in digital platforms to improve efficiency and customer engagement.</p>
+<h3 data-start="8647" data-end="8691"><strong data-start="8651" data-end="8689">3. Business Context (80–100 words)</strong></h3>
+<p data-start="8692" data-end="9073">The banking industry faces disruption from fintech firms offering faster, cheaper, and more personalized services. Customers increasingly prefer digital channels over branch visits. Regulatory compliance costs remain high, increasing pressure on margins. Digital transformation became essential not only for innovation but also for operational resilience and compliance efficiency.</p>
+<h3 data-start="9075" data-end="9124"><strong data-start="9079" data-end="9122">4. Core Business Problem (90–110 words)</strong></h3>
+<p data-start="9125" data-end="9556">JPMorgan faced the challenge of integrating digital technologies without compromising security and regulatory compliance. Multiple digital projects existed across retail and corporate banking, but lacked unified governance. Leadership struggled to assess whether digital transformation was improving profitability or simply increasing technology costs. Defining transformation scope and success metrics became a strategic priority.</p>
+<h3 data-start="9558" data-end="9607"><strong data-start="9562" data-end="9605">5. Key Data and Metrics (110–140 words)</strong></h3>
+<p data-start="9608" data-end="9990">Digital transactions accounted for over 65% of customer interactions. Cost-to-income ratios improved by 3% in digitally mature units. However, technology spending grew at 12% annually. Customer acquisition costs were 18% lower through digital channels, while system downtime risks remained a concern. Analytics showed improved fraud detection accuracy in digitally integrated units.</p>
+<h3 data-start="9992" data-end="10037"><strong data-start="9996" data-end="10035">6. Decision Situation (60–80 words)</strong></h3>
+<p data-start="10038" data-end="10158">Senior management must decide how to scale digital transformation while balancing risk, cost, and regulatory compliance.</p>
+<h3 data-start="10160" data-end="10193"><strong data-start="10164" data-end="10191">7. Analytical Questions</strong></h3>
+<ol data-start="10194" data-end="10382">
+<li data-start="10194" data-end="10267">
+<p data-start="10197" data-end="10267">How should digital transformation be scoped in regulated industries?</p>
+</li>
+<li data-start="10268" data-end="10325">
+<p data-start="10271" data-end="10325">Which metrics best capture digital value in banking?</p>
+</li>
+<li data-start="10326" data-end="10382">
+<p data-start="10329" data-end="10382">How can risk and performance be evaluated together?</p>
+</li>
+</ol>
+<h3 data-start="10384" data-end="10410"><strong data-start="10388" data-end="10408">8. Model Answers</strong></h3>
+<ul data-start="10411" data-end="10636">
+<li data-start="10411" data-end="10499">
+<p data-start="10413" data-end="10499">Transformation scope must integrate compliance, efficiency, and customer experience.</p>
+</li>
+<li data-start="10500" data-end="10572">
+<p data-start="10502" data-end="10572">Metrics should balance cost efficiency with risk reduction outcomes.</p>
+</li>
+<li data-start="10573" data-end="10636">
+<p data-start="10575" data-end="10636">Integrated analytics improves both performance and control.</p>
+</li>
+</ul>
+<h3 data-start="10638" data-end="10665"><strong data-start="10642" data-end="10663">9. Learning Focus</strong></h3>
+<p data-start="10666" data-end="10857">Develops analytical thinking on digital transformation measurement in regulated sectors.<br data-start="10754" data-end="10757">
+<strong data-start="10757" data-end="10778">Primary Concepts:</strong> Digital scope, value measurement, industry drivers, transformation assessment.</p>
+<hr data-start="10859" data-end="10862">
+<p data-start="10864" data-end="11025" data-is-last-node="" data-is-only-node="">If you want, I can <strong data-start="10883" data-end="10935">continue with Unit II (Leadership, Agile &amp; Lean)</strong> or adapt these cases into <strong data-start="10962" data-end="11024">exam-style questions, teaching notes, or PPT-ready formats</strong>.</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><br class="sr-only">
+      </div>
+    </div>
+    
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

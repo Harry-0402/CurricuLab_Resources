@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - CaseOrbit</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - CaseOrbit</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">CaseOrbit said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="90f8e090-b2a4-4d8b-b57f-c30e02da6b64" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="47">Below are <strong data-start="10" data-end="42">THREE MBA-level case studies</strong> for:</p>
+<p data-start="49" data-end="149"><strong data-start="49" data-end="61">Subject:</strong> Business Research Methodology<br data-start="91" data-end="94">
+<strong data-start="94" data-end="105">Unit 3:</strong> Sampling Design<br data-start="121" data-end="124">
+<strong data-start="124" data-end="147">Key Topics Covered:</strong></p>
+<ul data-start="150" data-end="357">
+<li data-start="150" data-end="170">
+<p data-start="152" data-end="170">Sampling Concept</p>
+</li>
+<li data-start="171" data-end="190">
+<p data-start="173" data-end="190">Sampling Design</p>
+</li>
+<li data-start="191" data-end="258">
+<p data-start="193" data-end="258">Types of Sampling Designs (Probability, Non-Probability, Mixed)</p>
+</li>
+<li data-start="259" data-end="277">
+<p data-start="261" data-end="277">Sampling Frame</p>
+</li>
+<li data-start="278" data-end="307">
+<p data-start="280" data-end="307">Sample Size Determination</p>
+</li>
+<li data-start="308" data-end="357">
+<p data-start="310" data-end="357">Data Processing (Editing, Coding, Tabulation)</p>
+</li>
+</ul>
+<p data-start="359" data-end="471">Each case reflects real corporate decision-making where sampling design directly impacts managerial conclusions.</p>
+<hr data-start="473" data-end="476">
+<h1 data-start="478" data-end="498"><strong data-start="480" data-end="496">Case Study 1</strong></h1>
+<h2 data-start="499" data-end="554">Customer Satisfaction Sampling Strategy at HDFC Bank</h2>
+<h3 data-start="556" data-end="583">1. Company Background</h3>
+<p data-start="584" data-end="981">HDFC Bank is one of India’s largest private sector banks with over 8,000 branches and 80+ million customers. The bank operates in retail, SME, and corporate segments. Customer satisfaction scores directly influence cross-selling success, retention, and regulatory compliance reporting. The bank plans to conduct a nationwide satisfaction survey to benchmark digital and branch service performance.</p>
+<h3 data-start="983" data-end="1008">2. Business Context</h3>
+<p data-start="1009" data-end="1374">Customer complaints have increased by 11% year-on-year. Digital adoption is rising rapidly, but rural branch customers show lower digital engagement. Management needs reliable customer satisfaction data segmented by region and customer type. A census approach is infeasible due to scale and cost. Therefore, a scientifically designed sampling framework is required.</p>
+<h3 data-start="1376" data-end="1406">3. Core Business Problem</h3>
+<p data-start="1407" data-end="1587">The research problem is:<br data-start="1431" data-end="1434">
+<strong data-start="1434" data-end="1587">“How can HDFC Bank design a representative sample to accurately estimate national customer satisfaction levels across regions and customer segments?”</strong></p>
+<p data-start="1589" data-end="1736">Improper sampling may result in biased satisfaction scores, leading to incorrect policy decisions and misallocation of service improvement budgets.</p>
+<h3 data-start="1738" data-end="1767">4. Key Data and Metrics</h3>
+<p data-start="1769" data-end="1790">Population details:</p>
+<ul data-start="1791" data-end="1952">
+<li data-start="1791" data-end="1822">
+<p data-start="1793" data-end="1822">Total customers: 80 million</p>
+</li>
+<li data-start="1823" data-end="1847">
+<p data-start="1825" data-end="1847">Urban customers: 52%</p>
+</li>
+<li data-start="1848" data-end="1867">
+<p data-start="1850" data-end="1867">Semi-urban: 28%</p>
+</li>
+<li data-start="1868" data-end="1882">
+<p data-start="1870" data-end="1882">Rural: 20%</p>
+</li>
+<li data-start="1883" data-end="1916">
+<p data-start="1885" data-end="1916">Digital-active customers: 61%</p>
+</li>
+<li data-start="1917" data-end="1952">
+<p data-start="1919" data-end="1952">Branch-dependent customers: 39%</p>
+</li>
+</ul>
+<p data-start="1954" data-end="2054">Budget allows for 12,000 completed surveys.<br data-start="1997" data-end="2000">
+Desired confidence level: 95%<br data-start="2029" data-end="2032">
+Margin of error: ±2.5%</p>
+<p data-start="2056" data-end="2186">Previous internal survey used convenience sampling and showed satisfaction at 4.3/5. External audit questioned representativeness.</p>
+<h3 data-start="2188" data-end="2215">5. Decision Situation</h3>
+<p data-start="2216" data-end="2239">Management must decide:</p>
+<ol data-start="2241" data-end="2456">
+<li data-start="2241" data-end="2326">
+<p data-start="2244" data-end="2326">Whether to use simple random sampling, stratified sampling, or cluster sampling.</p>
+</li>
+<li data-start="2327" data-end="2386">
+<p data-start="2330" data-end="2386">How to allocate sample proportionately across regions.</p>
+</li>
+<li data-start="2387" data-end="2456">
+<p data-start="2390" data-end="2456">How to ensure digital and branch users are adequately represented.</p>
+</li>
+</ol>
+<p data-start="2458" data-end="2533">The analytics team must propose a statistically defensible sampling design.</p>
+<h3 data-start="2535" data-end="2564">6. Analytical Questions</h3>
+<ol data-start="2566" data-end="2857">
+<li data-start="2566" data-end="2621">
+<p data-start="2569" data-end="2621">Which sampling design is most appropriate and why?</p>
+</li>
+<li data-start="2622" data-end="2694">
+<p data-start="2625" data-end="2694">Should proportional or disproportional stratified sampling be used?</p>
+</li>
+<li data-start="2695" data-end="2750">
+<p data-start="2698" data-end="2750">How should sample size be allocated across strata?</p>
+</li>
+<li data-start="2751" data-end="2805">
+<p data-start="2754" data-end="2805">What risks arise from using convenience sampling?</p>
+</li>
+<li data-start="2806" data-end="2857">
+<p data-start="2809" data-end="2857">How does sampling frame quality impact validity?</p>
+</li>
+</ol>
+<h3 data-start="2859" data-end="2881">7. Model Answers</h3>
+<p data-start="2883" data-end="3024"><strong data-start="2883" data-end="2890">Q1:</strong><br data-start="2890" data-end="2893">
+Stratified random sampling is appropriate because customer segments differ significantly across urban, semi-urban, and rural areas.</p>
+<p data-start="3026" data-end="3168"><strong data-start="3026" data-end="3033">Q2:</strong><br data-start="3033" data-end="3036">
+Proportional stratified sampling ensures representation aligned with population distribution while maintaining statistical validity.</p>
+<p data-start="3170" data-end="3278"><strong data-start="3170" data-end="3177">Q4:</strong><br data-start="3177" data-end="3180">
+Convenience sampling may over-represent digitally active customers, inflating satisfaction scores.</p>
+<h3 data-start="3280" data-end="3303">8. Learning Focus</h3>
+<p data-start="3304" data-end="3395">Understanding sampling frame construction, stratified sampling, and sample size allocation.</p>
+<p data-start="3397" data-end="3503"><strong data-start="3397" data-end="3418">Primary Concepts:</strong> Stratified Sampling, Probability Sampling, Sample Size Determination, Sampling Frame</p>
+<hr data-start="3505" data-end="3508">
+<h1 data-start="3510" data-end="3530"><strong data-start="3512" data-end="3528">Case Study 2</strong></h1>
+<h2 data-start="3531" data-end="3579">Electric Vehicle Market Survey at Tata Motors</h2>
+<h3 data-start="3581" data-end="3608">1. Company Background</h3>
+<p data-start="3609" data-end="3896">Tata Motors is a leading automobile manufacturer in India and a dominant player in the EV segment. The company is planning to launch a mid-range EV targeting Tier-2 cities. Accurate demand estimation is critical due to high capital investment in production and dealership infrastructure.</p>
+<h3 data-start="3898" data-end="3923">2. Business Context</h3>
+<p data-start="3924" data-end="4211">Management wants to assess EV purchase intention across 50 Tier-2 cities. The total target population consists of approximately 2.5 million urban households in the defined income bracket. Due to geographical dispersion, a purely simple random sampling approach is logistically expensive.</p>
+<h3 data-start="4213" data-end="4243">3. Core Business Problem</h3>
+<p data-start="4244" data-end="4397">The research problem:<br data-start="4265" data-end="4268">
+<strong data-start="4268" data-end="4397">“What is the most efficient sampling method to estimate EV purchase intention across geographically dispersed Tier-2 cities?”</strong></p>
+<p data-start="4399" data-end="4467">The company must balance statistical precision with cost efficiency.</p>
+<h3 data-start="4469" data-end="4498">4. Key Data and Metrics</h3>
+<ul data-start="4500" data-end="4742">
+<li data-start="4500" data-end="4521">
+<p data-start="4502" data-end="4521">Target cities: 50</p>
+</li>
+<li data-start="4522" data-end="4570">
+<p data-start="4524" data-end="4570">Average eligible households per city: 50,000</p>
+</li>
+<li data-start="4571" data-end="4611">
+<p data-start="4573" data-end="4611">Total target population: 2.5 million</p>
+</li>
+<li data-start="4612" data-end="4653">
+<p data-start="4614" data-end="4653">Budget permits 5,000 survey responses</p>
+</li>
+<li data-start="4654" data-end="4687">
+<p data-start="4656" data-end="4687">Desired confidence level: 95%</p>
+</li>
+<li data-start="4688" data-end="4742">
+<p data-start="4690" data-end="4742">Pilot study suggests purchase intention around 18%</p>
+</li>
+</ul>
+<p data-start="4744" data-end="4859">Fieldwork cost per city: ₹1.2 lakh<br data-start="4778" data-end="4781">
+Travel and logistics significantly increase cost under simple random sampling.</p>
+<h3 data-start="4861" data-end="4888">5. Decision Situation</h3>
+<p data-start="4889" data-end="4912">Management must decide:</p>
+<ol data-start="4914" data-end="5143">
+<li data-start="4914" data-end="5000">
+<p data-start="4917" data-end="5000">Whether to use cluster sampling, multi-stage sampling, or simple random sampling.</p>
+</li>
+<li data-start="5001" data-end="5066">
+<p data-start="5004" data-end="5066">How to minimize cost without sacrificing representativeness.</p>
+</li>
+<li data-start="5067" data-end="5143">
+<p data-start="5070" data-end="5143">Whether to adopt mixed sampling combining probability and quota elements.</p>
+</li>
+</ol>
+<h3 data-start="5145" data-end="5174">6. Analytical Questions</h3>
+<ol data-start="5176" data-end="5432">
+<li data-start="5176" data-end="5234">
+<p data-start="5179" data-end="5234">Why is multi-stage sampling suitable in this context?</p>
+</li>
+<li data-start="5235" data-end="5288">
+<p data-start="5238" data-end="5288">How does cluster sampling affect sampling error?</p>
+</li>
+<li data-start="5289" data-end="5340">
+<p data-start="5292" data-end="5340">How should sample size per city be determined?</p>
+</li>
+<li data-start="5341" data-end="5395">
+<p data-start="5344" data-end="5395">What trade-offs exist between cost and precision?</p>
+</li>
+<li data-start="5396" data-end="5432">
+<p data-start="5399" data-end="5432">When is mixed sampling justified?</p>
+</li>
+</ol>
+<h3 data-start="5434" data-end="5456">7. Model Answers</h3>
+<p data-start="5458" data-end="5584"><strong data-start="5458" data-end="5465">Q1:</strong><br data-start="5465" data-end="5468">
+Multi-stage sampling reduces logistical costs by selecting cities first, then wards, then households systematically.</p>
+<p data-start="5586" data-end="5705"><strong data-start="5586" data-end="5593">Q2:</strong><br data-start="5593" data-end="5596">
+Cluster sampling increases sampling error compared to simple random sampling due to intra-cluster similarity.</p>
+<p data-start="5707" data-end="5814"><strong data-start="5707" data-end="5714">Q4:</strong><br data-start="5714" data-end="5717">
+Lower cost methods may increase variance, requiring larger sample sizes for equivalent precision.</p>
+<h3 data-start="5816" data-end="5839">8. Learning Focus</h3>
+<p data-start="5840" data-end="5918">Application of cluster and multi-stage sampling in large-scale market surveys.</p>
+<p data-start="5920" data-end="6022"><strong data-start="5920" data-end="5941">Primary Concepts:</strong> Cluster Sampling, Multi-stage Sampling, Sampling Error, Cost-Precision Trade-off</p>
+<hr data-start="6024" data-end="6027">
+<h1 data-start="6029" data-end="6049"><strong data-start="6031" data-end="6047">Case Study 3</strong></h1>
+<h2 data-start="6050" data-end="6097">Employee Engagement Survey Design at Infosys</h2>
+<h3 data-start="6099" data-end="6126">1. Company Background</h3>
+<p data-start="6127" data-end="6381">Infosys is a global IT services company with over 340,000 employees worldwide. Employee engagement is closely linked to productivity, client satisfaction, and attrition rates. Annual engagement surveys guide HR policy decisions and leadership evaluation.</p>
+<h3 data-start="6383" data-end="6408">2. Business Context</h3>
+<p data-start="6409" data-end="6683">Attrition increased from 13% to 18% in the past year. Management wants to conduct a global engagement survey. However, employees are distributed across India, North America, Europe, and Asia-Pacific. Time zone differences and remote working complicate survey administration.</p>
+<h3 data-start="6685" data-end="6715">3. Core Business Problem</h3>
+<p data-start="6716" data-end="6871">The research problem:<br data-start="6737" data-end="6740">
+<strong data-start="6740" data-end="6871">“How should Infosys design a global sampling strategy to accurately measure employee engagement across regions and job levels?”</strong></p>
+<p data-start="6873" data-end="6935">Using voluntary response sampling may introduce response bias.</p>
+<h3 data-start="6937" data-end="6966">4. Key Data and Metrics</h3>
+<ul data-start="6968" data-end="7180">
+<li data-start="6968" data-end="6996">
+<p data-start="6970" data-end="6996">Total employees: 340,000</p>
+</li>
+<li data-start="6997" data-end="7098">
+<p data-start="6999" data-end="7023">Regional distribution:</p>
+<ul data-start="7026" data-end="7098">
+<li data-start="7026" data-end="7040">
+<p data-start="7028" data-end="7040">India: 62%</p>
+</li>
+<li data-start="7043" data-end="7065">
+<p data-start="7045" data-end="7065">North America: 18%</p>
+</li>
+<li data-start="7068" data-end="7083">
+<p data-start="7070" data-end="7083">Europe: 12%</p>
+</li>
+<li data-start="7086" data-end="7098">
+<p data-start="7088" data-end="7098">APAC: 8%</p>
+</li>
+</ul>
+</li>
+<li data-start="7099" data-end="7128">
+<p data-start="7101" data-end="7128">Managerial employees: 15%</p>
+</li>
+<li data-start="7129" data-end="7153">
+<p data-start="7131" data-end="7153">Technical staff: 70%</p>
+</li>
+<li data-start="7154" data-end="7180">
+<p data-start="7156" data-end="7180">Support functions: 15%</p>
+</li>
+</ul>
+<p data-start="7182" data-end="7325">Budget allows 20,000 completed surveys.<br data-start="7221" data-end="7224">
+Previous survey used voluntary sampling; response rate was 32%, skewed toward dissatisfied employees.</p>
+<h3 data-start="7327" data-end="7354">5. Decision Situation</h3>
+<p data-start="7355" data-end="7378">Management must decide:</p>
+<ol data-start="7380" data-end="7548">
+<li data-start="7380" data-end="7446">
+<p data-start="7383" data-end="7446">Whether to mandate participation or use probability sampling.</p>
+</li>
+<li data-start="7447" data-end="7511">
+<p data-start="7450" data-end="7511">How to ensure representation across regions and job levels.</p>
+</li>
+<li data-start="7512" data-end="7548">
+<p data-start="7515" data-end="7548">How to address non-response bias.</p>
+</li>
+</ol>
+<h3 data-start="7550" data-end="7579">6. Analytical Questions</h3>
+<ol data-start="7581" data-end="7851">
+<li data-start="7581" data-end="7624">
+<p data-start="7584" data-end="7624">Why is voluntary sampling problematic?</p>
+</li>
+<li data-start="7625" data-end="7679">
+<p data-start="7628" data-end="7679">Which probability sampling design is appropriate?</p>
+</li>
+<li data-start="7680" data-end="7722">
+<p data-start="7683" data-end="7722">How can non-response bias be reduced?</p>
+</li>
+<li data-start="7723" data-end="7788">
+<p data-start="7726" data-end="7788">How should data editing and coding be standardized globally?</p>
+</li>
+<li data-start="7789" data-end="7851">
+<p data-start="7792" data-end="7851">What is the impact of sampling bias on HR policy decisions?</p>
+</li>
+</ol>
+<h3 data-start="7853" data-end="7875">7. Model Answers</h3>
+<p data-start="7877" data-end="7995"><strong data-start="7877" data-end="7884">Q1:</strong><br data-start="7884" data-end="7887">
+Voluntary sampling leads to self-selection bias where dissatisfied employees may respond disproportionately.</p>
+<p data-start="7997" data-end="8097"><strong data-start="7997" data-end="8004">Q2:</strong><br data-start="8004" data-end="8007">
+Stratified random sampling across region and job category ensures balanced representation.</p>
+<p data-start="8099" data-end="8184"><strong data-start="8099" data-end="8106">Q3:</strong><br data-start="8106" data-end="8109">
+Follow-up reminders and weighting adjustments can reduce non-response bias.</p>
+<h3 data-start="8186" data-end="8209">8. Learning Focus</h3>
+<p data-start="8210" data-end="8294">Designing global sampling frameworks and addressing bias in organizational research.</p>
+<p data-start="8296" data-end="8414"><strong data-start="8296" data-end="8317">Primary Concepts:</strong> Probability vs Non-probability Sampling, Stratified Sampling, Non-response Bias, Data Processing</p>
+<hr data-start="8416" data-end="8419">
+<p data-start="8421" data-end="8516" data-is-last-node="" data-is-only-node="">If you would like, I can now proceed with <strong data-start="8463" data-end="8510">Unit 4 (Data Analysis &amp; Hypothesis Testing)</strong> next.</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

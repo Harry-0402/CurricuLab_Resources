@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - CaseOrbit</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - CaseOrbit</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">CaseOrbit said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><p class="first:mt-0 my-1.5 h-8 flex items-center ltr:me-auto rtl:ms-auto empty:hidden text-token-text-secondary"></p><div data-message-author-role="assistant" data-message-id="7a2af229-a0de-46f7-9fdf-e8cb29f25caa" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="71">Below are <strong data-start="10" data-end="61">THREE MBA-level Business Analytics case studies</strong> based on:</p>
+<p data-start="73" data-end="191"><strong data-start="73" data-end="85">Subject:</strong> Business Research Methodology<br data-start="115" data-end="118">
+<strong data-start="118" data-end="129">Unit 1:</strong> Introduction to Business Research<br data-start="163" data-end="166">
+<strong data-start="166" data-end="189">Key Topics Covered:</strong></p>
+<ul data-start="192" data-end="348">
+<li data-start="192" data-end="252">
+<p data-start="194" data-end="252">Types of Research (Exploratory, Descriptive, Analytical)</p>
+</li>
+<li data-start="253" data-end="273">
+<p data-start="255" data-end="273">Research Process</p>
+</li>
+<li data-start="274" data-end="309">
+<p data-start="276" data-end="309">Formulation of Research Problem</p>
+</li>
+<li data-start="310" data-end="348">
+<p data-start="312" data-end="348">Development of Research Hypothesis</p>
+</li>
+</ul>
+<p data-start="350" data-end="442">Each case integrates real-company contexts with realistic (fictional) data for academic use.</p>
+<hr data-start="444" data-end="447">
+<h1 data-start="449" data-end="469"><strong data-start="451" data-end="467">Case Study 1</strong></h1>
+<h2 data-start="470" data-end="523">Optimizing Prime Membership Growth at Amazon India</h2>
+<h3 data-start="525" data-end="552">1. Company Background</h3>
+<p data-start="553" data-end="1039">Amazon India, a subsidiary of Amazon, operates in the Indian e-commerce industry with a marketplace and subscription-based business model. Prime membership contributes significantly to customer retention and repeat purchases. Over the past three years, Amazon India has invested heavily in logistics, regional language interfaces, and bundled entertainment services. Despite steady growth in gross merchandise value (GMV), Prime membership growth has slowed in Tier-2 and Tier-3 cities.</p>
+<h3 data-start="1041" data-end="1066">2. Business Context</h3>
+<p data-start="1067" data-end="1543">India’s e-commerce market is becoming highly competitive with Flipkart and Meesho expanding aggressively in non-metro regions. Price sensitivity is high in these markets. Amazon management suspects that Prime subscription benefits may not be fully understood by customers outside metro cities. Additionally, streaming competitors offer low-cost standalone entertainment subscriptions. The leadership team wants structured research before redesigning Prime pricing or benefits.</p>
+<h3 data-start="1545" data-end="1575">3. Core Business Problem</h3>
+<p data-start="1576" data-end="1879">Amazon must determine whether the slowdown in Prime membership growth is due to pricing perception, lack of awareness, perceived low value, or logistical service gaps. The research problem is:<br data-start="1768" data-end="1771">
+<strong data-start="1771" data-end="1879">“What factors significantly influence Prime subscription adoption in Tier-2 and Tier-3 cities in India?”</strong></p>
+<p data-start="1881" data-end="2101">The management must clearly distinguish between exploratory insights and hypothesis-driven validation to avoid costly pricing decisions. An incorrect diagnosis may reduce subscription margins or damage brand positioning.</p>
+<h3 data-start="2103" data-end="2132">4. Key Data and Metrics</h3>
+<p data-start="2133" data-end="2165">Internal dashboard data shows:</p>
+<ul data-start="2166" data-end="2649">
+<li data-start="2166" data-end="2236">
+<p data-start="2168" data-end="2236">Prime membership growth: Metro (18%), Tier-2 (9%), Tier-3 (6%) YoY</p>
+</li>
+<li data-start="2237" data-end="2313">
+<p data-start="2239" data-end="2313">Average annual order frequency: Prime (22 orders), Non-Prime (11 orders)</p>
+</li>
+<li data-start="2314" data-end="2381">
+<p data-start="2316" data-end="2381">Average contribution margin per Prime customer: ₹2,400 annually</p>
+</li>
+<li data-start="2382" data-end="2551">
+<p data-start="2384" data-end="2423">Customer survey (pilot study, n=500):</p>
+<ul data-start="2426" data-end="2551">
+<li data-start="2426" data-end="2467">
+<p data-start="2428" data-end="2467">42% unaware of free same-day delivery</p>
+</li>
+<li data-start="2470" data-end="2514">
+<p data-start="2472" data-end="2514">37% believe Prime is “mainly for movies”</p>
+</li>
+<li data-start="2517" data-end="2551">
+<p data-start="2519" data-end="2551">48% consider annual fee “high”</p>
+</li>
+</ul>
+</li>
+<li data-start="2552" data-end="2649">
+<p data-start="2554" data-end="2578">Logistics performance:</p>
+<ul data-start="2581" data-end="2649">
+<li data-start="2581" data-end="2612">
+<p data-start="2583" data-end="2612">Metro on-time delivery: 96%</p>
+</li>
+<li data-start="2615" data-end="2649">
+<p data-start="2617" data-end="2649">Tier-2/3 on-time delivery: 89%</p>
+</li>
+</ul>
+</li>
+</ul>
+<p data-start="2651" data-end="2753">Preliminary exploratory interviews indicate perceived delivery delays reduce willingness to subscribe.</p>
+<h3 data-start="2755" data-end="2782">5. Decision Situation</h3>
+<p data-start="2783" data-end="2819">Management must decide whether to:</p>
+<ol data-start="2820" data-end="2965">
+<li data-start="2820" data-end="2851">
+<p data-start="2823" data-end="2851">Reduce subscription price,</p>
+</li>
+<li data-start="2852" data-end="2888">
+<p data-start="2855" data-end="2888">Improve communication strategy,</p>
+</li>
+<li data-start="2889" data-end="2930">
+<p data-start="2892" data-end="2930">Enhance logistics service levels, or</p>
+</li>
+<li data-start="2931" data-end="2965">
+<p data-start="2934" data-end="2965">Redesign Prime benefit bundles.</p>
+</li>
+</ol>
+<p data-start="2967" data-end="3058">They need a structured research design with clear hypotheses before committing investments.</p>
+<h3 data-start="3060" data-end="3089">6. Analytical Questions</h3>
+<ol data-start="3091" data-end="3459">
+<li data-start="3091" data-end="3201">
+<p data-start="3094" data-end="3201">What type of research design (exploratory, descriptive, causal) should be adopted in Phase 1 and Phase 2?</p>
+</li>
+<li data-start="3202" data-end="3275">
+<p data-start="3205" data-end="3275">Formulate two testable hypotheses related to Prime adoption drivers.</p>
+</li>
+<li data-start="3276" data-end="3330">
+<p data-start="3279" data-end="3330">Identify key dependent and independent variables.</p>
+</li>
+<li data-start="3331" data-end="3403">
+<p data-start="3334" data-end="3403">How should Amazon define the research problem in operational terms?</p>
+</li>
+<li data-start="3404" data-end="3459">
+<p data-start="3407" data-end="3459">What risks arise from skipping exploratory research?</p>
+</li>
+</ol>
+<h3 data-start="3461" data-end="3483">7. Model Answers</h3>
+<p data-start="3485" data-end="3687"><strong data-start="3485" data-end="3492">Q1:</strong><br data-start="3492" data-end="3495">
+Phase 1 should be exploratory research to identify unknown factors affecting subscription. Phase 2 should use causal research to test hypotheses on pricing, awareness, and service reliability.</p>
+<p data-start="3689" data-end="3876"><strong data-start="3689" data-end="3696">Q2:</strong><br data-start="3696" data-end="3699">
+H1: Higher perceived delivery reliability significantly increases Prime subscription likelihood.<br data-start="3795" data-end="3798">
+H2: Awareness of bundled benefits positively influences subscription adoption.</p>
+<p data-start="3878" data-end="4052"><strong data-start="3878" data-end="3885">Q3:</strong><br data-start="3885" data-end="3888">
+Dependent variable: Subscription adoption (Yes/No).<br data-start="3939" data-end="3942">
+Independent variables: Price perception, awareness level, delivery reliability, perceived entertainment value.</p>
+<h3 data-start="4054" data-end="4077">8. Learning Focus</h3>
+<p data-start="4078" data-end="4181">Understanding research problem formulation, exploratory vs causal research, and hypothesis development.</p>
+<p data-start="4183" data-end="4301"><strong data-start="4183" data-end="4204">Primary Concepts:</strong> Types of Research, Research Process, Hypothesis Formulation, Operational Definition of Variables</p>
+<hr data-start="4303" data-end="4306">
+<h1 data-start="4308" data-end="4328"><strong data-start="4310" data-end="4326">Case Study 2</strong></h1>
+<h2 data-start="4329" data-end="4389">Customer Experience Research at HDFC Bank Digital Banking</h2>
+<h3 data-start="4391" data-end="4418">1. Company Background</h3>
+<p data-start="4419" data-end="4760">HDFC Bank is one of India’s leading private sector banks with strong digital banking penetration. The bank operates across retail, corporate, and SME segments. Digital transactions account for over 70% of total retail banking transactions. However, customer complaints related to mobile app usability have increased in the last two quarters.</p>
+<h3 data-start="4762" data-end="4787">2. Business Context</h3>
+<p data-start="4788" data-end="5144">Fintech startups and neobanks are offering simplified digital experiences. App ratings for HDFC Bank dropped from 4.5 to 4.1 in six months. Management suspects that complex navigation and security authentication steps may be reducing user satisfaction. However, they lack structured research distinguishing usability issues from service performance issues.</p>
+<h3 data-start="5146" data-end="5176">3. Core Business Problem</h3>
+<p data-start="5177" data-end="5339">The bank must scientifically define whether declining app ratings are caused by usability complexity, transaction failure rates, or increased security friction.</p>
+<p data-start="5341" data-end="5473">Research Problem:<br data-start="5358" data-end="5361">
+<strong data-start="5361" data-end="5473">“What are the primary determinants of digital banking customer satisfaction in HDFC Bank’s mobile platform?”</strong></p>
+<p data-start="5475" data-end="5588">Without precise problem formulation, redesigning the app may increase costs without improving customer retention.</p>
+<h3 data-start="5590" data-end="5619">4. Key Data and Metrics</h3>
+<p data-start="5620" data-end="5649">Recent internal data shows:</p>
+<ul data-start="5650" data-end="5977">
+<li data-start="5650" data-end="5682">
+<p data-start="5652" data-end="5682">App login failure rate: 3.8%</p>
+</li>
+<li data-start="5683" data-end="5717">
+<p data-start="5685" data-end="5717">Transaction failure rate: 2.1%</p>
+</li>
+<li data-start="5718" data-end="5778">
+<p data-start="5720" data-end="5778">Average transaction time increased from 18 sec to 26 sec</p>
+</li>
+<li data-start="5779" data-end="5893">
+<p data-start="5781" data-end="5813">Customer complaint categories:</p>
+<ul data-start="5816" data-end="5893">
+<li data-start="5816" data-end="5845">
+<p data-start="5818" data-end="5845">35% navigation difficulty</p>
+</li>
+<li data-start="5848" data-end="5866">
+<p data-start="5850" data-end="5866">28% OTP delays</p>
+</li>
+<li data-start="5869" data-end="5893">
+<p data-start="5871" data-end="5893">19% slow app loading</p>
+</li>
+</ul>
+</li>
+<li data-start="5894" data-end="5932">
+<p data-start="5896" data-end="5932">Monthly active users dropped by 4%</p>
+</li>
+<li data-start="5933" data-end="5977">
+<p data-start="5935" data-end="5977">Customer churn increased from 2.5% to 3.4%</p>
+</li>
+</ul>
+<p data-start="5979" data-end="6054">A pilot survey (n=1,200 users) indicates satisfaction score averages 3.6/5.</p>
+<h3 data-start="6056" data-end="6083">5. Decision Situation</h3>
+<p data-start="6084" data-end="6120">Management must decide whether to:</p>
+<ul data-start="6121" data-end="6265">
+<li data-start="6121" data-end="6139">
+<p data-start="6123" data-end="6139">Redesign UI/UX</p>
+</li>
+<li data-start="6140" data-end="6175">
+<p data-start="6142" data-end="6175">Simplify authentication process</p>
+</li>
+<li data-start="6176" data-end="6203">
+<p data-start="6178" data-end="6203">Upgrade backend servers</p>
+</li>
+<li data-start="6204" data-end="6265">
+<p data-start="6206" data-end="6265">Or conduct deeper behavioral research before implementation</p>
+</li>
+</ul>
+<p data-start="6267" data-end="6320">They require a structured hypothesis-driven approach.</p>
+<h3 data-start="6322" data-end="6351">6. Analytical Questions</h3>
+<ol data-start="6353" data-end="6688">
+<li data-start="6353" data-end="6435">
+<p data-start="6356" data-end="6435">What type of research is appropriate: descriptive or hypothesis-testing? Why?</p>
+</li>
+<li data-start="6436" data-end="6504">
+<p data-start="6439" data-end="6504">Frame two hypotheses linking usability factors to satisfaction.</p>
+</li>
+<li data-start="6505" data-end="6566">
+<p data-start="6508" data-end="6566">Identify measurable indicators of customer satisfaction.</p>
+</li>
+<li data-start="6567" data-end="6624">
+<p data-start="6570" data-end="6624">How can the research process reduce managerial bias?</p>
+</li>
+<li data-start="6625" data-end="6688">
+<p data-start="6628" data-end="6688">What operational definitions should be used for “usability”?</p>
+</li>
+</ol>
+<h3 data-start="6690" data-end="6712">7. Model Answers</h3>
+<p data-start="6714" data-end="6884"><strong data-start="6714" data-end="6721">Q1:</strong><br data-start="6721" data-end="6724">
+Descriptive research should measure satisfaction levels first. Then hypothesis-testing research should examine causal links between usability metrics and churn.</p>
+<p data-start="6886" data-end="7043"><strong data-start="6886" data-end="6893">Q2:</strong><br data-start="6893" data-end="6896">
+H1: Increased transaction time negatively affects customer satisfaction.<br data-start="6968" data-end="6971">
+H2: Higher login failure rates significantly increase churn probability.</p>
+<p data-start="7045" data-end="7155"><strong data-start="7045" data-end="7052">Q4:</strong><br data-start="7052" data-end="7055">
+Following structured research steps ensures data-based conclusions rather than managerial intuition.</p>
+<h3 data-start="7157" data-end="7180">8. Learning Focus</h3>
+<p data-start="7181" data-end="7279">Application of structured research process and hypothesis testing in digital service environments.</p>
+<p data-start="7281" data-end="7394"><strong data-start="7281" data-end="7302">Primary Concepts:</strong> Research Design, Hypothesis Testing, Operationalization, Descriptive vs Analytical Research</p>
+<hr data-start="7396" data-end="7399">
+<h1 data-start="7401" data-end="7421"><strong data-start="7403" data-end="7419">Case Study 3</strong></h1>
+<h2 data-start="7422" data-end="7475">Electric Vehicle Demand Forecasting at Tata Motors</h2>
+<h3 data-start="7477" data-end="7504">1. Company Background</h3>
+<p data-start="7505" data-end="7816">Tata Motors is a leading automobile manufacturer in India and a key player in the electric vehicle (EV) segment. The company has invested heavily in EV models such as Nexon EV and Tiago EV. Government incentives and rising fuel prices have boosted EV adoption. However, demand variability across cities is high.</p>
+<h3 data-start="7818" data-end="7843">2. Business Context</h3>
+<p data-start="7844" data-end="8150">EV sales in metro cities grew 28% YoY, while smaller cities grew only 11%. Charging infrastructure availability and consumer awareness vary widely. Tata Motors must decide future production allocation and dealership expansion strategy. Poor demand estimation could result in excess inventory or stock-outs.</p>
+<h3 data-start="8152" data-end="8182">3. Core Business Problem</h3>
+<p data-start="8183" data-end="8337">Tata Motors needs to understand whether infrastructure availability, fuel prices, environmental awareness, or income levels drive EV demand across cities.</p>
+<p data-start="8339" data-end="8452">Research Problem:<br data-start="8356" data-end="8359">
+<strong data-start="8359" data-end="8452">“What factors significantly influence EV purchase intention across Indian urban markets?”</strong></p>
+<p data-start="8454" data-end="8529">Incorrect problem framing may lead to overinvestment in low-demand regions.</p>
+<h3 data-start="8531" data-end="8560">4. Key Data and Metrics</h3>
+<ul data-start="8561" data-end="8993">
+<li data-start="8561" data-end="8621">
+<p data-start="8563" data-end="8621">EV sales: Metro (28% growth), Tier-2 (15%), Tier-3 (11%)</p>
+</li>
+<li data-start="8622" data-end="8652">
+<p data-start="8624" data-end="8652">Average EV price: ₹15 lakh</p>
+</li>
+<li data-start="8653" data-end="8687">
+<p data-start="8655" data-end="8687">Petrol price increase: 12% YoY</p>
+</li>
+<li data-start="8688" data-end="8780">
+<p data-start="8690" data-end="8732">Charging stations per 1 lakh population:</p>
+<ul data-start="8735" data-end="8780">
+<li data-start="8735" data-end="8748">
+<p data-start="8737" data-end="8748">Metro: 18</p>
+</li>
+<li data-start="8751" data-end="8764">
+<p data-start="8753" data-end="8764">Tier-2: 7</p>
+</li>
+<li data-start="8767" data-end="8780">
+<p data-start="8769" data-end="8780">Tier-3: 3</p>
+</li>
+</ul>
+</li>
+<li data-start="8781" data-end="8993">
+<p data-start="8783" data-end="8819">Survey (n=2,000 potential buyers):</p>
+<ul data-start="8822" data-end="8993">
+<li data-start="8822" data-end="8867">
+<p data-start="8824" data-end="8867">62% concerned about charging availability</p>
+</li>
+<li data-start="8870" data-end="8902">
+<p data-start="8872" data-end="8902">54% influenced by fuel price</p>
+</li>
+<li data-start="8905" data-end="8949">
+<p data-start="8907" data-end="8949">48% influenced by environmental benefits</p>
+</li>
+<li data-start="8952" data-end="8993">
+<p data-start="8954" data-end="8993">33% cite high upfront cost as barrier</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 data-start="8995" data-end="9022">5. Decision Situation</h3>
+<p data-start="9023" data-end="9162">Management must decide whether to expand charging partnerships, reduce pricing through financing schemes, or intensify awareness campaigns.</p>
+<p data-start="9164" data-end="9254">Structured research with clearly defined hypotheses is required before capital allocation.</p>
+<h3 data-start="9256" data-end="9285">6. Analytical Questions</h3>
+<ol data-start="9287" data-end="9616">
+<li data-start="9287" data-end="9354">
+<p data-start="9290" data-end="9354">Is this exploratory, descriptive, or causal research? Justify.</p>
+</li>
+<li data-start="9355" data-end="9415">
+<p data-start="9358" data-end="9415">Develop two hypotheses regarding EV purchase intention.</p>
+</li>
+<li data-start="9416" data-end="9466">
+<p data-start="9419" data-end="9466">Identify dependent and independent variables.</p>
+</li>
+<li data-start="9467" data-end="9537">
+<p data-start="9470" data-end="9537">How should Tata Motors operationally define “purchase intention”?</p>
+</li>
+<li data-start="9538" data-end="9616">
+<p data-start="9541" data-end="9616">Why is proper problem formulation critical in capital-intensive industries?</p>
+</li>
+</ol>
+<h3 data-start="9618" data-end="9640">7. Model Answers</h3>
+<p data-start="9642" data-end="9806"><strong data-start="9642" data-end="9649">Q1:</strong><br data-start="9649" data-end="9652">
+Initial descriptive research can identify demand patterns. Causal research is required to test which variables significantly influence purchase intention.</p>
+<p data-start="9808" data-end="9965"><strong data-start="9808" data-end="9815">Q2:</strong><br data-start="9815" data-end="9818">
+H1: Availability of charging infrastructure positively influences EV purchase intention.<br data-start="9906" data-end="9909">
+H2: Higher petrol prices increase EV purchase intention.</p>
+<p data-start="9967" data-end="10130"><strong data-start="9967" data-end="9974">Q3:</strong><br data-start="9974" data-end="9977">
+Dependent variable: EV purchase intention score.<br data-start="10025" data-end="10028">
+Independent variables: Charging density, fuel price perception, income level, environmental awareness.</p>
+<h3 data-start="10132" data-end="10155">8. Learning Focus</h3>
+<p data-start="10156" data-end="10271">Research problem formulation, hypothesis development, and structured research process in strategic decision-making.</p>
+<p data-start="10273" data-end="10379" data-is-last-node="" data-is-only-node=""><strong data-start="10273" data-end="10294">Primary Concepts:</strong> Types of Research, Hypothesis Development, Variable Identification, Research Process</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

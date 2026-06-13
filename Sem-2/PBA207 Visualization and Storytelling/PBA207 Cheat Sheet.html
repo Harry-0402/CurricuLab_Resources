@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="67eb2779-83c4-4e07-9283-826bd0f1ecea" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="81">Perfect 👍<br data-start="10" data-end="13">
+You want a <strong data-start="24" data-end="76">direct, exam-ready, revision-focused CHEAT SHEET</strong> for:</p>
+<blockquote data-start="83" data-end="290">
+<p data-start="85" data-end="290"><strong data-start="85" data-end="160">PB207 – Data Visualization and Story Telling (MBA – Business Analytics)</strong><br data-start="160" data-end="163">
+Based on your syllabus  and <em data-start="228" data-end="252">Storytelling with Data</em> </p>
+</blockquote>
+<p data-start="292" data-end="373">I’ll give you a <strong data-start="308" data-end="372">high-density, memory-optimized, last-night-before-exam sheet</strong>.</p>
+<hr data-start="375" data-end="378">
+<h1 data-start="380" data-end="420">📘 DATA VISUALIZATION &amp; STORYTELLING</h1>
+<h1 data-start="421" data-end="463">⚡ MASTER CHEAT SHEET (Exam + Viva Ready)</h1>
+<hr data-start="465" data-end="468">
+<h1 data-start="470" data-end="504">🔵 UNIT I – Visualization Basics</h1>
+<h2 data-start="506" data-end="540">1️⃣ What is Data Visualization?</h2>
+<p data-start="542" data-end="644"><strong data-start="542" data-end="557">Definition:</strong><br data-start="557" data-end="560">
+Graphical representation of data to communicate information clearly and efficiently.</p>
+<p data-start="646" data-end="671"><strong data-start="646" data-end="671">Formula (Conceptual):</strong></p>
+<pre class="overflow-visible! px-0!" data-start="673" data-end="730"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">powershell</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Data</span></span><span> + Design + Context = Effective Visualization
+</span></span></code></div></div></pre>
+<hr data-start="732" data-end="735">
+<h2 data-start="737" data-end="758">2️⃣ Why Visualize?</h2>
+<ul data-start="760" data-end="928">
+<li data-start="760" data-end="813">
+<p data-start="762" data-end="813">Humans process visuals <strong data-start="785" data-end="813">60,000x faster than text</strong></p>
+</li>
+<li data-start="814" data-end="838">
+<p data-start="816" data-end="838">Reduces cognitive load</p>
+</li>
+<li data-start="839" data-end="866">
+<p data-start="841" data-end="866">Reveals trends &amp; patterns</p>
+</li>
+<li data-start="867" data-end="893">
+<p data-start="869" data-end="893">Supports decision-making</p>
+</li>
+<li data-start="894" data-end="928">
+<p data-start="896" data-end="928">Converts data → insight → action</p>
+</li>
+</ul>
+<hr data-start="930" data-end="933">
+<h2 data-start="935" data-end="977">3️⃣ Exploratory vs Explanatory Analysis</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="979" data-end="1172" class="w-fit min-w-(--thread-content-width)"><thead data-start="979" data-end="1008"><tr data-start="979" data-end="1008"><th data-start="979" data-end="993" data-col-size="sm" class="">Exploratory</th><th data-start="993" data-end="1008" data-col-size="sm" class="">Explanatory</th></tr></thead><tbody data-start="1037" data-end="1172"><tr data-start="1037" data-end="1079"><td data-start="1037" data-end="1056" data-col-size="sm">Finding insights</td><td data-col-size="sm" data-start="1056" data-end="1079">Presenting insights</td></tr><tr data-start="1080" data-end="1118"><td data-start="1080" data-end="1098" data-col-size="sm">Analyst-focused</td><td data-col-size="sm" data-start="1098" data-end="1118">Audience-focused</td></tr><tr data-start="1119" data-end="1154"><td data-start="1119" data-end="1133" data-col-size="sm">Many charts</td><td data-col-size="sm" data-start="1133" data-end="1154">One focused chart</td></tr><tr data-start="1155" data-end="1172"><td data-start="1155" data-end="1161" data-col-size="sm">Raw</td><td data-col-size="sm" data-start="1161" data-end="1172">Refined</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="1174" data-end="1204">👉 Exams love this difference.</p>
+<hr data-start="1206" data-end="1209">
+<h2 data-start="1211" data-end="1246">4️⃣ Stages of Data Visualization</h2>
+<pre class="overflow-visible! px-0!" data-start="1248" data-end="1337"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">powershell</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Data</span></span><span> Collection
+→ Cleaning
+→ Analysis
+→ Visualization
+→ Interpretation
+→ Decision
+</span></span></code></div></div></pre>
+<hr data-start="1339" data-end="1342">
+<h2 data-start="1344" data-end="1385">5️⃣ Types of Charts (When to Use What)</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1387" data-end="1708" class="w-fit min-w-(--thread-content-width)"><thead data-start="1387" data-end="1412"><tr data-start="1387" data-end="1412"><th data-start="1387" data-end="1400" data-col-size="sm" class="">Chart Type</th><th data-start="1400" data-end="1412" data-col-size="md" class="">Best For</th></tr></thead><tbody data-start="1439" data-end="1708"><tr data-start="1439" data-end="1465"><td data-start="1439" data-end="1451" data-col-size="sm">Bar Chart</td><td data-col-size="md" data-start="1451" data-end="1465">Comparison</td></tr><tr data-start="1466" data-end="1498"><td data-start="1466" data-end="1479" data-col-size="sm">Line Chart</td><td data-col-size="md" data-start="1479" data-end="1498">Trend over time</td></tr><tr data-start="1499" data-end="1557"><td data-start="1499" data-end="1511" data-col-size="sm">Pie Chart</td><td data-col-size="md" data-start="1511" data-end="1557">Proportion (avoid in professional reports)</td></tr><tr data-start="1558" data-end="1589"><td data-start="1558" data-end="1573" data-col-size="sm">Scatter Plot</td><td data-col-size="md" data-start="1573" data-end="1589">Relationship</td></tr><tr data-start="1590" data-end="1611"><td data-start="1590" data-end="1600" data-col-size="sm">Heatmap</td><td data-col-size="md" data-start="1600" data-end="1611">Density</td></tr><tr data-start="1612" data-end="1640"><td data-start="1612" data-end="1624" data-col-size="sm">Histogram</td><td data-col-size="md" data-start="1624" data-end="1640">Distribution</td></tr><tr data-start="1641" data-end="1672"><td data-start="1641" data-end="1655" data-col-size="sm">Stacked Bar</td><td data-col-size="md" data-start="1655" data-end="1672">Part-to-whole</td></tr><tr data-start="1673" data-end="1708"><td data-start="1673" data-end="1685" data-col-size="sm">Waterfall</td><td data-col-size="md" data-start="1685" data-end="1708">Incremental changes</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<p data-start="1710" data-end="1719">⚠️ Avoid:</p>
+<ul data-start="1720" data-end="1763">
+<li data-start="1720" data-end="1731">
+<p data-start="1722" data-end="1731">3D charts</p>
+</li>
+<li data-start="1732" data-end="1749">
+<p data-start="1734" data-end="1749">Too many colors</p>
+</li>
+<li data-start="1750" data-end="1763">
+<p data-start="1752" data-end="1763">Dual Y-axis</p>
+</li>
+</ul>
+<hr data-start="1765" data-end="1768">
+<h1 data-start="1770" data-end="1814">🔵 UNIT II – Structured Data Visualization</h1>
+<h2 data-start="1816" data-end="1863">Structured Data = Organized (Rows &amp; Columns)</h2>
+<p data-start="1865" data-end="1873">Example:</p>
+<ul data-start="1874" data-end="1926">
+<li data-start="1874" data-end="1886">
+<p data-start="1876" data-end="1886">Sales data</p>
+</li>
+<li data-start="1887" data-end="1906">
+<p data-start="1889" data-end="1906">Employee database</p>
+</li>
+<li data-start="1907" data-end="1926">
+<p data-start="1909" data-end="1926">Financial reports</p>
+</li>
+</ul>
+<hr data-start="1928" data-end="1931">
+<h2 data-start="1933" data-end="1974">1️⃣ Univariate Analysis (One Variable)</h2>
+<p data-start="1976" data-end="1982">Tools:</p>
+<ul data-start="1983" data-end="2016">
+<li data-start="1983" data-end="1994">
+<p data-start="1985" data-end="1994">Histogram</p>
+</li>
+<li data-start="1995" data-end="2006">
+<p data-start="1997" data-end="2006">Bar chart</p>
+</li>
+<li data-start="2007" data-end="2016">
+<p data-start="2009" data-end="2016">Boxplot</p>
+</li>
+</ul>
+<p data-start="2018" data-end="2024">Focus:</p>
+<ul data-start="2025" data-end="2079">
+<li data-start="2025" data-end="2031">
+<p data-start="2027" data-end="2031">Mean</p>
+</li>
+<li data-start="2032" data-end="2040">
+<p data-start="2034" data-end="2040">Median</p>
+</li>
+<li data-start="2041" data-end="2047">
+<p data-start="2043" data-end="2047">Mode</p>
+</li>
+<li data-start="2048" data-end="2058">
+<p data-start="2050" data-end="2058">Variance</p>
+</li>
+<li data-start="2059" data-end="2079">
+<p data-start="2061" data-end="2079">Distribution shape</p>
+</li>
+</ul>
+<hr data-start="2081" data-end="2084">
+<h2 data-start="2086" data-end="2135">2️⃣ Multivariate Analysis (Multiple Variables)</h2>
+<p data-start="2137" data-end="2143">Tools:</p>
+<ul data-start="2144" data-end="2209">
+<li data-start="2144" data-end="2158">
+<p data-start="2146" data-end="2158">Scatter plot</p>
+</li>
+<li data-start="2159" data-end="2173">
+<p data-start="2161" data-end="2173">Bubble chart</p>
+</li>
+<li data-start="2174" data-end="2188">
+<p data-start="2176" data-end="2188">Stacked bars</p>
+</li>
+<li data-start="2189" data-end="2209">
+<p data-start="2191" data-end="2209">Correlation matrix</p>
+</li>
+</ul>
+<p data-start="2211" data-end="2223">Key Concept:</p>
+<blockquote data-start="2224" data-end="2249">
+<p data-start="2226" data-end="2249">Correlation ≠ Causation</p>
+</blockquote>
+<hr data-start="2251" data-end="2254">
+<h2 data-start="2256" data-end="2285">3️⃣ Modeling Visualization</h2>
+<p data-start="2287" data-end="2295">Used in:</p>
+<ul data-start="2296" data-end="2338">
+<li data-start="2296" data-end="2308">
+<p data-start="2298" data-end="2308">Regression</p>
+</li>
+<li data-start="2309" data-end="2325">
+<p data-start="2311" data-end="2325">Classification</p>
+</li>
+<li data-start="2326" data-end="2338">
+<p data-start="2328" data-end="2338">Clustering</p>
+</li>
+</ul>
+<p data-start="2340" data-end="2353">Visual Tools:</p>
+<ul data-start="2354" data-end="2411">
+<li data-start="2354" data-end="2365">
+<p data-start="2356" data-end="2365">ROC curve</p>
+</li>
+<li data-start="2366" data-end="2384">
+<p data-start="2368" data-end="2384">Confusion matrix</p>
+</li>
+<li data-start="2385" data-end="2411">
+<p data-start="2387" data-end="2411">Feature importance graph</p>
+</li>
+</ul>
+<hr data-start="2413" data-end="2416">
+<h2 data-start="2418" data-end="2452">4️⃣ Visualization in Deployment</h2>
+<p data-start="2454" data-end="2475">Dashboard Principles:</p>
+<ul data-start="2477" data-end="2550">
+<li data-start="2477" data-end="2496">
+<p data-start="2479" data-end="2496">Real-time updates</p>
+</li>
+<li data-start="2497" data-end="2510">
+<p data-start="2499" data-end="2510">KPI focused</p>
+</li>
+<li data-start="2511" data-end="2532">
+<p data-start="2513" data-end="2532">Interactive filters</p>
+</li>
+<li data-start="2533" data-end="2550">
+<p data-start="2535" data-end="2550">Minimal clutter</p>
+</li>
+</ul>
+<hr data-start="2552" data-end="2555">
+<h1 data-start="2557" data-end="2604">🔵 UNIT III – Unstructured Data Visualization</h1>
+<h2 data-start="2606" data-end="2664">Unstructured Data = Text, Emails, Reviews, Social Media</h2>
+<hr data-start="2666" data-end="2669">
+<h2 data-start="2671" data-end="2685">Challenges:</h2>
+<ul data-start="2687" data-end="2755">
+<li data-start="2687" data-end="2704">
+<p data-start="2689" data-end="2704">No fixed format</p>
+</li>
+<li data-start="2705" data-end="2726">
+<p data-start="2707" data-end="2726">High dimensionality</p>
+</li>
+<li data-start="2727" data-end="2734">
+<p data-start="2729" data-end="2734">Noise</p>
+</li>
+<li data-start="2735" data-end="2755">
+<p data-start="2737" data-end="2755">Language ambiguity</p>
+</li>
+</ul>
+<hr data-start="2757" data-end="2760">
+<h2 data-start="2762" data-end="2788">Pre-processing Pipeline</h2>
+<pre class="overflow-visible! px-0!" data-start="2790" data-end="2918"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">css</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-selector-tag">Text</span></span><span> Data
+→ Tokenization
+→ Stopword Removal
+→ Stemming/Lemmatization
+→ Vectorization (TF-IDF / Word2Vec)
+→ Visualization
+</span></span></code></div></div></pre>
+<hr data-start="2920" data-end="2923">
+<h2 data-start="2925" data-end="2954">Text Visualization Methods</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2956" data-end="3156" class="w-fit min-w-(--thread-content-width)"><thead data-start="2956" data-end="2976"><tr data-start="2956" data-end="2976"><th data-start="2956" data-end="2965" data-col-size="sm" class="">Method</th><th data-start="2965" data-end="2976" data-col-size="sm" class="">Purpose</th></tr></thead><tbody data-start="2998" data-end="3156"><tr data-start="2998" data-end="3024"><td data-start="2998" data-end="3011" data-col-size="sm">Word Cloud</td><td data-col-size="sm" data-start="3011" data-end="3024">Frequency</td></tr><tr data-start="3025" data-end="3055"><td data-start="3025" data-end="3043" data-col-size="sm">Sentiment Graph</td><td data-col-size="sm" data-start="3043" data-end="3055">Polarity</td></tr><tr data-start="3056" data-end="3089"><td data-start="3056" data-end="3079" data-col-size="sm">Topic Modeling (LDA)</td><td data-col-size="sm" data-start="3079" data-end="3089">Themes</td></tr><tr data-start="3090" data-end="3123"><td data-start="3090" data-end="3106" data-col-size="sm">Network Graph</td><td data-col-size="sm" data-start="3106" data-end="3123">Relationships</td></tr><tr data-start="3124" data-end="3156"><td data-start="3124" data-end="3148" data-col-size="sm">Conversation Timeline</td><td data-col-size="sm" data-start="3148" data-end="3156">Flow</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3158" data-end="3161">
+<h1 data-start="3163" data-end="3197">🔵 UNIT IV – Visual Storytelling</h1>
+<h2 data-start="3199" data-end="3233">What is Storytelling with Data?</h2>
+<blockquote data-start="3235" data-end="3290">
+<p data-start="3237" data-end="3290">Turning insights into a narrative that drives action.</p>
+</blockquote>
+<hr data-start="3292" data-end="3295">
+<h2 data-start="3297" data-end="3325">Why Storytelling Matters?</h2>
+<ul data-start="3327" data-end="3421">
+<li data-start="3327" data-end="3372">
+<p data-start="3329" data-end="3372">Humans remember stories 22x more than facts</p>
+</li>
+<li data-start="3373" data-end="3401">
+<p data-start="3375" data-end="3401">Emotion improves retention</p>
+</li>
+<li data-start="3402" data-end="3421">
+<p data-start="3404" data-end="3421">Drives persuasion</p>
+</li>
+</ul>
+<hr data-start="3423" data-end="3426">
+<h2 data-start="3428" data-end="3458">Science Behind Storytelling</h2>
+<p data-start="3460" data-end="3476">Brain processes:</p>
+<ol data-start="3478" data-end="3579">
+<li data-start="3478" data-end="3507">
+<p data-start="3481" data-end="3507">Visual cortex → sees chart</p>
+</li>
+<li data-start="3508" data-end="3541">
+<p data-start="3511" data-end="3541">Prefrontal cortex → interprets</p>
+</li>
+<li data-start="3542" data-end="3579">
+<p data-start="3545" data-end="3579">Limbic system → emotional response</p>
+</li>
+</ol>
+<hr data-start="3581" data-end="3584">
+<h2 data-start="3586" data-end="3653">6 Core Lessons (From Book )</h2>
+<ol data-start="3655" data-end="3779">
+<li data-start="3655" data-end="3676">
+<p data-start="3658" data-end="3676">Understand context</p>
+</li>
+<li data-start="3677" data-end="3701">
+<p data-start="3680" data-end="3701">Choose correct visual</p>
+</li>
+<li data-start="3702" data-end="3719">
+<p data-start="3705" data-end="3719">Remove clutter</p>
+</li>
+<li data-start="3720" data-end="3738">
+<p data-start="3723" data-end="3738">Focus attention</p>
+</li>
+<li data-start="3739" data-end="3763">
+<p data-start="3742" data-end="3763">Think like a designer</p>
+</li>
+<li data-start="3764" data-end="3779">
+<p data-start="3767" data-end="3779">Tell a story</p>
+</li>
+</ol>
+<hr data-start="3781" data-end="3784">
+<h1 data-start="3786" data-end="3822">🔵 UNIT V – Storytelling Framework</h1>
+<hr data-start="3824" data-end="3827">
+<h2 data-start="3829" data-end="3858">1️⃣ WHO – WHAT – HOW Model</h2>
+<ul data-start="3860" data-end="3928">
+<li data-start="3860" data-end="3876">
+<p data-start="3862" data-end="3876">Who = Audience</p>
+</li>
+<li data-start="3877" data-end="3897">
+<p data-start="3879" data-end="3897">What = Key Message</p>
+</li>
+<li data-start="3898" data-end="3928">
+<p data-start="3900" data-end="3928">How = Visualization strategy</p>
+</li>
+</ul>
+<hr data-start="3930" data-end="3933">
+<h2 data-start="3935" data-end="3961">2️⃣ 3-Minute Story Rule</h2>
+<p data-start="3963" data-end="3984">If you had 3 minutes:</p>
+<ul data-start="3985" data-end="4057">
+<li data-start="3985" data-end="4006">
+<p data-start="3987" data-end="4006">What’s the problem?</p>
+</li>
+<li data-start="4007" data-end="4028">
+<p data-start="4009" data-end="4028">What’s the insight?</p>
+</li>
+<li data-start="4029" data-end="4057">
+<p data-start="4031" data-end="4057">What’s the recommendation?</p>
+</li>
+</ul>
+<hr data-start="4059" data-end="4062">
+<h2 data-start="4064" data-end="4099">3️⃣ Big Idea (One Sentence Rule)</h2>
+<p data-start="4101" data-end="4106">Must:</p>
+<ul data-start="4107" data-end="4178">
+<li data-start="4107" data-end="4131">
+<p data-start="4109" data-end="4131">Be a complete sentence</p>
+</li>
+<li data-start="4132" data-end="4154">
+<p data-start="4134" data-end="4154">Show what’s at stake</p>
+</li>
+<li data-start="4155" data-end="4178">
+<p data-start="4157" data-end="4178">Be clear and specific</p>
+</li>
+</ul>
+<p data-start="4180" data-end="4188">Example:</p>
+<blockquote data-start="4189" data-end="4273">
+<p data-start="4191" data-end="4273">Sales declined due to pricing strategy; reduce price by 5% to regain market share.</p>
+</blockquote>
+<hr data-start="4275" data-end="4278">
+<h2 data-start="4280" data-end="4302">4️⃣ Narrative Types</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4304" data-end="4465" class="w-fit min-w-(--thread-content-width)"><thead data-start="4304" data-end="4320"><tr data-start="4304" data-end="4320"><th data-start="4304" data-end="4311" data-col-size="sm" class="">Type</th><th data-start="4311" data-end="4320" data-col-size="sm" class="">Usage</th></tr></thead><tbody data-start="4338" data-end="4465"><tr data-start="4338" data-end="4368"><td data-start="4338" data-end="4352" data-col-size="sm">Descriptive</td><td data-col-size="sm" data-start="4352" data-end="4368">Explain data</td></tr><tr data-start="4369" data-end="4401"><td data-start="4369" data-end="4382" data-col-size="sm">Diagnostic</td><td data-col-size="sm" data-start="4382" data-end="4401">Why it happened</td></tr><tr data-start="4402" data-end="4435"><td data-start="4402" data-end="4415" data-col-size="sm">Predictive</td><td data-col-size="sm" data-start="4415" data-end="4435">What will happen</td></tr><tr data-start="4436" data-end="4465"><td data-start="4436" data-end="4451" data-col-size="sm">Prescriptive</td><td data-col-size="sm" data-start="4451" data-end="4465">What to do</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4467" data-end="4470">
+<h2 data-start="4472" data-end="4495">5️⃣ Data Story Types</h2>
+<ul data-start="4497" data-end="4598">
+<li data-start="4497" data-end="4529">
+<p data-start="4499" data-end="4529">Change story (Before vs After)</p>
+</li>
+<li data-start="4530" data-end="4548">
+<p data-start="4532" data-end="4548">Comparison story</p>
+</li>
+<li data-start="4549" data-end="4568">
+<p data-start="4551" data-end="4568">Correlation story</p>
+</li>
+<li data-start="4569" data-end="4582">
+<p data-start="4571" data-end="4582">Trend story</p>
+</li>
+<li data-start="4583" data-end="4598">
+<p data-start="4585" data-end="4598">Outlier story</p>
+</li>
+</ul>
+<hr data-start="4600" data-end="4603">
+<h2 data-start="4605" data-end="4637">6️⃣ Analytics Dashboard Types</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4639" data-end="4785" class="w-fit min-w-(--thread-content-width)"><thead data-start="4639" data-end="4657"><tr data-start="4639" data-end="4657"><th data-start="4639" data-end="4646" data-col-size="sm" class="">Type</th><th data-start="4646" data-end="4657" data-col-size="sm" class="">Purpose</th></tr></thead><tbody data-start="4678" data-end="4785"><tr data-start="4678" data-end="4708"><td data-start="4678" data-end="4690" data-col-size="sm">Strategic</td><td data-col-size="sm" data-start="4690" data-end="4708">Long-term KPIs</td></tr><tr data-start="4709" data-end="4746"><td data-start="4709" data-end="4720" data-col-size="sm">Tactical</td><td data-col-size="sm" data-start="4720" data-end="4746">Department performance</td></tr><tr data-start="4747" data-end="4785"><td data-start="4747" data-end="4761" data-col-size="sm">Operational</td><td data-col-size="sm" data-start="4761" data-end="4785">Real-time monitoring</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4787" data-end="4790">
+<h1 data-start="4792" data-end="4831">🎯 EXAM POWER POINTS (Very Important)</h1>
+<p data-start="4833" data-end="5046">✔ Exploratory vs Explanatory<br data-start="4861" data-end="4864">
+✔ Gestalt Principles<br data-start="4884" data-end="4887">
+✔ Preattentive Attributes (color, size, position)<br data-start="4936" data-end="4939">
+✔ Cognitive Load<br data-start="4955" data-end="4958">
+✔ Big Idea concept<br data-start="4976" data-end="4979">
+✔ Why avoid 3D charts<br data-start="5000" data-end="5003">
+✔ Data → Information → Insight → Decision</p>
+<hr data-start="5048" data-end="5051">
+<h1 data-start="5053" data-end="5092">🧠 Gestalt Principles (Must Remember)</h1>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5094" data-end="5310" class="w-fit min-w-(--thread-content-width)"><thead data-start="5094" data-end="5117"><tr data-start="5094" data-end="5117"><th data-start="5094" data-end="5106" data-col-size="sm" class="">Principle</th><th data-start="5106" data-end="5117" data-col-size="sm" class="">Meaning</th></tr></thead><tbody data-start="5143" data-end="5310"><tr data-start="5143" data-end="5174"><td data-start="5143" data-end="5155" data-col-size="sm">Proximity</td><td data-col-size="sm" data-start="5155" data-end="5174">Close = related</td></tr><tr data-start="5175" data-end="5210"><td data-start="5175" data-end="5188" data-col-size="sm">Similarity</td><td data-col-size="sm" data-start="5188" data-end="5210">Same color = group</td></tr><tr data-start="5211" data-end="5244"><td data-start="5211" data-end="5224" data-col-size="sm">Continuity</td><td data-col-size="sm" data-start="5224" data-end="5244">Eye follows line</td></tr><tr data-start="5245" data-end="5274"><td data-start="5245" data-end="5255" data-col-size="sm">Closure</td><td data-col-size="sm" data-start="5255" data-end="5274">Mind fills gaps</td></tr><tr data-start="5275" data-end="5310"><td data-start="5275" data-end="5287" data-col-size="sm">Enclosure</td><td data-col-size="sm" data-start="5287" data-end="5310">Box groups elements</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5312" data-end="5315">
+<h1 data-start="5317" data-end="5345">🎨 Preattentive Attributes</h1>
+<p data-start="5347" data-end="5381">Used to guide attention instantly:</p>
+<ul data-start="5383" data-end="5430">
+<li data-start="5383" data-end="5390">
+<p data-start="5385" data-end="5390">Color</p>
+</li>
+<li data-start="5391" data-end="5397">
+<p data-start="5393" data-end="5397">Size</p>
+</li>
+<li data-start="5398" data-end="5405">
+<p data-start="5400" data-end="5405">Shape</p>
+</li>
+<li data-start="5406" data-end="5416">
+<p data-start="5408" data-end="5416">Position</p>
+</li>
+<li data-start="5417" data-end="5430">
+<p data-start="5419" data-end="5430">Orientation</p>
+</li>
+</ul>
+<hr data-start="5432" data-end="5435">
+<h1 data-start="5437" data-end="5471">🚫 Common Visualization Mistakes</h1>
+<ul data-start="5473" data-end="5597">
+<li data-start="5473" data-end="5490">
+<p data-start="5475" data-end="5490">Too many labels</p>
+</li>
+<li data-start="5491" data-end="5503">
+<p data-start="5493" data-end="5503">Chart junk</p>
+</li>
+<li data-start="5504" data-end="5523">
+<p data-start="5506" data-end="5523">Decorative colors</p>
+</li>
+<li data-start="5524" data-end="5546">
+<p data-start="5526" data-end="5546">Cluttered background</p>
+</li>
+<li data-start="5547" data-end="5566">
+<p data-start="5549" data-end="5566">No clear takeaway</p>
+</li>
+<li data-start="5567" data-end="5597">
+<p data-start="5569" data-end="5597">Showing data without insight</p>
+</li>
+</ul>
+<hr data-start="5599" data-end="5602">
+<h1 data-start="5604" data-end="5658">🔥 Final MBA-Level Definition (For 10-Mark Question)</h1>
+<blockquote data-start="5660" data-end="5915">
+<p data-start="5662" data-end="5915">Data Visualization is the structured graphical representation of data that integrates statistical reasoning, design principles, cognitive psychology, and storytelling techniques to convert raw data into actionable insights for strategic decision-making.</p>
+</blockquote>
+<hr data-start="5917" data-end="5920">
+<p data-start="5922" data-end="5954">If you want, I can now generate:</p>
+<ul data-start="5956" data-end="6145">
+<li data-start="5956" data-end="5995">
+<p data-start="5958" data-end="5995">📌 20 Most Important 5-Mark Questions</p>
+</li>
+<li data-start="5996" data-end="6030">
+<p data-start="5998" data-end="6030">📌 10 Expected 10-Mark Questions</p>
+</li>
+<li data-start="6031" data-end="6066">
+<p data-start="6033" data-end="6066">📌 50 Rapid Revision Flash Points</p>
+</li>
+<li data-start="6067" data-end="6099">
+<p data-start="6069" data-end="6099">📌 Viva Questions with Answers</p>
+</li>
+<li data-start="6100" data-end="6145">
+<p data-start="6102" data-end="6145">📌 One-page ultra-condensed printable sheet</p>
+</li>
+</ul>
+<p data-start="6147" data-end="6174" data-is-last-node="" data-is-only-node="">Tell me what you need next.</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="450a69a6-c71c-47d4-a90a-d8cb2220b422" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="53">
+<p data-start="2" data-end="53"><strong data-start="2" data-end="13">STATUS:</strong> Unit 3: Sampling | Part 1 of 3 (Approx)</p>
+</blockquote>
+<hr data-start="55" data-end="58">
+<h1 data-start="60" data-end="83"><strong data-start="62" data-end="83">UNIT 3 – Sampling</strong></h1>
+<hr data-start="85" data-end="88">
+<h1 data-start="90" data-end="118"><strong data-start="92" data-end="118">1. Concept of Sampling</strong></h1>
+<hr data-start="120" data-end="123">
+<h2 data-start="125" data-end="143">🔹 Introduction</h2>
+<p data-start="145" data-end="288">In research, we often want to study a large group of people, objects, or events. This large group is called the <strong data-start="257" data-end="271">Population</strong> or <strong data-start="275" data-end="287">Universe</strong>.</p>
+<p data-start="290" data-end="333">However, studying the entire population is:</p>
+<ul data-start="335" data-end="392">
+<li data-start="335" data-end="348">
+<p data-start="337" data-end="348">Expensive</p>
+</li>
+<li data-start="349" data-end="367">
+<p data-start="351" data-end="367">Time-consuming</p>
+</li>
+<li data-start="368" data-end="392">
+<p data-start="370" data-end="392">Sometimes impossible</p>
+</li>
+</ul>
+<p data-start="394" data-end="503">Therefore, researchers select a smaller group from the population. This smaller group is called a <strong data-start="492" data-end="502">Sample</strong>.</p>
+<p data-start="505" data-end="571">Sampling is one of the most important aspects of research because:</p>
+<blockquote data-start="573" data-end="661">
+<p data-start="575" data-end="661">The quality of research results depends heavily on the quality of the sample selected.</p>
+</blockquote>
+<hr data-start="663" data-end="666">
+<h2 data-start="668" data-end="686">🔹 Key Concepts</h2>
+<ul data-start="688" data-end="827">
+<li data-start="688" data-end="713">
+<p data-start="690" data-end="713">Population (Universe)</p>
+</li>
+<li data-start="714" data-end="724">
+<p data-start="716" data-end="724">Sample</p>
+</li>
+<li data-start="725" data-end="735">
+<p data-start="727" data-end="735">Census</p>
+</li>
+<li data-start="736" data-end="748">
+<p data-start="738" data-end="748">Sampling</p>
+</li>
+<li data-start="749" data-end="766">
+<p data-start="751" data-end="766">Sampling Unit</p>
+</li>
+<li data-start="767" data-end="785">
+<p data-start="769" data-end="785">Sampling Frame</p>
+</li>
+<li data-start="786" data-end="804">
+<p data-start="788" data-end="804">Sampling Error</p>
+</li>
+<li data-start="805" data-end="827">
+<p data-start="807" data-end="827">Representativeness</p>
+</li>
+</ul>
+<hr data-start="829" data-end="832">
+<h2 data-start="834" data-end="861">🔹 Meaning of Population</h2>
+<p data-start="863" data-end="884">Population refers to:</p>
+<blockquote data-start="886" data-end="985">
+<p data-start="888" data-end="985">The entire group of individuals or elements about which the researcher wants to draw conclusions.</p>
+</blockquote>
+<p data-start="987" data-end="995">Example:</p>
+<ul data-start="996" data-end="1091">
+<li data-start="996" data-end="1032">
+<p data-start="998" data-end="1032">All MBA students in a university</p>
+</li>
+<li data-start="1033" data-end="1060">
+<p data-start="1035" data-end="1060">All customers of a bank</p>
+</li>
+<li data-start="1061" data-end="1091">
+<p data-start="1063" data-end="1091">All employees of a company</p>
+</li>
+</ul>
+<hr data-start="1093" data-end="1096">
+<h2 data-start="1098" data-end="1121">🔹 Meaning of Sample</h2>
+<p data-start="1123" data-end="1135">A sample is:</p>
+<blockquote data-start="1137" data-end="1185">
+<p data-start="1139" data-end="1185">A subset of the population selected for study.</p>
+</blockquote>
+<p data-start="1187" data-end="1301">Example:<br>
+If there are 1000 MBA students and we select 100 students for survey, those 100 students form the sample.</p>
+<hr data-start="1303" data-end="1306">
+<h2 data-start="1308" data-end="1337">🔹 Census vs Sample Survey</h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1339" data-end="1581" class="w-fit min-w-(--thread-content-width)"><thead data-start="1339" data-end="1373"><tr data-start="1339" data-end="1373"><th data-start="1339" data-end="1347" data-col-size="sm" class="">Basis</th><th data-start="1347" data-end="1356" data-col-size="sm" class="">Census</th><th data-start="1356" data-end="1373" data-col-size="sm" class="">Sample Survey</th></tr></thead><tbody data-start="1410" data-end="1581"><tr data-start="1410" data-end="1468"><td data-start="1410" data-end="1421" data-col-size="sm">Coverage</td><td data-start="1421" data-end="1441" data-col-size="sm">Entire population</td><td data-col-size="sm" data-start="1441" data-end="1468">Only part of population</td></tr><tr data-start="1469" data-end="1497"><td data-start="1469" data-end="1476" data-col-size="sm">Cost</td><td data-start="1476" data-end="1488" data-col-size="sm">Very high</td><td data-col-size="sm" data-start="1488" data-end="1497">Lower</td></tr><tr data-start="1498" data-end="1520"><td data-start="1498" data-end="1505" data-col-size="sm">Time</td><td data-start="1505" data-end="1512" data-col-size="sm">More</td><td data-start="1512" data-end="1520" data-col-size="sm">Less</td></tr><tr data-start="1521" data-end="1581"><td data-start="1521" data-end="1532" data-col-size="sm">Accuracy</td><td data-col-size="sm" data-start="1532" data-end="1552">High (if no bias)</td><td data-col-size="sm" data-start="1552" data-end="1581">Depends on sample quality</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1583" data-end="1586">
+<h3 data-start="1588" data-end="1611">When Census is Used</h3>
+<ul data-start="1613" data-end="1701">
+<li data-start="1613" data-end="1636">
+<p data-start="1615" data-end="1636">Population is small</p>
+</li>
+<li data-start="1637" data-end="1663">
+<p data-start="1639" data-end="1663">High accuracy required</p>
+</li>
+<li data-start="1664" data-end="1701">
+<p data-start="1666" data-end="1701">Adequate time and funds available</p>
+</li>
+</ul>
+<p data-start="1703" data-end="1754">Example:<br>
+Population census conducted by government.</p>
+<hr data-start="1756" data-end="1759">
+<h3 data-start="1761" data-end="1786">When Sampling is Used</h3>
+<ul data-start="1788" data-end="1862">
+<li data-start="1788" data-end="1811">
+<p data-start="1790" data-end="1811">Population is large</p>
+</li>
+<li data-start="1812" data-end="1833">
+<p data-start="1814" data-end="1833">Limited resources</p>
+</li>
+<li data-start="1834" data-end="1862">
+<p data-start="1836" data-end="1862">Quick decisions required</p>
+</li>
+</ul>
+<p data-start="1864" data-end="1905">Example:<br>
+Survey of customer satisfaction.</p>
+<hr data-start="1907" data-end="1910">
+<h1 data-start="1912" data-end="1936"><strong data-start="1914" data-end="1936">2. Sampling Design</strong></h1>
+<hr data-start="1938" data-end="1941">
+<h2 data-start="1943" data-end="1961">🔹 Introduction</h2>
+<p data-start="1963" data-end="2029">Once the researcher decides to use sampling, the next question is:</p>
+<p data-start="2031" data-end="2070">👉 <em data-start="2034" data-end="2070">How should the sample be selected?</em></p>
+<p data-start="2072" data-end="2134">This plan of selecting a sample is called <strong data-start="2114" data-end="2133">Sampling Design</strong>.</p>
+<hr data-start="2136" data-end="2139">
+<h2 data-start="2141" data-end="2173">🔹 Meaning of Sampling Design</h2>
+<p data-start="2175" data-end="2194">Sampling design is:</p>
+<blockquote data-start="2196" data-end="2261">
+<p data-start="2198" data-end="2261">A definite plan for obtaining a sample from a given population.</p>
+</blockquote>
+<p data-start="2263" data-end="2276">It specifies:</p>
+<ul data-start="2277" data-end="2348">
+<li data-start="2277" data-end="2305">
+<p data-start="2279" data-end="2305">How many units to select</p>
+</li>
+<li data-start="2306" data-end="2330">
+<p data-start="2308" data-end="2330">From where to select</p>
+</li>
+<li data-start="2331" data-end="2348">
+<p data-start="2333" data-end="2348">How to select</p>
+</li>
+</ul>
+<hr data-start="2350" data-end="2353">
+<h2 data-start="2355" data-end="2385">🔹 Steps in Sampling Design</h2>
+<p data-start="2387" data-end="2440">The sampling design involves several important steps:</p>
+<hr data-start="2442" data-end="2445">
+<h3 data-start="2447" data-end="2483">🧭 Step 1: Define the Population</h3>
+<p data-start="2485" data-end="2500">Clearly define:</p>
+<ul data-start="2501" data-end="2538">
+<li data-start="2501" data-end="2519">
+<p data-start="2503" data-end="2519">Who is included?</p>
+</li>
+<li data-start="2520" data-end="2538">
+<p data-start="2522" data-end="2538">Who is excluded?</p>
+</li>
+</ul>
+<p data-start="2540" data-end="2598">Example:<br>
+All employees working in private banks in Mumbai.</p>
+<hr data-start="2600" data-end="2603">
+<h3 data-start="2605" data-end="2642">🧭 Step 2: Identify Sampling Unit</h3>
+<p data-start="2644" data-end="2661">Sampling unit is:</p>
+<blockquote data-start="2663" data-end="2708">
+<p data-start="2665" data-end="2708">The basic element considered for selection.</p>
+</blockquote>
+<p data-start="2710" data-end="2719">Examples:</p>
+<ul data-start="2720" data-end="2765">
+<li data-start="2720" data-end="2734">
+<p data-start="2722" data-end="2734">Individual</p>
+</li>
+<li data-start="2735" data-end="2748">
+<p data-start="2737" data-end="2748">Household</p>
+</li>
+<li data-start="2749" data-end="2765">
+<p data-start="2751" data-end="2765">Organization</p>
+</li>
+</ul>
+<hr data-start="2767" data-end="2770">
+<h3 data-start="2772" data-end="2810">🧭 Step 3: Identify Sampling Frame</h3>
+<p data-start="2812" data-end="2830">Sampling frame is:</p>
+<blockquote data-start="2832" data-end="2885">
+<p data-start="2834" data-end="2885">The list containing all elements of the population.</p>
+</blockquote>
+<p data-start="2887" data-end="2895">Example:</p>
+<ul data-start="2896" data-end="2939">
+<li data-start="2896" data-end="2919">
+<p data-start="2898" data-end="2919">List of all employees</p>
+</li>
+<li data-start="2920" data-end="2939">
+<p data-start="2922" data-end="2939">Customer database</p>
+</li>
+</ul>
+<p data-start="2941" data-end="3009">A good sampling frame must be:<br>
+✔ Complete<br data-start="2982" data-end="2985">
+✔ Updated<br data-start="2994" data-end="2997">
+✔ Accurate</p>
+<hr data-start="3011" data-end="3014">
+<h3 data-start="3016" data-end="3049">🧭 Step 4: Decide Sample Size</h3>
+<p data-start="3051" data-end="3105">Important question:<br>
+How many units should be selected?</p>
+<p data-start="3107" data-end="3130">Sample size depends on:</p>
+<ul data-start="3131" data-end="3221">
+<li data-start="3131" data-end="3150">
+<p data-start="3133" data-end="3150">Population size</p>
+</li>
+<li data-start="3151" data-end="3171">
+<p data-start="3153" data-end="3171">Desired accuracy</p>
+</li>
+<li data-start="3172" data-end="3191">
+<p data-start="3174" data-end="3191">Time and budget</p>
+</li>
+<li data-start="3192" data-end="3221">
+<p data-start="3194" data-end="3221">Variability in population</p>
+</li>
+</ul>
+<hr data-start="3223" data-end="3226">
+<h3 data-start="3228" data-end="3268">🧭 Step 5: Choose Sampling Technique</h3>
+<p data-start="3270" data-end="3291">Two broad categories:</p>
+<ul data-start="3292" data-end="3345">
+<li data-start="3292" data-end="3316">
+<p data-start="3294" data-end="3316">Probability Sampling</p>
+</li>
+<li data-start="3317" data-end="3345">
+<p data-start="3319" data-end="3345">Non-probability Sampling</p>
+</li>
+</ul>
+<p data-start="3347" data-end="3387">We will study these in detail in Part 2.</p>
+<hr data-start="3389" data-end="3392">
+<h1 data-start="3394" data-end="3413">🔹 Sampling Error</h1>
+<p data-start="3415" data-end="3433">Sampling error is:</p>
+<blockquote data-start="3435" data-end="3496">
+<p data-start="3437" data-end="3496">The difference between sample result and population result.</p>
+</blockquote>
+<p data-start="3498" data-end="3578">Example:<br>
+Population average income = ₹50,000<br data-start="3542" data-end="3545">
+Sample average income = ₹48,000</p>
+<p data-start="3580" data-end="3607">Difference = Sampling error</p>
+<p data-start="3609" data-end="3639">Sampling error decreases when:</p>
+<ul data-start="3640" data-end="3700">
+<li data-start="3640" data-end="3665">
+<p data-start="3642" data-end="3665">Sample size increases</p>
+</li>
+<li data-start="3666" data-end="3700">
+<p data-start="3668" data-end="3700">Proper random sampling is used</p>
+</li>
+</ul>
+<hr data-start="3702" data-end="3705">
+<h1 data-start="3707" data-end="3744">🔹 Characteristics of a Good Sample</h1>
+<p data-start="3746" data-end="3768">A good sample must be:</p>
+<p data-start="3770" data-end="3857">✔ Representative<br data-start="3786" data-end="3789">
+✔ Adequate in size<br data-start="3807" data-end="3810">
+✔ Free from bias<br data-start="3826" data-end="3829">
+✔ Economical<br data-start="3841" data-end="3844">
+✔ Practical</p>
+<hr data-start="3859" data-end="3862">
+<h1 data-start="3864" data-end="3896">🔹 Flowchart: Sampling Process</h1>
+<pre class="overflow-visible! px-0!" data-start="3898" data-end="4076"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">sql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Define</span></span><span> Population
+        ↓
+</span><span><span class="hljs-keyword">Select</span></span><span> Sampling Unit
+        ↓
+</span><span><span class="hljs-keyword">Prepare</span></span><span> Sampling Frame
+        ↓
+Determine Sample Size
+        ↓
+Choose Sampling </span><span><span class="hljs-keyword">Method</span></span><span>
+        ↓
+</span><span><span class="hljs-keyword">Select</span></span><span> Sample
+</span></span></code></div></div></pre>
+<hr data-start="4078" data-end="4081">
+<h1 data-start="4083" data-end="4114">🔹 Practical Business Example</h1>
+<p data-start="4116" data-end="4149">Suppose a company wants to study:</p>
+<p data-start="4151" data-end="4185">“Customer satisfaction in Mumbai.”</p>
+<p data-start="4187" data-end="4326">Population → All customers in Mumbai<br data-start="4223" data-end="4226">
+Sampling Frame → Customer database<br data-start="4260" data-end="4263">
+Sample Size → 300 customers<br data-start="4290" data-end="4293">
+Method → Simple random sampling</p>
+<p data-start="4328" data-end="4396">Conclusion drawn from 300 customers represents entire customer base.</p>
+<hr data-start="4398" data-end="4401">
+<h1 data-start="4403" data-end="4451">🔹 Importance of Sampling in Business Research</h1>
+<ul data-start="4453" data-end="4577">
+<li data-start="4453" data-end="4487">
+<p data-start="4455" data-end="4487">Helps in quick decision making</p>
+</li>
+<li data-start="4488" data-end="4504">
+<p data-start="4490" data-end="4504">Reduces cost</p>
+</li>
+<li data-start="4505" data-end="4544">
+<p data-start="4507" data-end="4544">Makes large-scale research possible</p>
+</li>
+<li data-start="4545" data-end="4577">
+<p data-start="4547" data-end="4577">Enables statistical analysis</p>
+</li>
+</ul>
+<p data-start="4579" data-end="4603">Without proper sampling:</p>
+<ul data-start="4604" data-end="4669">
+<li data-start="4604" data-end="4633">
+<p data-start="4606" data-end="4633">Results become misleading</p>
+</li>
+<li data-start="4634" data-end="4669">
+<p data-start="4636" data-end="4669">Business decisions become risky</p>
+</li>
+</ul>
+<hr data-start="4671" data-end="4674">
+<h1 data-start="4676" data-end="4704">🔹 Summary of This Section</h1>
+<ul data-start="4706" data-end="4958">
+<li data-start="4706" data-end="4751">
+<p data-start="4708" data-end="4751">Population is the entire group under study.</p>
+</li>
+<li data-start="4752" data-end="4787">
+<p data-start="4754" data-end="4787">Sample is a subset of population.</p>
+</li>
+<li data-start="4788" data-end="4839">
+<p data-start="4790" data-end="4839">Sampling is necessary when census is impractical.</p>
+</li>
+<li data-start="4840" data-end="4905">
+<p data-start="4842" data-end="4905">Sampling design provides systematic method of selecting sample.</p>
+</li>
+<li data-start="4906" data-end="4958">
+<p data-start="4908" data-end="4958">A good sample must be representative and unbiased.</p>
+</li>
+</ul>
+<hr data-start="4960" data-end="4963">
+<blockquote data-start="4965" data-end="5016" data-is-last-node="" data-is-only-node="">
+<p data-start="4967" data-end="5016" data-is-last-node=""><strong data-start="4967" data-end="5016" data-is-last-node=""><em data-start="4969" data-end="5014">End of Unit 3 – Part 1. Continue to Part 2?</em></strong></p>
+</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="d0661749-4905-4eb9-a29d-acddd44b12c0" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="53">
+<p data-start="2" data-end="53"><strong data-start="2" data-end="13">STATUS:</strong> Unit 3: Sampling | Part 2 of 3 (Approx)</p>
+</blockquote>
+<hr data-start="55" data-end="58">
+<h1 data-start="60" data-end="94"><strong data-start="62" data-end="94">3. Types of Sampling Designs</strong></h1>
+<p data-start="96" data-end="243">In Part 1, we understood the concept of sampling and sampling design.<br data-start="165" data-end="168">
+Now we will study the <strong data-start="190" data-end="232">different types of sampling techniques</strong> in detail.</p>
+<p data-start="245" data-end="290">Sampling methods are broadly classified into:</p>
+<ol data-start="292" data-end="380">
+<li data-start="292" data-end="319">
+<p data-start="295" data-end="319"><strong data-start="295" data-end="319">Probability Sampling</strong></p>
+</li>
+<li data-start="320" data-end="351">
+<p data-start="323" data-end="351"><strong data-start="323" data-end="351">Non-Probability Sampling</strong></p>
+</li>
+<li data-start="352" data-end="380">
+<p data-start="355" data-end="380"><strong data-start="355" data-end="380">Mixed Sampling Design</strong></p>
+</li>
+</ol>
+<hr data-start="382" data-end="385">
+<h1 data-start="387" data-end="416">🔹 1️⃣ Probability Sampling</h1>
+<hr data-start="418" data-end="421">
+<h2 data-start="423" data-end="441">🔹 Introduction</h2>
+<p data-start="443" data-end="467">In probability sampling:</p>
+<blockquote data-start="469" data-end="553">
+<p data-start="471" data-end="553">Every element of the population has a known and non-zero chance of being selected.</p>
+</blockquote>
+<p data-start="555" data-end="598">This method is scientific and reduces bias.</p>
+<hr data-start="600" data-end="603">
+<h2 data-start="605" data-end="623">🔹 Key Features</h2>
+<p data-start="625" data-end="748">✔ Random selection<br data-start="643" data-end="646">
+✔ Known probability of selection<br data-start="678" data-end="681">
+✔ Allows statistical inference<br data-start="711" data-end="714">
+✔ Sampling error can be measured</p>
+<hr data-start="750" data-end="753">
+<h2 data-start="755" data-end="790">🔹 Types of Probability Sampling</h2>
+<hr data-start="792" data-end="795">
+<h2 data-start="797" data-end="826">(a) Simple Random Sampling</h2>
+<hr data-start="828" data-end="831">
+<h3 data-start="833" data-end="847">🔹 Meaning</h3>
+<p data-start="849" data-end="897">Each element has equal chance of being selected.</p>
+<p data-start="899" data-end="917">Selection methods:</p>
+<ul data-start="918" data-end="990">
+<li data-start="918" data-end="936">
+<p data-start="920" data-end="936">Lottery method</p>
+</li>
+<li data-start="937" data-end="960">
+<p data-start="939" data-end="960">Random number table</p>
+</li>
+<li data-start="961" data-end="990">
+<p data-start="963" data-end="990">Computer random generator</p>
+</li>
+</ul>
+<hr data-start="992" data-end="995">
+<h3 data-start="997" data-end="1011">🔹 Example</h3>
+<p data-start="1013" data-end="1078">From 1000 employees, select 100 randomly using computer software.</p>
+<hr data-start="1080" data-end="1083">
+<h3 data-start="1085" data-end="1102">🔹 Advantages</h3>
+<p data-start="1104" data-end="1147">✔ Simple<br data-start="1112" data-end="1115">
+✔ Unbiased<br data-start="1125" data-end="1128">
+✔ Easy to analyze</p>
+<h3 data-start="1149" data-end="1167">🔹 Limitations</h3>
+<p data-start="1169" data-end="1249">❌ Requires complete sampling frame<br data-start="1203" data-end="1206">
+❌ Not suitable for very large populations</p>
+<hr data-start="1251" data-end="1254">
+<h2 data-start="1256" data-end="1282">(b) Systematic Sampling</h2>
+<hr data-start="1284" data-end="1287">
+<h3 data-start="1289" data-end="1303">🔹 Meaning</h3>
+<p data-start="1305" data-end="1332">Select every <em data-start="1318" data-end="1323">kth</em> element.</p>
+<p data-start="1334" data-end="1342">Formula:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>k</mi><mo>=</mo><mfrac><mi>N</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">k = \frac{N}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6944em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.0463em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3603em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p data-start="1367" data-end="1413">Where:<br>
+N = Population size<br data-start="1393" data-end="1396">
+n = Sample size</p>
+<hr data-start="1415" data-end="1418">
+<h3 data-start="1420" data-end="1434">🔹 Example</h3>
+<p data-start="1436" data-end="1475">Population = 1000<br data-start="1453" data-end="1456">
+Sample size = 100</p>
+<p data-start="1477" data-end="1498">k = 1000 / 100 = 10</p>
+<p data-start="1500" data-end="1527">Select every 10th employee.</p>
+<hr data-start="1529" data-end="1532">
+<h3 data-start="1534" data-end="1550">🔹 Advantage</h3>
+<p data-start="1552" data-end="1573">✔ Easy to implement</p>
+<h3 data-start="1575" data-end="1592">🔹 Limitation</h3>
+<p data-start="1594" data-end="1637">❌ Risk of periodicity (if list has pattern)</p>
+<hr data-start="1639" data-end="1642">
+<h2 data-start="1644" data-end="1670">(c) Stratified Sampling</h2>
+<hr data-start="1672" data-end="1675">
+<h3 data-start="1677" data-end="1691">🔹 Meaning</h3>
+<p data-start="1693" data-end="1804">Population is divided into homogeneous subgroups called <strong data-start="1749" data-end="1759">strata</strong>, and samples are selected from each stratum.</p>
+<hr data-start="1806" data-end="1809">
+<h3 data-start="1811" data-end="1825">🔹 Example</h3>
+<p data-start="1827" data-end="1855">Population: 1000 employees</p>
+<ul data-start="1856" data-end="1885">
+<li data-start="1856" data-end="1869">
+<p data-start="1858" data-end="1869">600 males</p>
+</li>
+<li data-start="1870" data-end="1885">
+<p data-start="1872" data-end="1885">400 females</p>
+</li>
+</ul>
+<p data-start="1887" data-end="1936">Sample must represent both groups proportionally.</p>
+<hr data-start="1938" data-end="1941">
+<h3 data-start="1943" data-end="1955">🔹 Types</h3>
+<ol data-start="1957" data-end="2037">
+<li data-start="1957" data-end="1995">
+<p data-start="1960" data-end="1995">Proportionate Stratified Sampling</p>
+</li>
+<li data-start="1996" data-end="2037">
+<p data-start="1999" data-end="2037">Disproportionate Stratified Sampling</p>
+</li>
+</ol>
+<hr data-start="2039" data-end="2042">
+<h3 data-start="2044" data-end="2060">🔹 Advantage</h3>
+<p data-start="2062" data-end="2112">✔ More representative<br data-start="2083" data-end="2086">
+✔ Reduces sampling error</p>
+<hr data-start="2114" data-end="2117">
+<h2 data-start="2119" data-end="2142">(d) Cluster Sampling</h2>
+<hr data-start="2144" data-end="2147">
+<h3 data-start="2149" data-end="2163">🔹 Meaning</h3>
+<p data-start="2165" data-end="2244">Population divided into clusters (groups), then clusters are randomly selected.</p>
+<hr data-start="2246" data-end="2249">
+<h3 data-start="2251" data-end="2265">🔹 Example</h3>
+<p data-start="2267" data-end="2299">To survey students across India:</p>
+<ul data-start="2301" data-end="2382">
+<li data-start="2301" data-end="2336">
+<p data-start="2303" data-end="2336">Select 10 universities randomly</p>
+</li>
+<li data-start="2337" data-end="2382">
+<p data-start="2339" data-end="2382">Survey all students in those universities</p>
+</li>
+</ul>
+<hr data-start="2384" data-end="2387">
+<h3 data-start="2389" data-end="2405">🔹 Advantage</h3>
+<p data-start="2407" data-end="2461">✔ Economical<br data-start="2419" data-end="2422">
+✔ Useful for large geographical areas</p>
+<hr data-start="2463" data-end="2466">
+<h2 data-start="2468" data-end="2495">(e) Multi-Stage Sampling</h2>
+<hr data-start="2497" data-end="2500">
+<h3 data-start="2502" data-end="2516">🔹 Meaning</h3>
+<p data-start="2518" data-end="2542">Sampling done in stages.</p>
+<p data-start="2544" data-end="2552">Example:</p>
+<p data-start="2554" data-end="2663">Stage 1 → Select states<br data-start="2577" data-end="2580">
+Stage 2 → Select districts<br data-start="2606" data-end="2609">
+Stage 3 → Select schools<br data-start="2633" data-end="2636">
+Stage 4 → Select students</p>
+<hr data-start="2665" data-end="2668">
+<h3 data-start="2670" data-end="2686">🔹 Advantage</h3>
+<p data-start="2688" data-end="2728">✔ Practical for national-level surveys</p>
+<hr data-start="2730" data-end="2733">
+<h1 data-start="2735" data-end="2768">🔹 2️⃣ Non-Probability Sampling</h1>
+<hr data-start="2770" data-end="2773">
+<h2 data-start="2775" data-end="2793">🔹 Introduction</h2>
+<p data-start="2795" data-end="2823">In non-probability sampling:</p>
+<blockquote data-start="2825" data-end="2863">
+<p data-start="2827" data-end="2863">Probability of selection is unknown.</p>
+</blockquote>
+<p data-start="2865" data-end="2887">Selection is based on:</p>
+<ul data-start="2888" data-end="2926">
+<li data-start="2888" data-end="2903">
+<p data-start="2890" data-end="2903">Convenience</p>
+</li>
+<li data-start="2904" data-end="2916">
+<p data-start="2906" data-end="2916">Judgment</p>
+</li>
+<li data-start="2917" data-end="2926">
+<p data-start="2919" data-end="2926">Quota</p>
+</li>
+</ul>
+<p data-start="2928" data-end="2955">Less scientific but easier.</p>
+<hr data-start="2957" data-end="2960">
+<h2 data-start="2962" data-end="3001">🔹 Types of Non-Probability Sampling</h2>
+<hr data-start="3003" data-end="3006">
+<h2 data-start="3008" data-end="3035">(a) Convenience Sampling</h2>
+<p data-start="3037" data-end="3067">Select easily available units.</p>
+<p data-start="3069" data-end="3119">Example:<br>
+Surveying students in your own classroom.</p>
+<p data-start="3121" data-end="3151">Advantage:<br>
+✔ Quick and cheap</p>
+<p data-start="3153" data-end="3178">Limitation:<br>
+❌ High bias</p>
+<hr data-start="3180" data-end="3183">
+<h2 data-start="3185" data-end="3209">(b) Judgment Sampling</h2>
+<p data-start="3211" data-end="3254">Researcher selects units based on judgment.</p>
+<p data-start="3256" data-end="3315">Example:<br>
+Selecting experienced managers for opinion survey.</p>
+<hr data-start="3317" data-end="3320">
+<h2 data-start="3322" data-end="3343">(c) Quota Sampling</h2>
+<p data-start="3345" data-end="3393">Population divided into groups and quotas fixed.</p>
+<p data-start="3395" data-end="3435">Example:<br>
+Survey 60 males and 40 females.</p>
+<hr data-start="3437" data-end="3440">
+<h2 data-start="3442" data-end="3466">(d) Snowball Sampling</h2>
+<p data-start="3468" data-end="3511">Existing respondents refer new respondents.</p>
+<p data-start="3513" data-end="3521">Used in:</p>
+<ul data-start="3522" data-end="3560">
+<li data-start="3522" data-end="3542">
+<p data-start="3524" data-end="3542">Rare populations</p>
+</li>
+<li data-start="3543" data-end="3560">
+<p data-start="3545" data-end="3560">Hidden groups</p>
+</li>
+</ul>
+<p data-start="3562" data-end="3594">Example:<br>
+Research on drug users.</p>
+<hr data-start="3596" data-end="3599">
+<h1 data-start="3601" data-end="3622">🔹 Comparison Table</h1>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3624" data-end="3915" class="w-fit min-w-(--thread-content-width)"><thead data-start="3624" data-end="3685"><tr data-start="3624" data-end="3685"><th data-start="3624" data-end="3634" data-col-size="sm" class="">Feature</th><th data-start="3634" data-end="3657" data-col-size="sm" class="">Probability Sampling</th><th data-start="3657" data-end="3685" data-col-size="sm" class="">Non-Probability Sampling</th></tr></thead><tbody data-start="3748" data-end="3915"><tr data-start="3748" data-end="3783"><td data-start="3748" data-end="3760" data-col-size="sm">Selection</td><td data-start="3760" data-end="3769" data-col-size="sm">Random</td><td data-col-size="sm" data-start="3769" data-end="3783">Non-random</td></tr><tr data-start="3784" data-end="3805"><td data-start="3784" data-end="3791" data-col-size="sm">Bias</td><td data-start="3791" data-end="3797" data-col-size="sm">Low</td><td data-start="3797" data-end="3805" data-col-size="sm">High</td></tr><tr data-start="3806" data-end="3851"><td data-start="3806" data-end="3829" data-col-size="sm">Statistical Analysis</td><td data-start="3829" data-end="3840" data-col-size="sm">Possible</td><td data-col-size="sm" data-start="3840" data-end="3851">Limited</td></tr><tr data-start="3852" data-end="3877"><td data-start="3852" data-end="3859" data-col-size="sm">Cost</td><td data-start="3859" data-end="3868" data-col-size="sm">Higher</td><td data-start="3868" data-end="3877" data-col-size="sm">Lower</td></tr><tr data-start="3878" data-end="3915"><td data-start="3878" data-end="3889" data-col-size="sm">Accuracy</td><td data-start="3889" data-end="3896" data-col-size="sm">High</td><td data-start="3896" data-end="3915" data-col-size="sm">Moderate to low</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3917" data-end="3920">
+<h1 data-start="3922" data-end="3952">🔹 3️⃣ Mixed Sampling Design</h1>
+<hr data-start="3954" data-end="3957">
+<h2 data-start="3959" data-end="3972">🔹 Meaning</h2>
+<p data-start="3974" data-end="4029">Combination of probability and non-probability methods.</p>
+<p data-start="4031" data-end="4039">Example:</p>
+<ul data-start="4040" data-end="4120">
+<li data-start="4040" data-end="4070">
+<p data-start="4042" data-end="4070">First use cluster sampling</p>
+</li>
+<li data-start="4071" data-end="4120">
+<p data-start="4073" data-end="4120">Then use convenience sampling within clusters</p>
+</li>
+</ul>
+<hr data-start="4122" data-end="4125">
+<h2 data-start="4127" data-end="4143">🔹 When Used?</h2>
+<ul data-start="4145" data-end="4223">
+<li data-start="4145" data-end="4177">
+<p data-start="4147" data-end="4177">Large-scale business surveys</p>
+</li>
+<li data-start="4178" data-end="4197">
+<p data-start="4180" data-end="4197">Market research</p>
+</li>
+<li data-start="4198" data-end="4223">
+<p data-start="4200" data-end="4223">Practical constraints</p>
+</li>
+</ul>
+<hr data-start="4225" data-end="4228">
+<h1 data-start="4230" data-end="4277">🔹 Sampling Frame &amp; Sample Size Determination</h1>
+<hr data-start="4279" data-end="4282">
+<h2 data-start="4284" data-end="4304">🔹 Sampling Frame</h2>
+<p data-start="4306" data-end="4326">A sampling frame is:</p>
+<blockquote data-start="4328" data-end="4373">
+<p data-start="4330" data-end="4373">A complete list of all units in population.</p>
+</blockquote>
+<p data-start="4375" data-end="4383">Example:</p>
+<ul data-start="4384" data-end="4420">
+<li data-start="4384" data-end="4398">
+<p data-start="4386" data-end="4398">Voter list</p>
+</li>
+<li data-start="4399" data-end="4420">
+<p data-start="4401" data-end="4420">Customer database</p>
+</li>
+</ul>
+<p data-start="4422" data-end="4488">Good sampling frame must be:<br>
+✔ Accurate<br data-start="4461" data-end="4464">
+✔ Updated<br data-start="4473" data-end="4476">
+✔ Complete</p>
+<hr data-start="4490" data-end="4493">
+<h2 data-start="4495" data-end="4526">🔹 Sample Size Determination</h2>
+<p data-start="4528" data-end="4551">Sample size depends on:</p>
+<ol data-start="4553" data-end="4653">
+<li data-start="4553" data-end="4573">
+<p data-start="4556" data-end="4573">Population size</p>
+</li>
+<li data-start="4574" data-end="4603">
+<p data-start="4577" data-end="4603">Desired confidence level</p>
+</li>
+<li data-start="4604" data-end="4624">
+<p data-start="4607" data-end="4624">Margin of error</p>
+</li>
+<li data-start="4625" data-end="4641">
+<p data-start="4628" data-end="4641">Variability</p>
+</li>
+<li data-start="4642" data-end="4653">
+<p data-start="4645" data-end="4653">Budget</p>
+</li>
+</ol>
+<hr data-start="4655" data-end="4658">
+<h3 data-start="4660" data-end="4703">🔹 Basic Formula (For Large Population)</h3>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>n</mi><mo>=</mo><mfrac><mrow><msup><mi>Z</mi><mn>2</mn></msup><mo>⋅</mo><mi>p</mi><mo>⋅</mo><mi>q</mi></mrow><msup><mi>e</mi><mn>2</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">n = \frac{Z^2 \cdot p \cdot q}{e^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.1771em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.4911em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.7401em;"><span style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right: 0.07153em;">Z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8141em;"><span style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p data-start="4748" data-end="4754">Where:</p>
+<p data-start="4756" data-end="4869">n = Sample size<br data-start="4771" data-end="4774">
+Z = Z-value (confidence level)<br data-start="4804" data-end="4807">
+p = Probability of success<br data-start="4833" data-end="4836">
+q = 1 − p<br data-start="4845" data-end="4848">
+e = Margin of error</p>
+<hr data-start="4871" data-end="4874">
+<h3 data-start="4876" data-end="4890">🔹 Example</h3>
+<p data-start="4892" data-end="4944">If:<br>
+Z = 1.96 (95% confidence)<br data-start="4921" data-end="4924">
+p = 0.5<br data-start="4931" data-end="4934">
+e = 0.05</p>
+<p data-start="4946" data-end="4963">Sample size ≈ 384</p>
+<hr data-start="4965" data-end="4968">
+<h1 data-start="4970" data-end="5020">🔹 Data Processing: Editing, Coding &amp; Tabulating</h1>
+<p data-start="5022" data-end="5057">After sampling and data collection:</p>
+<hr data-start="5059" data-end="5062">
+<h2 data-start="5064" data-end="5078">1️⃣ Editing</h2>
+<p data-start="5080" data-end="5089">Checking:</p>
+<ul data-start="5090" data-end="5143">
+<li data-start="5090" data-end="5112">
+<p data-start="5092" data-end="5112">Incomplete answers</p>
+</li>
+<li data-start="5113" data-end="5123">
+<p data-start="5115" data-end="5123">Errors</p>
+</li>
+<li data-start="5124" data-end="5143">
+<p data-start="5126" data-end="5143">Inconsistencies</p>
+</li>
+</ul>
+<hr data-start="5145" data-end="5148">
+<h2 data-start="5150" data-end="5163">2️⃣ Coding</h2>
+<p data-start="5165" data-end="5196">Assigning numbers to responses.</p>
+<p data-start="5198" data-end="5206">Example:</p>
+<p data-start="5208" data-end="5231">Male = 1<br data-start="5216" data-end="5219">
+Female = 2</p>
+<hr data-start="5233" data-end="5236">
+<h2 data-start="5238" data-end="5255">3️⃣ Tabulation</h2>
+<p data-start="5257" data-end="5283">Organizing data in tables.</p>
+<p data-start="5285" data-end="5293">Example:</p>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5295" data-end="5370" class="w-fit min-w-(--thread-content-width)"><thead data-start="5295" data-end="5317"><tr data-start="5295" data-end="5317"><th data-start="5295" data-end="5304" data-col-size="sm" class="">Gender</th><th data-start="5304" data-end="5317" data-col-size="sm" class="">Frequency</th></tr></thead><tbody data-start="5341" data-end="5370"><tr data-start="5341" data-end="5354"><td data-start="5341" data-end="5348" data-col-size="sm">Male</td><td data-start="5348" data-end="5354" data-col-size="sm">60</td></tr><tr data-start="5355" data-end="5370"><td data-start="5355" data-end="5364" data-col-size="sm">Female</td><td data-start="5364" data-end="5370" data-col-size="sm">40</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5372" data-end="5375">
+<h1 data-start="5377" data-end="5405">🔹 Summary of This Section</h1>
+<ul data-start="5407" data-end="5689">
+<li data-start="5407" data-end="5477">
+<p data-start="5409" data-end="5477">Sampling techniques classified into probability and non-probability.</p>
+</li>
+<li data-start="5478" data-end="5528">
+<p data-start="5480" data-end="5528">Probability sampling is scientific and unbiased.</p>
+</li>
+<li data-start="5529" data-end="5588">
+<p data-start="5531" data-end="5588">Non-probability sampling is convenient but less accurate.</p>
+</li>
+<li data-start="5589" data-end="5629">
+<p data-start="5591" data-end="5629">Sample size determination is critical.</p>
+</li>
+<li data-start="5630" data-end="5689">
+<p data-start="5632" data-end="5689">Data processing includes editing, coding, and tabulation.</p>
+</li>
+</ul>
+<hr data-start="5691" data-end="5694">
+<blockquote data-start="5696" data-end="5747" data-is-last-node="" data-is-only-node="">
+<p data-start="5698" data-end="5747" data-is-last-node=""><strong data-start="5698" data-end="5747" data-is-last-node=""><em data-start="5700" data-end="5745">End of Unit 3 – Part 2. Continue to Part 3?</em></strong></p>
+</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="9cf752bf-58e6-4044-9f91-bb82f63ca543" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="53">
+<p data-start="2" data-end="53"><strong data-start="2" data-end="13">STATUS:</strong> Unit 3: Sampling | Part 3 of 3 (Approx)</p>
+</blockquote>
+<hr data-start="55" data-end="58">
+<h1 data-start="60" data-end="97"><strong data-start="62" data-end="97">4. Advanced Aspects of Sampling</strong></h1>
+<p data-start="99" data-end="132">In Part 1 and Part 2, we studied:</p>
+<ul data-start="134" data-end="270">
+<li data-start="134" data-end="157">
+<p data-start="136" data-end="157">Concept of sampling</p>
+</li>
+<li data-start="158" data-end="177">
+<p data-start="160" data-end="177">Sampling design</p>
+</li>
+<li data-start="178" data-end="220">
+<p data-start="180" data-end="220">Probability &amp; non-probability sampling</p>
+</li>
+<li data-start="221" data-end="250">
+<p data-start="223" data-end="250">Sample size determination</p>
+</li>
+<li data-start="251" data-end="270">
+<p data-start="253" data-end="270">Data processing</p>
+</li>
+</ul>
+<p data-start="272" data-end="306">In this final part, we will cover:</p>
+<ul data-start="308" data-end="501">
+<li data-start="308" data-end="353">
+<p data-start="310" data-end="353">Criteria for selecting sampling procedure</p>
+</li>
+<li data-start="354" data-end="397">
+<p data-start="356" data-end="397">Characteristics of good sampling design</p>
+</li>
+<li data-start="398" data-end="437">
+<p data-start="400" data-end="437">Sampling distributions (Basic idea)</p>
+</li>
+<li data-start="438" data-end="470">
+<p data-start="440" data-end="470">Practical issues in sampling</p>
+</li>
+<li data-start="471" data-end="501">
+<p data-start="473" data-end="501">Complete summary of Unit 3</p>
+</li>
+</ul>
+<hr data-start="503" data-end="506">
+<h1 data-start="508" data-end="556">🔹 Criteria for Selecting a Sampling Procedure</h1>
+<p data-start="558" data-end="605">Choosing the right sampling method is critical.</p>
+<p data-start="607" data-end="654">The selection depends on the following factors:</p>
+<hr data-start="656" data-end="659">
+<h2 data-start="661" data-end="688">1️⃣ Nature of Population</h2>
+<ul data-start="690" data-end="808">
+<li data-start="690" data-end="750">
+<p data-start="692" data-end="750">Homogeneous population → Simple random sampling suitable</p>
+</li>
+<li data-start="751" data-end="808">
+<p data-start="753" data-end="808">Heterogeneous population → Stratified sampling better</p>
+</li>
+</ul>
+<p data-start="810" data-end="925">Example:<br>
+If all employees are similar → Random sampling<br data-start="865" data-end="868">
+If employees differ by department → Stratified sampling</p>
+<hr data-start="927" data-end="930">
+<h2 data-start="932" data-end="957">2️⃣ Size of Population</h2>
+<ul data-start="959" data-end="1039">
+<li data-start="959" data-end="997">
+<p data-start="961" data-end="997">Small population → Census possible</p>
+</li>
+<li data-start="998" data-end="1039">
+<p data-start="1000" data-end="1039">Large population → Sampling necessary</p>
+</li>
+</ul>
+<hr data-start="1041" data-end="1044">
+<h2 data-start="1046" data-end="1083">3️⃣ Availability of Sampling Frame</h2>
+<p data-start="1085" data-end="1199">If complete list exists → Probability sampling preferred<br data-start="1141" data-end="1144">
+If no list → Cluster or non-probability sampling used</p>
+<hr data-start="1201" data-end="1204">
+<h2 data-start="1206" data-end="1230">4️⃣ Accuracy Required</h2>
+<p data-start="1232" data-end="1319">Higher accuracy → Probability sampling<br data-start="1270" data-end="1273">
+Moderate accuracy → Non-probability sampling</p>
+<hr data-start="1321" data-end="1324">
+<h2 data-start="1326" data-end="1358">5️⃣ Time and Cost Constraints</h2>
+<p data-start="1360" data-end="1462">Limited budget → Convenience or cluster sampling<br data-start="1408" data-end="1411">
+Large budget → Stratified or multi-stage sampling</p>
+<hr data-start="1464" data-end="1467">
+<h2 data-start="1469" data-end="1494">6️⃣ Nature of Research</h2>
+<p data-start="1496" data-end="1624">Exploratory research → Non-probability sampling acceptable<br data-start="1554" data-end="1557">
+Descriptive/Experimental research → Probability sampling required</p>
+<hr data-start="1626" data-end="1629">
+<h1 data-start="1631" data-end="1677">🔹 Characteristics of a Good Sampling Design</h1>
+<p data-start="1679" data-end="1707">A good sampling design must:</p>
+<hr data-start="1709" data-end="1712">
+<h3 data-start="1714" data-end="1740">✔ 1. Be Representative</h3>
+<p data-start="1742" data-end="1792">Sample must reflect characteristics of population.</p>
+<hr data-start="1794" data-end="1797">
+<h3 data-start="1799" data-end="1825">✔ 2. Be Free from Bias</h3>
+<p data-start="1827" data-end="1862">Selection must not favor any group.</p>
+<hr data-start="1864" data-end="1867">
+<h3 data-start="1869" data-end="1891">✔ 3. Be Economical</h3>
+<p data-start="1893" data-end="1922">Cost-effective and practical.</p>
+<hr data-start="1924" data-end="1927">
+<h3 data-start="1929" data-end="1949">✔ 4. Be Flexible</h3>
+<p data-start="1951" data-end="1984">Should adapt to field conditions.</p>
+<hr data-start="1986" data-end="1989">
+<h3 data-start="1991" data-end="2026">✔ 5. Be Statistically Efficient</h3>
+<p data-start="2028" data-end="2051">Minimum sampling error.</p>
+<hr data-start="2053" data-end="2056">
+<h1 data-start="2058" data-end="2106">🔹 Sampling Distribution (Basic Understanding)</h1>
+<p data-start="2108" data-end="2159">When we draw multiple samples from same population:</p>
+<p data-start="2161" data-end="2194">Each sample gives different mean.</p>
+<p data-start="2196" data-end="2245">The distribution of these sample means is called:</p>
+<p data-start="2247" data-end="2275">👉 <strong data-start="2250" data-end="2275">Sampling Distribution</strong></p>
+<hr data-start="2277" data-end="2280">
+<h2 data-start="2282" data-end="2298">🔹 Importance</h2>
+<p data-start="2300" data-end="2312">It helps in:</p>
+<ul data-start="2314" data-end="2388">
+<li data-start="2314" data-end="2328">
+<p data-start="2316" data-end="2328">Estimation</p>
+</li>
+<li data-start="2329" data-end="2351">
+<p data-start="2331" data-end="2351">Hypothesis testing</p>
+</li>
+<li data-start="2352" data-end="2388">
+<p data-start="2354" data-end="2388">Determining confidence intervals</p>
+</li>
+</ul>
+<hr data-start="2390" data-end="2393">
+<h2 data-start="2395" data-end="2435">🔹 Central Limit Theorem (Basic Idea)</h2>
+<p data-start="2437" data-end="2466">Central Limit Theorem states:</p>
+<blockquote data-start="2468" data-end="2621">
+<p data-start="2470" data-end="2621">When sample size is sufficiently large (n ≥ 30), the sampling distribution of mean becomes approximately normal, regardless of population distribution.</p>
+</blockquote>
+<p data-start="2623" data-end="2674">This is extremely important in business statistics.</p>
+<hr data-start="2676" data-end="2679">
+<h1 data-start="2681" data-end="2716">🔹 Practical Problems in Sampling</h1>
+<p data-start="2718" data-end="2761">Even well-designed samples may face issues:</p>
+<hr data-start="2763" data-end="2766">
+<h2 data-start="2768" data-end="2787">1️⃣ Non-Response</h2>
+<p data-start="2789" data-end="2816">Respondents may not answer.</p>
+<p data-start="2818" data-end="2827">Solution:</p>
+<ul data-start="2828" data-end="2866">
+<li data-start="2828" data-end="2841">
+<p data-start="2830" data-end="2841">Follow-up</p>
+</li>
+<li data-start="2842" data-end="2866">
+<p data-start="2844" data-end="2866">Replacement sampling</p>
+</li>
+</ul>
+<hr data-start="2868" data-end="2871">
+<h2 data-start="2873" data-end="2893">2️⃣ Sampling Bias</h2>
+<p data-start="2895" data-end="2936">Occurs when sample is not representative.</p>
+<p data-start="2938" data-end="2994">Example:<br>
+Online survey excludes people without internet.</p>
+<hr data-start="2996" data-end="2999">
+<h2 data-start="3001" data-end="3019">3️⃣ Frame Error</h2>
+<p data-start="3021" data-end="3059">Sampling frame incomplete or outdated.</p>
+<p data-start="3061" data-end="3100">Example:<br>
+Customer database not updated.</p>
+<hr data-start="3102" data-end="3105">
+<h2 data-start="3107" data-end="3131">4️⃣ Measurement Error</h2>
+<p data-start="3133" data-end="3164">Improper data collection tools.</p>
+<hr data-start="3166" data-end="3169">
+<h1 data-start="3171" data-end="3209">🔹 Complete Flow of Sampling Process</h1>
+<pre class="overflow-visible! px-0!" data-start="3211" data-end="3428"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">powershell</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Define Population
+        ↓
+Prepare Sampling Frame
+        ↓
+</span><span><span class="hljs-built_in">Select</span></span><span> Sampling Technique
+        ↓
+Determine Sample Size
+        ↓
+Draw Sample
+        ↓
+Collect </span><span><span class="hljs-keyword">Data</span></span><span>
+        ↓
+</span><span><span class="hljs-keyword">Process</span></span><span> </span><span><span class="hljs-keyword">Data</span></span><span> (Edit, Code, Tabulate)
+</span></span></code></div></div></pre>
+<hr data-start="3430" data-end="3433">
+<h1 data-start="3435" data-end="3484">🔹 Comprehensive Comparison of Sampling Methods</h1>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3486" data-end="3948" class="w-fit min-w-(--thread-content-width)"><thead data-start="3486" data-end="3529"><tr data-start="3486" data-end="3529"><th data-start="3486" data-end="3495" data-col-size="sm" class="">Method</th><th data-start="3495" data-end="3506" data-col-size="sm" class="">Accuracy</th><th data-start="3506" data-end="3513" data-col-size="sm" class="">Cost</th><th data-start="3513" data-end="3520" data-col-size="sm" class="">Bias</th><th data-start="3520" data-end="3529" data-col-size="sm" class="">Usage</th></tr></thead><tbody data-start="3574" data-end="3948"><tr data-start="3574" data-end="3642"><td data-start="3574" data-end="3590" data-col-size="sm">Simple Random</td><td data-start="3590" data-end="3597" data-col-size="sm">High</td><td data-start="3597" data-end="3608" data-col-size="sm">Moderate</td><td data-start="3608" data-end="3614" data-col-size="sm">Low</td><td data-start="3614" data-end="3642" data-col-size="sm">Small-medium populations</td></tr><tr data-start="3643" data-end="3719"><td data-start="3643" data-end="3656" data-col-size="sm">Stratified</td><td data-start="3656" data-end="3668" data-col-size="sm">Very High</td><td data-start="3668" data-end="3679" data-col-size="sm">Moderate</td><td data-start="3679" data-end="3690" data-col-size="sm">Very Low</td><td data-start="3690" data-end="3719" data-col-size="sm">Heterogeneous populations</td></tr><tr data-start="3720" data-end="3773"><td data-start="3720" data-end="3730" data-col-size="sm">Cluster</td><td data-start="3730" data-end="3741" data-col-size="sm">Moderate</td><td data-start="3741" data-end="3747" data-col-size="sm">Low</td><td data-start="3747" data-end="3758" data-col-size="sm">Moderate</td><td data-start="3758" data-end="3773" data-col-size="sm">Large areas</td></tr><tr data-start="3774" data-end="3835"><td data-start="3774" data-end="3788" data-col-size="sm">Convenience</td><td data-start="3788" data-end="3794" data-col-size="sm">Low</td><td data-start="3794" data-end="3805" data-col-size="sm">Very Low</td><td data-start="3805" data-end="3812" data-col-size="sm">High</td><td data-start="3812" data-end="3835" data-col-size="sm">Exploratory studies</td></tr><tr data-start="3836" data-end="3893"><td data-start="3836" data-end="3847" data-col-size="sm">Judgment</td><td data-start="3847" data-end="3858" data-col-size="sm">Moderate</td><td data-start="3858" data-end="3864" data-col-size="sm">Low</td><td data-start="3864" data-end="3875" data-col-size="sm">Moderate</td><td data-start="3875" data-end="3893" data-col-size="sm">Expert opinion</td></tr><tr data-start="3894" data-end="3948"><td data-start="3894" data-end="3902" data-col-size="sm">Quota</td><td data-start="3902" data-end="3913" data-col-size="sm">Moderate</td><td data-start="3913" data-end="3919" data-col-size="sm">Low</td><td data-start="3919" data-end="3930" data-col-size="sm">Moderate</td><td data-start="3930" data-end="3948" data-col-size="sm">Market surveys</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3950" data-end="3953">
+<h1 data-start="3955" data-end="3986">🔹 Business Case Illustration</h1>
+<p data-start="3988" data-end="4018">Suppose a bank wants to study:</p>
+<p data-start="4020" data-end="4063">“Customer satisfaction across Maharashtra.”</p>
+<p data-start="4065" data-end="4071">Steps:</p>
+<ol data-start="4073" data-end="4292">
+<li data-start="4073" data-end="4119">
+<p data-start="4076" data-end="4119">Population → All customers in Maharashtra</p>
+</li>
+<li data-start="4120" data-end="4165">
+<p data-start="4123" data-end="4165">Divide into districts (Cluster sampling)</p>
+</li>
+<li data-start="4166" data-end="4198">
+<p data-start="4169" data-end="4198">Select 5 districts randomly</p>
+</li>
+<li data-start="4199" data-end="4260">
+<p data-start="4202" data-end="4260">Within each district, stratify customers by account type</p>
+</li>
+<li data-start="4261" data-end="4292">
+<p data-start="4264" data-end="4292">Select proportional sample</p>
+</li>
+</ol>
+<p data-start="4294" data-end="4353">This combines:<br>
+✔ Cluster sampling<br data-start="4327" data-end="4330">
+✔ Stratified sampling</p>
+<p data-start="4355" data-end="4391">This is a <strong data-start="4365" data-end="4390">mixed sampling design</strong>.</p>
+<hr data-start="4393" data-end="4396">
+<h1 data-start="4398" data-end="4439">🔹 Common Examination-Oriented Concepts</h1>
+<h3 data-start="4441" data-end="4504">Difference Between Probability and Non-Probability Sampling</h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4506" data-end="4704" class="w-fit min-w-(--thread-content-width)"><thead data-start="4506" data-end="4539"><tr data-start="4506" data-end="4539"><th data-start="4506" data-end="4520" data-col-size="sm" class="">Probability</th><th data-start="4520" data-end="4539" data-col-size="sm" class="">Non-Probability</th></tr></thead><tbody data-start="4573" data-end="4704"><tr data-start="4573" data-end="4596"><td data-start="4573" data-end="4582" data-col-size="sm">Random</td><td data-start="4582" data-end="4596" data-col-size="sm">Non-random</td></tr><tr data-start="4597" data-end="4623"><td data-start="4597" data-end="4610" data-col-size="sm">Scientific</td><td data-start="4610" data-end="4623" data-col-size="sm">Practical</td></tr><tr data-start="4624" data-end="4678"><td data-start="4624" data-end="4657" data-col-size="sm">Statistical inference possible</td><td data-start="4657" data-end="4678" data-col-size="sm">Limited inference</td></tr><tr data-start="4679" data-end="4704"><td data-start="4679" data-end="4691" data-col-size="sm">Less bias</td><td data-start="4691" data-end="4704" data-col-size="sm">More bias</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4706" data-end="4709">
+<h1 data-start="4711" data-end="4733">🔹 Summary of Unit 3</h1>
+<p data-start="4735" data-end="4760">In this unit, we studied:</p>
+<p data-start="4762" data-end="5078">✔ Concept of sampling<br data-start="4783" data-end="4786">
+✔ Population vs sample<br data-start="4808" data-end="4811">
+✔ Census vs sample survey<br data-start="4836" data-end="4839">
+✔ Sampling design and steps<br data-start="4866" data-end="4869">
+✔ Probability sampling methods<br data-start="4899" data-end="4902">
+✔ Non-probability sampling methods<br data-start="4936" data-end="4939">
+✔ Mixed sampling<br data-start="4955" data-end="4958">
+✔ Sample size determination<br data-start="4985" data-end="4988">
+✔ Data processing (Editing, Coding, Tabulation)<br data-start="5035" data-end="5038">
+✔ Sampling errors and practical issues</p>
+<hr data-start="5080" data-end="5083">
+<h1 data-start="5085" data-end="5105">🎯 Unit 3 Complete</h1>
+<hr data-start="5107" data-end="5110">
+<h2 data-start="5112" data-end="5132">📘 Review Section</h2>
+<h3 data-start="5134" data-end="5145">🔹 MCQs</h3>
+<ol data-start="5147" data-end="5524">
+<li data-start="5147" data-end="5262">
+<p data-start="5150" data-end="5262">In probability sampling, the chance of selection is:<br data-start="5202" data-end="5205">
+a) Unknown<br data-start="5218" data-end="5221">
+b) Equal<br data-start="5232" data-end="5235">
+c) Zero<br data-start="5245" data-end="5248">
+d) Biased</p>
+</li>
+<li data-start="5264" data-end="5406">
+<p data-start="5267" data-end="5406">Which sampling method divides population into homogeneous groups?<br data-start="5332" data-end="5335">
+a) Cluster<br data-start="5348" data-end="5351">
+b) Stratified<br data-start="5367" data-end="5370">
+c) Convenience<br data-start="5387" data-end="5390">
+d) Judgment</p>
+</li>
+<li data-start="5408" data-end="5524">
+<p data-start="5411" data-end="5524">Central Limit Theorem applies when sample size is generally:<br data-start="5471" data-end="5474">
+a) &lt; 10<br data-start="5484" data-end="5487">
+b) &lt; 20<br data-start="5497" data-end="5500">
+c) ≥ 30<br data-start="5510" data-end="5513">
+d) ≥ 5</p>
+</li>
+</ol>
+<hr data-start="5526" data-end="5529">
+<h3 data-start="5531" data-end="5560">🔹 Short Answer Questions</h3>
+<ol data-start="5562" data-end="5694">
+<li data-start="5562" data-end="5589">
+<p data-start="5565" data-end="5589">Define sampling frame.</p>
+</li>
+<li data-start="5590" data-end="5618">
+<p data-start="5593" data-end="5618">What is sampling error?</p>
+</li>
+<li data-start="5619" data-end="5652">
+<p data-start="5622" data-end="5652">Explain systematic sampling.</p>
+</li>
+<li data-start="5653" data-end="5694">
+<p data-start="5656" data-end="5694">List characteristics of good sample.</p>
+</li>
+</ol>
+<hr data-start="5696" data-end="5699">
+<h3 data-start="5701" data-end="5729">🔹 Descriptive Questions</h3>
+<ol data-start="5731" data-end="5894">
+<li data-start="5731" data-end="5786">
+<p data-start="5734" data-end="5786">Explain different probability sampling techniques.</p>
+</li>
+<li data-start="5787" data-end="5841">
+<p data-start="5790" data-end="5841">Compare probability and non-probability sampling.</p>
+</li>
+<li data-start="5842" data-end="5894">
+<p data-start="5845" data-end="5894">Discuss sample size determination with formula.</p>
+</li>
+</ol>
+<hr data-start="5896" data-end="5899">
+<h2 data-start="5901" data-end="5916">🚀 Next Step</h2>
+<p data-start="5918" data-end="5968" data-is-last-node="" data-is-only-node="">Shall I begin <strong data-start="5932" data-end="5967">Unit 4 – Data Analysis (Part 1)</strong>?</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

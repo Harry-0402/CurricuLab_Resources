@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 5: Financial Decision Making and Cost of Capital</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 5: Financial Decision Making and Cost of Capital</h1>
+    
+    <h2>Introduction</h2>
+    <p>One of the most important responsibilities of a manager is making financial decisions that maximize the value of the organization. Businesses regularly invest in projects such as purchasing machinery, expanding production facilities, launching new products, or entering new markets. These decisions require careful evaluation because they involve large amounts of money and affect future profitability.</p>
+    <p>At the same time, businesses need funds to finance these investments. The cost incurred in obtaining funds from different sources is known as the Cost of Capital. Understanding investment evaluation techniques and cost of capital helps managers make sound financial decisions.</p>
+
+    <h1>Part A: Financial Decision Making</h1>
+
+    <h2>Topic 1: Nature and Features of Capital Budgeting Decisions</h2>
+    <h3>Explanation</h3>
+    <p>Capital Budgeting refers to the process of evaluating and selecting long-term investment projects.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Purchase of machinery</li>
+      <li>Construction of a factory</li>
+      <li>Launch of a new product line</li>
+      <li>Expansion into new markets</li>
+    </ul>
+
+    <h3>Features of Capital Budgeting Decisions</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Long-Term Impact</strong></td>
+          <td>Benefits extend over many years</td>
+        </tr>
+        <tr>
+          <td><strong>Large Investment</strong></td>
+          <td>Requires significant funds</td>
+        </tr>
+        <tr>
+          <td><strong>Irreversible Nature</strong></td>
+          <td>Difficult to reverse once implemented</td>
+        </tr>
+        <tr>
+          <td><strong>Future-Oriented</strong></td>
+          <td>Based on expected future cash flows</td>
+        </tr>
+        <tr>
+          <td><strong>Risk and Uncertainty</strong></td>
+          <td>Future outcomes may vary</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Maximizes shareholder wealth.</li>
+      <li>Ensures efficient use of resources.</li>
+      <li>Supports business growth.</li>
+      <li>Improves profitability.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Tesla invests billions in new manufacturing plants after evaluating long-term benefits.</p>
+    <p><strong>Example 2 (Practical):</strong> A restaurant owner decides whether to purchase a new automated kitchen system to increase efficiency.</p>
+
+    <h2>Topic 2: Types of Investment Decisions</h2>
+    <h3>Explanation</h3>
+    <p>Investment decisions can be classified into different categories.</p>
+
+    <h4>1. Expansion Decisions</h4>
+    <p>Investments made to increase production capacity.<br>
+    <strong>Example:</strong> Building a new factory.</p>
+
+    <h4>2. Replacement Decisions</h4>
+    <p>Replacing old equipment with new technology.<br>
+    <strong>Example:</strong> Replacing outdated machinery.</p>
+
+    <h4>3. Diversification Decisions</h4>
+    <p>Entering new product lines or markets.<br>
+    <strong>Example:</strong> A mobile phone company launching laptops.</p>
+
+    <h4>4. Modernization Decisions</h4>
+    <p>Upgrading existing facilities.<br>
+    <strong>Example:</strong> Installing advanced software systems.</p>
+
+    <p><strong>Example 1 (Business):</strong> Amazon continuously invests in new warehouses and logistics infrastructure for expansion.</p>
+    <p><strong>Example 2 (Practical):</strong> A printing shop replaces an old printer with a faster digital printer.</p>
+
+    <h2>Topic 3: Investment Evaluation Criteria</h2>
+    <h3>Explanation</h3>
+    <p>Investment projects are evaluated using specific techniques to determine their profitability and feasibility.</p>
+
+    <h3>Common Evaluation Techniques</h3>
+    <ul>
+      <li>Net Present Value (NPV)</li>
+      <li>Internal Rate of Return (IRR)</li>
+      <li>Profitability Index (PI)</li>
+      <li>Payback Period</li>
+      <li>Accounting Rate of Return (ARR)</li>
+    </ul>
+
+    <h3>Capital Budgeting Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Project Identification</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Estimate Cash Flows</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Evaluate Alternatives</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Select Project</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Implement Project</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Review Performance</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> A company compares multiple investment proposals before selecting the most profitable one.</p>
+    <p><strong>Example 2 (Practical):</strong> A retailer evaluates whether purchasing a delivery vehicle will generate sufficient returns.</p>
+
+    <h2>Topic 4: Net Present Value (NPV)</h2>
+    <h3>Explanation</h3>
+    <p>NPV is one of the most reliable capital budgeting techniques. It compares the present value of future cash inflows with the initial investment.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{NPV} = \text{Present Value of Cash Inflows} - \text{Initial Investment}$$</p>
+
+    <h3>Decision Rule</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>NPV</th>
+          <th>Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Positive</strong></td>
+          <td>Accept Project</td>
+        </tr>
+        <tr>
+          <td><strong>Zero</strong></td>
+          <td>Indifferent</td>
+        </tr>
+        <tr>
+          <td><strong>Negative</strong></td>
+          <td>Reject Project</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Considers time value of money.</li>
+      <li>Considers all cash flows.</li>
+      <li>Maximizes shareholder wealth.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Requires estimation of discount rate.</li>
+      <li>More complex than traditional methods.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company invests ₹10 lakh and expects discounted future cash inflows worth ₹13 lakh.<br>
+    $$\text{NPV} = \text{₹}13\text{ lakh} - \text{₹}10\text{ lakh} = \text{₹}3\text{ lakh}$$<br>
+    Project should be accepted.</p>
+    <p><strong>Example 2 (Practical):</strong> A shop owner invests in a vending machine after calculating a positive NPV.</p>
+
+    <h2>Topic 5: Internal Rate of Return (IRR)</h2>
+    <h3>Explanation</h3>
+    <p>IRR is the discount rate at which NPV becomes zero.</p>
+
+    <h3>Concept</h3>
+    <p>At IRR:</p>
+    <p>$$\text{NPV} = 0$$</p>
+
+    <h3>Decision Rule</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Condition</th>
+          <th>Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>IRR &gt; Cost of Capital</strong></td>
+          <td>Accept</td>
+        </tr>
+        <tr>
+          <td><strong>IRR &lt; Cost of Capital</strong></td>
+          <td>Reject</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Easy interpretation.</li>
+      <li>Considers time value of money.</li>
+      <li>Widely used in practice.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Complex calculations.</li>
+      <li>Multiple IRRs may occur in some projects.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company accepts a project with an IRR of 18% when its cost of capital is 12%.</p>
+    <p><strong>Example 2 (Practical):</strong> An entrepreneur invests in a franchise only if the expected return exceeds borrowing costs.</p>
+
+    <h2>Topic 6: Profitability Index (PI)</h2>
+    <h3>Explanation</h3>
+    <p>Profitability Index measures the value created per unit of investment.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{PI} = \frac{\text{Present Value of Cash Inflows}}{\text{Initial Investment}}$$</p>
+
+    <h3>Decision Rule</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>PI</th>
+          <th>Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Greater than 1</strong></td>
+          <td>Accept</td>
+        </tr>
+        <tr>
+          <td><strong>Equal to 1</strong></td>
+          <td>Indifferent</td>
+        </tr>
+        <tr>
+          <td><strong>Less than 1</strong></td>
+          <td>Reject</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Useful when capital is limited.</li>
+      <li>Considers time value of money.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A project requiring ₹5 lakh investment generates present value cash inflows of ₹6 lakh.<br>
+    $$\text{PI} = 6,00,000 \div 5,00,000 = 1.2$$<br>
+    Accept the project.</p>
+    <p><strong>Example 2 (Practical):</strong> A retailer compares multiple investment opportunities using PI.</p>
+
+    <h2>Topic 7: Payback Period</h2>
+    <h3>Explanation</h3>
+    <p>Payback Period measures the time required to recover the initial investment.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{Payback Period} = \frac{\text{Initial Investment}}{\text{Annual Cash Inflow}}$$</p>
+
+    <h3>Decision Rule</h3>
+    <p>Projects with shorter payback periods are generally preferred.</p>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Simple and easy.</li>
+      <li>Focuses on liquidity.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Ignores time value of money.</li>
+      <li>Ignores cash flows after payback.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Investment = ₹4,00,000<br>
+    Annual Cash Inflow = ₹1,00,000<br>
+    $$\text{Payback Period} = 4\text{ Years}$$</p>
+    <p><strong>Example 2 (Practical):</strong> A person purchases a solar system and calculates how many years are needed to recover the investment.</p>
+
+    <h2>Topic 8: Accounting Rate of Return (ARR)</h2>
+    <h3>Explanation</h3>
+    <p>ARR measures profitability based on accounting profits.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{ARR} = \frac{\text{Average Annual Profit}}{\text{Average Investment}} \times 100$$</p>
+
+    <h3>Decision Rule</h3>
+    <p>Higher ARR indicates a more attractive project.</p>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Simple calculation.</li>
+      <li>Uses accounting information.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Ignores time value of money.</li>
+      <li>Based on accounting profit rather than cash flow.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A project with average annual profit of ₹50,000 and average investment of ₹2,50,000:<br>
+    $$\text{ARR} = 20\%$$</p>
+    <p><strong>Example 2 (Practical):</strong> A business owner compares two projects using ARR before selecting one.</p>
+
+    <h2>Comparison of Capital Budgeting Techniques</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Time Value of Money</th>
+          <th>Ease of Use</th>
+          <th>Decision Basis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>NPV</strong></td>
+          <td>Yes</td>
+          <td>Moderate</td>
+          <td>Wealth Maximization</td>
+        </tr>
+        <tr>
+          <td><strong>IRR</strong></td>
+          <td>Yes</td>
+          <td>Moderate</td>
+          <td>Return Percentage</td>
+        </tr>
+        <tr>
+          <td><strong>PI</strong></td>
+          <td>Yes</td>
+          <td>Moderate</td>
+          <td>Value per Investment</td>
+        </tr>
+        <tr>
+          <td><strong>Payback</strong></td>
+          <td>No</td>
+          <td>Easy</td>
+          <td>Recovery Period</td>
+        </tr>
+        <tr>
+          <td><strong>ARR</strong></td>
+          <td>No</td>
+          <td>Easy</td>
+          <td>Accounting Profit</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h1>Part B: Cost of Capital</h1>
+
+    <h2>Topic 9: Concept and Importance of Cost of Capital</h2>
+    <h3>Explanation</h3>
+    <p>Cost of Capital is the minimum rate of return that a company must earn on its investments to satisfy investors and creditors.</p>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Capital budgeting decisions</li>
+      <li>Financing decisions</li>
+      <li>Business valuation</li>
+      <li>Performance evaluation</li>
+    </ul>
+
+    <h3>Sources of Capital</h3>
+    <ul>
+      <li>Debt</li>
+      <li>Preference Shares</li>
+      <li>Equity Shares</li>
+      <li>Retained Earnings</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company compares the cost of borrowing with expected project returns before investing.</p>
+    <p><strong>Example 2 (Practical):</strong> An entrepreneur evaluates whether expected profits justify the interest payable on a business loan.</p>
+
+    <h2>Topic 10: Cost of Debt</h2>
+    <h3>Explanation</h3>
+    <p>Cost of Debt refers to the effective cost of borrowed funds.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{Cost of Debt} = \frac{\text{Annual Interest}}{\text{Net Proceeds}} \times 100$$</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li>Usually the cheapest source of finance.</li>
+      <li>Interest is tax deductible.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company borrows ₹10 lakh at 10% interest. Annual interest = ₹1 lakh.<br>
+    $$\text{Cost of Debt} = 10\%$$</p>
+    <p><strong>Example 2 (Practical):</strong> A shop owner takes a bank loan and calculates its borrowing cost.</p>
+
+    <h2>Topic 11: Cost of Preference Capital</h2>
+    <h3>Explanation</h3>
+    <p>Preference shareholders receive fixed dividends.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{Cost of Preference Capital} = \frac{\text{Annual Preference Dividend}}{\text{Net Proceeds}} \times 100$$</p>
+
+    <p><strong>Example 1 (Business):</strong> A company issues preference shares paying fixed annual dividends.</p>
+    <p><strong>Example 2 (Practical):</strong> An investor purchases preference shares expecting regular income.</p>
+
+    <h2>Topic 12: Cost of Equity Capital</h2>
+    <h3>Explanation</h3>
+    <p>Cost of Equity represents the return expected by equity shareholders.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{Cost of Equity} = \frac{\text{Dividend}}{\text{Market Price}} + \text{Growth Rate}$$</p>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Most important component of overall cost of capital.</li>
+      <li>Reflects shareholder expectations.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company evaluates expected shareholder returns before issuing new shares.</p>
+    <p><strong>Example 2 (Practical):</strong> An investor expects dividend income plus future growth in share value.</p>
+
+    <h2>Topic 13: Cost of Retained Earnings</h2>
+    <h3>Explanation</h3>
+    <p>Retained earnings represent profits reinvested in the business instead of being distributed as dividends.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li>Internal source of finance.</li>
+      <li>Has an opportunity cost.</li>
+      <li>Shareholders expect returns from retained profits.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Microsoft retains part of its profits to finance future growth.</p>
+    <p><strong>Example 2 (Practical):</strong> A business owner reinvests annual profits instead of withdrawing them.</p>
+
+    <h2>Topic 14: Weighted Average Cost of Capital (WACC)</h2>
+    <h3>Explanation</h3>
+    <p>WACC represents the average cost of all sources of finance used by a company.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{WACC} = \sum (\text{Weight of Capital} \times \text{Cost of Capital})$$</p>
+
+    <h3>Importance</h3>
+    <ul>
+      <li>Used as a discount rate in NPV calculations.</li>
+      <li>Measures overall financing cost.</li>
+      <li>Supports investment decisions.</li>
+    </ul>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Considers all funding sources.</li>
+      <li>Provides a comprehensive cost measure.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company calculates WACC before evaluating a large investment project.</p>
+    <p><strong>Example 2 (Practical):</strong> An entrepreneur compares project returns with overall financing costs.</p>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Capital budgeting helps evaluate long-term investments.</li>
+      <li>NPV, IRR, PI, Payback Period, and ARR are major investment evaluation techniques.</li>
+      <li>NPV and IRR consider the time value of money.</li>
+      <li>Payback Period focuses on recovery of investment.</li>
+      <li>Cost of Capital is the minimum required return.</li>
+      <li>Major sources of capital include debt, preference shares, equity, and retained earnings.</li>
+      <li>WACC represents the overall cost of financing.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Capital Budgeting</strong></td>
+          <td>Evaluation of long-term investment projects</td>
+        </tr>
+        <tr>
+          <td><strong>NPV</strong></td>
+          <td>Difference between present value of inflows and investment</td>
+        </tr>
+        <tr>
+          <td><strong>IRR</strong></td>
+          <td>Discount rate at which NPV becomes zero</td>
+        </tr>
+        <tr>
+          <td><strong>PI</strong></td>
+          <td>Ratio of present value inflows to investment</td>
+        </tr>
+        <tr>
+          <td><strong>Payback Period</strong></td>
+          <td>Time required to recover investment</td>
+        </tr>
+        <tr>
+          <td><strong>ARR</strong></td>
+          <td>Return based on accounting profit</td>
+        </tr>
+        <tr>
+          <td><strong>Cost of Capital</strong></td>
+          <td>Minimum required return on investment</td>
+        </tr>
+        <tr>
+          <td><strong>WACC</strong></td>
+          <td>Weighted average cost of all financing sources</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Formulae</h2>
+    
+    <p><strong>NPV</strong></p>
+    <p>$$\text{NPV} = \text{Present Value of Cash Inflows} - \text{Initial Investment}$$</p>
+
+    <p><strong>PI</strong></p>
+    <p>$$\text{PI} = \frac{\text{Present Value of Cash Inflows}}{\text{Initial Investment}}$$</p>
+
+    <p><strong>Payback Period</strong></p>
+    <p>$$\text{Payback Period} = \frac{\text{Initial Investment}}{\text{Annual Cash Inflow}}$$</p>
+
+    <p><strong>ARR</strong></p>
+    <p>$$\text{ARR} = \frac{\text{Average Annual Profit}}{\text{Average Investment}} \times 100$$</p>
+
+    <p><strong>Cost of Debt</strong></p>
+    <p>$$\text{Cost of Debt} = \frac{\text{Annual Interest}}{\text{Net Proceeds}} \times 100$$</p>
+
+    <p><strong>Cost of Preference Capital</strong></p>
+    <p>$$\text{Cost of Preference Capital} = \frac{\text{Annual Preference Dividend}}{\text{Net Proceeds}} \times 100$$</p>
+
+    <p><strong>Cost of Equity</strong></p>
+    <p>$$\text{Cost of Equity} = \frac{\text{Dividend}}{\text{Market Price}} + \text{Growth Rate}$$</p>
+
+    <p><strong>WACC</strong></p>
+    <p>$$\text{WACC} = \sum (\text{Weight of Capital} \times \text{Cost of Capital})$$</p>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Capital Budgeting?</li>
+      <li>Define NPV.</li>
+      <li>What is IRR?</li>
+      <li>Explain Profitability Index.</li>
+      <li>Define Payback Period.</li>
+      <li>What is ARR?</li>
+      <li>What is Cost of Capital?</li>
+      <li>Define Cost of Debt.</li>
+      <li>What is Cost of Equity?</li>
+      <li>Explain WACC.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the nature and importance of capital budgeting decisions.</li>
+      <li>Discuss different types of investment decisions.</li>
+      <li>Explain NPV, IRR, PI, Payback Period, and ARR.</li>
+      <li>Compare different capital budgeting techniques.</li>
+      <li>Explain the concept and importance of Cost of Capital.</li>
+      <li>Discuss computation of Cost of Debt, Preference Capital, Equity Capital, and Retained Earnings.</li>
+      <li>Explain WACC and its significance in financial decision-making.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A project requires an investment of ₹5,00,000 and generates discounted cash inflows of ₹6,50,000. Calculate NPV and comment on project acceptance.</li>
+      <li>A company borrows ₹20 lakh at 12% annual interest. Calculate the Cost of Debt and explain its significance.</li>
+      <li>A firm is evaluating two projects: one with a higher NPV and another with a shorter Payback Period. As a financial manager, which project would you recommend and why?</li>
+    </ol>
+  </div>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBA206 Unit-2 Case Study - Business Law</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content h1 {
+      font-size: 2em;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .message-content h2 {
+      font-size: 1.5em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    .message-content h3 {
+      font-size: 1.25em;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .message-content ul, .message-content ol {
+      margin: 10px 0;
+      padding-left: 30px;
+    }
+    .message-content li {
+      margin: 5px 0;
+    }
+    .message-content p {
+      margin: 10px 0;
+    }
+    .message-content strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    body.dark-mode .message-content strong {
+      color: #f9fafb;
+    }
+    .message-content hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    body.dark-mode .message-content hr {
+      border-top-color: #404040;
+    }
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>PBA206 Unit-2 Case Study</h1>
+    <div class="metadata">Business Law - Sale of Goods & Partnership</div>
+  </div>
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant">Case Study Set</div>
+      <div class="message-content">
+        <h1>UNIT 2 – CASE STUDY SET</h1>
+
+<hr>
+
+<h2>CASE STUDY 1</h2>
+
+<h3>Sale of Goods: Conditions, Warranties & Caveat Emptor</h3>
+
+<h4>Background</h4>
+
+<p>Metro Electronics purchased 500 smart televisions from VisionTech Ltd. for resale during a festive season. The seller assured that the TVs were "latest models suitable for commercial resale." After delivery, it was found that:</p>
+
+<ul>
+<li>Many units overheated after prolonged use</li>
+<li>The model supplied was already discontinued</li>
+<li>The defect was not visible at the time of purchase</li>
+</ul>
+
+<p>Metro Electronics claimed replacement and compensation. VisionTech argued that the buyer should have inspected the goods before purchase and relied on the doctrine of caveat emptor.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Distinguish between conditions and warranties under the Sale of Goods Act.</li>
+<li>Identify whether the seller breached a condition or a warranty in this case.</li>
+<li>Explain the doctrine of caveat emptor.</li>
+<li>What are the exceptions to caveat emptor applicable here?</li>
+<li>What remedies are available to Metro Electronics?</li>
+</ol>
+
+<hr>
+
+<h2>CASE STUDY 2</h2>
+
+<h3>Transfer of Ownership & Performance of Contract of Sale</h3>
+
+<h4>Background</h4>
+
+<p>Silverline Traders agreed to sell 1,000 bags of rice to FreshMart Ltd. The goods were identified but not weighed at the time of contract. Before delivery, a fire destroyed the warehouse where the rice was stored.</p>
+
+<p>In another transaction, FreshMart delayed payment despite timely delivery of goods, while Silverline refused further deliveries under the contract.</p>
+
+<p>Both parties dispute liability and risk.</p>
+
+<h4>Questions</h4>
+
+<ol>
+<li>When does ownership in goods pass from seller to buyer?</li>
+<li>Who bears the risk of loss when ownership has not passed?</li>
+<li>Explain the relationship between risk and ownership.</li>
+<li>What are the duties of buyer and seller regarding performance of the contract?</li>
+<li>Can Silverline legally refuse further delivery? Give reasons.</li>
+</ol>
+
+<hr>
+
+<h2>CASE STUDY 3</h2>
+
+<h3>Partnership: Formation, Rights, Liabilities & Dissolution</h3>
+
+<h4>Background</h4>
+
+<p>Amit, Bhavesh, and Chirag started a logistics business under the name ABC Logistics based on an oral agreement. Profits were to be shared equally. No partnership deed was executed.</p>
+
+<p>Later:</p>
+
+<ul>
+<li>Bhavesh entered into a large contract without consulting others</li>
+<li>Amit claimed extra salary for managing operations</li>
+<li>The firm suffered losses due to Bhavesh's negligence</li>
+<li>Chirag issued a public notice and retired from the firm</li>
+<li>Creditors demanded payment from all partners.</li>
+</ul>
+
+<h4>Questions</h4>
+
+<ol>
+<li>Explain the essential elements of a partnership.</li>
+<li>Is a written partnership deed compulsory? Explain.</li>
+<li>Discuss the implied authority of a partner.</li>
+<li>What are the rights of partners regarding remuneration and management?</li>
+<li>Explain the liability of partners for acts of other partners.</li>
+<li>What is the effect of retirement of a partner on firm liability?</li>
+<li>Under what circumstances can a partnership firm be dissolved?</li>
+</ol>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeIcon = document.querySelector('.theme-icon');
+      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Load saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-icon').textContent = '☀️';
+    }
+  </script>
+</body>
+</html>

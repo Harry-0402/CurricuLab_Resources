@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1: Introduction to Accounting and Transaction Processing</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 1: Introduction to Accounting and Transaction Processing</h1>
+    
+    <h2>Introduction</h2>
+    <p>Accounting is often called the language of business because it records, summarizes, and communicates financial information about an organization. Every business, whether small or large, needs accounting to monitor its financial position, evaluate performance, and make informed decisions.</p>
+    <p>This unit introduces the basic concepts, principles, and procedures of accounting. It explains how business transactions are recorded through journals and ledgers using the double-entry system and highlights the role of accounting standards in ensuring uniformity and transparency in financial reporting.</p>
+
+    <h2>Topic 1: Accounting Concepts, Conventions, and Principles</h2>
+    <h3>Explanation</h3>
+    <p>Accounting concepts, conventions, and principles provide the foundation for recording and reporting financial transactions. They ensure consistency, reliability, and comparability of financial statements.</p>
+
+    <h3>Accounting Concepts</h3>
+    
+    <h4>1. Business Entity Concept</h4>
+    <p>The business is treated as a separate entity from its owner.</p>
+    <p><strong>Example:</strong> If the owner invests ₹1,00,000 in the business, it is recorded as capital and not as business income.</p>
+    
+    <h4>2. Going Concern Concept</h4>
+    <p>A business is assumed to continue operating for the foreseeable future.</p>
+    <p><strong>Example:</strong> Machinery is valued at cost less depreciation because the business is expected to continue using it.</p>
+    
+    <h4>3. Money Measurement Concept</h4>
+    <p>Only transactions measurable in monetary terms are recorded.</p>
+    <p><strong>Example:</strong> Employee loyalty is important but cannot be recorded because it cannot be measured in money.</p>
+    
+    <h4>4. Accounting Period Concept</h4>
+    <p>Business activities are divided into specific periods for reporting purposes.</p>
+    <p><strong>Example:</strong> Companies prepare annual financial statements for each financial year.</p>
+    
+    <h4>5. Cost Concept</h4>
+    <p>Assets are recorded at their original purchase cost.</p>
+    <p><strong>Example:</strong> Land purchased for ₹5,00,000 is recorded at that amount even if its market value increases.</p>
+
+    <h3>Accounting Conventions</h3>
+    
+    <h4>Convention of Conservatism</h4>
+    <p>Anticipate losses but not profits.</p>
+
+    <h4>Convention of Consistency</h4>
+    <p>Use the same accounting methods year after year.</p>
+
+    <h4>Convention of Full Disclosure</h4>
+    <p>Provide all significant information in financial statements.</p>
+
+    <h4>Convention of Materiality</h4>
+    <p>Record and disclose information that significantly affects decisions.</p>
+
+    <h3>Accounting Principles</h3>
+    
+    <h4>Revenue Recognition Principle</h4>
+    <p>Revenue is recognized when earned.</p>
+
+    <h4>Matching Principle</h4>
+    <p>Expenses are matched with the revenues they help generate.</p>
+
+    <h4>Objectivity Principle</h4>
+    <p>Transactions should be supported by evidence.</p>
+
+    <p><strong>Example 1 (Business):</strong> Tata Motors records vehicle sales revenue when vehicles are delivered to customers, following the revenue recognition principle.</p>
+    <p><strong>Example 2 (Practical):</strong> A grocery shop records electricity expenses for the month in which sales were made, following the matching principle.</p>
+
+    <h2>Topic 2: Accounting Equation</h2>
+    <h3>Explanation</h3>
+    <p>The accounting equation is the foundation of the accounting system.</p>
+
+    <h3>Formula</h3>
+    <p>$$\text{Assets} = \text{Liabilities} + \text{Capital}$$</p>
+    <p>The equation shows that all resources owned by a business are financed either through liabilities or owner's capital.</p>
+
+    <h3>Components</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Assets</strong></td>
+          <td>Resources owned by business</td>
+        </tr>
+        <tr>
+          <td><strong>Liabilities</strong></td>
+          <td>Amounts owed to outsiders</td>
+        </tr>
+        <tr>
+          <td><strong>Capital</strong></td>
+          <td>Owner's claim on assets</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Illustration</h3>
+    <p>Owner starts business with ₹1,00,000.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Assets</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cash</td>
+          <td>₹1,00,000</td>
+        </tr>
+        <tr>
+          <td><strong>Liabilities</strong></td>
+          <td>₹0</td>
+        </tr>
+        <tr>
+          <td><strong>Capital</strong></td>
+          <td>₹1,00,000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Equation:</strong></p>
+    <p>$$\text{Assets} = \text{Liabilities} + \text{Capital}$$</p>
+    <p>$$\text{₹}1,00,000 = \text{₹}0 + \text{₹}1,00,000$$</p>
+
+    <h3>Effects of Transactions</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Transaction</th>
+          <th>Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Owner invests cash</td>
+          <td>Assets &uarr; Capital &uarr;</td>
+        </tr>
+        <tr>
+          <td>Purchase on credit</td>
+          <td>Assets &uarr; Liabilities &uarr;</td>
+        </tr>
+        <tr>
+          <td>Repayment of loan</td>
+          <td>Assets &darr; Liabilities &darr;</td>
+        </tr>
+        <tr>
+          <td>Profit earned</td>
+          <td>Capital &uarr;</td>
+        </tr>
+        <tr>
+          <td>Loss incurred</td>
+          <td>Capital &darr;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Infosys purchases computers worth ₹10 lakh through a bank loan. Assets and liabilities both increase by ₹10 lakh.</p>
+    <p><strong>Example 2 (Practical):</strong> A person starts a tuition center with ₹50,000 cash. Cash increases and owner's capital also increases by ₹50,000.</p>
+
+    <h2>Topic 3: International Accounting Principles and Standards</h2>
+    <h3>Explanation</h3>
+    <p>Accounting standards are guidelines that ensure financial statements are prepared uniformly and transparently.</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Improve comparability</li>
+      <li>Increase reliability</li>
+      <li>Enhance transparency</li>
+      <li>Facilitate international business</li>
+    </ul>
+
+    <h3>Major International Standards</h3>
+    <h4>IFRS (International Financial Reporting Standards)</h4>
+    <p>Issued by the: <strong>International Accounting Standards Board</strong></p>
+    <p>These standards are accepted in many countries worldwide.</p>
+
+    <h4>Benefits of IFRS</h4>
+    <ul>
+      <li>Global comparability</li>
+      <li>Better investor confidence</li>
+      <li>Easier international financing</li>
+      <li>Improved transparency</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Unilever uses globally accepted accounting standards to present financial reports across different countries.</p>
+    <p><strong>Example 2 (Practical):</strong> An investor comparing companies from different countries can understand financial statements more easily when common standards are followed.</p>
+
+    <h2>Topic 4: Matching of Indian Accounting Standards with International Accounting Standards</h2>
+    <h3>Explanation</h3>
+    <p>India has adopted accounting standards known as Ind AS (Indian Accounting Standards), which are largely aligned with IFRS.</p>
+
+    <h3>Purpose</h3>
+    <ul>
+      <li>Reduce differences between Indian and global reporting.</li>
+      <li>Improve credibility of Indian companies.</li>
+      <li>Facilitate foreign investment.</li>
+    </ul>
+
+    <h3>Key Benefits</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Global Comparability</strong></td>
+          <td>Easier comparison with foreign companies</td>
+        </tr>
+        <tr>
+          <td><strong>Better Transparency</strong></td>
+          <td>Improves quality of reporting</td>
+        </tr>
+        <tr>
+          <td><strong>Investor Confidence</strong></td>
+          <td>Attracts domestic and foreign investors</td>
+        </tr>
+        <tr>
+          <td><strong>International Recognition</strong></td>
+          <td>Supports global expansion</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Ind AS vs IFRS</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>Ind AS</th>
+          <th>IFRS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Applicability</strong></td>
+          <td>India</td>
+          <td>International</td>
+        </tr>
+        <tr>
+          <td><strong>Issued By</strong></td>
+          <td>Ministry of Corporate Affairs (India)</td>
+          <td>IASB</td>
+        </tr>
+        <tr>
+          <td><strong>Objective</strong></td>
+          <td>Indian compliance with global standards</td>
+          <td>Global reporting framework</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Reliance Industries prepares financial statements under Ind AS, making them comparable with international firms.</p>
+    <p><strong>Example 2 (Practical):</strong> A foreign investor evaluating an Indian company can better understand its financial statements due to Ind AS alignment with IFRS.</p>
+
+    <h2>Topic 5: Double Entry System of Accounting</h2>
+    <h3>Explanation</h3>
+    <p>The double-entry system is the most widely used accounting system.</p>
+
+    <h3>Principle</h3>
+    <ul>
+      <li>Every transaction affects at least two accounts.</li>
+      <li>For every debit, there must be an equal credit.</li>
+    </ul>
+
+    <h3>Fundamental Rule</h3>
+    <p>$$\text{Total Debits} = \text{Total Credits}$$</p>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Accurate recording</li>
+      <li>Error detection</li>
+      <li>Complete transaction records</li>
+      <li>Support for the preparation of financial statements</li>
+    </ul>
+
+    <h3>Golden Rules</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Account Type</th>
+          <th>Debit</th>
+          <th>Credit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Personal Account</strong></td>
+          <td>Receiver</td>
+          <td>Giver</td>
+        </tr>
+        <tr>
+          <td><strong>Real Account</strong></td>
+          <td>What comes in</td>
+          <td>What goes out</td>
+        </tr>
+        <tr>
+          <td><strong>Nominal Account</strong></td>
+          <td>Expenses &amp; Losses</td>
+          <td>Income &amp; Gains</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A company purchases machinery worth ₹50,000 in cash.</p>
+    <pre><code>Machinery Account Dr  ₹50,000
+    Cash Account Cr      ₹50,000</code></pre>
+
+    <p><strong>Example 2 (Practical):</strong> A shopkeeper receives ₹10,000 from a customer.</p>
+    <pre><code>Cash Account Dr      ₹10,000
+    Customer Account Cr  ₹10,000</code></pre>
+
+    <h2>Topic 6: Journal</h2>
+    <h3>Explanation</h3>
+    <p>A journal is the book of original entry where transactions are recorded chronologically.</p>
+
+    <h3>Format of Journal</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Particulars</th>
+          <th>Debit (₹)</th>
+          <th>Credit (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>XX</td>
+          <td>Account Dr.</td>
+          <td>xxx</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;To Account</td>
+          <td></td>
+          <td>xxx</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Steps in Journalizing</h3>
+    <pre>Transaction Occurs
+       &darr;
+Identify Accounts
+       &darr;
+Apply Accounting Rules
+       &darr;
+Determine Debit &amp; Credit
+       &darr;
+Record Journal Entry</pre>
+
+    <h3>Example</h3>
+    <p>Started business with cash ₹1,00,000.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Particulars</th>
+          <th>Debit (₹)</th>
+          <th>Credit (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cash A/c Dr.</td>
+          <td>1,00,000</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;To Capital A/c</td>
+          <td></td>
+          <td>1,00,000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A manufacturing company records all daily transactions first in the journal before posting them to ledger accounts.</p>
+    <p><strong>Example 2 (Practical):</strong> A small retailer records daily cash sales in the journal book.</p>
+
+    <h2>Topic 7: Ledger Posting of Transactions</h2>
+    <h3>Explanation</h3>
+    <p>A ledger is the principal book of accounts where journal entries are classified and grouped account-wise.</p>
+
+    <h3>Purpose</h3>
+    <ul>
+      <li>Determine account balances.</li>
+      <li>Facilitate trial balance preparation.</li>
+      <li>Support financial statement preparation.</li>
+    </ul>
+
+    <h3>Posting Process</h3>
+    <pre>Transaction
+     &darr;
+Journal Entry
+     &darr;
+Ledger Posting
+     &darr;
+Account Balancing
+     &darr;
+Trial Balance</pre>
+
+    <h3>Sample Ledger</h3>
+    <h4>Cash Account</h4>
+    <table>
+      <thead>
+        <tr>
+          <th colspan="2" style="text-align: center; border-right: 2px solid #e5e7eb;">Dr (Debit)</th>
+          <th colspan="2" style="text-align: center;">Cr (Credit)</th>
+        </tr>
+        <tr>
+          <th>Particulars</th>
+          <th style="border-right: 2px solid #e5e7eb;">Amount (₹)</th>
+          <th>Particulars</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>To Capital A/c</td>
+          <td style="border-right: 2px solid #e5e7eb;">1,00,000</td>
+          <td>By Purchases A/c</td>
+          <td>20,000</td>
+        </tr>
+        <tr>
+          <td style="border-right: 2px solid #e5e7eb;"></td>
+          <td style="border-right: 2px solid #e5e7eb;"></td>
+          <td>By Balance c/d</td>
+          <td>80,000</td>
+        </tr>
+        <tr style="font-weight: bold; border-top: 2px solid #e5e7eb;">
+          <td>Total</td>
+          <td style="border-right: 2px solid #e5e7eb;">1,00,000</td>
+          <td>Total</td>
+          <td>1,00,000</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Balance = ₹80,000</strong></p>
+
+    <h3>Advantages of Ledger</h3>
+    <ul>
+      <li>Organized records</li>
+      <li>Easy balance determination</li>
+      <li>Supports financial reporting</li>
+      <li>Assists in error detection</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company posts all sales transactions from the journal into the Sales Ledger to monitor customer balances.</p>
+    <p><strong>Example 2 (Practical):</strong> A tuition center posts fee receipts into the Cash Ledger to determine monthly collections.</p>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Accounting provides a systematic method of recording financial transactions.</li>
+      <li>Accounting concepts and principles ensure consistency and reliability.</li>
+      <li>The accounting equation forms the basis of accounting records.</li>
+      <li>Ind AS and IFRS improve comparability of financial statements.</li>
+      <li>The double-entry system records every transaction with equal debit and credit effects.</li>
+      <li>Journal is the book of original entry.</li>
+      <li>Ledger is the principal book used to classify transactions account-wise.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Accounting</strong></td>
+          <td>Process of recording, classifying, summarizing, and interpreting financial transactions</td>
+        </tr>
+        <tr>
+          <td><strong>Accounting Equation</strong></td>
+          <td>Assets = Liabilities + Capital</td>
+        </tr>
+        <tr>
+          <td><strong>Asset</strong></td>
+          <td>Resource owned by business</td>
+        </tr>
+        <tr>
+          <td><strong>Liability</strong></td>
+          <td>Obligation payable to outsiders</td>
+        </tr>
+        <tr>
+          <td><strong>Capital</strong></td>
+          <td>Owner's investment in business</td>
+        </tr>
+        <tr>
+          <td><strong>Journal</strong></td>
+          <td>Book of original entry</td>
+        </tr>
+        <tr>
+          <td><strong>Ledger</strong></td>
+          <td>Principal book containing classified accounts</td>
+        </tr>
+        <tr>
+          <td><strong>IFRS</strong></td>
+          <td>International Financial Reporting Standards</td>
+        </tr>
+        <tr>
+          <td><strong>Ind AS</strong></td>
+          <td>Indian Accounting Standards</td>
+        </tr>
+        <tr>
+          <td><strong>Double Entry System</strong></td>
+          <td>Every transaction has equal debit and credit effects</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Formulae</h2>
+    <p>$$\text{Assets} = \text{Liabilities} + \text{Capital}$$</p>
+    <p>$$\text{Total Debits} = \text{Total Credits}$$</p>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is accounting?</li>
+      <li>Explain the business entity concept.</li>
+      <li>State the accounting equation.</li>
+      <li>What is a journal?</li>
+      <li>What is a ledger?</li>
+      <li>Define IFRS.</li>
+      <li>What is the double-entry system?</li>
+      <li>Explain the matching principle.</li>
+      <li>What is the money measurement concept?</li>
+      <li>State any two accounting conventions.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain accounting concepts and conventions in detail.</li>
+      <li>Discuss the accounting equation with suitable examples.</li>
+      <li>Explain the importance of accounting standards.</li>
+      <li>Compare Ind AS and IFRS.</li>
+      <li>Describe the double-entry system and its advantages.</li>
+      <li>Explain the process of journalizing transactions.</li>
+      <li>Discuss ledger posting and its importance.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A new entrepreneur starts a business with ₹5,00,000 and purchases furniture worth ₹50,000. Explain the impact on the accounting equation.</li>
+      <li>A retail store records all sales transactions in a journal and later posts them to ledger accounts. Explain the process and benefits.</li>
+      <li>An Indian company seeks foreign investment and adopts Ind AS. Explain how alignment with IFRS benefits the company.</li>
+    </ol>
+  </div>
+</body>
+</html>

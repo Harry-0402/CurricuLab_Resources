@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 3: Financial Statement Analysis</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 3: Financial Statement Analysis</h1>
+    
+    <h2>Introduction</h2>
+    <p>Financial Statements provide valuable information about a company's financial performance and position. However, merely preparing financial statements is not enough. Managers, investors, creditors, and other stakeholders need to analyze and interpret the information contained in these statements to make effective decisions.</p>
+    <p>Financial Statement Analysis involves evaluating a company's financial data using various techniques such as ratio analysis, trend analysis, and inter-firm comparison. It helps assess profitability, liquidity, efficiency, and solvency of a business.</p>
+
+    <h2>Topic 1: Introduction to Financial Statement Analysis</h2>
+    <h3>Explanation</h3>
+    <p>Financial Statement Analysis is the process of examining financial statements to evaluate a company's financial performance and financial health.</p>
+    <p>It helps answer questions such as:</p>
+    <ul>
+      <li>Is the company profitable?</li>
+      <li>Can the company pay its debts?</li>
+      <li>Is the company using its resources efficiently?</li>
+      <li>Is the company's financial position improving?</li>
+    </ul>
+
+    <h3>Objectives of Financial Statement Analysis</h3>
+    <ul>
+      <li>Evaluate profitability.</li>
+      <li>Measure liquidity and solvency.</li>
+      <li>Assess operational efficiency.</li>
+      <li>Support investment decisions.</li>
+      <li>Facilitate financial planning.</li>
+    </ul>
+
+    <h3>Sources of Financial Analysis</h3>
+    <ul>
+      <li>Balance Sheet</li>
+      <li>Profit &amp; Loss Account</li>
+      <li>Cash Flow Statement</li>
+      <li>Annual Reports</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Infosys analyzes its financial statements regularly to evaluate profitability and operational performance.</p>
+    <p><strong>Example 2 (Practical):</strong> Before lending money, a bank studies the borrower's financial statements to assess repayment capacity.</p>
+
+    <h2>Topic 2: Users of Financial Analysis</h2>
+    <h3>Explanation</h3>
+    <p>Different stakeholders use financial analysis for different purposes.</p>
+
+    <h3>Major Users</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Investors</strong></td>
+          <td>Evaluate profitability and growth</td>
+        </tr>
+        <tr>
+          <td><strong>Creditors</strong></td>
+          <td>Assess repayment ability</td>
+        </tr>
+        <tr>
+          <td><strong>Management</strong></td>
+          <td>Strategic decision-making</td>
+        </tr>
+        <tr>
+          <td><strong>Employees</strong></td>
+          <td>Job security assessment</td>
+        </tr>
+        <tr>
+          <td><strong>Government</strong></td>
+          <td>Tax and regulatory compliance</td>
+        </tr>
+        <tr>
+          <td><strong>Customers</strong></td>
+          <td>Business stability evaluation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Importance for Various Users</h3>
+    
+    <h4>Investors</h4>
+    <p>Interested in:</p>
+    <ul>
+      <li>Profitability</li>
+      <li>Dividend potential</li>
+      <li>Future growth</li>
+    </ul>
+
+    <h4>Creditors</h4>
+    <p>Interested in:</p>
+    <ul>
+      <li>Liquidity</li>
+      <li>Solvency</li>
+      <li>Debt repayment ability</li>
+    </ul>
+
+    <h4>Management</h4>
+    <p>Interested in:</p>
+    <ul>
+      <li>Operational efficiency</li>
+      <li>Cost control</li>
+      <li>Strategic planning</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Investors analyze Tata Consultancy Services before purchasing shares.</p>
+    <p><strong>Example 2 (Practical):</strong> A supplier checks a retailer's financial condition before offering goods on credit.</p>
+
+    <h2>Topic 3: Nature of Ratio Analysis</h2>
+    <h3>Explanation</h3>
+    <p>Ratio Analysis is one of the most widely used tools of financial statement analysis. It expresses the relationship between two financial figures.</p>
+
+    <h3>Definition</h3>
+    <p>A ratio is the mathematical relationship between two accounting numbers.</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Measure performance.</li>
+      <li>Compare results over time.</li>
+      <li>Compare companies within the industry.</li>
+      <li>Identify strengths and weaknesses.</li>
+    </ul>
+
+    <h3>Types of Ratios</h3>
+    <ul>
+      <li>Liquidity Ratios</li>
+      <li>Leverage Ratios</li>
+      <li>Activity Ratios</li>
+      <li>Profitability Ratios</li>
+    </ul>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Easy interpretation.</li>
+      <li>Facilitates comparison.</li>
+      <li>Supports decision-making.</li>
+      <li>Identifies trends.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Based on historical data.</li>
+      <li>Different accounting policies affect comparability.</li>
+      <li>Inflation may distort results.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company compares current assets and current liabilities to evaluate liquidity.</p>
+    <p><strong>Example 2 (Practical):</strong> An individual compares monthly income and expenses to assess financial stability.</p>
+
+    <h2>Topic 4: Liquidity Ratios</h2>
+    <h3>Explanation</h3>
+    <p>Liquidity Ratios measure a company's ability to meet short-term obligations.</p>
+
+    <h3>A. Current Ratio</h3>
+    <p>Measures ability to pay current liabilities using current assets.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Current Ratio} = \frac{\text{Current Assets}}{\text{Current Liabilities}}$$</p>
+
+    <h4>Ideal Ratio</h4>
+    <p><strong>2 : 1</strong></p>
+
+    <h4>Interpretation</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Ratio</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Above 2</strong></td>
+          <td>Strong liquidity</td>
+        </tr>
+        <tr>
+          <td><strong>Around 2</strong></td>
+          <td>Satisfactory</td>
+        </tr>
+        <tr>
+          <td><strong>Below 1</strong></td>
+          <td>Liquidity problem</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>B. Quick Ratio (Acid Test Ratio)</h3>
+    <p>Measures immediate liquidity.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Quick Ratio} = \frac{\text{Quick Assets}}{\text{Current Liabilities}}$$</p>
+
+    <h4>Ideal Ratio</h4>
+    <p><strong>1 : 1</strong></p>
+
+    <p><strong>Example 1 (Business):</strong> A company with current assets of ₹20 lakh and current liabilities of ₹10 lakh has a current ratio of 2:1.</p>
+    <p><strong>Example 2 (Practical):</strong> A shop owner checks whether available cash and receivables can cover upcoming payments.</p>
+
+    <h2>Topic 5: Leverage Ratios</h2>
+    <h3>Explanation</h3>
+    <p>Leverage Ratios measure the extent to which a business uses borrowed funds. They indicate long-term solvency and financial risk.</p>
+
+    <h3>Debt-Equity Ratio</h3>
+    <p>Measures relationship between debt and owner's funds.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Debt Equity Ratio} = \frac{\text{Total Debt}}{\text{Shareholders' Equity}}$$</p>
+
+    <h4>Interpretation</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Ratio</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Low</strong></td>
+          <td>Lower financial risk</td>
+        </tr>
+        <tr>
+          <td><strong>High</strong></td>
+          <td>Higher financial risk</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Proprietary Ratio</h3>
+    <p>Measures proportion of assets financed by owners.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Proprietary Ratio} = \frac{\text{Shareholders' Funds}}{\text{Total Assets}}$$</p>
+
+    <p><strong>Example 1 (Business):</strong> A manufacturing company uses debt-equity ratio to determine whether borrowing levels are appropriate.</p>
+    <p><strong>Example 2 (Practical):</strong> A business owner compares personal investment with bank loans used in the business.</p>
+
+    <h2>Topic 6: Activity Ratios</h2>
+    <h3>Explanation</h3>
+    <p>Activity Ratios measure how efficiently a business utilizes its assets. They are also known as Efficiency Ratios or Turnover Ratios.</p>
+
+    <h3>Inventory Turnover Ratio</h3>
+    <p>Measures how quickly inventory is sold.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Inventory Turnover Ratio} = \frac{\text{Cost of Goods Sold}}{\text{Average Inventory}}$$</p>
+
+    <h4>Interpretation</h4>
+    <p>Higher ratio indicates efficient inventory management.</p>
+
+    <h3>Debtors Turnover Ratio</h3>
+    <p>Measures collection efficiency.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Debtors Turnover Ratio} = \frac{\text{Net Credit Sales}}{\text{Average Debtors}}$$</p>
+
+    <h3>Total Asset Turnover Ratio</h3>
+    <p>Measures efficiency of asset utilization.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Asset Turnover Ratio} = \frac{\text{Net Sales}}{\text{Total Assets}}$$</p>
+
+    <p><strong>Example 1 (Business):</strong> A supermarket evaluates inventory turnover to avoid excess stock.</p>
+    <p><strong>Example 2 (Practical):</strong> A bookstore tracks how quickly books are sold to maintain optimal inventory levels.</p>
+
+    <h2>Topic 7: Profitability Ratios</h2>
+    <h3>Explanation</h3>
+    <p>Profitability Ratios measure the ability of a business to generate profits.</p>
+
+    <h3>Gross Profit Ratio</h3>
+    <p>Measures profitability after deducting direct costs.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Gross Profit Ratio} = \frac{\text{Gross Profit}}{\text{Net Sales}} \times 100$$</p>
+
+    <h3>Net Profit Ratio</h3>
+    <p>Measures overall profitability.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{Net Profit Ratio} = \frac{\text{Net Profit}}{\text{Net Sales}} \times 100$$</p>
+
+    <h3>Return on Investment (ROI)</h3>
+    <p>Measures return generated on invested funds.</p>
+
+    <h4>Formula</h4>
+    <p>$$\text{ROI} = \frac{\text{Net Profit}}{\text{Investment}} \times 100$$</p>
+
+    <p><strong>Example 1 (Business):</strong> Maruti Suzuki evaluates profit margins to improve cost efficiency.</p>
+    <p><strong>Example 2 (Practical):</strong> An entrepreneur compares annual profit with invested capital to calculate ROI.</p>
+
+    <h2>Topic 8: Trend Analysis</h2>
+    <h3>Explanation</h3>
+    <p>Trend Analysis evaluates financial performance over several years. It identifies patterns of growth or decline.</p>
+
+    <h3>Procedure</h3>
+    <div class="flow-container">
+      <div class="flow-step">Select Base Year</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Collect Financial Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Convert to Percentages</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Compare Year-wise Trends</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Interpret Results</div>
+    </div>
+
+    <h3>Formula</h3>
+    <p>$$\text{Trend Percentage} = \frac{\text{Current Year Value}}{\text{Base Year Value}} \times 100$$</p>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Identifies growth patterns.</li>
+      <li>Assists forecasting.</li>
+      <li>Facilitates long-term planning.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company studies five years of sales data to evaluate growth trends.</p>
+    <p><strong>Example 2 (Practical):</strong> A family compares yearly household expenses to identify spending patterns.</p>
+
+    <h2>Topic 9: Inter-Firm Analysis</h2>
+    <h3>Explanation</h3>
+    <p>Inter-Firm Analysis compares the performance of one company with another company in the same industry.</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Benchmark performance.</li>
+      <li>Identify competitive position.</li>
+      <li>Improve operational efficiency.</li>
+    </ul>
+
+    <h3>Areas of Comparison</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Measure</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Liquidity</strong></td>
+          <td>Current Ratio</td>
+        </tr>
+        <tr>
+          <td><strong>Profitability</strong></td>
+          <td>Net Profit Ratio</td>
+        </tr>
+        <tr>
+          <td><strong>Efficiency</strong></td>
+          <td>Asset Turnover</td>
+        </tr>
+        <tr>
+          <td><strong>Solvency</strong></td>
+          <td>Debt-Equity Ratio</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Helps identify strengths.</li>
+      <li>Facilitates industry benchmarking.</li>
+      <li>Supports strategic improvements.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Reliance Industries compares profitability ratios with competitors to evaluate performance.</p>
+    <p><strong>Example 2 (Practical):</strong> A local restaurant compares sales growth with nearby restaurants.</p>
+
+    <h2>Topic 10: Utility and Limitations of Ratio Analysis</h2>
+    
+    <h3>Utility of Ratio Analysis</h3>
+    <h4>Benefits</h4>
+    <ul>
+      <li>Measures financial health.</li>
+      <li>Assists management decisions.</li>
+      <li>Helps investors and creditors.</li>
+      <li>Facilitates trend analysis.</li>
+      <li>Enables inter-firm comparison.</li>
+    </ul>
+
+    <h3>Limitations of Ratio Analysis</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Limitation</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Historical Data</strong></td>
+          <td>Past performance may not predict future</td>
+        </tr>
+        <tr>
+          <td><strong>Inflation Impact</strong></td>
+          <td>Distorts comparisons</td>
+        </tr>
+        <tr>
+          <td><strong>Different Accounting Policies</strong></td>
+          <td>Reduces comparability</td>
+        </tr>
+        <tr>
+          <td><strong>Window Dressing</strong></td>
+          <td>Financial statements may be manipulated</td>
+        </tr>
+        <tr>
+          <td><strong>Ignores Qualitative Factors</strong></td>
+          <td>Cannot measure reputation or employee morale</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Two companies may show similar profits but differ significantly in product quality and customer satisfaction.</p>
+    <p><strong>Example 2 (Practical):</strong> A person with high income may still face financial problems due to poor spending habits, which ratios alone may not reveal.</p>
+
+    <h2>Comparison of Major Financial Ratios</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Ratio Type</th>
+          <th>Purpose</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Liquidity Ratio</strong></td>
+          <td>Short-term solvency</td>
+          <td>Current Ratio</td>
+        </tr>
+        <tr>
+          <td><strong>Leverage Ratio</strong></td>
+          <td>Long-term solvency</td>
+          <td>Debt-Equity Ratio</td>
+        </tr>
+        <tr>
+          <td><strong>Activity Ratio</strong></td>
+          <td>Efficiency</td>
+          <td>Inventory Turnover</td>
+        </tr>
+        <tr>
+          <td><strong>Profitability Ratio</strong></td>
+          <td>Profit generation</td>
+          <td>Net Profit Ratio</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Financial Statement Analysis helps evaluate business performance and financial health.</li>
+      <li>Various stakeholders use financial analysis for different purposes.</li>
+      <li>Ratio Analysis is a powerful tool for interpreting financial statements.</li>
+      <li>Liquidity ratios measure short-term solvency.</li>
+      <li>Leverage ratios measure long-term financial stability.</li>
+      <li>Activity ratios measure operational efficiency.</li>
+      <li>Profitability ratios measure earning capacity.</li>
+      <li>Trend analysis studies performance over time.</li>
+      <li>Inter-firm analysis compares companies within the same industry.</li>
+      <li>Ratio analysis has both advantages and limitations.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Financial Statement Analysis</strong></td>
+          <td>Examination of financial statements for decision-making</td>
+        </tr>
+        <tr>
+          <td><strong>Ratio Analysis</strong></td>
+          <td>Relationship between two financial figures</td>
+        </tr>
+        <tr>
+          <td><strong>Liquidity</strong></td>
+          <td>Ability to meet short-term obligations</td>
+        </tr>
+        <tr>
+          <td><strong>Solvency</strong></td>
+          <td>Ability to meet long-term obligations</td>
+        </tr>
+        <tr>
+          <td><strong>Leverage</strong></td>
+          <td>Use of debt financing</td>
+        </tr>
+        <tr>
+          <td><strong>Profitability</strong></td>
+          <td>Ability to earn profits</td>
+        </tr>
+        <tr>
+          <td><strong>Trend Analysis</strong></td>
+          <td>Study of financial performance over time</td>
+        </tr>
+        <tr>
+          <td><strong>Inter-Firm Analysis</strong></td>
+          <td>Comparison among firms within an industry</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Formulae</h2>
+    
+    <p><strong>Current Ratio</strong></p>
+    <p>$$\text{Current Ratio} = \frac{\text{Current Assets}}{\text{Current Liabilities}}$$</p>
+
+    <p><strong>Quick Ratio</strong></p>
+    <p>$$\text{Quick Ratio} = \frac{\text{Quick Assets}}{\text{Current Liabilities}}$$</p>
+
+    <p><strong>Debt-Equity Ratio</strong></p>
+    <p>$$\text{Debt Equity Ratio} = \frac{\text{Total Debt}}{\text{Shareholders' Equity}}$$</p>
+
+    <p><strong>Inventory Turnover Ratio</strong></p>
+    <p>$$\text{Inventory Turnover Ratio} = \frac{\text{Cost of Goods Sold}}{\text{Average Inventory}}$$</p>
+
+    <p><strong>Net Profit Ratio</strong></p>
+    <p>$$\text{Net Profit Ratio} = \frac{\text{Net Profit}}{\text{Net Sales}} \times 100$$</p>
+
+    <p><strong>ROI</strong></p>
+    <p>$$\text{ROI} = \frac{\text{Net Profit}}{\text{Investment}} \times 100$$</p>
+
+    <p><strong>Trend Percentage</strong></p>
+    <p>$$\text{Trend Percentage} = \frac{\text{Current Year Value}}{\text{Base Year Value}} \times 100$$</p>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Financial Statement Analysis?</li>
+      <li>Who are the users of financial analysis?</li>
+      <li>Define Ratio Analysis.</li>
+      <li>What is a Current Ratio?</li>
+      <li>What is a Quick Ratio?</li>
+      <li>Define Debt-Equity Ratio.</li>
+      <li>What is Inventory Turnover Ratio?</li>
+      <li>Explain Trend Analysis.</li>
+      <li>What is Inter-Firm Analysis?</li>
+      <li>State two limitations of Ratio Analysis.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the objectives and importance of Financial Statement Analysis.</li>
+      <li>Discuss the various users of financial analysis and their information needs.</li>
+      <li>Explain Ratio Analysis and its significance.</li>
+      <li>Discuss Liquidity Ratios with suitable examples.</li>
+      <li>Explain Leverage Ratios and their importance.</li>
+      <li>Describe Activity Ratios and Profitability Ratios.</li>
+      <li>Explain Trend Analysis and Inter-Firm Analysis.</li>
+      <li>Discuss the utility and limitations of Ratio Analysis.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A company has Current Assets of ₹12 lakh and Current Liabilities of ₹6 lakh. Calculate the Current Ratio and interpret the result.</li>
+      <li>A firm has Total Debt of ₹20 lakh and Shareholders' Equity of ₹10 lakh. Calculate the Debt-Equity Ratio and discuss its implications.</li>
+      <li>An investor is comparing two companies in the same industry. Explain how ratio analysis and inter-firm analysis can help in making an investment decision.</li>
+    </ol>
+  </div>
+</body>
+</html>

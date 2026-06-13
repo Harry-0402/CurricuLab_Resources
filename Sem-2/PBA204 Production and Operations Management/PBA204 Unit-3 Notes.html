@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="1a30a48d-8444-4d66-aadb-fcc0946807b1" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="88">
+<p data-start="2" data-end="88"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="57">Unit III – Facilities Location &amp; Layout</strong><br data-start="57" data-end="60">
+<strong data-start="62" data-end="88">Part 1 of ~3 (Approx.)</strong></p>
+</blockquote>
+<hr data-start="90" data-end="93">
+<h2 data-start="95" data-end="149"><strong data-start="98" data-end="149">UNIT III: FACILITIES LOCATION &amp; LAYOUT – PART 1</strong></h2>
+<p data-start="151" data-end="308">Unit III deals with <strong data-start="171" data-end="204">long-term strategic decisions</strong> that have a <strong data-start="217" data-end="278">permanent impact on cost, efficiency, and competitiveness</strong>.<br data-start="279" data-end="282">
+In this part, we focus on:</p>
+<ul data-start="309" data-end="443">
+<li data-start="309" data-end="367">
+<p data-start="311" data-end="367">Meaning and importance of <strong data-start="337" data-end="367">facility location &amp; layout</strong></p>
+</li>
+<li data-start="368" data-end="400">
+<p data-start="370" data-end="400">Their <strong data-start="376" data-end="400">strategic importance</strong></p>
+</li>
+<li data-start="401" data-end="443">
+<p data-start="403" data-end="443"><strong data-start="403" data-end="443">Factors affecting location decisions</strong></p>
+</li>
+</ul>
+<p data-start="445" data-end="500">These topics are <strong data-start="462" data-end="499">frequently asked theory questions</strong>.</p>
+<hr data-start="502" data-end="505">
+<h2 data-start="507" data-end="560"><strong data-start="510" data-end="560">1. Facilities Location &amp; Layout – Introduction</strong></h2>
+<h3 data-start="562" data-end="582"><strong data-start="566" data-end="582">Introduction</strong></h3>
+<p data-start="583" data-end="634">Facilities Location and Layout decisions determine:</p>
+<ul data-start="635" data-end="747">
+<li data-start="635" data-end="678">
+<p data-start="637" data-end="678"><strong data-start="637" data-end="646">Where</strong> to set up operations (Location)</p>
+</li>
+<li data-start="679" data-end="747">
+<p data-start="681" data-end="747"><strong data-start="681" data-end="688">How</strong> to arrange physical resources inside the facility (Layout)</p>
+</li>
+</ul>
+<p data-start="749" data-end="884">These decisions involve <strong data-start="773" data-end="800">huge capital investment</strong> and are <strong data-start="809" data-end="832">difficult to change</strong>, hence they are considered <strong data-start="860" data-end="883">strategic decisions</strong>.</p>
+<hr data-start="886" data-end="889">
+<h3 data-start="891" data-end="911"><strong data-start="895" data-end="911">Key Concepts</strong></h3>
+<ul data-start="912" data-end="1013">
+<li data-start="912" data-end="930">
+<p data-start="914" data-end="930">Plant location</p>
+</li>
+<li data-start="931" data-end="947">
+<p data-start="933" data-end="947">Plant layout</p>
+</li>
+<li data-start="948" data-end="970">
+<p data-start="950" data-end="970">Long-term planning</p>
+</li>
+<li data-start="971" data-end="986">
+<p data-start="973" data-end="986">Fixed costs</p>
+</li>
+<li data-start="987" data-end="1013">
+<p data-start="989" data-end="1013">Operational efficiency</p>
+</li>
+</ul>
+<hr data-start="1015" data-end="1018">
+<h3 data-start="1020" data-end="1039"><strong data-start="1024" data-end="1039">Definitions</strong></h3>
+<h4 data-start="1041" data-end="1067"><strong data-start="1046" data-end="1067">Facility Location</strong></h4>
+<blockquote data-start="1068" data-end="1196">
+<p data-start="1070" data-end="1196">Facility location refers to the <strong data-start="1102" data-end="1138">selection of a geographical site</strong> for setting up a manufacturing plant or service facility.</p>
+</blockquote>
+<h4 data-start="1198" data-end="1222"><strong data-start="1203" data-end="1222">Facility Layout</strong></h4>
+<blockquote data-start="1223" data-end="1358">
+<p data-start="1225" data-end="1358">Facility layout refers to the <strong data-start="1255" data-end="1337">physical arrangement of machines, departments, workstations, and service areas</strong> within the facility.</p>
+</blockquote>
+<hr data-start="1360" data-end="1363">
+<h3 data-start="1365" data-end="1391"><strong data-start="1369" data-end="1391">Basic Relationship</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="1393" data-end="1461"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">nginx</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-attribute">Facility</span></span><span> Location → Facility Layout → Operational Efficiency
+</span></span></code></div></div></pre>
+<hr data-start="1463" data-end="1466">
+<h2 data-start="1468" data-end="1528"><strong data-start="1471" data-end="1528">2. Strategic Importance of Facility Location &amp; Layout</strong></h2>
+<h3 data-start="1530" data-end="1550"><strong data-start="1534" data-end="1550">Introduction</strong></h3>
+<p data-start="1551" data-end="1597">Location and layout decisions directly affect:</p>
+<ul data-start="1598" data-end="1687">
+<li data-start="1598" data-end="1618">
+<p data-start="1600" data-end="1618">Cost of production</p>
+</li>
+<li data-start="1619" data-end="1635">
+<p data-start="1621" data-end="1635">Delivery speed</p>
+</li>
+<li data-start="1636" data-end="1659">
+<p data-start="1638" data-end="1659">Customer satisfaction</p>
+</li>
+<li data-start="1660" data-end="1687">
+<p data-start="1662" data-end="1687">Long-term competitiveness</p>
+</li>
+</ul>
+<p data-start="1689" data-end="1748">Once taken, these decisions are <strong data-start="1721" data-end="1747">very costly to reverse</strong>.</p>
+<hr data-start="1750" data-end="1753">
+<h3 data-start="1755" data-end="1775"><strong data-start="1759" data-end="1775">Key Concepts</strong></h3>
+<ul data-start="1776" data-end="1868">
+<li data-start="1776" data-end="1798">
+<p data-start="1778" data-end="1798">Capital investment</p>
+</li>
+<li data-start="1799" data-end="1823">
+<p data-start="1801" data-end="1823">Long-term commitment</p>
+</li>
+<li data-start="1824" data-end="1842">
+<p data-start="1826" data-end="1842">Cost structure</p>
+</li>
+<li data-start="1843" data-end="1868">
+<p data-start="1845" data-end="1868">Market responsiveness</p>
+</li>
+</ul>
+<hr data-start="1870" data-end="1873">
+<h3 data-start="1875" data-end="1924"><strong data-start="1879" data-end="1924">Strategic Importance of Facility Location</strong></h3>
+<hr data-start="1926" data-end="1929">
+<h3 data-start="1931" data-end="1956"><strong data-start="1935" data-end="1956">1. Impact on Cost</strong></h3>
+<ul data-start="1957" data-end="2018">
+<li data-start="1957" data-end="1978">
+<p data-start="1959" data-end="1978">Transportation cost</p>
+</li>
+<li data-start="1979" data-end="1992">
+<p data-start="1981" data-end="1992">Labour cost</p>
+</li>
+<li data-start="1993" data-end="2007">
+<p data-start="1995" data-end="2007">Utility cost</p>
+</li>
+<li data-start="2008" data-end="2018">
+<p data-start="2010" data-end="2018">Taxation</p>
+</li>
+</ul>
+<p data-start="2020" data-end="2087">📌 A poor location can make even efficient operations unprofitable.</p>
+<hr data-start="2089" data-end="2092">
+<h3 data-start="2094" data-end="2122"><strong data-start="2098" data-end="2122">2. Access to Markets</strong></h3>
+<ul data-start="2123" data-end="2181">
+<li data-start="2123" data-end="2146">
+<p data-start="2125" data-end="2146">Nearness to customers</p>
+</li>
+<li data-start="2147" data-end="2164">
+<p data-start="2149" data-end="2164">Faster delivery</p>
+</li>
+<li data-start="2165" data-end="2181">
+<p data-start="2167" data-end="2181">Better service</p>
+</li>
+</ul>
+<hr data-start="2183" data-end="2186">
+<h3 data-start="2188" data-end="2224"><strong data-start="2192" data-end="2224">3. Availability of Resources</strong></h3>
+<ul data-start="2225" data-end="2289">
+<li data-start="2225" data-end="2255">
+<p data-start="2227" data-end="2255">Skilled and unskilled labour</p>
+</li>
+<li data-start="2256" data-end="2271">
+<p data-start="2258" data-end="2271">Raw materials</p>
+</li>
+<li data-start="2272" data-end="2289">
+<p data-start="2274" data-end="2289">Power and water</p>
+</li>
+</ul>
+<hr data-start="2291" data-end="2294">
+<h3 data-start="2296" data-end="2326"><strong data-start="2300" data-end="2326">4. Government Policies</strong></h3>
+<ul data-start="2327" data-end="2378">
+<li data-start="2327" data-end="2341">
+<p data-start="2329" data-end="2341">Tax benefits</p>
+</li>
+<li data-start="2342" data-end="2353">
+<p data-start="2344" data-end="2353">Subsidies</p>
+</li>
+<li data-start="2354" data-end="2378">
+<p data-start="2356" data-end="2378">Industrial regulations</p>
+</li>
+</ul>
+<hr data-start="2380" data-end="2383">
+<h3 data-start="2385" data-end="2412"><strong data-start="2389" data-end="2412">5. Long-Term Growth</strong></h3>
+<ul data-start="2413" data-end="2463">
+<li data-start="2413" data-end="2434">
+<p data-start="2415" data-end="2434">Scope for expansion</p>
+</li>
+<li data-start="2435" data-end="2463">
+<p data-start="2437" data-end="2463">Infrastructure development</p>
+</li>
+</ul>
+<hr data-start="2465" data-end="2468">
+<h3 data-start="2470" data-end="2517"><strong data-start="2474" data-end="2517">Strategic Importance of Facility Layout</strong></h3>
+<hr data-start="2519" data-end="2522">
+<h3 data-start="2524" data-end="2559"><strong data-start="2528" data-end="2559">1. Smooth Flow of Materials</strong></h3>
+<ul data-start="2560" data-end="2601">
+<li data-start="2560" data-end="2582">
+<p data-start="2562" data-end="2582">Reduces backtracking</p>
+</li>
+<li data-start="2583" data-end="2601">
+<p data-start="2585" data-end="2601">Minimizes delays</p>
+</li>
+</ul>
+<hr data-start="2603" data-end="2606">
+<h3 data-start="2608" data-end="2643"><strong data-start="2612" data-end="2643">2. Better Space Utilization</strong></h3>
+<ul data-start="2644" data-end="2692">
+<li data-start="2644" data-end="2671">
+<p data-start="2646" data-end="2671">Optimal use of floor area</p>
+</li>
+<li data-start="2672" data-end="2692">
+<p data-start="2674" data-end="2692">Reduced congestion</p>
+</li>
+</ul>
+<hr data-start="2694" data-end="2697">
+<h3 data-start="2699" data-end="2740"><strong data-start="2703" data-end="2740">3. Reduced Material Handling Cost</strong></h3>
+<ul data-start="2741" data-end="2787">
+<li data-start="2741" data-end="2766">
+<p data-start="2743" data-end="2766">Shorter travel distance</p>
+</li>
+<li data-start="2767" data-end="2787">
+<p data-start="2769" data-end="2787">Efficient movement</p>
+</li>
+</ul>
+<hr data-start="2789" data-end="2792">
+<h3 data-start="2794" data-end="2843"><strong data-start="2798" data-end="2843">4. Improved Safety and Working Conditions</strong></h3>
+<ul data-start="2844" data-end="2876">
+<li data-start="2844" data-end="2858">
+<p data-start="2846" data-end="2858">Less fatigue</p>
+</li>
+<li data-start="2859" data-end="2876">
+<p data-start="2861" data-end="2876">Fewer accidents</p>
+</li>
+</ul>
+<hr data-start="2878" data-end="2881">
+<h3 data-start="2883" data-end="2913"><strong data-start="2887" data-end="2913">5. Higher Productivity</strong></h3>
+<ul data-start="2914" data-end="2950">
+<li data-start="2914" data-end="2930">
+<p data-start="2916" data-end="2930">Less idle time</p>
+</li>
+<li data-start="2931" data-end="2950">
+<p data-start="2933" data-end="2950">Faster operations</p>
+</li>
+</ul>
+<hr data-start="2952" data-end="2955">
+<h3 data-start="2957" data-end="3000"><strong data-start="2961" data-end="3000">Summary Table: Strategic Importance</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3002" data-end="3214" class="w-fit min-w-(--thread-content-width)"><thead data-start="3002" data-end="3032"><tr data-start="3002" data-end="3032"><th data-start="3002" data-end="3011" data-col-size="sm">Aspect</th><th data-start="3011" data-end="3022" data-col-size="sm">Location</th><th data-start="3022" data-end="3032" data-col-size="sm">Layout</th></tr></thead><tbody data-start="3058" data-end="3214"><tr data-start="3058" data-end="3090"><td data-start="3058" data-end="3067" data-col-size="sm">Nature</td><td data-start="3067" data-end="3078" data-col-size="sm">External</td><td data-col-size="sm" data-start="3078" data-end="3090">Internal</td></tr><tr data-start="3091" data-end="3125"><td data-start="3091" data-end="3105" data-col-size="sm">Cost impact</td><td data-col-size="sm" data-start="3105" data-end="3117">Very high</td><td data-col-size="sm" data-start="3117" data-end="3125">High</td></tr><tr data-start="3126" data-end="3163"><td data-start="3126" data-end="3140" data-col-size="sm">Flexibility</td><td data-col-size="sm" data-start="3140" data-end="3151">Very low</td><td data-col-size="sm" data-start="3151" data-end="3163">Moderate</td></tr><tr data-start="3164" data-end="3214"><td data-start="3164" data-end="3179" data-col-size="sm">Time horizon</td><td data-col-size="sm" data-start="3179" data-end="3191">Long-term</td><td data-col-size="sm" data-start="3191" data-end="3214">Medium to long-term</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3216" data-end="3219">
+<h2 data-start="3221" data-end="3266"><strong data-start="3224" data-end="3266">3. Factors Affecting Facility Location</strong></h2>
+<h3 data-start="3268" data-end="3288"><strong data-start="3272" data-end="3288">Introduction</strong></h3>
+<p data-start="3289" data-end="3468">Facility location depends on a <strong data-start="3320" data-end="3389">combination of economic, technical, social, and political factors</strong>.<br data-start="3390" data-end="3393">
+These factors vary between <strong data-start="3420" data-end="3437">manufacturing</strong> and <strong data-start="3442" data-end="3467">service organizations</strong>.</p>
+<hr data-start="3470" data-end="3473">
+<h3 data-start="3475" data-end="3495"><strong data-start="3479" data-end="3495">Key Concepts</strong></h3>
+<ul data-start="3496" data-end="3580">
+<li data-start="3496" data-end="3517">
+<p data-start="3498" data-end="3517">Cost minimization</p>
+</li>
+<li data-start="3518" data-end="3535">
+<p data-start="3520" data-end="3535">Market access</p>
+</li>
+<li data-start="3536" data-end="3561">
+<p data-start="3538" data-end="3561">Resource availability</p>
+</li>
+<li data-start="3562" data-end="3580">
+<p data-start="3564" data-end="3580">Infrastructure</p>
+</li>
+</ul>
+<hr data-start="3582" data-end="3585">
+<h2 data-start="3587" data-end="3656"><strong data-start="3590" data-end="3656">3.1 Factors Affecting Location for Manufacturing Organizations</strong></h2>
+<hr data-start="3658" data-end="3661">
+<h3 data-start="3663" data-end="3703"><strong data-start="3667" data-end="3703">1. Availability of Raw Materials</strong></h3>
+<ul data-start="3704" data-end="3784">
+<li data-start="3704" data-end="3754">
+<p data-start="3706" data-end="3754">Heavy or bulky raw materials → plant near source</p>
+</li>
+<li data-start="3755" data-end="3784">
+<p data-start="3757" data-end="3784">Reduces transportation cost</p>
+</li>
+</ul>
+<p data-start="3786" data-end="3831"><strong data-start="3786" data-end="3798">Example:</strong> Steel plants near iron ore mines</p>
+<hr data-start="3833" data-end="3836">
+<h3 data-start="3838" data-end="3871"><strong data-start="3842" data-end="3871">2. Availability of Labour</strong></h3>
+<ul data-start="3872" data-end="3960">
+<li data-start="3872" data-end="3906">
+<p data-start="3874" data-end="3906">Skilled and semi-skilled workers</p>
+</li>
+<li data-start="3907" data-end="3937">
+<p data-start="3909" data-end="3937">Labour cost and productivity</p>
+</li>
+<li data-start="3938" data-end="3960">
+<p data-start="3940" data-end="3960">Industrial relations</p>
+</li>
+</ul>
+<hr data-start="3962" data-end="3965">
+<h3 data-start="3967" data-end="4003"><strong data-start="3971" data-end="4003">3. Transportation Facilities</strong></h3>
+<ul data-start="4004" data-end="4069">
+<li data-start="4004" data-end="4033">
+<p data-start="4006" data-end="4033">Road, rail, ports, airports</p>
+</li>
+<li data-start="4034" data-end="4069">
+<p data-start="4036" data-end="4069">Cost and reliability of transport</p>
+</li>
+</ul>
+<hr data-start="4071" data-end="4074">
+<h3 data-start="4076" data-end="4106"><strong data-start="4080" data-end="4106">4. Power and Utilities</strong></h3>
+<ul data-start="4107" data-end="4164">
+<li data-start="4107" data-end="4129">
+<p data-start="4109" data-end="4129">Reliable electricity</p>
+</li>
+<li data-start="4130" data-end="4144">
+<p data-start="4132" data-end="4144">Water supply</p>
+</li>
+<li data-start="4145" data-end="4164">
+<p data-start="4147" data-end="4164">Fuel availability</p>
+</li>
+</ul>
+<hr data-start="4166" data-end="4169">
+<h3 data-start="4171" data-end="4198"><strong data-start="4175" data-end="4198">5. Market Proximity</strong></h3>
+<ul data-start="4199" data-end="4248">
+<li data-start="4199" data-end="4222">
+<p data-start="4201" data-end="4222">Reduces delivery time</p>
+</li>
+<li data-start="4223" data-end="4248">
+<p data-start="4225" data-end="4248">Better customer service</p>
+</li>
+</ul>
+<hr data-start="4250" data-end="4253">
+<h3 data-start="4255" data-end="4288"><strong data-start="4259" data-end="4288">6. Land and Building Cost</strong></h3>
+<ul data-start="4289" data-end="4341">
+<li data-start="4289" data-end="4303">
+<p data-start="4291" data-end="4303">Cost of land</p>
+</li>
+<li data-start="4304" data-end="4341">
+<p data-start="4306" data-end="4341">Availability of space for expansion</p>
+</li>
+</ul>
+<hr data-start="4343" data-end="4346">
+<h3 data-start="4348" data-end="4378"><strong data-start="4352" data-end="4378">7. Government Policies</strong></h3>
+<ul data-start="4379" data-end="4446">
+<li data-start="4379" data-end="4395">
+<p data-start="4381" data-end="4395">Tax incentives</p>
+</li>
+<li data-start="4396" data-end="4418">
+<p data-start="4398" data-end="4418">Industrial licensing</p>
+</li>
+<li data-start="4419" data-end="4446">
+<p data-start="4421" data-end="4446">Environmental regulations</p>
+</li>
+</ul>
+<hr data-start="4448" data-end="4451">
+<h3 data-start="4453" data-end="4483"><strong data-start="4457" data-end="4483">8. Climatic Conditions</strong></h3>
+<ul data-start="4484" data-end="4534">
+<li data-start="4484" data-end="4517">
+<p data-start="4486" data-end="4517">Suitable climate for production</p>
+</li>
+<li data-start="4518" data-end="4534">
+<p data-start="4520" data-end="4534">Worker comfort</p>
+</li>
+</ul>
+<hr data-start="4536" data-end="4539">
+<h3 data-start="4541" data-end="4595"><strong data-start="4545" data-end="4595">Manufacturing Location Factors – Summary Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4597" data-end="4803" class="w-fit min-w-(--thread-content-width)"><thead data-start="4597" data-end="4620"><tr data-start="4597" data-end="4620"><th data-start="4597" data-end="4606" data-col-size="sm">Factor</th><th data-start="4606" data-end="4620" data-col-size="sm">Importance</th></tr></thead><tbody data-start="4633" data-end="4803"><tr data-start="4633" data-end="4667"><td data-start="4633" data-end="4649" data-col-size="sm">Raw materials</td><td data-start="4649" data-end="4667" data-col-size="sm">Cost reduction</td></tr><tr data-start="4668" data-end="4693"><td data-start="4668" data-end="4677" data-col-size="sm">Labour</td><td data-start="4677" data-end="4693" data-col-size="sm">Productivity</td></tr><tr data-start="4694" data-end="4733"><td data-start="4694" data-end="4706" data-col-size="sm">Transport</td><td data-start="4706" data-end="4733" data-col-size="sm">Supply chain efficiency</td></tr><tr data-start="4734" data-end="4767"><td data-start="4734" data-end="4742" data-col-size="sm">Power</td><td data-start="4742" data-end="4767" data-col-size="sm">Continuous production</td></tr><tr data-start="4768" data-end="4803"><td data-start="4768" data-end="4781" data-col-size="sm">Government</td><td data-start="4781" data-end="4803" data-col-size="sm">Financial benefits</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4805" data-end="4808">
+<h2 data-start="4810" data-end="4873"><strong data-start="4813" data-end="4873">3.2 Factors Affecting Location for Service Organizations</strong></h2>
+<h3 data-start="4875" data-end="4895"><strong data-start="4879" data-end="4895">Introduction</strong></h3>
+<p data-start="4896" data-end="4963">For service organizations, <strong data-start="4923" data-end="4943">customer contact</strong> plays a major role.</p>
+<hr data-start="4965" data-end="4968">
+<h3 data-start="4970" data-end="4989"><strong data-start="4974" data-end="4989">Key Factors</strong></h3>
+<ol data-start="4991" data-end="5273">
+<li data-start="4991" data-end="5049">
+<p data-start="4994" data-end="5019"><strong data-start="4994" data-end="5019">Nearness to Customers</strong></p>
+<ul data-start="5023" data-end="5049">
+<li data-start="5023" data-end="5049">
+<p data-start="5025" data-end="5049">Banks, hospitals, hotels</p>
+</li>
+</ul>
+</li>
+<li data-start="5051" data-end="5122">
+<p data-start="5054" data-end="5071"><strong data-start="5054" data-end="5071">Accessibility</strong></p>
+<ul data-start="5075" data-end="5122">
+<li data-start="5075" data-end="5098">
+<p data-start="5077" data-end="5098">Transport convenience</p>
+</li>
+<li data-start="5102" data-end="5122">
+<p data-start="5104" data-end="5122">Parking facilities</p>
+</li>
+</ul>
+</li>
+<li data-start="5124" data-end="5178">
+<p data-start="5127" data-end="5149"><strong data-start="5127" data-end="5149">Population Density</strong></p>
+<ul data-start="5153" data-end="5178">
+<li data-start="5153" data-end="5178">
+<p data-start="5155" data-end="5178">Higher demand potential</p>
+</li>
+</ul>
+</li>
+<li data-start="5180" data-end="5224">
+<p data-start="5183" data-end="5198"><strong data-start="5183" data-end="5198">Competition</strong></p>
+<ul data-start="5202" data-end="5224">
+<li data-start="5202" data-end="5224">
+<p data-start="5204" data-end="5224">Clustering advantage</p>
+</li>
+</ul>
+</li>
+<li data-start="5226" data-end="5273">
+<p data-start="5229" data-end="5253"><strong data-start="5229" data-end="5253">Image and Visibility</strong></p>
+<ul data-start="5257" data-end="5273">
+<li data-start="5257" data-end="5273">
+<p data-start="5259" data-end="5273">Brand presence</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="5275" data-end="5278">
+<h3 data-start="5280" data-end="5328"><strong data-start="5284" data-end="5328">Service Location Factors – Summary Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5330" data-end="5469" class="w-fit min-w-(--thread-content-width)"><thead data-start="5330" data-end="5353"><tr data-start="5330" data-end="5353"><th data-start="5330" data-end="5339" data-col-size="sm">Factor</th><th data-start="5339" data-end="5353" data-col-size="sm">Importance</th></tr></thead><tbody data-start="5366" data-end="5469"><tr data-start="5366" data-end="5408"><td data-start="5366" data-end="5387" data-col-size="sm">Customer proximity</td><td data-start="5387" data-end="5408" data-col-size="sm">Demand generation</td></tr><tr data-start="5409" data-end="5440"><td data-start="5409" data-end="5425" data-col-size="sm">Accessibility</td><td data-start="5425" data-end="5440" data-col-size="sm">Convenience</td></tr><tr data-start="5441" data-end="5469"><td data-start="5441" data-end="5454" data-col-size="sm">Visibility</td><td data-start="5454" data-end="5469" data-col-size="sm">Brand image</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5471" data-end="5474">
+<h2 data-start="5476" data-end="5508"><strong data-start="5479" data-end="5508">Overall Summary of Part 1</strong></h2>
+<ul data-start="5509" data-end="5715">
+<li data-start="5509" data-end="5567">
+<p data-start="5511" data-end="5567">Facility location and layout are <strong data-start="5544" data-end="5567">strategic decisions</strong></p>
+</li>
+<li data-start="5568" data-end="5610">
+<p data-start="5570" data-end="5610">Location affects <strong data-start="5587" data-end="5610">external efficiency</strong></p>
+</li>
+<li data-start="5611" data-end="5651">
+<p data-start="5613" data-end="5651">Layout affects <strong data-start="5628" data-end="5651">internal efficiency</strong></p>
+</li>
+<li data-start="5652" data-end="5715">
+<p data-start="5654" data-end="5715">Multiple economic and non-economic factors influence location</p>
+</li>
+</ul>
+<hr data-start="5717" data-end="5720">
+<h3 data-start="5722" data-end="5759"><strong data-start="5726" data-end="5757"><em data-start="5728" data-end="5755">End of Unit III – Part 1.</em></strong></h3>
+<p data-start="5760" data-end="5869" data-is-last-node="" data-is-only-node=""><strong data-start="5760" data-end="5869" data-is-last-node="">Continue to <em data-start="5774" data-end="5793">Unit III – Part 2</em> (Installation of Facilities: Single Location &amp; Multi-location Decisions)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="06cae0c1-6ce1-4f35-999e-417d47f86710" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="88">
+<p data-start="2" data-end="88"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="57">Unit III – Facilities Location &amp; Layout</strong><br data-start="57" data-end="60">
+<strong data-start="62" data-end="88">Part 2 of ~3 (Approx.)</strong></p>
+</blockquote>
+<hr data-start="90" data-end="93">
+<h2 data-start="95" data-end="149"><strong data-start="98" data-end="149">UNIT III: FACILITIES LOCATION &amp; LAYOUT – PART 2</strong></h2>
+<p data-start="151" data-end="222">In this part, we focus on <strong data-start="177" data-end="207">installation of facilities</strong>, specifically:</p>
+<ul data-start="223" data-end="355">
+<li data-start="223" data-end="254">
+<p data-start="225" data-end="254"><strong data-start="225" data-end="254">Single-location decisions</strong></p>
+</li>
+<li data-start="255" data-end="285">
+<p data-start="257" data-end="285"><strong data-start="257" data-end="285">Multi-location decisions</strong></p>
+</li>
+<li data-start="286" data-end="355">
+<p data-start="288" data-end="355">The logic and criteria behind choosing one or multiple facilities</p>
+</li>
+</ul>
+<p data-start="357" data-end="392">These topics are commonly asked as:</p>
+<ul data-start="393" data-end="494">
+<li data-start="393" data-end="453">
+<p data-start="395" data-end="453"><em data-start="395" data-end="451">“Explain single and multi-location facility decisions”</em></p>
+</li>
+<li data-start="454" data-end="494">
+<p data-start="456" data-end="494"><em data-start="456" data-end="494">“Discuss installation of facilities”</em></p>
+</li>
+</ul>
+<hr data-start="496" data-end="499">
+<h2 data-start="501" data-end="537"><strong data-start="504" data-end="537">4. Installation of Facilities</strong></h2>
+<h3 data-start="539" data-end="559"><strong data-start="543" data-end="559">Introduction</strong></h3>
+<p data-start="560" data-end="746">Installation of facilities refers to the <strong data-start="601" data-end="661">process of establishing production or service facilities</strong> at selected locations after evaluating strategic, economic, and operational factors.</p>
+<p data-start="748" data-end="872">Facility installation decisions are <strong data-start="784" data-end="834">long-term, capital-intensive, and irreversible</strong>, hence they require careful analysis.</p>
+<hr data-start="874" data-end="877">
+<h3 data-start="879" data-end="899"><strong data-start="883" data-end="899">Key Concepts</strong></h3>
+<ul data-start="900" data-end="989">
+<li data-start="900" data-end="921">
+<p data-start="902" data-end="921">Location strategy</p>
+</li>
+<li data-start="922" data-end="944">
+<p data-start="924" data-end="944">Capacity decisions</p>
+</li>
+<li data-start="945" data-end="967">
+<p data-start="947" data-end="967">Expansion planning</p>
+</li>
+<li data-start="968" data-end="989">
+<p data-start="970" data-end="989">Risk distribution</p>
+</li>
+</ul>
+<hr data-start="991" data-end="994">
+<h3 data-start="996" data-end="1050"><strong data-start="1000" data-end="1050">Major Types of Facility Installation Decisions</strong></h3>
+<p data-start="1051" data-end="1111">Facility installation decisions are broadly classified into:</p>
+<pre class="overflow-visible! px-0!" data-start="1113" data-end="1227"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Facility Installation Decisions
+        ├── Single </span><span><span class="hljs-keyword">Location</span></span><span> Decisions
+        └── Multi-</span><span><span class="hljs-keyword">location</span></span><span> Decisions
+</span></span></code></div></div></pre>
+<hr data-start="1229" data-end="1232">
+<h2 data-start="1234" data-end="1269"><strong data-start="1237" data-end="1269">5. Single Location Decisions</strong></h2>
+<h3 data-start="1271" data-end="1291"><strong data-start="1275" data-end="1291">Introduction</strong></h3>
+<p data-start="1292" data-end="1401">In a <strong data-start="1297" data-end="1325">single location decision</strong>, the organization sets up <strong data-start="1352" data-end="1373">only one facility</strong> to serve the entire market.</p>
+<p data-start="1403" data-end="1423">This is common when:</p>
+<ul data-start="1424" data-end="1511">
+<li data-start="1424" data-end="1451">
+<p data-start="1426" data-end="1451">Production is centralized</p>
+</li>
+<li data-start="1452" data-end="1476">
+<p data-start="1454" data-end="1476">Demand is concentrated</p>
+</li>
+<li data-start="1477" data-end="1511">
+<p data-start="1479" data-end="1511">Economies of scale are important</p>
+</li>
+</ul>
+<hr data-start="1513" data-end="1516">
+<h3 data-start="1518" data-end="1570"><strong data-start="1522" data-end="1570">Characteristics of Single Location Decisions</strong></h3>
+<ol data-start="1572" data-end="1862">
+<li data-start="1572" data-end="1648">
+<p data-start="1575" data-end="1601"><strong data-start="1575" data-end="1601">Centralized Operations</strong></p>
+<ul data-start="1605" data-end="1648">
+<li data-start="1605" data-end="1648">
+<p data-start="1607" data-end="1648">All production/services from one location</p>
+</li>
+</ul>
+</li>
+<li data-start="1650" data-end="1729">
+<p data-start="1653" data-end="1680"><strong data-start="1653" data-end="1680">High Economies of Scale</strong></p>
+<ul data-start="1684" data-end="1729">
+<li data-start="1684" data-end="1729">
+<p data-start="1686" data-end="1729">Large-scale operations reduce cost per unit</p>
+</li>
+</ul>
+</li>
+<li data-start="1731" data-end="1797">
+<p data-start="1734" data-end="1756"><strong data-start="1734" data-end="1756">Simplified Control</strong></p>
+<ul data-start="1760" data-end="1797">
+<li data-start="1760" data-end="1797">
+<p data-start="1762" data-end="1797">Easier supervision and coordination</p>
+</li>
+</ul>
+</li>
+<li data-start="1799" data-end="1862">
+<p data-start="1802" data-end="1825"><strong data-start="1802" data-end="1825">Limited Flexibility</strong></p>
+<ul data-start="1829" data-end="1862">
+<li data-start="1829" data-end="1862">
+<p data-start="1831" data-end="1862">High dependency on one location</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="1864" data-end="1867">
+<h3 data-start="1869" data-end="1910"><strong data-start="1873" data-end="1910">When Single Location is Preferred</strong></h3>
+<ol data-start="1912" data-end="2146">
+<li data-start="1912" data-end="1954">
+<p data-start="1915" data-end="1954">When <strong data-start="1920" data-end="1954">raw materials are concentrated</strong></p>
+</li>
+<li data-start="1955" data-end="1998">
+<p data-start="1958" data-end="1998">When <strong data-start="1963" data-end="1998">technology is capital-intensive</strong></p>
+</li>
+<li data-start="1999" data-end="2047">
+<p data-start="2002" data-end="2047">When <strong data-start="2007" data-end="2047">market size is small or concentrated</strong></p>
+</li>
+<li data-start="2048" data-end="2107">
+<p data-start="2051" data-end="2107">When <strong data-start="2056" data-end="2081">highly skilled labour</strong> is available at one place</p>
+</li>
+<li data-start="2108" data-end="2146">
+<p data-start="2111" data-end="2146">When <strong data-start="2116" data-end="2146">transportation cost is low</strong></p>
+</li>
+</ol>
+<hr data-start="2148" data-end="2151">
+<h3 data-start="2153" data-end="2190"><strong data-start="2157" data-end="2190">Advantages of Single Location</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2192" data-end="2414" class="w-fit min-w-(--thread-content-width)"><thead data-start="2192" data-end="2219"><tr data-start="2192" data-end="2219"><th data-start="2192" data-end="2204" data-col-size="sm">Advantage</th><th data-start="2204" data-end="2219" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="2245" data-end="2414"><tr data-start="2245" data-end="2285"><td data-start="2245" data-end="2266" data-col-size="sm">Economies of scale</td><td data-col-size="sm" data-start="2266" data-end="2285">Lower unit cost</td></tr><tr data-start="2286" data-end="2329"><td data-start="2286" data-end="2303" data-col-size="sm">Better control</td><td data-col-size="sm" data-start="2303" data-end="2329">Centralized management</td></tr><tr data-start="2330" data-end="2369"><td data-start="2330" data-end="2349" data-col-size="sm">Less duplication</td><td data-col-size="sm" data-start="2349" data-end="2369">Shared resources</td></tr><tr data-start="2370" data-end="2414"><td data-start="2370" data-end="2388" data-col-size="sm">Uniform quality</td><td data-col-size="sm" data-start="2388" data-end="2414">Standardized processes</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2416" data-end="2419">
+<h3 data-start="2421" data-end="2459"><strong data-start="2425" data-end="2459">Limitations of Single Location</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2461" data-end="2722" class="w-fit min-w-(--thread-content-width)"><thead data-start="2461" data-end="2489"><tr data-start="2461" data-end="2489"><th data-start="2461" data-end="2474" data-col-size="sm">Limitation</th><th data-start="2474" data-end="2489" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="2516" data-end="2722"><tr data-start="2516" data-end="2562"><td data-start="2516" data-end="2528" data-col-size="sm">High risk</td><td data-col-size="sm" data-start="2528" data-end="2562">Fire, strike, natural disaster</td></tr><tr data-start="2563" data-end="2610"><td data-start="2563" data-end="2580" data-col-size="sm">Transport cost</td><td data-col-size="sm" data-start="2580" data-end="2610">Higher for distant markets</td></tr><tr data-start="2611" data-end="2662"><td data-start="2611" data-end="2630" data-col-size="sm">Less flexibility</td><td data-col-size="sm" data-start="2630" data-end="2662">Poor regional responsiveness</td></tr><tr data-start="2663" data-end="2722"><td data-start="2663" data-end="2682" data-col-size="sm">Expansion limits</td><td data-col-size="sm" data-start="2682" data-end="2722">Space and infrastructure constraints</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2724" data-end="2727">
+<h3 data-start="2729" data-end="2744"><strong data-start="2733" data-end="2744">Example</strong></h3>
+<ul data-start="2745" data-end="2790">
+<li data-start="2745" data-end="2758">
+<p data-start="2747" data-end="2758">Steel plant</p>
+</li>
+<li data-start="2759" data-end="2775">
+<p data-start="2761" data-end="2775">Cement factory</p>
+</li>
+<li data-start="2776" data-end="2790">
+<p data-start="2778" data-end="2790">Oil refinery</p>
+</li>
+</ul>
+<hr data-start="2792" data-end="2795">
+<h3 data-start="2797" data-end="2812"><strong data-start="2801" data-end="2812">Summary</strong></h3>
+<p data-start="2813" data-end="2927">Single location decisions focus on <strong data-start="2848" data-end="2891">cost efficiency and centralized control</strong>, but increase <strong data-start="2906" data-end="2926">operational risk</strong>.</p>
+<hr data-start="2929" data-end="2932">
+<h2 data-start="2934" data-end="2968"><strong data-start="2937" data-end="2968">6. Multi-location Decisions</strong></h2>
+<h3 data-start="2970" data-end="2990"><strong data-start="2974" data-end="2990">Introduction</strong></h3>
+<p data-start="2991" data-end="3113">In a <strong data-start="2996" data-end="3023">multi-location decision</strong>, an organization operates <strong data-start="3050" data-end="3076">more than one facility</strong> at different geographical locations.</p>
+<p data-start="3115" data-end="3142">This strategy is used when:</p>
+<ul data-start="3143" data-end="3211">
+<li data-start="3143" data-end="3173">
+<p data-start="3145" data-end="3173">Markets are widely dispersed</p>
+</li>
+<li data-start="3174" data-end="3211">
+<p data-start="3176" data-end="3211">Customer responsiveness is critical</p>
+</li>
+</ul>
+<hr data-start="3213" data-end="3216">
+<h3 data-start="3218" data-end="3269"><strong data-start="3222" data-end="3269">Characteristics of Multi-location Decisions</strong></h3>
+<ol data-start="3271" data-end="3560">
+<li data-start="3271" data-end="3342">
+<p data-start="3274" data-end="3302"><strong data-start="3274" data-end="3302">Decentralized Operations</strong></p>
+<ul data-start="3306" data-end="3342">
+<li data-start="3306" data-end="3342">
+<p data-start="3308" data-end="3342">Multiple plants or service centers</p>
+</li>
+</ul>
+</li>
+<li data-start="3344" data-end="3403">
+<p data-start="3347" data-end="3367"><strong data-start="3347" data-end="3367">Market Proximity</strong></p>
+<ul data-start="3371" data-end="3403">
+<li data-start="3371" data-end="3403">
+<p data-start="3373" data-end="3403">Facilities closer to customers</p>
+</li>
+</ul>
+</li>
+<li data-start="3405" data-end="3483">
+<p data-start="3408" data-end="3429"><strong data-start="3408" data-end="3429">Risk Distribution</strong></p>
+<ul data-start="3433" data-end="3483">
+<li data-start="3433" data-end="3483">
+<p data-start="3435" data-end="3483">Failure at one location does not stop operations</p>
+</li>
+</ul>
+</li>
+<li data-start="3485" data-end="3560">
+<p data-start="3488" data-end="3523"><strong data-start="3488" data-end="3523">Higher Coordination Requirement</strong></p>
+<ul data-start="3527" data-end="3560">
+<li data-start="3527" data-end="3560">
+<p data-start="3529" data-end="3560">Needs strong management systems</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="3562" data-end="3565">
+<h3 data-start="3567" data-end="3607"><strong data-start="3571" data-end="3607">When Multi-location is Preferred</strong></h3>
+<ol data-start="3609" data-end="3832">
+<li data-start="3609" data-end="3657">
+<p data-start="3612" data-end="3657">When <strong data-start="3617" data-end="3657">markets are geographically dispersed</strong></p>
+</li>
+<li data-start="3658" data-end="3697">
+<p data-start="3661" data-end="3697">When <strong data-start="3666" data-end="3697">transportation cost is high</strong></p>
+</li>
+<li data-start="3698" data-end="3735">
+<p data-start="3701" data-end="3735">When <strong data-start="3706" data-end="3735">fast delivery is required</strong></p>
+</li>
+<li data-start="3736" data-end="3783">
+<p data-start="3739" data-end="3783">When <strong data-start="3744" data-end="3783">government policies vary regionally</strong></p>
+</li>
+<li data-start="3784" data-end="3832">
+<p data-start="3787" data-end="3832">When <strong data-start="3792" data-end="3832">service quality depends on proximity</strong></p>
+</li>
+</ol>
+<hr data-start="3834" data-end="3837">
+<h3 data-start="3839" data-end="3875"><strong data-start="3843" data-end="3875">Advantages of Multi-location</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3877" data-end="4115" class="w-fit min-w-(--thread-content-width)"><thead data-start="3877" data-end="3904"><tr data-start="3877" data-end="3904"><th data-start="3877" data-end="3889" data-col-size="sm">Advantage</th><th data-start="3889" data-end="3904" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="3930" data-end="4115"><tr data-start="3930" data-end="3981"><td data-start="3930" data-end="3954" data-col-size="sm">Reduced delivery time</td><td data-start="3954" data-end="3981" data-col-size="sm">Faster customer service</td></tr><tr data-start="3982" data-end="4026"><td data-start="3982" data-end="4005" data-col-size="sm">Lower transport cost</td><td data-col-size="sm" data-start="4005" data-end="4026">Shorter distances</td></tr><tr data-start="4027" data-end="4070"><td data-start="4027" data-end="4044" data-col-size="sm">Risk reduction</td><td data-start="4044" data-end="4070" data-col-size="sm">Operational continuity</td></tr><tr data-start="4071" data-end="4115"><td data-start="4071" data-end="4095" data-col-size="sm">Market responsiveness</td><td data-start="4095" data-end="4115" data-col-size="sm">Local adaptation</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4117" data-end="4120">
+<h3 data-start="4122" data-end="4159"><strong data-start="4126" data-end="4159">Limitations of Multi-location</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4161" data-end="4405" class="w-fit min-w-(--thread-content-width)"><thead data-start="4161" data-end="4189"><tr data-start="4161" data-end="4189"><th data-start="4161" data-end="4174" data-col-size="sm">Limitation</th><th data-start="4174" data-end="4189" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="4216" data-end="4405"><tr data-start="4216" data-end="4265"><td data-start="4216" data-end="4236" data-col-size="sm">High capital cost</td><td data-start="4236" data-end="4265" data-col-size="sm">Duplication of facilities</td></tr><tr data-start="4266" data-end="4307"><td data-start="4266" data-end="4284" data-col-size="sm">Complex control</td><td data-col-size="sm" data-start="4284" data-end="4307">Coordination issues</td></tr><tr data-start="4308" data-end="4361"><td data-start="4308" data-end="4331" data-col-size="sm">Inconsistent quality</td><td data-col-size="sm" data-start="4331" data-end="4361">Standardization challenges</td></tr><tr data-start="4362" data-end="4405"><td data-start="4362" data-end="4386" data-col-size="sm">Higher operating cost</td><td data-col-size="sm" data-start="4386" data-end="4405">Multiple setups</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4407" data-end="4410">
+<h3 data-start="4412" data-end="4428"><strong data-start="4416" data-end="4428">Examples</strong></h3>
+<ul data-start="4429" data-end="4511">
+<li data-start="4429" data-end="4445">
+<p data-start="4431" data-end="4445">Banks and ATMs</p>
+</li>
+<li data-start="4446" data-end="4461">
+<p data-start="4448" data-end="4461">Retail chains</p>
+</li>
+<li data-start="4462" data-end="4473">
+<p data-start="4464" data-end="4473">Hospitals</p>
+</li>
+<li data-start="4474" data-end="4511">
+<p data-start="4476" data-end="4511">Warehouses and distribution centers</p>
+</li>
+</ul>
+<hr data-start="4513" data-end="4516">
+<h2 data-start="4518" data-end="4571"><strong data-start="4521" data-end="4571">7. Single Location vs Multi-location Decisions</strong></h2>
+<h3 data-start="4573" data-end="4598"><strong data-start="4577" data-end="4598">Comparative Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4600" data-end="4857" class="w-fit min-w-(--thread-content-width)"><thead data-start="4600" data-end="4644"><tr data-start="4600" data-end="4644"><th data-start="4600" data-end="4608" data-col-size="sm">Basis</th><th data-start="4608" data-end="4626" data-col-size="sm">Single Location</th><th data-start="4626" data-end="4644" data-col-size="sm">Multi-location</th></tr></thead><tbody data-start="4662" data-end="4857"><tr data-start="4662" data-end="4708"><td data-start="4662" data-end="4685" data-col-size="sm">Number of facilities</td><td data-start="4685" data-end="4691" data-col-size="sm">One</td><td data-start="4691" data-end="4708" data-col-size="sm">More than one</td></tr><tr data-start="4709" data-end="4739"><td data-start="4709" data-end="4719" data-col-size="sm">Control</td><td data-start="4719" data-end="4726" data-col-size="sm">Easy</td><td data-start="4726" data-end="4739" data-col-size="sm">Difficult</td></tr><tr data-start="4740" data-end="4772"><td data-start="4740" data-end="4756" data-col-size="sm">Cost per unit</td><td data-col-size="sm" data-start="4756" data-end="4762">Low</td><td data-col-size="sm" data-start="4762" data-end="4772">Higher</td></tr><tr data-start="4773" data-end="4794"><td data-start="4773" data-end="4780" data-col-size="sm">Risk</td><td data-start="4780" data-end="4787" data-col-size="sm">High</td><td data-start="4787" data-end="4794" data-col-size="sm">Low</td></tr><tr data-start="4795" data-end="4828"><td data-start="4795" data-end="4810" data-col-size="sm">Market reach</td><td data-col-size="sm" data-start="4810" data-end="4820">Limited</td><td data-col-size="sm" data-start="4820" data-end="4828">Wide</td></tr><tr data-start="4829" data-end="4857"><td data-start="4829" data-end="4843" data-col-size="sm">Flexibility</td><td data-start="4843" data-end="4849" data-col-size="sm">Low</td><td data-start="4849" data-end="4857" data-col-size="sm">High</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4859" data-end="4862">
+<h2 data-start="4864" data-end="4920"><strong data-start="4867" data-end="4920">8. Strategic Considerations in Location Decisions</strong></h2>
+<h3 data-start="4922" data-end="4942"><strong data-start="4926" data-end="4942">Introduction</strong></h3>
+<p data-start="4943" data-end="5064">Organizations must balance <strong data-start="4970" data-end="5003">cost, risk, and service level</strong> while choosing between single and multi-location strategies.</p>
+<hr data-start="5066" data-end="5069">
+<h3 data-start="5071" data-end="5100"><strong data-start="5075" data-end="5100">Key Strategic Factors</strong></h3>
+<ol data-start="5102" data-end="5480">
+<li data-start="5102" data-end="5214">
+<p data-start="5105" data-end="5137"><strong data-start="5105" data-end="5137">Nature of Product or Service</strong></p>
+<ul data-start="5141" data-end="5214">
+<li data-start="5141" data-end="5176">
+<p data-start="5143" data-end="5176">Perishable goods → multi-location</p>
+</li>
+<li data-start="5180" data-end="5214">
+<p data-start="5182" data-end="5214">Heavy industry → single location</p>
+</li>
+</ul>
+</li>
+<li data-start="5216" data-end="5315">
+<p data-start="5219" data-end="5237"><strong data-start="5219" data-end="5237">Demand Pattern</strong></p>
+<ul data-start="5241" data-end="5315">
+<li data-start="5241" data-end="5274">
+<p data-start="5243" data-end="5274">Stable demand → single location</p>
+</li>
+<li data-start="5278" data-end="5315">
+<p data-start="5280" data-end="5315">Fluctuating demand → multi-location</p>
+</li>
+</ul>
+</li>
+<li data-start="5317" data-end="5429">
+<p data-start="5320" data-end="5344"><strong data-start="5320" data-end="5344">Competitive Strategy</strong></p>
+<ul data-start="5348" data-end="5429">
+<li data-start="5348" data-end="5383">
+<p data-start="5350" data-end="5383">Cost leadership → single location</p>
+</li>
+<li data-start="5387" data-end="5429">
+<p data-start="5389" data-end="5429">Differentiation/service → multi-location</p>
+</li>
+</ul>
+</li>
+<li data-start="5431" data-end="5480">
+<p data-start="5434" data-end="5453"><strong data-start="5434" data-end="5453">Expansion Plans</strong></p>
+<ul data-start="5457" data-end="5480">
+<li data-start="5457" data-end="5480">
+<p data-start="5459" data-end="5480">Long-term scalability</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="5482" data-end="5485">
+<h3 data-start="5487" data-end="5521"><strong data-start="5491" data-end="5521">Decision Flow (Text-Based)</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="5523" data-end="5617"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Market Spread?
+   ├── Concentrated → Single </span><span><span class="hljs-keyword">Location</span></span><span>
+   └── Dispersed → Multi-</span><span><span class="hljs-keyword">location</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="5619" data-end="5622">
+<h2 data-start="5624" data-end="5656"><strong data-start="5627" data-end="5656">Overall Summary of Part 2</strong></h2>
+<ul data-start="5657" data-end="5875">
+<li data-start="5657" data-end="5712">
+<p data-start="5659" data-end="5712">Facility installation involves <strong data-start="5690" data-end="5712">strategic planning</strong></p>
+</li>
+<li data-start="5713" data-end="5764">
+<p data-start="5715" data-end="5764">Single location focuses on <strong data-start="5742" data-end="5764">economies of scale</strong></p>
+</li>
+<li data-start="5765" data-end="5818">
+<p data-start="5767" data-end="5818">Multi-location focuses on <strong data-start="5793" data-end="5818">market responsiveness</strong></p>
+</li>
+<li data-start="5819" data-end="5875">
+<p data-start="5821" data-end="5875">Choice depends on <strong data-start="5839" data-end="5875">cost, risk, demand, and strategy</strong></p>
+</li>
+</ul>
+<hr data-start="5877" data-end="5880">
+<h3 data-start="5882" data-end="5919"><strong data-start="5886" data-end="5917"><em data-start="5888" data-end="5915">End of Unit III – Part 2.</em></strong></h3>
+<p data-start="5920" data-end="6000" data-is-last-node="" data-is-only-node=""><strong data-start="5920" data-end="6000" data-is-last-node="">Continue to <em data-start="5934" data-end="5953">Unit III – Part 3</em> (Principles and Types of Facilities Layout)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="2b01e38e-2b55-455e-b2d3-76282c48cbca" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="91">
+<p data-start="2" data-end="91"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="57">Unit III – Facilities Location &amp; Layout</strong><br data-start="57" data-end="60">
+<strong data-start="62" data-end="91">Part 3 of ~3 (Final Part)</strong></p>
+</blockquote>
+<hr data-start="93" data-end="96">
+<h2 data-start="98" data-end="152"><strong data-start="101" data-end="152">UNIT III: FACILITIES LOCATION &amp; LAYOUT – PART 3</strong></h2>
+<p data-start="154" data-end="227">This final part of Unit III focuses on <strong data-start="193" data-end="212">Facility Layout</strong>, specifically:</p>
+<ul data-start="228" data-end="294">
+<li data-start="228" data-end="263">
+<p data-start="230" data-end="263"><strong data-start="230" data-end="263">Principles of Facility Layout</strong></p>
+</li>
+<li data-start="264" data-end="294">
+<p data-start="266" data-end="294"><strong data-start="266" data-end="294">Types of Facility Layout</strong></p>
+</li>
+</ul>
+<p data-start="296" data-end="366">These topics are <strong data-start="313" data-end="355">very frequently asked theory questions</strong>, often as:</p>
+<ul data-start="367" data-end="484">
+<li data-start="367" data-end="413">
+<p data-start="369" data-end="413"><em data-start="369" data-end="411">“Explain the principles of plant layout”</em></p>
+</li>
+<li data-start="414" data-end="484">
+<p data-start="416" data-end="484"><em data-start="416" data-end="484">“Discuss types of facility layout with advantages and limitations”</em></p>
+</li>
+</ul>
+<hr data-start="486" data-end="489">
+<h2 data-start="491" data-end="516"><strong data-start="494" data-end="516">9. Facility Layout</strong></h2>
+<h3 data-start="518" data-end="538"><strong data-start="522" data-end="538">Introduction</strong></h3>
+<p data-start="539" data-end="727">Facility layout refers to the <strong data-start="569" data-end="606">physical arrangement of resources</strong> such as machines, equipment, workstations, storage areas, and service facilities within a plant or service organization.</p>
+<p data-start="729" data-end="751">A good layout ensures:</p>
+<ul data-start="752" data-end="809">
+<li data-start="752" data-end="773">
+<p data-start="754" data-end="773">Smooth flow of work</p>
+</li>
+<li data-start="774" data-end="788">
+<p data-start="776" data-end="788">Minimum cost</p>
+</li>
+<li data-start="789" data-end="809">
+<p data-start="791" data-end="809">Maximum efficiency</p>
+</li>
+</ul>
+<hr data-start="811" data-end="814">
+<h3 data-start="816" data-end="836"><strong data-start="820" data-end="836">Key Concepts</strong></h3>
+<ul data-start="837" data-end="915">
+<li data-start="837" data-end="854">
+<p data-start="839" data-end="854">Material flow</p>
+</li>
+<li data-start="855" data-end="876">
+<p data-start="857" data-end="876">Space utilization</p>
+</li>
+<li data-start="877" data-end="899">
+<p data-start="879" data-end="899">Safety and comfort</p>
+</li>
+<li data-start="900" data-end="915">
+<p data-start="902" data-end="915">Flexibility</p>
+</li>
+</ul>
+<hr data-start="917" data-end="920">
+<h3 data-start="922" data-end="940"><strong data-start="926" data-end="940">Definition</strong></h3>
+<blockquote data-start="941" data-end="1132">
+<p data-start="943" data-end="1132"><strong data-start="943" data-end="1132">Facility Layout is the physical arrangement of production facilities, including machines, equipment, workstations, and storage areas, in order to ensure smooth workflow at minimum cost.</strong></p>
+</blockquote>
+<hr data-start="1134" data-end="1137">
+<h2 data-start="1139" data-end="1179"><strong data-start="1142" data-end="1179">10. Principles of Facility Layout</strong></h2>
+<h3 data-start="1181" data-end="1201"><strong data-start="1185" data-end="1201">Introduction</strong></h3>
+<p data-start="1202" data-end="1302">The principles of facility layout act as <strong data-start="1243" data-end="1257">guidelines</strong> to design an efficient and effective layout.</p>
+<hr data-start="1304" data-end="1307">
+<h3 data-start="1309" data-end="1333"><strong data-start="1313" data-end="1333">Major Principles</strong></h3>
+<hr data-start="1335" data-end="1338">
+<h3 data-start="1340" data-end="1375"><strong data-start="1344" data-end="1375">1. Principle of Integration</strong></h3>
+<ul data-start="1376" data-end="1506">
+<li data-start="1376" data-end="1506">
+<p data-start="1378" data-end="1398">All factors such as:</p>
+<ul data-start="1401" data-end="1506">
+<li data-start="1401" data-end="1406">
+<p data-start="1403" data-end="1406">Men</p>
+</li>
+<li data-start="1409" data-end="1419">
+<p data-start="1411" data-end="1419">Machines</p>
+</li>
+<li data-start="1422" data-end="1433">
+<p data-start="1424" data-end="1433">Materials</p>
+</li>
+<li data-start="1436" data-end="1506">
+<p data-start="1438" data-end="1506">Methods<br data-start="1445" data-end="1448">
+should be integrated into a <strong data-start="1476" data-end="1505">single coordinated system</strong>.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p data-start="1508" data-end="1556">📌 Objective: Smooth and uninterrupted workflow.</p>
+<hr data-start="1558" data-end="1561">
+<h3 data-start="1563" data-end="1603"><strong data-start="1567" data-end="1603">2. Principle of Minimum Movement</strong></h3>
+<ul data-start="1604" data-end="1731">
+<li data-start="1604" data-end="1672">
+<p data-start="1606" data-end="1672">Distance travelled by materials and workers should be <strong data-start="1660" data-end="1671">minimum</strong>.</p>
+</li>
+<li data-start="1673" data-end="1731">
+<p data-start="1675" data-end="1683">Reduces:</p>
+<ul data-start="1686" data-end="1731">
+<li data-start="1686" data-end="1710">
+<p data-start="1688" data-end="1710">Material handling cost</p>
+</li>
+<li data-start="1713" data-end="1719">
+<p data-start="1715" data-end="1719">Time</p>
+</li>
+<li data-start="1722" data-end="1731">
+<p data-start="1724" data-end="1731">Fatigue</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="1733" data-end="1736">
+<h3 data-start="1738" data-end="1773"><strong data-start="1742" data-end="1773">3. Principle of Smooth Flow</strong></h3>
+<ul data-start="1774" data-end="1874">
+<li data-start="1774" data-end="1842">
+<p data-start="1776" data-end="1842">Materials should move in a <strong data-start="1803" data-end="1820">straight line</strong> without backtracking.</p>
+</li>
+<li data-start="1843" data-end="1874">
+<p data-start="1845" data-end="1874">Avoids congestion and delays.</p>
+</li>
+</ul>
+<hr data-start="1876" data-end="1879">
+<h3 data-start="1881" data-end="1932"><strong data-start="1885" data-end="1932">4. Principle of Effective Space Utilization</strong></h3>
+<ul data-start="1933" data-end="2017">
+<li data-start="1933" data-end="1984">
+<p data-start="1935" data-end="1944">Use both:</p>
+<ul data-start="1947" data-end="1984">
+<li data-start="1947" data-end="1965">
+<p data-start="1949" data-end="1965">Horizontal space</p>
+</li>
+<li data-start="1968" data-end="1984">
+<p data-start="1970" data-end="1984">Vertical space</p>
+</li>
+</ul>
+</li>
+<li data-start="1985" data-end="2017">
+<p data-start="1987" data-end="2017">Avoid overcrowding or wastage.</p>
+</li>
+</ul>
+<hr data-start="2019" data-end="2022">
+<h3 data-start="2024" data-end="2066"><strong data-start="2028" data-end="2066">5. Principle of Safety and Comfort</strong></h3>
+<ul data-start="2067" data-end="2150">
+<li data-start="2067" data-end="2092">
+<p data-start="2069" data-end="2092">Safe working conditions</p>
+</li>
+<li data-start="2093" data-end="2126">
+<p data-start="2095" data-end="2126">Proper lighting and ventilation</p>
+</li>
+<li data-start="2127" data-end="2150">
+<p data-start="2129" data-end="2150">Reduced accident risk</p>
+</li>
+</ul>
+<hr data-start="2152" data-end="2155">
+<h3 data-start="2157" data-end="2192"><strong data-start="2161" data-end="2192">6. Principle of Flexibility</strong></h3>
+<ul data-start="2193" data-end="2269">
+<li data-start="2193" data-end="2269">
+<p data-start="2195" data-end="2215">Layout should allow:</p>
+<ul data-start="2218" data-end="2269">
+<li data-start="2218" data-end="2236">
+<p data-start="2220" data-end="2236">Future expansion</p>
+</li>
+<li data-start="2239" data-end="2269">
+<p data-start="2241" data-end="2269">Changes in product or volume</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="2271" data-end="2274">
+<h3 data-start="2276" data-end="2318"><strong data-start="2280" data-end="2318">7. Principle of Maximum Visibility</strong></h3>
+<ul data-start="2319" data-end="2374">
+<li data-start="2319" data-end="2349">
+<p data-start="2321" data-end="2349">Easy supervision and control</p>
+</li>
+<li data-start="2350" data-end="2374">
+<p data-start="2352" data-end="2374">Improves communication</p>
+</li>
+</ul>
+<hr data-start="2376" data-end="2379">
+<h3 data-start="2381" data-end="2424"><strong data-start="2385" data-end="2424">Summary Table: Principles of Layout</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2426" data-end="2652" class="w-fit min-w-(--thread-content-width)"><thead data-start="2426" data-end="2451"><tr data-start="2426" data-end="2451"><th data-start="2426" data-end="2438" data-col-size="sm">Principle</th><th data-start="2438" data-end="2451" data-col-size="sm">Objective</th></tr></thead><tbody data-start="2464" data-end="2652"><tr data-start="2464" data-end="2494"><td data-start="2464" data-end="2478" data-col-size="sm">Integration</td><td data-start="2478" data-end="2494" data-col-size="sm">Coordination</td></tr><tr data-start="2495" data-end="2532"><td data-start="2495" data-end="2514" data-col-size="sm">Minimum movement</td><td data-start="2514" data-end="2532" data-col-size="sm">Cost reduction</td></tr><tr data-start="2533" data-end="2561"><td data-start="2533" data-end="2547" data-col-size="sm">Smooth flow</td><td data-start="2547" data-end="2561" data-col-size="sm">Efficiency</td></tr><tr data-start="2562" data-end="2593"><td data-start="2562" data-end="2582" data-col-size="sm">Space utilization</td><td data-start="2582" data-end="2593" data-col-size="sm">Economy</td></tr><tr data-start="2594" data-end="2621"><td data-start="2594" data-end="2603" data-col-size="sm">Safety</td><td data-start="2603" data-end="2621" data-col-size="sm">Worker welfare</td></tr><tr data-start="2622" data-end="2652"><td data-start="2622" data-end="2636" data-col-size="sm">Flexibility</td><td data-start="2636" data-end="2652" data-col-size="sm">Adaptability</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2654" data-end="2657">
+<h2 data-start="2659" data-end="2694"><strong data-start="2662" data-end="2694">11. Types of Facility Layout</strong></h2>
+<h3 data-start="2696" data-end="2716"><strong data-start="2700" data-end="2716">Introduction</strong></h3>
+<p data-start="2717" data-end="2749">The choice of layout depends on:</p>
+<ul data-start="2750" data-end="2834">
+<li data-start="2750" data-end="2770">
+<p data-start="2752" data-end="2770">Type of production</p>
+</li>
+<li data-start="2771" data-end="2791">
+<p data-start="2773" data-end="2791">Volume and variety</p>
+</li>
+<li data-start="2792" data-end="2811">
+<p data-start="2794" data-end="2811">Nature of product</p>
+</li>
+<li data-start="2812" data-end="2834">
+<p data-start="2814" data-end="2834">Process requirements</p>
+</li>
+</ul>
+<hr data-start="2836" data-end="2839">
+<h3 data-start="2841" data-end="2870"><strong data-start="2845" data-end="2870">Major Types of Layout</strong></h3>
+<ol data-start="2872" data-end="2979">
+<li data-start="2872" data-end="2893">
+<p data-start="2875" data-end="2893"><strong data-start="2875" data-end="2893">Process Layout</strong></p>
+</li>
+<li data-start="2894" data-end="2915">
+<p data-start="2897" data-end="2915"><strong data-start="2897" data-end="2915">Product Layout</strong></p>
+</li>
+<li data-start="2916" data-end="2944">
+<p data-start="2919" data-end="2944"><strong data-start="2919" data-end="2944">Fixed Position Layout</strong></p>
+</li>
+<li data-start="2945" data-end="2979">
+<p data-start="2948" data-end="2979"><strong data-start="2948" data-end="2979">Combination (Hybrid) Layout</strong></p>
+</li>
+</ol>
+<hr data-start="2981" data-end="2984">
+<h2 data-start="2986" data-end="3032"><strong data-start="2989" data-end="3032">11.1 Process Layout (Functional Layout)</strong></h2>
+<h3 data-start="3034" data-end="3054"><strong data-start="3038" data-end="3054">Introduction</strong></h3>
+<p data-start="3055" data-end="3138">In process layout, <strong data-start="3074" data-end="3137">machines performing similar operations are grouped together</strong>.</p>
+<hr data-start="3140" data-end="3143">
+<h3 data-start="3145" data-end="3168"><strong data-start="3149" data-end="3168">Characteristics</strong></h3>
+<ul data-start="3169" data-end="3251">
+<li data-start="3169" data-end="3200">
+<p data-start="3171" data-end="3200">Machines arranged by function</p>
+</li>
+<li data-start="3201" data-end="3251">
+<p data-start="3203" data-end="3251">Suitable for low-volume, high-variety production</p>
+</li>
+</ul>
+<hr data-start="3253" data-end="3256">
+<h3 data-start="3258" data-end="3273"><strong data-start="3262" data-end="3273">Example</strong></h3>
+<ul data-start="3274" data-end="3333">
+<li data-start="3274" data-end="3288">
+<p data-start="3276" data-end="3288">Machine shop</p>
+</li>
+<li data-start="3289" data-end="3333">
+<p data-start="3291" data-end="3333">Hospital departments (X-ray, surgery, lab)</p>
+</li>
+</ul>
+<hr data-start="3335" data-end="3338">
+<h3 data-start="3340" data-end="3373"><strong data-start="3344" data-end="3373">Text-Based Representation</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="3375" data-end="3440"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">nginx</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-attribute">Lathe</span></span><span> Dept → Drilling Dept → Milling Dept → Grinding Dept
+</span></span></code></div></div></pre>
+<hr data-start="3442" data-end="3445">
+<h3 data-start="3447" data-end="3465"><strong data-start="3451" data-end="3465">Advantages</strong></h3>
+<ul data-start="3466" data-end="3544">
+<li data-start="3466" data-end="3484">
+<p data-start="3468" data-end="3484">High flexibility</p>
+</li>
+<li data-start="3485" data-end="3517">
+<p data-start="3487" data-end="3517">Better utilization of machines</p>
+</li>
+<li data-start="3518" data-end="3544">
+<p data-start="3520" data-end="3544">Suitable for custom jobs</p>
+</li>
+</ul>
+<hr data-start="3546" data-end="3549">
+<h3 data-start="3551" data-end="3570"><strong data-start="3555" data-end="3570">Limitations</strong></h3>
+<ul data-start="3571" data-end="3646">
+<li data-start="3571" data-end="3600">
+<p data-start="3573" data-end="3600">High material handling cost</p>
+</li>
+<li data-start="3601" data-end="3621">
+<p data-start="3603" data-end="3621">Complex scheduling</p>
+</li>
+<li data-start="3622" data-end="3646">
+<p data-start="3624" data-end="3646">Longer production time</p>
+</li>
+</ul>
+<hr data-start="3648" data-end="3651">
+<h3 data-start="3653" data-end="3668"><strong data-start="3657" data-end="3668">Summary</strong></h3>
+<p data-start="3669" data-end="3732">Process layout emphasizes <strong data-start="3695" data-end="3720">functional efficiency</strong>, not speed.</p>
+<hr data-start="3734" data-end="3737">
+<h2 data-start="3739" data-end="3779"><strong data-start="3742" data-end="3779">11.2 Product Layout (Line Layout)</strong></h2>
+<h3 data-start="3781" data-end="3801"><strong data-start="3785" data-end="3801">Introduction</strong></h3>
+<p data-start="3802" data-end="3887">In product layout, machines are arranged <strong data-start="3843" data-end="3886">according to the sequence of operations</strong>.</p>
+<hr data-start="3889" data-end="3892">
+<h3 data-start="3894" data-end="3917"><strong data-start="3898" data-end="3917">Characteristics</strong></h3>
+<ul data-start="3918" data-end="3984">
+<li data-start="3918" data-end="3935">
+<p data-start="3920" data-end="3935">Continuous flow</p>
+</li>
+<li data-start="3936" data-end="3960">
+<p data-start="3938" data-end="3960">High-volume production</p>
+</li>
+<li data-start="3961" data-end="3984">
+<p data-start="3963" data-end="3984">Standardized products</p>
+</li>
+</ul>
+<hr data-start="3986" data-end="3989">
+<h3 data-start="3991" data-end="4006"><strong data-start="3995" data-end="4006">Example</strong></h3>
+<ul data-start="4007" data-end="4056">
+<li data-start="4007" data-end="4033">
+<p data-start="4009" data-end="4033">Automobile assembly line</p>
+</li>
+<li data-start="4034" data-end="4056">
+<p data-start="4036" data-end="4056">Electronics assembly</p>
+</li>
+</ul>
+<hr data-start="4058" data-end="4061">
+<h3 data-start="4063" data-end="4096"><strong data-start="4067" data-end="4096">Text-Based Representation</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="4098" data-end="4159"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">nginx</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-attribute">Operation</span></span><span> </span><span><span class="hljs-number">1</span></span><span> → Operation </span><span><span class="hljs-number">2</span></span><span> → Operation </span><span><span class="hljs-number">3</span></span><span> → Operation </span><span><span class="hljs-number">4</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4161" data-end="4164">
+<h3 data-start="4166" data-end="4184"><strong data-start="4170" data-end="4184">Advantages</strong></h3>
+<ul data-start="4185" data-end="4257">
+<li data-start="4185" data-end="4213">
+<p data-start="4187" data-end="4213">Low material handling cost</p>
+</li>
+<li data-start="4214" data-end="4238">
+<p data-start="4216" data-end="4238">Short production cycle</p>
+</li>
+<li data-start="4239" data-end="4257">
+<p data-start="4241" data-end="4257">Easy supervision</p>
+</li>
+</ul>
+<hr data-start="4259" data-end="4262">
+<h3 data-start="4264" data-end="4283"><strong data-start="4268" data-end="4283">Limitations</strong></h3>
+<ul data-start="4284" data-end="4364">
+<li data-start="4284" data-end="4306">
+<p data-start="4286" data-end="4306">Very low flexibility</p>
+</li>
+<li data-start="4307" data-end="4332">
+<p data-start="4309" data-end="4332">High initial investment</p>
+</li>
+<li data-start="4333" data-end="4364">
+<p data-start="4335" data-end="4364">Breakdown affects entire line</p>
+</li>
+</ul>
+<hr data-start="4366" data-end="4369">
+<h3 data-start="4371" data-end="4386"><strong data-start="4375" data-end="4386">Summary</strong></h3>
+<p data-start="4387" data-end="4435">Product layout is ideal for <strong data-start="4415" data-end="4434">mass production</strong>.</p>
+<hr data-start="4437" data-end="4440">
+<h2 data-start="4442" data-end="4475"><strong data-start="4445" data-end="4475">11.3 Fixed Position Layout</strong></h2>
+<h3 data-start="4477" data-end="4497"><strong data-start="4481" data-end="4497">Introduction</strong></h3>
+<p data-start="4498" data-end="4585">In fixed position layout, the <strong data-start="4528" data-end="4558">product remains stationary</strong>, and resources move to it.</p>
+<hr data-start="4587" data-end="4590">
+<h3 data-start="4592" data-end="4615"><strong data-start="4596" data-end="4615">Characteristics</strong></h3>
+<ul data-start="4616" data-end="4680">
+<li data-start="4616" data-end="4644">
+<p data-start="4618" data-end="4644">Product is large and heavy</p>
+</li>
+<li data-start="4645" data-end="4680">
+<p data-start="4647" data-end="4680">Resources are brought to the site</p>
+</li>
+</ul>
+<hr data-start="4682" data-end="4685">
+<h3 data-start="4687" data-end="4703"><strong data-start="4691" data-end="4703">Examples</strong></h3>
+<ul data-start="4704" data-end="4767">
+<li data-start="4704" data-end="4718">
+<p data-start="4706" data-end="4718">Shipbuilding</p>
+</li>
+<li data-start="4719" data-end="4743">
+<p data-start="4721" data-end="4743">Aircraft manufacturing</p>
+</li>
+<li data-start="4744" data-end="4767">
+<p data-start="4746" data-end="4767">Construction projects</p>
+</li>
+</ul>
+<hr data-start="4769" data-end="4772">
+<h3 data-start="4774" data-end="4792"><strong data-start="4778" data-end="4792">Advantages</strong></h3>
+<ul data-start="4793" data-end="4842">
+<li data-start="4793" data-end="4823">
+<p data-start="4795" data-end="4823">No movement of bulky product</p>
+</li>
+<li data-start="4824" data-end="4842">
+<p data-start="4826" data-end="4842">High flexibility</p>
+</li>
+</ul>
+<hr data-start="4844" data-end="4847">
+<h3 data-start="4849" data-end="4868"><strong data-start="4853" data-end="4868">Limitations</strong></h3>
+<ul data-start="4869" data-end="4931">
+<li data-start="4869" data-end="4891">
+<p data-start="4871" data-end="4891">Complex coordination</p>
+</li>
+<li data-start="4892" data-end="4903">
+<p data-start="4894" data-end="4903">High cost</p>
+</li>
+<li data-start="4904" data-end="4931">
+<p data-start="4906" data-end="4931">Low equipment utilization</p>
+</li>
+</ul>
+<hr data-start="4933" data-end="4936">
+<h3 data-start="4938" data-end="4953"><strong data-start="4942" data-end="4953">Summary</strong></h3>
+<p data-start="4954" data-end="5011">Fixed position layout suits <strong data-start="4982" data-end="5010">project-based production</strong>.</p>
+<hr data-start="5013" data-end="5016">
+<h2 data-start="5018" data-end="5057"><strong data-start="5021" data-end="5057">11.4 Combination (Hybrid) Layout</strong></h2>
+<h3 data-start="5059" data-end="5079"><strong data-start="5063" data-end="5079">Introduction</strong></h3>
+<p data-start="5080" data-end="5158">Combination layout uses <strong data-start="5104" data-end="5136">more than one type of layout</strong> in the same facility.</p>
+<hr data-start="5160" data-end="5163">
+<h3 data-start="5165" data-end="5181"><strong data-start="5169" data-end="5181">Examples</strong></h3>
+<ul data-start="5182" data-end="5276">
+<li data-start="5182" data-end="5276">
+<p data-start="5184" data-end="5201">Automobile plant:</p>
+<ul data-start="5204" data-end="5276">
+<li data-start="5204" data-end="5244">
+<p data-start="5206" data-end="5244">Process layout for parts manufacturing</p>
+</li>
+<li data-start="5247" data-end="5276">
+<p data-start="5249" data-end="5276">Product layout for assembly</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="5278" data-end="5281">
+<h3 data-start="5283" data-end="5301"><strong data-start="5287" data-end="5301">Advantages</strong></h3>
+<ul data-start="5302" data-end="5369">
+<li data-start="5302" data-end="5347">
+<p data-start="5304" data-end="5347">Best use of advantages of different layouts</p>
+</li>
+<li data-start="5348" data-end="5369">
+<p data-start="5350" data-end="5369">Greater flexibility</p>
+</li>
+</ul>
+<hr data-start="5371" data-end="5374">
+<h3 data-start="5376" data-end="5395"><strong data-start="5380" data-end="5395">Limitations</strong></h3>
+<ul data-start="5396" data-end="5426">
+<li data-start="5396" data-end="5426">
+<p data-start="5398" data-end="5426">Complex planning and control</p>
+</li>
+</ul>
+<hr data-start="5428" data-end="5431">
+<h3 data-start="5433" data-end="5448"><strong data-start="5437" data-end="5448">Summary</strong></h3>
+<p data-start="5449" data-end="5515">Combination layout is <strong data-start="5471" data-end="5514">most commonly used in modern industries</strong>.</p>
+<hr data-start="5517" data-end="5520">
+<h2 data-start="5522" data-end="5559"><strong data-start="5525" data-end="5559">12. Comparison of Layout Types</strong></h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5561" data-end="5830" class="w-fit min-w-(--thread-content-width)"><thead data-start="5561" data-end="5607"><tr data-start="5561" data-end="5607"><th data-start="5561" data-end="5569" data-col-size="sm">Basis</th><th data-start="5569" data-end="5579" data-col-size="sm">Process</th><th data-start="5579" data-end="5589" data-col-size="sm">Product</th><th data-start="5589" data-end="5607" data-col-size="sm">Fixed Position</th></tr></thead><tbody data-start="5630" data-end="5830"><tr data-start="5630" data-end="5664"><td data-start="5630" data-end="5639" data-col-size="sm">Volume</td><td data-start="5639" data-end="5645" data-col-size="sm">Low</td><td data-start="5645" data-end="5652" data-col-size="sm">High</td><td data-start="5652" data-end="5664" data-col-size="sm">Very low</td></tr><tr data-start="5665" data-end="5701"><td data-start="5665" data-end="5675" data-col-size="sm">Variety</td><td data-col-size="sm" data-start="5675" data-end="5682">High</td><td data-col-size="sm" data-start="5682" data-end="5688">Low</td><td data-col-size="sm" data-start="5688" data-end="5701">Very high</td></tr><tr data-start="5702" data-end="5742"><td data-start="5702" data-end="5716" data-col-size="sm">Flexibility</td><td data-start="5716" data-end="5723" data-col-size="sm">High</td><td data-col-size="sm" data-start="5723" data-end="5729">Low</td><td data-col-size="sm" data-start="5729" data-end="5742">Very high</td></tr><tr data-start="5743" data-end="5785"><td data-start="5743" data-end="5759" data-col-size="sm">Cost per unit</td><td data-start="5759" data-end="5766" data-col-size="sm">High</td><td data-start="5766" data-end="5772" data-col-size="sm">Low</td><td data-start="5772" data-end="5785" data-col-size="sm">Very high</td></tr><tr data-start="5786" data-end="5830"><td data-start="5786" data-end="5806" data-col-size="sm">Material movement</td><td data-start="5806" data-end="5813" data-col-size="sm">High</td><td data-start="5813" data-end="5819" data-col-size="sm">Low</td><td data-start="5819" data-end="5830" data-col-size="sm">Minimal</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5832" data-end="5835">
+<h2 data-start="5837" data-end="5868"><strong data-start="5840" data-end="5868">UNIT III – FINAL SUMMARY</strong></h2>
+<ul data-start="5870" data-end="6103">
+<li data-start="5870" data-end="5928">
+<p data-start="5872" data-end="5928">Facility layout affects <strong data-start="5896" data-end="5928">efficiency, cost, and safety</strong></p>
+</li>
+<li data-start="5929" data-end="5973">
+<p data-start="5931" data-end="5973">Layout principles guide <strong data-start="5955" data-end="5973">optimal design</strong></p>
+</li>
+<li data-start="5974" data-end="6031">
+<p data-start="5976" data-end="6031">Different layouts suit <strong data-start="5999" data-end="6031">different production systems</strong></p>
+</li>
+<li data-start="6032" data-end="6103">
+<p data-start="6034" data-end="6103">Proper layout selection improves <strong data-start="6067" data-end="6103">productivity and competitiveness</strong></p>
+</li>
+</ul>
+<hr data-start="6105" data-end="6108">
+<h2 data-start="6110" data-end="6136"><strong data-start="6113" data-end="6136">UNIT III COMPLETE ✅</strong></h2>
+<h3 data-start="6138" data-end="6162"><strong data-start="6142" data-end="6162">Review Questions</strong></h3>
+<p data-start="6164" data-end="6180"><strong data-start="6164" data-end="6180">Short Answer</strong></p>
+<ol data-start="6181" data-end="6255">
+<li data-start="6181" data-end="6208">
+<p data-start="6184" data-end="6208">Define facility layout</p>
+</li>
+<li data-start="6209" data-end="6255">
+<p data-start="6212" data-end="6255">State any four principles of plant layout</p>
+</li>
+</ol>
+<p data-start="6257" data-end="6272"><strong data-start="6257" data-end="6272">Descriptive</strong></p>
+<ol data-start="6273" data-end="6393">
+<li data-start="6273" data-end="6310">
+<p data-start="6276" data-end="6310">Explain types of facility layout</p>
+</li>
+<li data-start="6311" data-end="6350">
+<p data-start="6314" data-end="6350">Compare process and product layout</p>
+</li>
+<li data-start="6351" data-end="6393">
+<p data-start="6354" data-end="6393">Discuss importance of facility layout</p>
+</li>
+</ol>
+<hr data-start="6395" data-end="6398">
+<h3 data-start="6400" data-end="6417"><strong data-start="6404" data-end="6417">Next Step</strong></h3>
+<p data-start="6418" data-end="6509" data-is-last-node="" data-is-only-node="">👉 <strong data-start="6421" data-end="6509" data-is-last-node="">Shall I move to <em data-start="6439" data-end="6506">Unit IV – Types of Industries &amp; Methods of Manufacturing (Part 1)</em>?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

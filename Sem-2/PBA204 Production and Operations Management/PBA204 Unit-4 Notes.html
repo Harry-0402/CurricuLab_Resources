@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="6f687f2c-ea6d-46b7-8aa3-d30e85fa30db" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="105">
+<p data-start="2" data-end="105"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="74">Unit IV – Types of Industries &amp; Methods of Manufacturing</strong><br data-start="74" data-end="77">
+<strong data-start="79" data-end="105">Part 1 of ~3 (Approx.)</strong></p>
+</blockquote>
+<hr data-start="107" data-end="110">
+<h2 data-start="112" data-end="183"><strong data-start="115" data-end="183">UNIT IV: TYPES OF INDUSTRIES &amp; METHODS OF MANUFACTURING – PART 1</strong></h2>
+<p data-start="185" data-end="394">Unit IV explains <strong data-start="202" data-end="235">how industries are classified</strong> and how <strong data-start="244" data-end="289">manufacturing and services are integrated</strong> in modern business systems.<br data-start="317" data-end="320">
+This unit is <strong data-start="333" data-end="362">conceptual and analytical</strong>, and questions often appear as:</p>
+<ul data-start="395" data-end="522">
+<li data-start="395" data-end="430">
+<p data-start="397" data-end="430"><em data-start="397" data-end="428">“Explain types of industries”</em></p>
+</li>
+<li data-start="431" data-end="488">
+<p data-start="433" data-end="488"><em data-start="433" data-end="486">“Discuss integration of manufacturing and services”</em></p>
+</li>
+<li data-start="489" data-end="522">
+<p data-start="491" data-end="522"><em data-start="491" data-end="522">“Explain scale of operations”</em></p>
+</li>
+</ul>
+<hr data-start="524" data-end="527">
+<h2 data-start="529" data-end="558"><strong data-start="532" data-end="558">1. Types of Industries</strong></h2>
+<h3 data-start="560" data-end="580"><strong data-start="564" data-end="580">Introduction</strong></h3>
+<p data-start="581" data-end="721">Industries are classified to <strong data-start="610" data-end="649">understand the nature of production</strong>, scale of operations, resource requirements, and management challenges.</p>
+<p data-start="723" data-end="818">Different industries require <strong data-start="752" data-end="787">different operations strategies</strong>, layouts, and control systems.</p>
+<hr data-start="820" data-end="823">
+<h3 data-start="825" data-end="845"><strong data-start="829" data-end="845">Key Concepts</strong></h3>
+<ul data-start="846" data-end="946">
+<li data-start="846" data-end="875">
+<p data-start="848" data-end="875">Industrial classification</p>
+</li>
+<li data-start="876" data-end="896">
+<p data-start="878" data-end="896">Nature of output</p>
+</li>
+<li data-start="897" data-end="921">
+<p data-start="899" data-end="921">Degree of processing</p>
+</li>
+<li data-start="922" data-end="946">
+<p data-start="924" data-end="946">Customer orientation</p>
+</li>
+</ul>
+<hr data-start="948" data-end="951">
+<h2 data-start="953" data-end="992"><strong data-start="956" data-end="992">1.1 Classification of Industries</strong></h2>
+<p data-start="994" data-end="1045">Industries can be classified on <strong data-start="1026" data-end="1044">multiple bases</strong>.</p>
+<hr data-start="1047" data-end="1050">
+<h2 data-start="1052" data-end="1102"><strong data-start="1055" data-end="1102">A. Classification Based on Nature of Output</strong></h2>
+<h3 data-start="1104" data-end="1133"><strong data-start="1108" data-end="1133">1. Primary Industries</strong></h3>
+<ul data-start="1134" data-end="1185">
+<li data-start="1134" data-end="1161">
+<p data-start="1136" data-end="1161">Extract natural resources</p>
+</li>
+<li data-start="1162" data-end="1185">
+<p data-start="1164" data-end="1185">Provide raw materials</p>
+</li>
+</ul>
+<p data-start="1187" data-end="1200"><strong data-start="1187" data-end="1200">Examples:</strong></p>
+<ul data-start="1201" data-end="1239">
+<li data-start="1201" data-end="1216">
+<p data-start="1203" data-end="1216">Agriculture</p>
+</li>
+<li data-start="1217" data-end="1227">
+<p data-start="1219" data-end="1227">Mining</p>
+</li>
+<li data-start="1228" data-end="1239">
+<p data-start="1230" data-end="1239">Fishing</p>
+</li>
+</ul>
+<p data-start="1241" data-end="1283">📌 Output is used by secondary industries.</p>
+<hr data-start="1285" data-end="1288">
+<h3 data-start="1290" data-end="1321"><strong data-start="1294" data-end="1321">2. Secondary Industries</strong></h3>
+<ul data-start="1322" data-end="1382">
+<li data-start="1322" data-end="1382">
+<p data-start="1324" data-end="1382">Convert raw materials into finished or semi-finished goods</p>
+</li>
+</ul>
+<p data-start="1384" data-end="1397"><strong data-start="1384" data-end="1397">Examples:</strong></p>
+<ul data-start="1398" data-end="1432">
+<li data-start="1398" data-end="1415">
+<p data-start="1400" data-end="1415">Manufacturing</p>
+</li>
+<li data-start="1416" data-end="1432">
+<p data-start="1418" data-end="1432">Construction</p>
+</li>
+</ul>
+<hr data-start="1434" data-end="1437">
+<h3 data-start="1439" data-end="1490"><strong data-start="1443" data-end="1490">3. Tertiary Industries (Service Industries)</strong></h3>
+<ul data-start="1491" data-end="1536">
+<li data-start="1491" data-end="1536">
+<p data-start="1493" data-end="1536">Provide services rather than physical goods</p>
+</li>
+</ul>
+<p data-start="1538" data-end="1551"><strong data-start="1538" data-end="1551">Examples:</strong></p>
+<ul data-start="1552" data-end="1611">
+<li data-start="1552" data-end="1563">
+<p data-start="1554" data-end="1563">Banking</p>
+</li>
+<li data-start="1564" data-end="1582">
+<p data-start="1566" data-end="1582">Transportation</p>
+</li>
+<li data-start="1583" data-end="1597">
+<p data-start="1585" data-end="1597">Healthcare</p>
+</li>
+<li data-start="1598" data-end="1611">
+<p data-start="1600" data-end="1611">Education</p>
+</li>
+</ul>
+<hr data-start="1613" data-end="1616">
+<h3 data-start="1618" data-end="1657"><strong data-start="1622" data-end="1657">Summary Table: Nature of Output</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1659" data-end="1780" class="w-fit min-w-(--thread-content-width)"><thead data-start="1659" data-end="1685"><tr data-start="1659" data-end="1685"><th data-start="1659" data-end="1675" data-col-size="sm">Industry Type</th><th data-start="1675" data-end="1685" data-col-size="sm">Output</th></tr></thead><tbody data-start="1698" data-end="1780"><tr data-start="1698" data-end="1725"><td data-start="1698" data-end="1708" data-col-size="sm">Primary</td><td data-start="1708" data-end="1725" data-col-size="sm">Raw materials</td></tr><tr data-start="1726" data-end="1756"><td data-start="1726" data-end="1738" data-col-size="sm">Secondary</td><td data-start="1738" data-end="1756" data-col-size="sm">Finished goods</td></tr><tr data-start="1757" data-end="1780"><td data-start="1757" data-end="1768" data-col-size="sm">Tertiary</td><td data-start="1768" data-end="1780" data-col-size="sm">Services</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1782" data-end="1785">
+<h2 data-start="1787" data-end="1841"><strong data-start="1790" data-end="1841">B. Classification Based on Degree of Processing</strong></h2>
+<h3 data-start="1843" data-end="1875"><strong data-start="1847" data-end="1875">1. Analytical Industries</strong></h3>
+<ul data-start="1876" data-end="1928">
+<li data-start="1876" data-end="1928">
+<p data-start="1878" data-end="1928">Raw material is broken down into multiple products</p>
+</li>
+</ul>
+<p data-start="1930" data-end="1942"><strong data-start="1930" data-end="1942">Example:</strong></p>
+<ul data-start="1943" data-end="1979">
+<li data-start="1943" data-end="1979">
+<p data-start="1945" data-end="1979">Oil refinery (petrol, diesel, LPG)</p>
+</li>
+</ul>
+<hr data-start="1981" data-end="1984">
+<h3 data-start="1986" data-end="2017"><strong data-start="1990" data-end="2017">2. Synthetic Industries</strong></h3>
+<ul data-start="2018" data-end="2067">
+<li data-start="2018" data-end="2067">
+<p data-start="2020" data-end="2067">Multiple inputs combined to produce one product</p>
+</li>
+</ul>
+<p data-start="2069" data-end="2081"><strong data-start="2069" data-end="2081">Example:</strong></p>
+<ul data-start="2082" data-end="2116">
+<li data-start="2082" data-end="2092">
+<p data-start="2084" data-end="2092">Cement</p>
+</li>
+<li data-start="2093" data-end="2102">
+<p data-start="2095" data-end="2102">Paint</p>
+</li>
+<li data-start="2103" data-end="2116">
+<p data-start="2105" data-end="2116">Chemicals</p>
+</li>
+</ul>
+<hr data-start="2118" data-end="2121">
+<h3 data-start="2123" data-end="2155"><strong data-start="2127" data-end="2155">3. Processing Industries</strong></h3>
+<ul data-start="2156" data-end="2195">
+<li data-start="2156" data-end="2195">
+<p data-start="2158" data-end="2195">Raw material processed through stages</p>
+</li>
+</ul>
+<p data-start="2197" data-end="2209"><strong data-start="2197" data-end="2209">Example:</strong></p>
+<ul data-start="2210" data-end="2241">
+<li data-start="2210" data-end="2221">
+<p data-start="2212" data-end="2221">Textile</p>
+</li>
+<li data-start="2222" data-end="2231">
+<p data-start="2224" data-end="2231">Sugar</p>
+</li>
+<li data-start="2232" data-end="2241">
+<p data-start="2234" data-end="2241">Paper</p>
+</li>
+</ul>
+<hr data-start="2243" data-end="2246">
+<h3 data-start="2248" data-end="2278"><strong data-start="2252" data-end="2278">4. Assembly Industries</strong></h3>
+<ul data-start="2279" data-end="2320">
+<li data-start="2279" data-end="2320">
+<p data-start="2281" data-end="2320">Components assembled into final product</p>
+</li>
+</ul>
+<p data-start="2322" data-end="2334"><strong data-start="2322" data-end="2334">Example:</strong></p>
+<ul data-start="2335" data-end="2366">
+<li data-start="2335" data-end="2350">
+<p data-start="2337" data-end="2350">Automobiles</p>
+</li>
+<li data-start="2351" data-end="2366">
+<p data-start="2353" data-end="2366">Electronics</p>
+</li>
+</ul>
+<hr data-start="2368" data-end="2371">
+<h3 data-start="2373" data-end="2416"><strong data-start="2377" data-end="2416">Summary Table: Degree of Processing</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2418" data-end="2606" class="w-fit min-w-(--thread-content-width)"><thead data-start="2418" data-end="2435"><tr data-start="2418" data-end="2435"><th data-start="2418" data-end="2425" data-col-size="sm">Type</th><th data-start="2425" data-end="2435" data-col-size="sm">Nature</th></tr></thead><tbody data-start="2448" data-end="2606"><tr data-start="2448" data-end="2489"><td data-start="2448" data-end="2461" data-col-size="sm">Analytical</td><td data-start="2461" data-end="2489" data-col-size="sm">One input → many outputs</td></tr><tr data-start="2490" data-end="2530"><td data-start="2490" data-end="2502" data-col-size="sm">Synthetic</td><td data-start="2502" data-end="2530" data-col-size="sm">Many inputs → one output</td></tr><tr data-start="2531" data-end="2569"><td data-start="2531" data-end="2544" data-col-size="sm">Processing</td><td data-col-size="sm" data-start="2544" data-end="2569">Stage-wise conversion</td></tr><tr data-start="2570" data-end="2606"><td data-start="2570" data-end="2581" data-col-size="sm">Assembly</td><td data-start="2581" data-end="2606" data-col-size="sm">Parts → final product</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2608" data-end="2611">
+<h2 data-start="2613" data-end="2666"><strong data-start="2616" data-end="2666">C. Classification Based on Size and Investment</strong></h2>
+<h3 data-start="2668" data-end="2701"><strong data-start="2672" data-end="2701">1. Small-Scale Industries</strong></h3>
+<ul data-start="2702" data-end="2745">
+<li data-start="2702" data-end="2726">
+<p data-start="2704" data-end="2726">Low capital investment</p>
+</li>
+<li data-start="2727" data-end="2745">
+<p data-start="2729" data-end="2745">Labour-intensive</p>
+</li>
+</ul>
+<p data-start="2747" data-end="2760"><strong data-start="2747" data-end="2760">Examples:</strong></p>
+<ul data-start="2761" data-end="2796">
+<li data-start="2761" data-end="2776">
+<p data-start="2763" data-end="2776">Handicrafts</p>
+</li>
+<li data-start="2777" data-end="2796">
+<p data-start="2779" data-end="2796">Small workshops</p>
+</li>
+</ul>
+<hr data-start="2798" data-end="2801">
+<h3 data-start="2803" data-end="2837"><strong data-start="2807" data-end="2837">2. Medium-Scale Industries</strong></h3>
+<ul data-start="2838" data-end="2876">
+<li data-start="2838" data-end="2859">
+<p data-start="2840" data-end="2859">Moderate investment</p>
+</li>
+<li data-start="2860" data-end="2876">
+<p data-start="2862" data-end="2876">Semi-automated</p>
+</li>
+</ul>
+<hr data-start="2878" data-end="2881">
+<h3 data-start="2883" data-end="2916"><strong data-start="2887" data-end="2916">3. Large-Scale Industries</strong></h3>
+<ul data-start="2917" data-end="2963">
+<li data-start="2917" data-end="2943">
+<p data-start="2919" data-end="2943">Heavy capital investment</p>
+</li>
+<li data-start="2944" data-end="2963">
+<p data-start="2946" data-end="2963">Highly mechanized</p>
+</li>
+</ul>
+<p data-start="2965" data-end="2978"><strong data-start="2965" data-end="2978">Examples:</strong></p>
+<ul data-start="2979" data-end="3020">
+<li data-start="2979" data-end="2995">
+<p data-start="2981" data-end="2995">Steel plants</p>
+</li>
+<li data-start="2996" data-end="3020">
+<p data-start="2998" data-end="3020">Automobile factories</p>
+</li>
+</ul>
+<hr data-start="3022" data-end="3025">
+<h2 data-start="3027" data-end="3058"><strong data-start="3030" data-end="3058">2. Variety of Businesses</strong></h2>
+<h3 data-start="3060" data-end="3080"><strong data-start="3064" data-end="3080">Introduction</strong></h3>
+<p data-start="3081" data-end="3107">Businesses vary widely in:</p>
+<ul data-start="3108" data-end="3172">
+<li data-start="3108" data-end="3122">
+<p data-start="3110" data-end="3122">Product type</p>
+</li>
+<li data-start="3123" data-end="3138">
+<p data-start="3125" data-end="3138">Customer base</p>
+</li>
+<li data-start="3139" data-end="3151">
+<p data-start="3141" data-end="3151">Technology</p>
+</li>
+<li data-start="3152" data-end="3172">
+<p data-start="3154" data-end="3172">Volume and variety</p>
+</li>
+</ul>
+<p data-start="3174" data-end="3227">Operations Management must adapt to this <strong data-start="3215" data-end="3226">variety</strong>.</p>
+<hr data-start="3229" data-end="3232">
+<h3 data-start="3234" data-end="3276"><strong data-start="3238" data-end="3276">Key Dimensions of Business Variety</strong></h3>
+<hr data-start="3278" data-end="3281">
+<h3 data-start="3283" data-end="3309"><strong data-start="3287" data-end="3309">1. Product Variety</strong></h3>
+<ul data-start="3310" data-end="3382">
+<li data-start="3310" data-end="3350">
+<p data-start="3312" data-end="3350">High variety → job or batch production</p>
+</li>
+<li data-start="3351" data-end="3382">
+<p data-start="3353" data-end="3382">Low variety → mass production</p>
+</li>
+</ul>
+<hr data-start="3384" data-end="3387">
+<h3 data-start="3389" data-end="3420"><strong data-start="3393" data-end="3420">2. Volume of Production</strong></h3>
+<ul data-start="3421" data-end="3489">
+<li data-start="3421" data-end="3452">
+<p data-start="3423" data-end="3452">Low volume → flexible systems</p>
+</li>
+<li data-start="3453" data-end="3489">
+<p data-start="3455" data-end="3489">High volume → standardized systems</p>
+</li>
+</ul>
+<hr data-start="3491" data-end="3494">
+<h3 data-start="3496" data-end="3523"><strong data-start="3500" data-end="3523">3. Customer Contact</strong></h3>
+<ul data-start="3524" data-end="3589">
+<li data-start="3524" data-end="3559">
+<p data-start="3526" data-end="3559">High contact → service operations</p>
+</li>
+<li data-start="3560" data-end="3589">
+<p data-start="3562" data-end="3589">Low contact → manufacturing</p>
+</li>
+</ul>
+<hr data-start="3591" data-end="3594">
+<h3 data-start="3596" data-end="3645"><strong data-start="3600" data-end="3645">Product–Process Relationship (Conceptual)</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="3647" data-end="3762"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">mathematica</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-variable">High</span></span><span> </span><span><span class="hljs-variable">Variety</span></span><span> </span><span><span class="hljs-operator">+</span></span><span> </span><span><span class="hljs-variable">Low</span></span><span> </span><span><span class="hljs-built_in">Volume</span></span><span> → </span><span><span class="hljs-variable">Job</span></span><span> </span><span><span class="hljs-operator">/</span></span><span> </span><span><span class="hljs-variable">Batch</span></span><span> </span><span><span class="hljs-variable">Production</span></span><span>
+</span><span><span class="hljs-variable">Low</span></span><span> </span><span><span class="hljs-variable">Variety</span></span><span> </span><span><span class="hljs-operator">+</span></span><span> </span><span><span class="hljs-variable">High</span></span><span> </span><span><span class="hljs-built_in">Volume</span></span><span> → </span><span><span class="hljs-variable">Mass</span></span><span> </span><span><span class="hljs-operator">/</span></span><span> </span><span><span class="hljs-variable">Continuous</span></span><span> </span><span><span class="hljs-variable">Production</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="3764" data-end="3767">
+<h3 data-start="3769" data-end="3784"><strong data-start="3773" data-end="3784">Summary</strong></h3>
+<ul data-start="3785" data-end="3891">
+<li data-start="3785" data-end="3851">
+<p data-start="3787" data-end="3851">Different businesses require <strong data-start="3816" data-end="3851">different operations strategies</strong></p>
+</li>
+<li data-start="3852" data-end="3891">
+<p data-start="3854" data-end="3891">No single system suits all industries</p>
+</li>
+</ul>
+<hr data-start="3893" data-end="3896">
+<h2 data-start="3898" data-end="3947"><strong data-start="3901" data-end="3947">3. Integration of Manufacturing &amp; Services</strong></h2>
+<h3 data-start="3949" data-end="3969"><strong data-start="3953" data-end="3969">Introduction</strong></h3>
+<p data-start="3970" data-end="4100">Modern organizations rarely produce <strong data-start="4006" data-end="4037">only goods or only services</strong>.<br data-start="4038" data-end="4041">
+Most businesses deliver a <strong data-start="4067" data-end="4099">bundle of goods and services</strong>.</p>
+<hr data-start="4102" data-end="4105">
+<h3 data-start="4107" data-end="4127"><strong data-start="4111" data-end="4127">Key Concepts</strong></h3>
+<ul data-start="4128" data-end="4188">
+<li data-start="4128" data-end="4151">
+<p data-start="4130" data-end="4151">Product–service mix</p>
+</li>
+<li data-start="4152" data-end="4170">
+<p data-start="4154" data-end="4170">Customer value</p>
+</li>
+<li data-start="4171" data-end="4188">
+<p data-start="4173" data-end="4188">Servitization</p>
+</li>
+</ul>
+<hr data-start="4190" data-end="4193">
+<h3 data-start="4195" data-end="4239"><strong data-start="4199" data-end="4239">Manufacturing + Services Integration</strong></h3>
+<h4 data-start="4241" data-end="4258"><strong data-start="4246" data-end="4258">Examples</strong></h4>
+<ul data-start="4259" data-end="4424">
+<li data-start="4259" data-end="4348">
+<p data-start="4261" data-end="4280">Automobile company:</p>
+<ul data-start="4283" data-end="4348">
+<li data-start="4283" data-end="4303">
+<p data-start="4285" data-end="4303">Manufacturing: Car</p>
+</li>
+<li data-start="4306" data-end="4348">
+<p data-start="4308" data-end="4348">Services: Warranty, servicing, financing</p>
+</li>
+</ul>
+</li>
+<li data-start="4350" data-end="4424">
+<p data-start="4352" data-end="4361">Hospital:</p>
+<ul data-start="4364" data-end="4424">
+<li data-start="4364" data-end="4385">
+<p data-start="4366" data-end="4385">Services: Treatment</p>
+</li>
+<li data-start="4388" data-end="4424">
+<p data-start="4390" data-end="4424">Products: Medicines, equipment use</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="4426" data-end="4429">
+<h3 data-start="4431" data-end="4467"><strong data-start="4435" data-end="4467">Why Integration is Important</strong></h3>
+<ol data-start="4469" data-end="4574">
+<li data-start="4469" data-end="4497">
+<p data-start="4472" data-end="4497"><strong data-start="4472" data-end="4497">Customer Satisfaction</strong></p>
+</li>
+<li data-start="4498" data-end="4526">
+<p data-start="4501" data-end="4526"><strong data-start="4501" data-end="4526">Competitive Advantage</strong></p>
+</li>
+<li data-start="4527" data-end="4553">
+<p data-start="4530" data-end="4553"><strong data-start="4530" data-end="4553">Revenue Enhancement</strong></p>
+</li>
+<li data-start="4554" data-end="4574">
+<p data-start="4557" data-end="4574"><strong data-start="4557" data-end="4574">Brand Loyalty</strong></p>
+</li>
+</ol>
+<hr data-start="4576" data-end="4579">
+<h3 data-start="4581" data-end="4625"><strong data-start="4585" data-end="4625">Manufacturing vs Service Orientation</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4627" data-end="4790" class="w-fit min-w-(--thread-content-width)"><thead data-start="4627" data-end="4664"><tr data-start="4627" data-end="4664"><th data-start="4627" data-end="4636" data-col-size="sm">Aspect</th><th data-start="4636" data-end="4652" data-col-size="sm">Manufacturing</th><th data-start="4652" data-end="4664" data-col-size="sm">Services</th></tr></thead><tbody data-start="4682" data-end="4790"><tr data-start="4682" data-end="4716"><td data-start="4682" data-end="4691" data-col-size="sm">Output</td><td data-start="4691" data-end="4702" data-col-size="sm">Tangible</td><td data-start="4702" data-end="4716" data-col-size="sm">Intangible</td></tr><tr data-start="4717" data-end="4756"><td data-start="4717" data-end="4729" data-col-size="sm">Inventory</td><td data-start="4729" data-end="4740" data-col-size="sm">Possible</td><td data-start="4740" data-end="4756" data-col-size="sm">Not possible</td></tr><tr data-start="4757" data-end="4790"><td data-start="4757" data-end="4776" data-col-size="sm">Customer contact</td><td data-start="4776" data-end="4782" data-col-size="sm">Low</td><td data-start="4782" data-end="4790" data-col-size="sm">High</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4792" data-end="4795">
+<h3 data-start="4797" data-end="4812"><strong data-start="4801" data-end="4812">Summary</strong></h3>
+<ul data-start="4813" data-end="4911">
+<li data-start="4813" data-end="4864">
+<p data-start="4815" data-end="4864">Manufacturing and services are <strong data-start="4846" data-end="4864">interdependent</strong></p>
+</li>
+<li data-start="4865" data-end="4911">
+<p data-start="4867" data-end="4911">OM manages both as <strong data-start="4886" data-end="4911">one integrated system</strong></p>
+</li>
+</ul>
+<hr data-start="4913" data-end="4916">
+<h2 data-start="4918" data-end="4947"><strong data-start="4921" data-end="4947">4. Scale of Operations</strong></h2>
+<h3 data-start="4949" data-end="4969"><strong data-start="4953" data-end="4969">Introduction</strong></h3>
+<p data-start="4970" data-end="5046">Scale of operations refers to the <strong data-start="5004" data-end="5045">size and level of production activity</strong>.</p>
+<p data-start="5048" data-end="5059">It affects:</p>
+<ul data-start="5060" data-end="5107">
+<li data-start="5060" data-end="5066">
+<p data-start="5062" data-end="5066">Cost</p>
+</li>
+<li data-start="5067" data-end="5079">
+<p data-start="5069" data-end="5079">Technology</p>
+</li>
+<li data-start="5080" data-end="5088">
+<p data-start="5082" data-end="5088">Layout</p>
+</li>
+<li data-start="5089" data-end="5107">
+<p data-start="5091" data-end="5107">Workforce skills</p>
+</li>
+</ul>
+<hr data-start="5109" data-end="5112">
+<h3 data-start="5114" data-end="5136"><strong data-start="5118" data-end="5136">Types of Scale</strong></h3>
+<hr data-start="5138" data-end="5141">
+<h3 data-start="5143" data-end="5176"><strong data-start="5147" data-end="5176">1. Small-Scale Operations</strong></h3>
+<ul data-start="5177" data-end="5224">
+<li data-start="5177" data-end="5189">
+<p data-start="5179" data-end="5189">Low output</p>
+</li>
+<li data-start="5190" data-end="5208">
+<p data-start="5192" data-end="5208">High flexibility</p>
+</li>
+<li data-start="5209" data-end="5224">
+<p data-start="5211" data-end="5224">Customization</p>
+</li>
+</ul>
+<hr data-start="5226" data-end="5229">
+<h3 data-start="5231" data-end="5265"><strong data-start="5235" data-end="5265">2. Medium-Scale Operations</strong></h3>
+<ul data-start="5266" data-end="5317">
+<li data-start="5266" data-end="5287">
+<p data-start="5268" data-end="5287">Balanced automation</p>
+</li>
+<li data-start="5288" data-end="5317">
+<p data-start="5290" data-end="5317">Moderate volume and variety</p>
+</li>
+</ul>
+<hr data-start="5319" data-end="5322">
+<h3 data-start="5324" data-end="5357"><strong data-start="5328" data-end="5357">3. Large-Scale Operations</strong></h3>
+<ul data-start="5358" data-end="5405">
+<li data-start="5358" data-end="5371">
+<p data-start="5360" data-end="5371">High output</p>
+</li>
+<li data-start="5372" data-end="5387">
+<p data-start="5374" data-end="5387">Low unit cost</p>
+</li>
+<li data-start="5388" data-end="5405">
+<p data-start="5390" data-end="5405">Mass production</p>
+</li>
+</ul>
+<hr data-start="5407" data-end="5410">
+<h3 data-start="5412" data-end="5438"><strong data-start="5416" data-end="5438">Economies of Scale</strong></h3>
+<ul data-start="5440" data-end="5561">
+<li data-start="5440" data-end="5487">
+<p data-start="5442" data-end="5487">Reduction in average cost as output increases</p>
+</li>
+<li data-start="5488" data-end="5561">
+<p data-start="5490" data-end="5507">Achieved through:</p>
+<ul data-start="5510" data-end="5561">
+<li data-start="5510" data-end="5522">
+<p data-start="5512" data-end="5522">Automation</p>
+</li>
+<li data-start="5525" data-end="5541">
+<p data-start="5527" data-end="5541">Specialization</p>
+</li>
+<li data-start="5544" data-end="5561">
+<p data-start="5546" data-end="5561">Bulk purchasing</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="5563" data-end="5566">
+<h3 data-start="5568" data-end="5583"><strong data-start="5572" data-end="5583">Summary</strong></h3>
+<ul data-start="5584" data-end="5691">
+<li data-start="5584" data-end="5640">
+<p data-start="5586" data-end="5640">Scale of operations determines <strong data-start="5617" data-end="5640">production strategy</strong></p>
+</li>
+<li data-start="5641" data-end="5691">
+<p data-start="5643" data-end="5691">Larger scale → lower unit cost, less flexibility</p>
+</li>
+</ul>
+<hr data-start="5693" data-end="5696">
+<h2 data-start="5698" data-end="5730"><strong data-start="5701" data-end="5730">Overall Summary of Part 1</strong></h2>
+<ul data-start="5731" data-end="5987">
+<li data-start="5731" data-end="5800">
+<p data-start="5733" data-end="5800">Industries are classified based on <strong data-start="5768" data-end="5800">output, processing, and size</strong></p>
+</li>
+<li data-start="5801" data-end="5863">
+<p data-start="5803" data-end="5863">Businesses vary in <strong data-start="5822" data-end="5863">volume, variety, and customer contact</strong></p>
+</li>
+<li data-start="5864" data-end="5929">
+<p data-start="5866" data-end="5929">Manufacturing and services are <strong data-start="5897" data-end="5929">integrated in modern systems</strong></p>
+</li>
+<li data-start="5930" data-end="5987">
+<p data-start="5932" data-end="5987">Scale of operations influences <strong data-start="5963" data-end="5987">cost and flexibility</strong></p>
+</li>
+</ul>
+<hr data-start="5989" data-end="5992">
+<h3 data-start="5994" data-end="6030"><strong data-start="5998" data-end="6028"><em data-start="6000" data-end="6026">End of Unit IV – Part 1.</em></strong></h3>
+<p data-start="6031" data-end="6130" data-is-last-node="" data-is-only-node=""><strong data-start="6031" data-end="6130" data-is-last-node="">Continue to <em data-start="6045" data-end="6063">Unit IV – Part 2</em> (Methods of Manufacturing: Project, Jobbing &amp; Batch Production)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="01b39ed7-7f8f-4488-a669-face911af874" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="105">
+<p data-start="2" data-end="105"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="74">Unit IV – Types of Industries &amp; Methods of Manufacturing</strong><br data-start="74" data-end="77">
+<strong data-start="79" data-end="105">Part 2 of ~3 (Approx.)</strong></p>
+</blockquote>
+<hr data-start="107" data-end="110">
+<h2 data-start="112" data-end="161"><strong data-start="115" data-end="161">UNIT IV: METHODS OF MANUFACTURING – PART 2</strong></h2>
+<p data-start="163" data-end="231">This part focuses on the <strong data-start="188" data-end="216">Methods of Manufacturing</strong>, specifically:</p>
+<ul data-start="232" data-end="289">
+<li data-start="232" data-end="266">
+<p data-start="234" data-end="266"><strong data-start="234" data-end="266">Project / Jobbing Production</strong></p>
+</li>
+<li data-start="267" data-end="289">
+<p data-start="269" data-end="289"><strong data-start="269" data-end="289">Batch Production</strong></p>
+</li>
+</ul>
+<p data-start="291" data-end="355">These are <strong data-start="301" data-end="338">very important descriptive topics</strong>, often asked as:</p>
+<ul data-start="356" data-end="451">
+<li data-start="356" data-end="398">
+<p data-start="358" data-end="398"><em data-start="358" data-end="396">“Explain project and job production”</em></p>
+</li>
+<li data-start="399" data-end="451">
+<p data-start="401" data-end="451"><em data-start="401" data-end="451">“Describe batch production with characteristics”</em></p>
+</li>
+</ul>
+<hr data-start="453" data-end="456">
+<h2 data-start="458" data-end="492"><strong data-start="461" data-end="492">5. Methods of Manufacturing</strong></h2>
+<h3 data-start="494" data-end="514"><strong data-start="498" data-end="514">Introduction</strong></h3>
+<p data-start="515" data-end="666">A <strong data-start="517" data-end="544">method of manufacturing</strong> refers to the <strong data-start="559" data-end="624">way in which production activities are organized and executed</strong> to convert inputs into finished products.</p>
+<p data-start="668" data-end="714">The choice of manufacturing method depends on:</p>
+<ul data-start="715" data-end="812">
+<li data-start="715" data-end="739">
+<p data-start="717" data-end="739">Volume of production</p>
+</li>
+<li data-start="740" data-end="763">
+<p data-start="742" data-end="763">Variety of products</p>
+</li>
+<li data-start="764" data-end="784">
+<p data-start="766" data-end="784">Nature of demand</p>
+</li>
+<li data-start="785" data-end="812">
+<p data-start="787" data-end="812">Degree of customization</p>
+</li>
+</ul>
+<hr data-start="814" data-end="817">
+<h3 data-start="819" data-end="857"><strong data-start="823" data-end="857">Major Methods of Manufacturing</strong></h3>
+<ol data-start="859" data-end="979">
+<li data-start="859" data-end="892">
+<p data-start="862" data-end="892">Project / Jobbing Production</p>
+</li>
+<li data-start="893" data-end="914">
+<p data-start="896" data-end="914">Batch Production</p>
+</li>
+<li data-start="915" data-end="942">
+<p data-start="918" data-end="942">Flow / Mass Production</p>
+</li>
+<li data-start="943" data-end="979">
+<p data-start="946" data-end="979">Continuous / Process Production</p>
+</li>
+</ol>
+<p data-start="981" data-end="1022">(Methods 1 &amp; 2 are covered in this part.)</p>
+<hr data-start="1024" data-end="1027">
+<h2 data-start="1029" data-end="1057"><strong data-start="1032" data-end="1057">6. Project Production</strong></h2>
+<h3 data-start="1059" data-end="1079"><strong data-start="1063" data-end="1079">Introduction</strong></h3>
+<p data-start="1080" data-end="1228">Project production is used when the product is <strong data-start="1127" data-end="1157">unique, large, and complex</strong>, and production is carried out <strong data-start="1189" data-end="1202">only once</strong> or in very small numbers.</p>
+<hr data-start="1230" data-end="1233">
+<h3 data-start="1235" data-end="1255"><strong data-start="1239" data-end="1255">Key Concepts</strong></h3>
+<ul data-start="1256" data-end="1346">
+<li data-start="1256" data-end="1279">
+<p data-start="1258" data-end="1279">One-time production</p>
+</li>
+<li data-start="1280" data-end="1302">
+<p data-start="1282" data-end="1302">High customization</p>
+</li>
+<li data-start="1303" data-end="1328">
+<p data-start="1305" data-end="1328">Fixed position layout</p>
+</li>
+<li data-start="1329" data-end="1346">
+<p data-start="1331" data-end="1346">Long duration</p>
+</li>
+</ul>
+<hr data-start="1348" data-end="1351">
+<h3 data-start="1353" data-end="1398"><strong data-start="1357" data-end="1398">Characteristics of Project Production</strong></h3>
+<ol data-start="1400" data-end="1751">
+<li data-start="1400" data-end="1453">
+<p data-start="1403" data-end="1421"><strong data-start="1403" data-end="1421">Unique Product</strong></p>
+<ul data-start="1425" data-end="1453">
+<li data-start="1425" data-end="1453">
+<p data-start="1427" data-end="1453">Each project is different.</p>
+</li>
+</ul>
+</li>
+<li data-start="1455" data-end="1509">
+<p data-start="1458" data-end="1472"><strong data-start="1458" data-end="1472">Low Volume</strong></p>
+<ul data-start="1476" data-end="1509">
+<li data-start="1476" data-end="1509">
+<p data-start="1478" data-end="1509">Usually single-unit production.</p>
+</li>
+</ul>
+</li>
+<li data-start="1511" data-end="1612">
+<p data-start="1514" data-end="1539"><strong data-start="1514" data-end="1539">Fixed Position Layout</strong></p>
+<ul data-start="1543" data-end="1612">
+<li data-start="1543" data-end="1572">
+<p data-start="1545" data-end="1572">Product remains stationary.</p>
+</li>
+<li data-start="1576" data-end="1612">
+<p data-start="1578" data-end="1612">Men, machines, and materials move.</p>
+</li>
+</ul>
+</li>
+<li data-start="1614" data-end="1691">
+<p data-start="1617" data-end="1644"><strong data-start="1617" data-end="1644">High Degree of Planning</strong></p>
+<ul data-start="1648" data-end="1691">
+<li data-start="1648" data-end="1691">
+<p data-start="1650" data-end="1691">Scheduling and coordination are critical.</p>
+</li>
+</ul>
+</li>
+<li data-start="1693" data-end="1751">
+<p data-start="1696" data-end="1717"><strong data-start="1696" data-end="1717">Skilled Workforce</strong></p>
+<ul data-start="1721" data-end="1751">
+<li data-start="1721" data-end="1751">
+<p data-start="1723" data-end="1751">Requires specialized skills.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="1753" data-end="1756">
+<h3 data-start="1758" data-end="1774"><strong data-start="1762" data-end="1774">Examples</strong></h3>
+<ul data-start="1775" data-end="1894">
+<li data-start="1775" data-end="1816">
+<p data-start="1777" data-end="1816">Construction of buildings and bridges</p>
+</li>
+<li data-start="1817" data-end="1833">
+<p data-start="1819" data-end="1833">Shipbuilding</p>
+</li>
+<li data-start="1834" data-end="1860">
+<p data-start="1836" data-end="1860">Aircraft manufacturing</p>
+</li>
+<li data-start="1861" data-end="1894">
+<p data-start="1863" data-end="1894">Large infrastructure projects</p>
+</li>
+</ul>
+<hr data-start="1896" data-end="1899">
+<h3 data-start="1901" data-end="1941"><strong data-start="1905" data-end="1941">Advantages of Project Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1943" data-end="2122" class="w-fit min-w-(--thread-content-width)"><thead data-start="1943" data-end="1970"><tr data-start="1943" data-end="1970"><th data-start="1943" data-end="1955" data-col-size="sm">Advantage</th><th data-start="1955" data-end="1970" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="1996" data-end="2122"><tr data-start="1996" data-end="2033"><td data-start="1996" data-end="2015" data-col-size="sm">High flexibility</td><td data-start="2015" data-end="2033" data-col-size="sm">Custom designs</td></tr><tr data-start="2034" data-end="2081"><td data-start="2034" data-end="2058" data-col-size="sm">Customer satisfaction</td><td data-start="2058" data-end="2081" data-col-size="sm">Tailor-made product</td></tr><tr data-start="2082" data-end="2122"><td data-start="2082" data-end="2098" data-col-size="sm">Quality focus</td><td data-start="2098" data-end="2122" data-col-size="sm">Individual attention</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2124" data-end="2127">
+<h3 data-start="2129" data-end="2170"><strong data-start="2133" data-end="2170">Limitations of Project Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2172" data-end="2370" class="w-fit min-w-(--thread-content-width)"><thead data-start="2172" data-end="2200"><tr data-start="2172" data-end="2200"><th data-start="2172" data-end="2185" data-col-size="sm">Limitation</th><th data-start="2185" data-end="2200" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="2227" data-end="2370"><tr data-start="2227" data-end="2265"><td data-start="2227" data-end="2239" data-col-size="sm">High cost</td><td data-start="2239" data-end="2265" data-col-size="sm">Low economies of scale</td></tr><tr data-start="2266" data-end="2313"><td data-start="2266" data-end="2289" data-col-size="sm">Long completion time</td><td data-start="2289" data-end="2313" data-col-size="sm">Complex coordination</td></tr><tr data-start="2314" data-end="2370"><td data-start="2314" data-end="2338" data-col-size="sm">Management complexity</td><td data-start="2338" data-end="2370" data-col-size="sm">Planning &amp; control difficult</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2372" data-end="2375">
+<h3 data-start="2377" data-end="2392"><strong data-start="2381" data-end="2392">Summary</strong></h3>
+<p data-start="2393" data-end="2469">Project production is suitable for <strong data-start="2428" data-end="2468">large, customized, one-time projects</strong>.</p>
+<hr data-start="2471" data-end="2474">
+<h2 data-start="2476" data-end="2521"><strong data-start="2479" data-end="2521">7. Jobbing Production (Job Production)</strong></h2>
+<h3 data-start="2523" data-end="2543"><strong data-start="2527" data-end="2543">Introduction</strong></h3>
+<p data-start="2544" data-end="2690">Jobbing production involves <strong data-start="2572" data-end="2620">manufacturing products as per customer order</strong>, where each job is <strong data-start="2640" data-end="2652">distinct</strong> and produced in <strong data-start="2669" data-end="2689">small quantities</strong>.</p>
+<hr data-start="2692" data-end="2695">
+<h3 data-start="2697" data-end="2717"><strong data-start="2701" data-end="2717">Key Concepts</strong></h3>
+<ul data-start="2718" data-end="2783">
+<li data-start="2718" data-end="2735">
+<p data-start="2720" data-end="2735">Custom orders</p>
+</li>
+<li data-start="2736" data-end="2764">
+<p data-start="2738" data-end="2764">Low volume, high variety</p>
+</li>
+<li data-start="2765" data-end="2783">
+<p data-start="2767" data-end="2783">Process layout</p>
+</li>
+</ul>
+<hr data-start="2785" data-end="2788">
+<h3 data-start="2790" data-end="2835"><strong data-start="2794" data-end="2835">Characteristics of Jobbing Production</strong></h3>
+<ol data-start="2837" data-end="2977">
+<li data-start="2837" data-end="2865">
+<p data-start="2840" data-end="2865"><strong data-start="2840" data-end="2865">Product Made to Order</strong></p>
+</li>
+<li data-start="2866" data-end="2885">
+<p data-start="2869" data-end="2885"><strong data-start="2869" data-end="2885">High Variety</strong></p>
+</li>
+<li data-start="2886" data-end="2914">
+<p data-start="2889" data-end="2914"><strong data-start="2889" data-end="2914">Low Production Volume</strong></p>
+</li>
+<li data-start="2915" data-end="2946">
+<p data-start="2918" data-end="2946"><strong data-start="2918" data-end="2946">General-Purpose Machines</strong></p>
+</li>
+<li data-start="2947" data-end="2977">
+<p data-start="2950" data-end="2977"><strong data-start="2950" data-end="2977">Skilled Labour Required</strong></p>
+</li>
+</ol>
+<hr data-start="2979" data-end="2982">
+<h3 data-start="2984" data-end="3000"><strong data-start="2988" data-end="3000">Examples</strong></h3>
+<ul data-start="3001" data-end="3074">
+<li data-start="3001" data-end="3015">
+<p data-start="3003" data-end="3015">Tool rooms</p>
+</li>
+<li data-start="3016" data-end="3035">
+<p data-start="3018" data-end="3035">Tailoring shops</p>
+</li>
+<li data-start="3036" data-end="3056">
+<p data-start="3038" data-end="3056">Repair workshops</p>
+</li>
+<li data-start="3057" data-end="3074">
+<p data-start="3059" data-end="3074">Machine shops</p>
+</li>
+</ul>
+<hr data-start="3076" data-end="3079">
+<h3 data-start="3081" data-end="3121"><strong data-start="3085" data-end="3121">Advantages of Jobbing Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3123" data-end="3309" class="w-fit min-w-(--thread-content-width)"><thead data-start="3123" data-end="3150"><tr data-start="3123" data-end="3150"><th data-start="3123" data-end="3135" data-col-size="sm">Advantage</th><th data-start="3135" data-end="3150" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="3176" data-end="3309"><tr data-start="3176" data-end="3219"><td data-start="3176" data-end="3195" data-col-size="sm">High flexibility</td><td data-start="3195" data-end="3219" data-col-size="sm">Meets customer needs</td></tr><tr data-start="3220" data-end="3265"><td data-start="3220" data-end="3237" data-col-size="sm">Low investment</td><td data-start="3237" data-end="3265" data-col-size="sm">General-purpose machines</td></tr><tr data-start="3266" data-end="3309"><td data-start="3266" data-end="3292" data-col-size="sm">Product differentiation</td><td data-start="3292" data-end="3309" data-col-size="sm">Unique output</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3311" data-end="3314">
+<h3 data-start="3316" data-end="3357"><strong data-start="3320" data-end="3357">Limitations of Jobbing Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3359" data-end="3534" class="w-fit min-w-(--thread-content-width)"><thead data-start="3359" data-end="3387"><tr data-start="3359" data-end="3387"><th data-start="3359" data-end="3372" data-col-size="sm">Limitation</th><th data-start="3372" data-end="3387" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="3414" data-end="3534"><tr data-start="3414" data-end="3453"><td data-start="3414" data-end="3431" data-col-size="sm">High unit cost</td><td data-start="3431" data-end="3453" data-col-size="sm">No mass production</td></tr><tr data-start="3454" data-end="3493"><td data-start="3454" data-end="3475" data-col-size="sm">Complex scheduling</td><td data-col-size="sm" data-start="3475" data-end="3493">Different jobs</td></tr><tr data-start="3494" data-end="3534"><td data-start="3494" data-end="3517" data-col-size="sm">Longer delivery time</td><td data-start="3517" data-end="3534" data-col-size="sm">Custom nature</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3536" data-end="3539">
+<h3 data-start="3541" data-end="3590"><strong data-start="3545" data-end="3590">Difference: Project vs Jobbing Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3592" data-end="3844" class="w-fit min-w-(--thread-content-width)"><thead data-start="3592" data-end="3643"><tr data-start="3592" data-end="3643"><th data-start="3592" data-end="3600" data-col-size="sm">Basis</th><th data-start="3600" data-end="3621" data-col-size="sm">Project Production</th><th data-start="3621" data-end="3643" data-col-size="sm">Jobbing Production</th></tr></thead><tbody data-start="3661" data-end="3844"><tr data-start="3661" data-end="3693"><td data-start="3661" data-end="3670" data-col-size="sm">Volume</td><td data-start="3670" data-end="3681" data-col-size="sm">One-time</td><td data-start="3681" data-end="3693" data-col-size="sm">Very low</td></tr><tr data-start="3694" data-end="3733"><td data-start="3694" data-end="3709" data-col-size="sm">Product size</td><td data-start="3709" data-end="3717" data-col-size="sm">Large</td><td data-start="3717" data-end="3733" data-col-size="sm">Small/medium</td></tr><tr data-start="3734" data-end="3778"><td data-start="3734" data-end="3743" data-col-size="sm">Layout</td><td data-start="3743" data-end="3760" data-col-size="sm">Fixed position</td><td data-col-size="sm" data-start="3760" data-end="3778">Process layout</td></tr><tr data-start="3779" data-end="3808"><td data-start="3779" data-end="3790" data-col-size="sm">Duration</td><td data-start="3790" data-end="3797" data-col-size="sm">Long</td><td data-start="3797" data-end="3808" data-col-size="sm">Shorter</td></tr><tr data-start="3809" data-end="3844"><td data-start="3809" data-end="3819" data-col-size="sm">Example</td><td data-start="3819" data-end="3828" data-col-size="sm">Bridge</td><td data-start="3828" data-end="3844" data-col-size="sm">Custom tools</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3846" data-end="3849">
+<h3 data-start="3851" data-end="3866"><strong data-start="3855" data-end="3866">Summary</strong></h3>
+<p data-start="3867" data-end="3939">Jobbing production is ideal for <strong data-start="3899" data-end="3938">customized, small-quantity products</strong>.</p>
+<hr data-start="3941" data-end="3944">
+<h2 data-start="3946" data-end="3972"><strong data-start="3949" data-end="3972">8. Batch Production</strong></h2>
+<h3 data-start="3974" data-end="3994"><strong data-start="3978" data-end="3994">Introduction</strong></h3>
+<p data-start="3995" data-end="4138">Batch production is a method where <strong data-start="4030" data-end="4076">identical products are produced in batches</strong>, and each batch moves through the production stages together.</p>
+<hr data-start="4140" data-end="4143">
+<h3 data-start="4145" data-end="4165"><strong data-start="4149" data-end="4165">Key Concepts</strong></h3>
+<ul data-start="4166" data-end="4230">
+<li data-start="4166" data-end="4183">
+<p data-start="4168" data-end="4183">Medium volume</p>
+</li>
+<li data-start="4184" data-end="4204">
+<p data-start="4186" data-end="4204">Moderate variety</p>
+</li>
+<li data-start="4205" data-end="4230">
+<p data-start="4207" data-end="4230">Repetitive production</p>
+</li>
+</ul>
+<hr data-start="4232" data-end="4235">
+<h3 data-start="4237" data-end="4280"><strong data-start="4241" data-end="4280">Characteristics of Batch Production</strong></h3>
+<ol data-start="4282" data-end="4437">
+<li data-start="4282" data-end="4318">
+<p data-start="4285" data-end="4318"><strong data-start="4285" data-end="4318">Production in Lots or Batches</strong></p>
+</li>
+<li data-start="4319" data-end="4349">
+<p data-start="4322" data-end="4349"><strong data-start="4322" data-end="4349">Each Batch is Identical</strong></p>
+</li>
+<li data-start="4350" data-end="4381">
+<p data-start="4353" data-end="4381"><strong data-start="4353" data-end="4381">General-Purpose Machines</strong></p>
+</li>
+<li data-start="4382" data-end="4403">
+<p data-start="4385" data-end="4403"><strong data-start="4385" data-end="4403">Process Layout</strong></p>
+</li>
+<li data-start="4404" data-end="4437">
+<p data-start="4407" data-end="4437"><strong data-start="4407" data-end="4437">Changeover between Batches</strong></p>
+</li>
+</ol>
+<hr data-start="4439" data-end="4442">
+<h3 data-start="4444" data-end="4460"><strong data-start="4448" data-end="4460">Examples</strong></h3>
+<ul data-start="4461" data-end="4539">
+<li data-start="4461" data-end="4480">
+<p data-start="4463" data-end="4480">Bakery products</p>
+</li>
+<li data-start="4481" data-end="4507">
+<p data-start="4483" data-end="4507">Pharmaceutical tablets</p>
+</li>
+<li data-start="4508" data-end="4520">
+<p data-start="4510" data-end="4520">Garments</p>
+</li>
+<li data-start="4521" data-end="4539">
+<p data-start="4523" data-end="4539">Books printing</p>
+</li>
+</ul>
+<hr data-start="4541" data-end="4544">
+<h3 data-start="4546" data-end="4584"><strong data-start="4550" data-end="4584">Advantages of Batch Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4586" data-end="4775" class="w-fit min-w-(--thread-content-width)"><thead data-start="4586" data-end="4613"><tr data-start="4586" data-end="4613"><th data-start="4586" data-end="4598" data-col-size="sm">Advantage</th><th data-start="4598" data-end="4613" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="4639" data-end="4775"><tr data-start="4639" data-end="4681"><td data-start="4639" data-end="4653" data-col-size="sm">Flexibility</td><td data-start="4653" data-end="4681" data-col-size="sm">Product variety possible</td></tr><tr data-start="4682" data-end="4733"><td data-start="4682" data-end="4703" data-col-size="sm">Better utilization</td><td data-start="4703" data-end="4733" data-col-size="sm">Compared to job production</td></tr><tr data-start="4734" data-end="4775"><td data-start="4734" data-end="4752" data-col-size="sm">Lower unit cost</td><td data-start="4752" data-end="4775" data-col-size="sm">Compared to jobbing</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4777" data-end="4780">
+<h3 data-start="4782" data-end="4821"><strong data-start="4786" data-end="4821">Limitations of Batch Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4823" data-end="5004" class="w-fit min-w-(--thread-content-width)"><thead data-start="4823" data-end="4851"><tr data-start="4823" data-end="4851"><th data-start="4823" data-end="4836" data-col-size="sm">Limitation</th><th data-start="4836" data-end="4851" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="4878" data-end="5004"><tr data-start="4878" data-end="4921"><td data-start="4878" data-end="4891" data-col-size="sm">Setup time</td><td data-start="4891" data-end="4921" data-col-size="sm">Changeover between batches</td></tr><tr data-start="4922" data-end="4959"><td data-start="4922" data-end="4939" data-col-size="sm">Inventory cost</td><td data-start="4939" data-end="4959" data-col-size="sm">Work-in-progress</td></tr><tr data-start="4960" data-end="5004"><td data-start="4960" data-end="4984" data-col-size="sm">Scheduling complexity</td><td data-col-size="sm" data-start="4984" data-end="5004">Multiple batches</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5006" data-end="5009">
+<h3 data-start="5011" data-end="5053"><strong data-start="5015" data-end="5053">Batch Production Flow (Text-Based)</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="5055" data-end="5150"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Batch </span><span><span class="hljs-number">1</span></span><span> → Processing → Inspection → </span><span><span class="hljs-keyword">Storage</span></span><span>
+Batch </span><span><span class="hljs-number">2</span></span><span> → Processing → Inspection → </span><span><span class="hljs-keyword">Storage</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="5152" data-end="5155">
+<h3 data-start="5157" data-end="5172"><strong data-start="5161" data-end="5172">Summary</strong></h3>
+<p data-start="5173" data-end="5283">Batch production balances <strong data-start="5199" data-end="5229">flexibility and efficiency</strong>, making it suitable for <strong data-start="5254" data-end="5282">medium-volume industries</strong>.</p>
+<hr data-start="5285" data-end="5288">
+<h2 data-start="5290" data-end="5336"><strong data-start="5293" data-end="5336">Comparison: Jobbing vs Batch Production</strong></h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5338" data-end="5560" class="w-fit min-w-(--thread-content-width)"><thead data-start="5338" data-end="5365"><tr data-start="5338" data-end="5365"><th data-start="5338" data-end="5346" data-col-size="sm">Basis</th><th data-start="5346" data-end="5356" data-col-size="sm">Jobbing</th><th data-start="5356" data-end="5365" data-col-size="sm">Batch</th></tr></thead><tbody data-start="5383" data-end="5560"><tr data-start="5383" data-end="5413"><td data-start="5383" data-end="5392" data-col-size="sm">Volume</td><td data-start="5392" data-end="5403" data-col-size="sm">Very low</td><td data-start="5403" data-end="5413" data-col-size="sm">Medium</td></tr><tr data-start="5414" data-end="5448"><td data-start="5414" data-end="5424" data-col-size="sm">Variety</td><td data-start="5424" data-end="5436" data-col-size="sm">Very high</td><td data-start="5436" data-end="5448" data-col-size="sm">Moderate</td></tr><tr data-start="5449" data-end="5482"><td data-start="5449" data-end="5465" data-col-size="sm">Cost per unit</td><td data-start="5465" data-end="5472" data-col-size="sm">High</td><td data-start="5472" data-end="5482" data-col-size="sm">Medium</td></tr><tr data-start="5483" data-end="5521"><td data-start="5483" data-end="5496" data-col-size="sm">Setup time</td><td data-start="5496" data-end="5506" data-col-size="sm">Minimal</td><td data-start="5506" data-end="5521" data-col-size="sm">Significant</td></tr><tr data-start="5522" data-end="5560"><td data-start="5522" data-end="5536" data-col-size="sm">Flexibility</td><td data-start="5536" data-end="5548" data-col-size="sm">Very high</td><td data-start="5548" data-end="5560" data-col-size="sm">Moderate</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5562" data-end="5565">
+<h2 data-start="5567" data-end="5599"><strong data-start="5570" data-end="5599">Overall Summary of Part 2</strong></h2>
+<ul data-start="5600" data-end="5823">
+<li data-start="5600" data-end="5652">
+<p data-start="5602" data-end="5652">Project production is <strong data-start="5624" data-end="5652">one-time and large-scale</strong></p>
+</li>
+<li data-start="5653" data-end="5713">
+<p data-start="5655" data-end="5713">Jobbing production handles <strong data-start="5682" data-end="5713">custom, low-volume products</strong></p>
+</li>
+<li data-start="5714" data-end="5771">
+<p data-start="5716" data-end="5771">Batch production produces <strong data-start="5742" data-end="5771">identical items in groups</strong></p>
+</li>
+<li data-start="5772" data-end="5823">
+<p data-start="5774" data-end="5823">Choice depends on <strong data-start="5792" data-end="5823">volume, variety, and demand</strong></p>
+</li>
+</ul>
+<hr data-start="5825" data-end="5828">
+<h3 data-start="5830" data-end="5866"><strong data-start="5834" data-end="5864"><em data-start="5836" data-end="5862">End of Unit IV – Part 2.</em></strong></h3>
+<p data-start="5867" data-end="5966" data-is-last-node="" data-is-only-node=""><strong data-start="5867" data-end="5966" data-is-last-node="">Continue to <em data-start="5881" data-end="5899">Unit IV – Part 3</em> (Flow / Continuous Production &amp; Characteristics of Each Method)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="2129e790-d4bc-45a4-80c7-437d81a12efa" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="108">
+<p data-start="2" data-end="108"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="74">Unit IV – Types of Industries &amp; Methods of Manufacturing</strong><br data-start="74" data-end="77">
+<strong data-start="79" data-end="108">Part 3 of ~3 (Final Part)</strong></p>
+</blockquote>
+<hr data-start="110" data-end="113">
+<h2 data-start="115" data-end="164"><strong data-start="118" data-end="164">UNIT IV: METHODS OF MANUFACTURING – PART 3</strong></h2>
+<p data-start="166" data-end="200">This final part of Unit IV covers:</p>
+<ul data-start="201" data-end="333">
+<li data-start="201" data-end="229">
+<p data-start="203" data-end="229"><strong data-start="203" data-end="229">Flow / Mass Production</strong></p>
+</li>
+<li data-start="230" data-end="267">
+<p data-start="232" data-end="267"><strong data-start="232" data-end="267">Continuous / Process Production</strong></p>
+</li>
+<li data-start="268" data-end="333">
+<p data-start="270" data-end="333"><strong data-start="270" data-end="333">Characteristics and comparison of all manufacturing methods</strong></p>
+</li>
+</ul>
+<p data-start="335" data-end="409">These topics are <strong data-start="352" data-end="396">very important for long-answer questions</strong>, especially:</p>
+<ul data-start="410" data-end="516">
+<li data-start="410" data-end="467">
+<p data-start="412" data-end="467"><em data-start="412" data-end="465">“Explain flow production and continuous production”</em></p>
+</li>
+<li data-start="468" data-end="516">
+<p data-start="470" data-end="516"><em data-start="470" data-end="516">“Compare different methods of manufacturing”</em></p>
+</li>
+</ul>
+<hr data-start="518" data-end="521">
+<h2 data-start="523" data-end="566"><strong data-start="526" data-end="566">9. Flow Production (Mass Production)</strong></h2>
+<h3 data-start="568" data-end="588"><strong data-start="572" data-end="588">Introduction</strong></h3>
+<p data-start="589" data-end="772">Flow production, also known as <strong data-start="620" data-end="639">mass production</strong>, is a method in which <strong data-start="662" data-end="707">large quantities of standardized products</strong> are produced <strong data-start="721" data-end="737">continuously</strong> using a <strong data-start="746" data-end="771">product (line) layout</strong>.</p>
+<hr data-start="774" data-end="777">
+<h3 data-start="779" data-end="799"><strong data-start="783" data-end="799">Key Concepts</strong></h3>
+<ul data-start="800" data-end="869">
+<li data-start="800" data-end="815">
+<p data-start="802" data-end="815">High volume</p>
+</li>
+<li data-start="816" data-end="831">
+<p data-start="818" data-end="831">Low variety</p>
+</li>
+<li data-start="832" data-end="851">
+<p data-start="834" data-end="851">Standardization</p>
+</li>
+<li data-start="852" data-end="869">
+<p data-start="854" data-end="869">Assembly line</p>
+</li>
+</ul>
+<hr data-start="871" data-end="874">
+<h3 data-start="876" data-end="918"><strong data-start="880" data-end="918">Characteristics of Flow Production</strong></h3>
+<ol data-start="920" data-end="1335">
+<li data-start="920" data-end="989">
+<p data-start="923" data-end="948"><strong data-start="923" data-end="948">Standardized Products</strong></p>
+<ul data-start="952" data-end="989">
+<li data-start="952" data-end="989">
+<p data-start="954" data-end="989">Same product produced continuously.</p>
+</li>
+</ul>
+</li>
+<li data-start="991" data-end="1051">
+<p data-start="994" data-end="1019"><strong data-start="994" data-end="1019">High Volume of Output</strong></p>
+<ul data-start="1023" data-end="1051">
+<li data-start="1023" data-end="1051">
+<p data-start="1025" data-end="1051">Large quantities produced.</p>
+</li>
+</ul>
+</li>
+<li data-start="1053" data-end="1128">
+<p data-start="1056" data-end="1074"><strong data-start="1056" data-end="1074">Product Layout</strong></p>
+<ul data-start="1078" data-end="1128">
+<li data-start="1078" data-end="1128">
+<p data-start="1080" data-end="1128">Machines arranged in the sequence of operations.</p>
+</li>
+</ul>
+</li>
+<li data-start="1130" data-end="1204">
+<p data-start="1133" data-end="1161"><strong data-start="1133" data-end="1161">Special-Purpose Machines</strong></p>
+<ul data-start="1165" data-end="1204">
+<li data-start="1165" data-end="1204">
+<p data-start="1167" data-end="1204">Machines designed for specific tasks.</p>
+</li>
+</ul>
+</li>
+<li data-start="1206" data-end="1258">
+<p data-start="1209" data-end="1226"><strong data-start="1209" data-end="1226">Low Unit Cost</strong></p>
+<ul data-start="1230" data-end="1258">
+<li data-start="1230" data-end="1258">
+<p data-start="1232" data-end="1258">Due to economies of scale.</p>
+</li>
+</ul>
+</li>
+<li data-start="1260" data-end="1335">
+<p data-start="1263" data-end="1294"><strong data-start="1263" data-end="1294">Continuous Flow of Material</strong></p>
+<ul data-start="1298" data-end="1335">
+<li data-start="1298" data-end="1335">
+<p data-start="1300" data-end="1335">No interruption between operations.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="1337" data-end="1340">
+<h3 data-start="1342" data-end="1358"><strong data-start="1346" data-end="1358">Examples</strong></h3>
+<ul data-start="1359" data-end="1454">
+<li data-start="1359" data-end="1382">
+<p data-start="1361" data-end="1382">Automobile assembly</p>
+</li>
+<li data-start="1383" data-end="1407">
+<p data-start="1385" data-end="1407">Consumer electronics</p>
+</li>
+<li data-start="1408" data-end="1429">
+<p data-start="1410" data-end="1429">Bottled beverages</p>
+</li>
+<li data-start="1430" data-end="1454">
+<p data-start="1432" data-end="1454">Household appliances</p>
+</li>
+</ul>
+<hr data-start="1456" data-end="1459">
+<h3 data-start="1461" data-end="1499"><strong data-start="1465" data-end="1499">Text-Based Flow Representation</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="1501" data-end="1581"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">mathematica</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-variable">Operation</span></span><span> </span><span><span class="hljs-number">1</span></span><span> → </span><span><span class="hljs-variable">Operation</span></span><span> </span><span><span class="hljs-number">2</span></span><span> → </span><span><span class="hljs-variable">Operation</span></span><span> </span><span><span class="hljs-number">3</span></span><span> → </span><span><span class="hljs-variable">Operation</span></span><span> </span><span><span class="hljs-number">4</span></span><span> → </span><span><span class="hljs-variable">Finished</span></span><span> </span><span><span class="hljs-built_in">Product</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="1583" data-end="1586">
+<h3 data-start="1588" data-end="1625"><strong data-start="1592" data-end="1625">Advantages of Flow Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1627" data-end="1839" class="w-fit min-w-(--thread-content-width)"><thead data-start="1627" data-end="1654"><tr data-start="1627" data-end="1654"><th data-start="1627" data-end="1639" data-col-size="sm">Advantage</th><th data-start="1639" data-end="1654" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="1680" data-end="1839"><tr data-start="1680" data-end="1715"><td data-start="1680" data-end="1696" data-col-size="sm">Low unit cost</td><td data-col-size="sm" data-start="1696" data-end="1715">Mass production</td></tr><tr data-start="1716" data-end="1755"><td data-start="1716" data-end="1736" data-col-size="sm">High productivity</td><td data-start="1736" data-end="1755" data-col-size="sm">Continuous flow</td></tr><tr data-start="1756" data-end="1799"><td data-start="1756" data-end="1780" data-col-size="sm">Short production time</td><td data-start="1780" data-end="1799" data-col-size="sm">Minimal waiting</td></tr><tr data-start="1800" data-end="1839"><td data-start="1800" data-end="1819" data-col-size="sm">Easy supervision</td><td data-start="1819" data-end="1839" data-col-size="sm">Line arrangement</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1841" data-end="1844">
+<h3 data-start="1846" data-end="1884"><strong data-start="1850" data-end="1884">Limitations of Flow Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1886" data-end="2121" class="w-fit min-w-(--thread-content-width)"><thead data-start="1886" data-end="1914"><tr data-start="1886" data-end="1914"><th data-start="1886" data-end="1899" data-col-size="sm">Limitation</th><th data-start="1899" data-end="1914" data-col-size="sm">Explanation</th></tr></thead><tbody data-start="1941" data-end="2121"><tr data-start="1941" data-end="1990"><td data-start="1941" data-end="1964" data-col-size="sm">Very low flexibility</td><td data-start="1964" data-end="1990" data-col-size="sm">Standard products only</td></tr><tr data-start="1991" data-end="2041"><td data-start="1991" data-end="2017" data-col-size="sm">High initial investment</td><td data-start="2017" data-end="2041" data-col-size="sm">Specialized machines</td></tr><tr data-start="2042" data-end="2082"><td data-start="2042" data-end="2061" data-col-size="sm">Breakdown impact</td><td data-start="2061" data-end="2082" data-col-size="sm">Entire line stops</td></tr><tr data-start="2083" data-end="2121"><td data-start="2083" data-end="2101" data-col-size="sm">Worker monotony</td><td data-start="2101" data-end="2121" data-col-size="sm">Repetitive tasks</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="2123" data-end="2126">
+<h3 data-start="2128" data-end="2143"><strong data-start="2132" data-end="2143">Summary</strong></h3>
+<p data-start="2144" data-end="2212">Flow production is ideal for <strong data-start="2173" data-end="2211">high-demand, standardized products</strong>.</p>
+<hr data-start="2214" data-end="2217">
+<h2 data-start="2219" data-end="2272"><strong data-start="2222" data-end="2272">10. Continuous Production (Process Production)</strong></h2>
+<h3 data-start="2274" data-end="2294"><strong data-start="2278" data-end="2294">Introduction</strong></h3>
+<p data-start="2295" data-end="2469">Continuous production, also called <strong data-start="2330" data-end="2352">process production</strong>, is a method where production runs <strong data-start="2388" data-end="2417">24/7 without interruption</strong>, and output is produced in a <strong data-start="2447" data-end="2468">continuous stream</strong>.</p>
+<hr data-start="2471" data-end="2474">
+<h3 data-start="2476" data-end="2496"><strong data-start="2480" data-end="2496">Key Concepts</strong></h3>
+<ul data-start="2497" data-end="2582">
+<li data-start="2497" data-end="2516">
+<p data-start="2499" data-end="2516">Continuous flow</p>
+</li>
+<li data-start="2517" data-end="2537">
+<p data-start="2519" data-end="2537">Highly automated</p>
+</li>
+<li data-start="2538" data-end="2560">
+<p data-start="2540" data-end="2560">Process industries</p>
+</li>
+<li data-start="2561" data-end="2582">
+<p data-start="2563" data-end="2582">Capital-intensive</p>
+</li>
+</ul>
+<hr data-start="2584" data-end="2587">
+<h3 data-start="2589" data-end="2637"><strong data-start="2593" data-end="2637">Characteristics of Continuous Production</strong></h3>
+<ol data-start="2639" data-end="3018">
+<li data-start="2639" data-end="2697">
+<p data-start="2642" data-end="2666"><strong data-start="2642" data-end="2666">Continuous Operation</strong></p>
+<ul data-start="2670" data-end="2697">
+<li data-start="2670" data-end="2697">
+<p data-start="2672" data-end="2697">Production does not stop.</p>
+</li>
+</ul>
+</li>
+<li data-start="2699" data-end="2755">
+<p data-start="2702" data-end="2722"><strong data-start="2702" data-end="2722">Highly Automated</strong></p>
+<ul data-start="2726" data-end="2755">
+<li data-start="2726" data-end="2755">
+<p data-start="2728" data-end="2755">Minimal human intervention.</p>
+</li>
+</ul>
+</li>
+<li data-start="2757" data-end="2812">
+<p data-start="2760" data-end="2787"><strong data-start="2760" data-end="2787">Product Standardization</strong></p>
+<ul data-start="2791" data-end="2812">
+<li data-start="2791" data-end="2812">
+<p data-start="2793" data-end="2812">No product variety.</p>
+</li>
+</ul>
+</li>
+<li data-start="2814" data-end="2876">
+<p data-start="2817" data-end="2835"><strong data-start="2817" data-end="2835">Process Layout</strong></p>
+<ul data-start="2839" data-end="2876">
+<li data-start="2839" data-end="2876">
+<p data-start="2841" data-end="2876">Based on production process stages.</p>
+</li>
+</ul>
+</li>
+<li data-start="2878" data-end="2945">
+<p data-start="2881" data-end="2908"><strong data-start="2881" data-end="2908">High Capital Investment</strong></p>
+<ul data-start="2912" data-end="2945">
+<li data-start="2912" data-end="2945">
+<p data-start="2914" data-end="2945">Expensive plants and equipment.</p>
+</li>
+</ul>
+</li>
+<li data-start="2947" data-end="3018">
+<p data-start="2950" data-end="2976"><strong data-start="2950" data-end="2976">Strict Quality Control</strong></p>
+<ul data-start="2980" data-end="3018">
+<li data-start="2980" data-end="3018">
+<p data-start="2982" data-end="3018">Any deviation affects entire output.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="3020" data-end="3023">
+<h3 data-start="3025" data-end="3041"><strong data-start="3029" data-end="3041">Examples</strong></h3>
+<ul data-start="3042" data-end="3114">
+<li data-start="3042" data-end="3060">
+<p data-start="3044" data-end="3060">Oil refineries</p>
+</li>
+<li data-start="3061" data-end="3080">
+<p data-start="3063" data-end="3080">Chemical plants</p>
+</li>
+<li data-start="3081" data-end="3098">
+<p data-start="3083" data-end="3098">Cement plants</p>
+</li>
+<li data-start="3099" data-end="3114">
+<p data-start="3101" data-end="3114">Paper mills</p>
+</li>
+</ul>
+<hr data-start="3116" data-end="3119">
+<h3 data-start="3121" data-end="3170"><strong data-start="3125" data-end="3170">Difference: Flow vs Continuous Production</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3172" data-end="3391" class="w-fit min-w-(--thread-content-width)"><thead data-start="3172" data-end="3223"><tr data-start="3172" data-end="3223"><th data-start="3172" data-end="3180" data-col-size="sm">Basis</th><th data-start="3180" data-end="3198" data-col-size="sm">Flow Production</th><th data-start="3198" data-end="3223" data-col-size="sm">Continuous Production</th></tr></thead><tbody data-start="3241" data-end="3391"><tr data-start="3241" data-end="3288"><td data-start="3241" data-end="3250" data-col-size="sm">Nature</td><td data-start="3250" data-end="3267" data-col-size="sm">Discrete units</td><td data-start="3267" data-end="3288" data-col-size="sm">Continuous output</td></tr><tr data-start="3289" data-end="3321"><td data-start="3289" data-end="3303" data-col-size="sm">Flexibility</td><td data-start="3303" data-end="3309" data-col-size="sm">Low</td><td data-start="3309" data-end="3321" data-col-size="sm">Very low</td></tr><tr data-start="3322" data-end="3359"><td data-start="3322" data-end="3335" data-col-size="sm">Automation</td><td data-start="3335" data-end="3346" data-col-size="sm">Moderate</td><td data-col-size="sm" data-start="3346" data-end="3359">Very high</td></tr><tr data-start="3360" data-end="3391"><td data-start="3360" data-end="3371" data-col-size="sm">Examples</td><td data-start="3371" data-end="3378" data-col-size="sm">Cars</td><td data-start="3378" data-end="3391" data-col-size="sm">Petroleum</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3393" data-end="3396">
+<h3 data-start="3398" data-end="3413"><strong data-start="3402" data-end="3413">Summary</strong></h3>
+<p data-start="3414" data-end="3490">Continuous production suits <strong data-start="3442" data-end="3464">process industries</strong> with <strong data-start="3470" data-end="3489">constant demand</strong>.</p>
+<hr data-start="3492" data-end="3495">
+<h2 data-start="3497" data-end="3552"><strong data-start="3500" data-end="3552">11. Characteristics of Each Manufacturing Method</strong></h2>
+<h3 data-start="3554" data-end="3582"><strong data-start="3558" data-end="3582">Comparative Overview</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3584" data-end="4033" class="w-fit min-w-(--thread-content-width)"><thead data-start="3584" data-end="3641"><tr data-start="3584" data-end="3641"><th data-start="3584" data-end="3592" data-col-size="sm">Basis</th><th data-start="3592" data-end="3602" data-col-size="sm">Project</th><th data-start="3602" data-end="3612" data-col-size="sm">Jobbing</th><th data-start="3612" data-end="3620" data-col-size="sm">Batch</th><th data-start="3620" data-end="3627" data-col-size="sm">Flow</th><th data-start="3627" data-end="3641" data-col-size="sm">Continuous</th></tr></thead><tbody data-start="3674" data-end="4033"><tr data-start="3674" data-end="3729"><td data-start="3674" data-end="3683" data-col-size="sm">Volume</td><td data-start="3683" data-end="3694" data-col-size="sm">Very low</td><td data-start="3694" data-end="3700" data-col-size="sm">Low</td><td data-start="3700" data-end="3709" data-col-size="sm">Medium</td><td data-start="3709" data-end="3716" data-col-size="sm">High</td><td data-start="3716" data-end="3729" data-col-size="sm">Very high</td></tr><tr data-start="3730" data-end="3788"><td data-start="3730" data-end="3740" data-col-size="sm">Variety</td><td data-start="3740" data-end="3752" data-col-size="sm">Very high</td><td data-col-size="sm" data-start="3752" data-end="3759">High</td><td data-col-size="sm" data-start="3759" data-end="3770">Moderate</td><td data-col-size="sm" data-start="3770" data-end="3776">Low</td><td data-col-size="sm" data-start="3776" data-end="3788">Very low</td></tr><tr data-start="3789" data-end="3847"><td data-start="3789" data-end="3798" data-col-size="sm">Layout</td><td data-start="3798" data-end="3806" data-col-size="sm">Fixed</td><td data-start="3806" data-end="3816" data-col-size="sm">Process</td><td data-start="3816" data-end="3826" data-col-size="sm">Process</td><td data-start="3826" data-end="3836" data-col-size="sm">Product</td><td data-start="3836" data-end="3847" data-col-size="sm">Process</td></tr><tr data-start="3848" data-end="3908"><td data-start="3848" data-end="3864" data-col-size="sm">Cost per unit</td><td data-start="3864" data-end="3876" data-col-size="sm">Very high</td><td data-start="3876" data-end="3883" data-col-size="sm">High</td><td data-start="3883" data-end="3892" data-col-size="sm">Medium</td><td data-col-size="sm" data-start="3892" data-end="3898">Low</td><td data-col-size="sm" data-start="3898" data-end="3908">Lowest</td></tr><tr data-start="3909" data-end="3971"><td data-start="3909" data-end="3923" data-col-size="sm">Flexibility</td><td data-col-size="sm" data-start="3923" data-end="3935">Very high</td><td data-col-size="sm" data-start="3935" data-end="3942">High</td><td data-col-size="sm" data-start="3942" data-end="3953">Moderate</td><td data-col-size="sm" data-start="3953" data-end="3959">Low</td><td data-col-size="sm" data-start="3959" data-end="3971">Very low</td></tr><tr data-start="3972" data-end="4033"><td data-start="3972" data-end="3985" data-col-size="sm">Investment</td><td data-start="3985" data-end="3998" data-col-size="sm">Low–Medium</td><td data-start="3998" data-end="4004" data-col-size="sm">Low</td><td data-start="4004" data-end="4013" data-col-size="sm">Medium</td><td data-start="4013" data-end="4020" data-col-size="sm">High</td><td data-start="4020" data-end="4033" data-col-size="sm">Very high</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="4035" data-end="4038">
+<h2 data-start="4040" data-end="4084"><strong data-start="4043" data-end="4084">12. Selection of Manufacturing Method</strong></h2>
+<h3 data-start="4086" data-end="4106"><strong data-start="4090" data-end="4106">Introduction</strong></h3>
+<p data-start="4107" data-end="4199">Selecting the correct manufacturing method is <strong data-start="4153" data-end="4198">critical for efficiency and profitability</strong>.</p>
+<hr data-start="4201" data-end="4204">
+<h3 data-start="4206" data-end="4241"><strong data-start="4210" data-end="4241">Factors Affecting Selection</strong></h3>
+<ol data-start="4243" data-end="4395">
+<li data-start="4243" data-end="4266">
+<p data-start="4246" data-end="4266"><strong data-start="4246" data-end="4266">Volume of Demand</strong></p>
+</li>
+<li data-start="4267" data-end="4289">
+<p data-start="4270" data-end="4289"><strong data-start="4270" data-end="4289">Product Variety</strong></p>
+</li>
+<li data-start="4290" data-end="4314">
+<p data-start="4293" data-end="4314"><strong data-start="4293" data-end="4314">Nature of Product</strong></p>
+</li>
+<li data-start="4315" data-end="4335">
+<p data-start="4318" data-end="4335"><strong data-start="4318" data-end="4335">Delivery Time</strong></p>
+</li>
+<li data-start="4336" data-end="4363">
+<p data-start="4339" data-end="4363"><strong data-start="4339" data-end="4363">Capital Availability</strong></p>
+</li>
+<li data-start="4364" data-end="4395">
+<p data-start="4367" data-end="4395"><strong data-start="4367" data-end="4395">Skill Level of Workforce</strong></p>
+</li>
+</ol>
+<hr data-start="4397" data-end="4400">
+<h3 data-start="4402" data-end="4437"><strong data-start="4406" data-end="4437">Decision Logic (Text-Based)</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="4439" data-end="4710"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">yaml</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-string">Is</span></span><span> </span><span><span class="hljs-string">demand</span></span><span> </span><span><span class="hljs-string">high?</span></span><span>
+   </span><span><span class="hljs-string">├──</span></span><span> </span><span><span class="hljs-literal">Yes</span></span><span> </span><span><span class="hljs-string">→</span></span><span> </span><span><span class="hljs-string">Is</span></span><span> </span><span><span class="hljs-string">product</span></span><span> </span><span><span class="hljs-string">standardized?</span></span><span>
+   </span><span><span class="hljs-string">│</span></span><span>          </span><span><span class="hljs-string">├──</span></span><span> </span><span><span class="hljs-literal">Yes</span></span><span> </span><span><span class="hljs-string">→</span></span><span> </span><span><span class="hljs-string">Flow</span></span><span> </span><span><span class="hljs-string">/</span></span><span> </span><span><span class="hljs-string">Continuous</span></span><span> </span><span><span class="hljs-string">Production</span></span><span>
+   </span><span><span class="hljs-string">│</span></span><span>          </span><span><span class="hljs-string">└──</span></span><span> </span><span><span class="hljs-literal">No</span></span><span> </span><span><span class="hljs-string">→</span></span><span> </span><span><span class="hljs-string">Batch</span></span><span> </span><span><span class="hljs-string">Production</span></span><span>
+   </span><span><span class="hljs-string">└──</span></span><span> </span><span><span class="hljs-literal">No</span></span><span> </span><span><span class="hljs-string">→</span></span><span> </span><span><span class="hljs-string">Is</span></span><span> </span><span><span class="hljs-string">product</span></span><span> </span><span><span class="hljs-string">customized?</span></span><span>
+              </span><span><span class="hljs-string">├──</span></span><span> </span><span><span class="hljs-literal">Yes</span></span><span> </span><span><span class="hljs-string">→</span></span><span> </span><span><span class="hljs-string">Jobbing</span></span><span> </span><span><span class="hljs-string">/</span></span><span> </span><span><span class="hljs-string">Project</span></span><span>
+              </span><span><span class="hljs-string">└──</span></span><span> </span><span><span class="hljs-literal">No</span></span><span> </span><span><span class="hljs-string">→</span></span><span> </span><span><span class="hljs-string">Batch</span></span><span> </span><span><span class="hljs-string">Production</span></span><span>
+</span></span></code></div></div></pre>
+<hr data-start="4712" data-end="4715">
+<h2 data-start="4717" data-end="4747"><strong data-start="4720" data-end="4747">UNIT IV – FINAL SUMMARY</strong></h2>
+<ul data-start="4749" data-end="5083">
+<li data-start="4749" data-end="4829">
+<p data-start="4751" data-end="4829">Industries use <strong data-start="4766" data-end="4801">different manufacturing methods</strong> based on volume and variety</p>
+</li>
+<li data-start="4830" data-end="4879">
+<p data-start="4832" data-end="4879">Flow production supports <strong data-start="4857" data-end="4879">mass manufacturing</strong></p>
+</li>
+<li data-start="4880" data-end="4935">
+<p data-start="4882" data-end="4935">Continuous production supports <strong data-start="4913" data-end="4935">process industries</strong></p>
+</li>
+<li data-start="4936" data-end="5009">
+<p data-start="4938" data-end="5009">Each method has <strong data-start="4954" data-end="5009">unique characteristics, advantages, and limitations</strong></p>
+</li>
+<li data-start="5010" data-end="5083">
+<p data-start="5012" data-end="5083">Correct selection ensures <strong data-start="5038" data-end="5083">cost efficiency and customer satisfaction</strong></p>
+</li>
+</ul>
+<hr data-start="5085" data-end="5088">
+<h2 data-start="5090" data-end="5115"><strong data-start="5093" data-end="5115">UNIT IV COMPLETE ✅</strong></h2>
+<h3 data-start="5117" data-end="5141"><strong data-start="5121" data-end="5141">Review Questions</strong></h3>
+<p data-start="5143" data-end="5159"><strong data-start="5143" data-end="5159">Short Answer</strong></p>
+<ol data-start="5160" data-end="5223">
+<li data-start="5160" data-end="5187">
+<p data-start="5163" data-end="5187">Define flow production</p>
+</li>
+<li data-start="5188" data-end="5223">
+<p data-start="5191" data-end="5223">What is continuous production?</p>
+</li>
+</ol>
+<p data-start="5225" data-end="5240"><strong data-start="5225" data-end="5240">Descriptive</strong></p>
+<ol data-start="5241" data-end="5392">
+<li data-start="5241" data-end="5278">
+<p data-start="5244" data-end="5278">Explain methods of manufacturing</p>
+</li>
+<li data-start="5279" data-end="5327">
+<p data-start="5282" data-end="5327">Compare jobbing, batch, and flow production</p>
+</li>
+<li data-start="5328" data-end="5392">
+<p data-start="5331" data-end="5392">Discuss advantages and limitations of continuous production</p>
+</li>
+</ol>
+<hr data-start="5394" data-end="5397">
+<h3 data-start="5399" data-end="5416"><strong data-start="5403" data-end="5416">Next Step</strong></h3>
+<p data-start="5417" data-end="5514">👉 <strong data-start="5420" data-end="5514">Shall I move to <em data-start="5438" data-end="5511">Unit V – Inspection, Quality Control &amp; Lean Production Systems (Part 1)</em>?</strong></p>
+<p data-start="5516" data-end="5650" data-is-last-node="" data-is-only-node="">(Once Unit V is complete, I will automatically prepare <strong data-start="5571" data-end="5618">final revision materials and project topics</strong> as per the NoteSmith protocol.)</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

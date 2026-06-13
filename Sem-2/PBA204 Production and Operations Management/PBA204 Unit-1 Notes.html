@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT - NoteSmith</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #e5e7eb;
+    }
+    body.dark-mode .header {
+      background: #2d2d2d;
+      color: #f9fafb;
+    }
+    body.dark-mode .header h1 {
+      color: #f9fafb;
+    }
+    body.dark-mode .summary-section,
+    body.dark-mode .toc-section,
+    body.dark-mode .message {
+      background: #2d2d2d;
+      color: #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .summary-section h2,
+    body.dark-mode .toc-section h2 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-role.user {
+      color: #60a5fa;
+    }
+    body.dark-mode .message-role.assistant {
+      color: #c084fc;
+    }
+    body.dark-mode .message-content {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content * {
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content h1,
+    body.dark-mode .message-content h2,
+    body.dark-mode .message-content h3,
+    body.dark-mode .message-content h4,
+    body.dark-mode .message-content h5,
+    body.dark-mode .message-content h6 {
+      color: #f9fafb;
+    }
+    body.dark-mode .message-content pre {
+      background: #1e1e1e !important;
+      border: 1px solid #404040;
+    }
+    body.dark-mode .message-content pre code {
+      background: transparent !important;
+      color: #d4d4d4 !important;
+    }
+    body.dark-mode .message-content code {
+      background: #374151 !important;
+      color: #f9fafb !important;
+    }
+    /* Keep syntax highlighting colors in dark mode */
+    body.dark-mode .message-content pre .hljs-keyword,
+    body.dark-mode .message-content pre .hljs-selector-tag,
+    body.dark-mode .message-content pre .hljs-literal,
+    body.dark-mode .message-content pre .hljs-tag {
+      color: #569cd6 !important;
+    }
+    body.dark-mode .message-content pre .hljs-string,
+    body.dark-mode .message-content pre .hljs-doctag {
+      color: #ce9178 !important;
+    }
+    body.dark-mode .message-content pre .hljs-title,
+    body.dark-mode .message-content pre .hljs-section,
+    body.dark-mode .message-content pre .hljs-selector-id {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-subst,
+    body.dark-mode .message-content pre .hljs-type,
+    body.dark-mode .message-content pre .hljs-class .hljs-title,
+    body.dark-mode .message-content pre .hljs-title.class_,
+    body.dark-mode .message-content pre .hljs-attr {
+      color: #4ec9b0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-comment,
+    body.dark-mode .message-content pre .hljs-quote {
+      color: #6a9955 !important;
+    }
+    body.dark-mode .message-content pre .hljs-number,
+    body.dark-mode .message-content pre .hljs-built_in,
+    body.dark-mode .message-content pre .hljs-builtin-name {
+      color: #b5cea8 !important;
+    }
+    body.dark-mode .message-content pre .hljs-variable,
+    body.dark-mode .message-content pre .hljs-template-variable,
+    body.dark-mode .message-content pre .hljs-params {
+      color: #9cdcfe !important;
+    }
+    body.dark-mode .message-content pre .hljs-function {
+      color: #dcdcaa !important;
+    }
+    body.dark-mode .message-content pre .hljs-meta {
+      color: #c586c0 !important;
+    }
+    body.dark-mode .message-content pre .hljs-regexp,
+    body.dark-mode .message-content pre .hljs-symbol {
+      color: #d16969 !important;
+    }
+    body.dark-mode .message-content table th,
+    body.dark-mode .message-content table td {
+      border-color: #404040;
+      color: #e5e7eb;
+    }
+    body.dark-mode .message-content table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+    body.dark-mode a {
+      color: #60a5fa;
+    }
+    body.dark-mode .summary-section > div > div {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-section a {
+      color: #e5e7eb;
+    }
+    body.dark-mode .toc-link {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .toc-link:hover {
+      background: #374151 !important;
+    }
+    body.dark-mode .toc-role {
+      color: #9ca3af !important;
+    }
+    body.dark-mode .toc-preview {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-export-info {
+      background: #374151 !important;
+    }
+    body.dark-mode .summary-card {
+      background: #374151 !important;
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card > div {
+      color: #e5e7eb !important;
+    }
+    body.dark-mode .summary-card-blue {
+      background: #1e3a5f !important;
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-blue > div {
+      color: #93c5fd !important;
+    }
+    body.dark-mode .summary-card-purple {
+      background: #4c1d95 !important;
+      color: #d8b4fe !important;
+    }
+    body.dark-mode .summary-card-purple > div {
+      color: #d8b4fe !important;
+    }
+    .summary-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .toc-section {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-export-info {
+      background: #f9fafb;
+    }
+    .summary-card {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .summary-card > div:first-child {
+      color: #6b7280;
+    }
+    .summary-card > div:last-child {
+      color: #1f2937;
+    }
+    .summary-card-blue {
+      background: #dbeafe;
+    }
+    .summary-card-blue > div:first-child {
+      color: #1e40af;
+    }
+    .summary-card-blue > div:last-child {
+      color: #1e40af;
+    }
+    .summary-card-purple {
+      background: #e9d5ff;
+    }
+    .summary-card-purple > div:first-child {
+      color: #6b21a8;
+    }
+    .summary-card-purple > div:last-child {
+      color: #6b21a8;
+    }
+    .toc-link {
+      color: inherit;
+      transition: background 0.2s;
+    }
+    .toc-link:hover {
+      background: #f3f4f6;
+    }
+    .toc-role {
+      color: #6b7280;
+    }
+    .toc-preview {
+      color: #1f2937;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      color: #1f2937;
+    }
+    .metadata {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .message {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .message-role {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .message-role.user {
+      color: #2563eb;
+    }
+    .message-role.assistant {
+      color: #7c3aed;
+    }
+    .message-role img.chatgpt-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .message-content {
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .message-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .message-content code {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: 14px;
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    
+    /* Syntax Highlighting - VS Code Dark+ Theme */
+    .message-content pre .hljs-keyword,
+    .message-content pre .hljs-selector-tag,
+    .message-content pre .hljs-literal,
+    .message-content pre .hljs-tag {
+      color: #569cd6; /* Blue for keywords */
+    }
+    .message-content pre .hljs-string,
+    .message-content pre .hljs-doctag {
+      color: #ce9178; /* Orange for strings */
+    }
+    .message-content pre .hljs-title,
+    .message-content pre .hljs-section,
+    .message-content pre .hljs-selector-id {
+      color: #dcdcaa; /* Yellow for function names */
+    }
+    .message-content pre .hljs-subst,
+    .message-content pre .hljs-type,
+    .message-content pre .hljs-class .hljs-title,
+    .message-content pre .hljs-title.class_,
+    .message-content pre .hljs-attr {
+      color: #4ec9b0; /* Cyan for types/classes */
+    }
+    .message-content pre .hljs-comment,
+    .message-content pre .hljs-quote {
+      color: #6a9955; /* Green for comments */
+      font-style: italic;
+    }
+    .message-content pre .hljs-number,
+    .message-content pre .hljs-built_in,
+    .message-content pre .hljs-builtin-name {
+      color: #b5cea8; /* Light green for numbers */
+    }
+    .message-content pre .hljs-variable,
+    .message-content pre .hljs-template-variable,
+    .message-content pre .hljs-params {
+      color: #9cdcfe; /* Light blue for variables */
+    }
+    .message-content pre .hljs-function {
+      color: #dcdcaa; /* Yellow for functions */
+    }
+    .message-content pre .hljs-meta {
+      color: #c586c0; /* Purple for meta/decorators */
+    }
+    .message-content pre .hljs-operator,
+    .message-content pre .hljs-punctuation {
+      color: #d4d4d4; /* Light gray for operators */
+    }
+    .message-content pre .hljs-regexp,
+    .message-content pre .hljs-symbol {
+      color: #d16969; /* Red for regex */
+    }
+    .message-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .message-content table th,
+    .message-content table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .message-content table th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .message-content ul, .message-content ol {
+      margin: 12px 0;
+      padding-left: 24px;
+    }
+    .message-content li {
+      margin: 4px 0;
+    }
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .message-content a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .message-content a:hover {
+      text-decoration: underline;
+    }
+    /* Hide "You said:", "ChatGPT said:" labels */
+    .message-content > div > div.text-sm {
+      display: none;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .back-to-top.show {
+      display: flex;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    body.dark-mode .theme-toggle {
+      background: #2d2d2d;
+      border-color: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatGPT - NoteSmith</h1>
+  </div>
+  
+  <!-- Conversation Summary -->
+  
+  
+  <!-- Table of Contents -->
+  
+  
+  <div class="messages">
+    <div class="message" id="message-0">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><p class="first:mt-0 my-1.5 h-8 flex items-center ltr:me-auto rtl:ms-auto empty:hidden text-token-text-secondary"></p><div data-message-author-role="assistant" data-message-id="c53e7466-c766-4368-9b68-27e208c64ac0" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="0" data-end="106">I have <strong data-start="7" data-end="39">ingested both uploaded files</strong> and completed the <strong data-start="58" data-end="75">mapping phase</strong> as per the NoteSmith protocol:</p>
+<ul data-start="108" data-end="340">
+<li data-start="108" data-end="210">
+<p data-start="110" data-end="210"><strong data-start="110" data-end="123">Syllabus:</strong> <em data-start="124" data-end="170">PBA204 – Production and Operation Management</em> </p>
+</li>
+<li data-start="211" data-end="340">
+<p data-start="213" data-end="340"><strong data-start="213" data-end="232">Reference Book:</strong> <em data-start="233" data-end="300">Modern Production/Operations Management (8th Ed.) – Buffa &amp; Sarin</em> </p>
+</li>
+</ul>
+<p data-start="342" data-end="463">Below is the <strong data-start="355" data-end="403">verbatim, syllabus-aligned Table of Contents</strong>, structured into Units and subtopics exactly as prescribed.</p>
+<hr data-start="465" data-end="468">
+<h2 data-start="470" data-end="497">📘 <strong data-start="476" data-end="497">TABLE OF CONTENTS</strong></h2>
+<h3 data-start="498" data-end="557"><strong data-start="502" data-end="557">Course: Production and Operation Management (PB204)</strong></h3>
+<hr data-start="559" data-end="562">
+<h3 data-start="564" data-end="617"><strong data-start="568" data-end="617">UNIT I: Introduction to Operations Management</strong></h3>
+<ol data-start="618" data-end="998">
+<li data-start="618" data-end="654">
+<p data-start="621" data-end="654">Nature of Operations Management</p>
+</li>
+<li data-start="655" data-end="690">
+<p data-start="658" data-end="690">Scope of Operations Management</p>
+</li>
+<li data-start="691" data-end="731">
+<p data-start="694" data-end="731">Importance of Operations Management</p>
+</li>
+<li data-start="732" data-end="771">
+<p data-start="735" data-end="771">Functions of Operations Management</p>
+</li>
+<li data-start="772" data-end="830">
+<p data-start="775" data-end="830">Evolution from Manufacturing to Operations Management</p>
+</li>
+<li data-start="831" data-end="867">
+<p data-start="834" data-end="867">Evolution of the Factory System</p>
+</li>
+<li data-start="868" data-end="894">
+<p data-start="871" data-end="894">Manufacturing Systems</p>
+</li>
+<li data-start="895" data-end="930">
+<p data-start="898" data-end="930">Quality Concepts in Operations</p>
+</li>
+<li data-start="931" data-end="954">
+<p data-start="934" data-end="954">Mass Customization</p>
+</li>
+<li data-start="955" data-end="998">
+<p data-start="959" data-end="998">Contributions to Operations Management:</p>
+</li>
+</ol>
+<ul data-start="1002" data-end="1085">
+<li data-start="1002" data-end="1016">
+<p data-start="1004" data-end="1016">Henry Ford</p>
+</li>
+<li data-start="1020" data-end="1041">
+<p data-start="1022" data-end="1041">W. Edwards Deming</p>
+</li>
+<li data-start="1045" data-end="1062">
+<p data-start="1047" data-end="1062">Philip Crosby</p>
+</li>
+<li data-start="1066" data-end="1085">
+<p data-start="1068" data-end="1085">Genichi Taguchi</p>
+</li>
+</ul>
+<hr data-start="1087" data-end="1090">
+<h3 data-start="1092" data-end="1136"><strong data-start="1096" data-end="1136">UNIT II: Productivity and Work Study</strong></h3>
+<ol data-start="1137" data-end="1540">
+<li data-start="1137" data-end="1179">
+<p data-start="1140" data-end="1179">Productivity – Concept and Importance</p>
+</li>
+<li data-start="1180" data-end="1237">
+<p data-start="1183" data-end="1194">Work Study:</p>
+<ul data-start="1198" data-end="1237">
+<li data-start="1198" data-end="1212">
+<p data-start="1200" data-end="1212">Objectives</p>
+</li>
+<li data-start="1216" data-end="1225">
+<p data-start="1218" data-end="1225">Scope</p>
+</li>
+<li data-start="1229" data-end="1237">
+<p data-start="1231" data-end="1237">Uses</p>
+</li>
+</ul>
+</li>
+<li data-start="1238" data-end="1324">
+<p data-start="1241" data-end="1255">Methods Study:</p>
+<ul data-start="1259" data-end="1324">
+<li data-start="1259" data-end="1281">
+<p data-start="1261" data-end="1281">Flow Process Chart</p>
+</li>
+<li data-start="1285" data-end="1301">
+<p data-start="1287" data-end="1301">Flow Diagram</p>
+</li>
+<li data-start="1305" data-end="1324">
+<p data-start="1307" data-end="1324">Process Mapping</p>
+</li>
+</ul>
+</li>
+<li data-start="1325" data-end="1499">
+<p data-start="1328" data-end="1345">Work Measurement:</p>
+<ul data-start="1349" data-end="1499">
+<li data-start="1349" data-end="1381">
+<p data-start="1351" data-end="1381">Elements of Work Measurement</p>
+</li>
+<li data-start="1385" data-end="1407">
+<p data-start="1387" data-end="1407">Performance Rating</p>
+</li>
+<li data-start="1411" data-end="1425">
+<p data-start="1413" data-end="1425">Allowances</p>
+</li>
+<li data-start="1429" data-end="1446">
+<p data-start="1431" data-end="1446">Standard Time</p>
+</li>
+<li data-start="1450" data-end="1478">
+<p data-start="1452" data-end="1478">Synthetic Time Standards</p>
+</li>
+<li data-start="1482" data-end="1499">
+<p data-start="1484" data-end="1499">Work Sampling</p>
+</li>
+</ul>
+</li>
+<li data-start="1500" data-end="1540">
+<p data-start="1503" data-end="1540">Numerical Problems on Standard Time</p>
+</li>
+</ol>
+<hr data-start="1542" data-end="1545">
+<h3 data-start="1547" data-end="1595"><strong data-start="1551" data-end="1595">UNIT III: Facilities Location and Layout</strong></h3>
+<ol data-start="1596" data-end="1900">
+<li data-start="1596" data-end="1653">
+<p data-start="1599" data-end="1653">Strategic Importance of Facilities Location &amp; Layout</p>
+</li>
+<li data-start="1654" data-end="1695">
+<p data-start="1657" data-end="1695">Factors Affecting Location Decisions</p>
+</li>
+<li data-start="1696" data-end="1735">
+<p data-start="1699" data-end="1735">Factors Affecting Layout Decisions</p>
+</li>
+<li data-start="1736" data-end="1831">
+<p data-start="1739" data-end="1766">Installation of Facilities:</p>
+<ul data-start="1770" data-end="1831">
+<li data-start="1770" data-end="1799">
+<p data-start="1772" data-end="1799">Single Location Decisions</p>
+</li>
+<li data-start="1803" data-end="1831">
+<p data-start="1805" data-end="1831">Multi-location Decisions</p>
+</li>
+</ul>
+</li>
+<li data-start="1832" data-end="1868">
+<p data-start="1835" data-end="1868">Principles of Facilities Layout</p>
+</li>
+<li data-start="1869" data-end="1900">
+<p data-start="1872" data-end="1900">Types of Facilities Layout</p>
+</li>
+</ol>
+<hr data-start="1902" data-end="1905">
+<h3 data-start="1907" data-end="1969"><strong data-start="1911" data-end="1969">UNIT IV: Types of Industries and Manufacturing Methods</strong></h3>
+<ol data-start="1970" data-end="2294">
+<li data-start="1970" data-end="1994">
+<p data-start="1973" data-end="1994">Types of Industries</p>
+</li>
+<li data-start="1995" data-end="2021">
+<p data-start="1998" data-end="2021">Variety of Businesses</p>
+</li>
+<li data-start="2022" data-end="2068">
+<p data-start="2025" data-end="2068">Integration of Manufacturing and Services</p>
+</li>
+<li data-start="2069" data-end="2093">
+<p data-start="2072" data-end="2093">Scale of Operations</p>
+</li>
+<li data-start="2094" data-end="2244">
+<p data-start="2097" data-end="2122">Methods of Manufacturing:</p>
+<ul data-start="2126" data-end="2244">
+<li data-start="2126" data-end="2158">
+<p data-start="2128" data-end="2158">Project / Jobbing Production</p>
+</li>
+<li data-start="2162" data-end="2182">
+<p data-start="2164" data-end="2182">Batch Production</p>
+</li>
+<li data-start="2186" data-end="2218">
+<p data-start="2188" data-end="2218">Flow / Continuous Production</p>
+</li>
+<li data-start="2222" data-end="2244">
+<p data-start="2224" data-end="2244">Process Production</p>
+</li>
+</ul>
+</li>
+<li data-start="2245" data-end="2294">
+<p data-start="2248" data-end="2294">Characteristics of Each Manufacturing Method</p>
+</li>
+</ol>
+<hr data-start="2296" data-end="2299">
+<h3 data-start="2301" data-end="2359"><strong data-start="2305" data-end="2359">UNIT V: Inspection, Quality Control &amp; Lean Systems</strong></h3>
+<ol data-start="2360" data-end="2814">
+<li data-start="2360" data-end="2430">
+<p data-start="2363" data-end="2374">Inspection:</p>
+<ul data-start="2378" data-end="2430">
+<li data-start="2378" data-end="2405">
+<p data-start="2380" data-end="2405">Cent Percent Inspection</p>
+</li>
+<li data-start="2409" data-end="2430">
+<p data-start="2411" data-end="2430">Sample Inspection</p>
+</li>
+</ul>
+</li>
+<li data-start="2431" data-end="2472">
+<p data-start="2434" data-end="2472">Operating Characteristic (OC) Curves</p>
+</li>
+<li data-start="2473" data-end="2511">
+<p data-start="2476" data-end="2511">Statistical Quality Control (SQC)</p>
+</li>
+<li data-start="2512" data-end="2612">
+<p data-start="2515" data-end="2530">Control Charts:</p>
+<ul data-start="2534" data-end="2612">
+<li data-start="2534" data-end="2551">
+<p data-start="2536" data-end="2551">X̄ – R Charts</p>
+</li>
+<li data-start="2555" data-end="2566">
+<p data-start="2557" data-end="2566">n Chart</p>
+</li>
+<li data-start="2570" data-end="2581">
+<p data-start="2572" data-end="2581">p Chart</p>
+</li>
+<li data-start="2585" data-end="2596">
+<p data-start="2587" data-end="2596">c Chart</p>
+</li>
+<li data-start="2600" data-end="2612">
+<p data-start="2602" data-end="2612">np Chart</p>
+</li>
+</ul>
+</li>
+<li data-start="2613" data-end="2654">
+<p data-start="2616" data-end="2654">Numerical Problems on Control Charts</p>
+</li>
+<li data-start="2655" data-end="2685">
+<p data-start="2658" data-end="2685">Introduction to Six Sigma</p>
+</li>
+<li data-start="2686" data-end="2814">
+<p data-start="2689" data-end="2713">Lean Production Systems:</p>
+<ul data-start="2717" data-end="2814">
+<li data-start="2717" data-end="2745">
+<p data-start="2719" data-end="2745">Toyota Production System</p>
+</li>
+<li data-start="2749" data-end="2771">
+<p data-start="2751" data-end="2771">Just-In-Time (JIT)</p>
+</li>
+<li data-start="2775" data-end="2785">
+<p data-start="2777" data-end="2785">Kanban</p>
+</li>
+<li data-start="2789" data-end="2814">
+<p data-start="2791" data-end="2814">Theory of Constraints</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="2816" data-end="2819">
+<p data-start="2821" data-end="2840">✅ <strong data-start="2823" data-end="2840">Status Update</strong></p>
+<ul data-start="2842" data-end="3020">
+<li data-start="2842" data-end="2883">
+<p data-start="2844" data-end="2883">The syllabus has been <strong data-start="2866" data-end="2882">fully mapped</strong>.</p>
+</li>
+<li data-start="2884" data-end="3020">
+<p data-start="2886" data-end="3020">Each unit has been aligned conceptually with <strong data-start="2931" data-end="2948">Buffa &amp; Sarin</strong> to ensure <strong data-start="2959" data-end="2985">textbook-quality depth</strong> while remaining <strong data-start="3002" data-end="3019">exam-oriented</strong>.</p>
+</li>
+</ul>
+<hr data-start="3022" data-end="3025">
+<h3 data-start="3027" data-end="3046">❓ <strong data-start="3033" data-end="3046">Next Step</strong></h3>
+<p data-start="3047" data-end="3163"><strong data-start="3047" data-end="3163">The Table of Contents is mapped. Shall I begin writing <em data-start="3104" data-end="3160">Unit I – Introduction to Operations Management, Part 1</em>?</strong></p>
+<p data-start="3165" data-end="3269" data-is-last-node="" data-is-only-node="">(Once you approve, I will start with <strong data-start="3202" data-end="3220">Unit I, Part 1</strong>, following the full NoteSmith writing protocol.)</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-1">
+      <div class="message-role assistant"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH5wIVCDAwLR4isAAAHepJREFUeNrtned/W9eZ538HAMEC9t57J0iwiqSoXmlZzUXSJi6fZCxlPOWTjYdKsi/2D5hxrJlJMjvJRPQmG6dYtGJbtKwuWo1iE3vvvVeQBAva2RcUNbJ0L3AB3AtQCr/vyNtOeXDK0w6BgJwtKvQGRQ4ITQMl8SAIA+BHATcCSAEQIb//4kAppUQNAiUBnQDQR4F2AlJLKS0/d+rMpFBf5rUDzv75Y0BEUyjBSYAeJiDJAERCN99LDYUeBI0UuAzQz0SE1v/sxA94ez0vAlBQdN6BUPI2CP4OQBpf793kOSiAOgD/SSn+cO7U6RVLX2hRRxUUFUoBvE8o/hcIAmzdOn9ljFLgnwnorz86eUZt7kvMFoCCosJ8AvwCQIytW+KvGQraSSh++NGpM9fMed5kASgoKnR93PHvmvP8JoJAKcXvAfrDc6fOzJvyoEkdeLbovIICFwlItK1rvAkjXZTixLlTp+u4PsB5hV5wofA4BSnd7PwNTTQBHpwtOn+c6wOcBKCg6Px7hOAiAWS2ruEmRiCQAeRiQVHhe9xuN0JB0fn3CMhvsLmff8GgegA/+OjkmY8N3WVQAAounD9OCLkIQGzr6mxiFjpK6ZvnTp35ku0GVgEoKDqfSkAeYHPYf9FRUSDv3MnT9UwXGQWgoOi8K0CqCbC54Hs56AJFxkenTj+3RWSc1wnwi83Of6mIxpru5jmeGwHOFhXmA7iCTSXPywalwKFzJ09/S2P4rU4uKCqUEqAJL5l6VyqRwE4sASig0Wmh1mltXSRb0QkK+UenTj+xHUieueF9vMCdLyIEoZ4+iPQJQIinN3xdPeDhJINEJAYha7JOKYVGp8Xs0iLGlHMYnJlE9+QIhmanbV18axBDCd7HU9PBkxGgoOi8A0B6CF48q16QuxeyI+OQHBwBZ3sHs96hXFKhbrAHFb3tmFxQ2rpKQjJKgchzJ9dMyU+NAOTtF63zo3wCsD8pDZHe/k9+4ebi5iTDzrhk7IiVo2VkADdaajAyN2PrKgpBAAF9G0Ah8HgE+PHFX4PqxTUASbN16bjg7iTD8dRcJAaGWtzxbOgpRVVvB75urMKyetXWVeYVCtQCSD938vTaCKDXSxQESLV1wbiQERaN42m5cLCTCvodESHIjoxDQkAIPq28i86JEVtXnTcIkApKUwA0iNb+QU9gg2/7RESEN9LzcCprh+Cd/zSujk44vSMfu+JSbN0EfEJAcBJ4vAagIIc3cu/bicV4d+s+xPsHc7pfrdWgZ3IM/dMTGJ+fg3J5CWqtBnZiMRykUng4OcPf1QPh3n4I8vCGyMg0IiIEr6Zkwd1Jhi9ry2zdHLxAgcMA/jcpKDrvQ4AxgGxIa59EJMbfbNuPGL8gwxWiFL1T4yjrbkXzSD80Oh2n97s4OCItNAq5UQnwdnY1en9pVwvudzbB39UDHjIXONs7QCqxAwGg1mmhWl3BrGoR4wtzmJxXgoLaugnZ0FPAnxRcKDxCCIptXRo23s7ZDUVIpMF7hmenUFxfgZ7JMbO/QwhBRmg0XknOhKujEy9lX9Go0TM5htbRQTQO90G1arETL69Q4Kg47+SRUwDZbevCMLE7PgXbY+Ss13V6Pa43VePTqnuYVS1a/L0R5Qwqe9vh5uCEADdPi3cYErEYPi5uSAwMxfaYJPi7eWJuaRHK5SWrtyUTBGiVUEriBdpJWUSIpw8OJmWwXl9Wr+L3ZbfRNTHK63dXNBpcb65BmLcfpymBK2KRGIqQCKQEh6N9bBhfN1RibH5WsPbjBEW8hABhti3F84gIwYnMbRCLmJclqtUV/ObeVd4VNVKJBHviFdgRK1+zHQgAIQTxAcGI8QvE3fZG3GipgU6vF+RbxgtDwyQg8LPN19nJjUpAgJsn4zWNTovflt7kvfMzwtbmfzdH6/i/iEUi7ElQINY/CJ+UlWBGtWCV734b4icB4GaDL7NiJxZjb0Iq6/VLteXon57g7Xuhnr44lpqNUC9fk56jlGJ+ZQlzSyqsaNaMa/YSO7g5yeDuKOO8fgj28MYP9x7Fb0tv8lovjrhJsBalu2HIDI+Fi4Mj47XW0UFU9LbzU3NHJxxKzkJaaBTnzlpcXUbDUB/aRgfRNzWOZQ1zRJa9xA5hXr6I8w+GIiTC6Kgis3fAD3bk47elN3lf0xhBKsEG0wDmRsUz/l+r0+ESD0oYO7EYO2OTsSs+BfYSO07PTC4ocbu1DnWDPZzm61WtBh3jw+gYH8blhkrIA8OwNyEVQR5erM9IJXb4Xt5+/NfdqxicESwa/FmIMCsdM5CKJUgIDIW/qwfj9Uf9nZi2cJ5UBEfg1ZQseMhcON2/pF7FzZZaPOxqgZ6ap9ChlKJxuA9Nw33IiojFqylb4CS1Z7zXXmKH7+ftw89vXbLaVtGmAuBgJ4UiJAKK4AhEePtDImb2PqeU4kFns9nfCXL3wtHUHET6+HO6X6/Xo6K3HdebqqHiyRJIAVT2dqBjbBjv5O5hXXO4ODjhrZzd+NWdK6BmCp0p2EQA3J1k2B2XgszwGEg5DMNDs1MYn58z+TvO9o7Il2cgKyLWqL5/na6JERTXlWNUKcwefW5ZhV/duYK3cnZBHhTOeE+Etz92xspxp71RkDI8jVUFQCqRYH9iGrZFJ7H+2ploGR006TtikQjbYpKwLyGVs+VwenEBlxsq0TTcJ3g7aPU6fFJWgne37kVSILMaZn9iOuoGezC3pBK0LFYTgCgff5zK2sF5/n2aXhN0/ImBoTiSsgXeLtx2t6saDUra6nGvowlaPTcDEh/oKcUfy+/gH3YfZlwcSiUS5Msz8WnlXUHLYRUB2BOvwEF5OkRmGBwppRhVGlf6+Lm642hqDmJ8Azlt6yilqOnvwpXGR5hfsY1uXqPT4g/lJfhg/3HGqTAtNBK3WmoxtWhSyL9JCCoAIkLwZsY2ZEXEmv0OtU6LJSMLsRAPb7y/61VIJdyq0z89geK6cgxYsN0iILyYeqcW53GzpQ6vpmQxtN/aVCakD4JgAkBA8J0tu5AaGmn03hWNGtOL8wjy8H7u2rLaePqbA0npnDpfuazClcZHqOnvMrteqSGR2JeYCl8Xd0wtzqOkrR7VfZ0WicL9ziZsjU6Ah5Pzc9fSQ6Nwub5SsOlJMAE4npZrtPNXNGp809aA0q4WZIRF4zUGAdBT44oXHxd3g9c1Oi3udTShpLXe7KCQYA9vHE3NQYT3f5tOfFzccCprB7ZGJeBSnfkqap1ej3sdTTiWmvPcNUepPWL9g9AyMmDWu40hiADkRMazavTWaRrux+c1pVhYWbb4e2xT/roS5uuGSsyY6S/g4uCIV+SZyAiPYd1Khnj64B92H0btQDeuNFaZpcSp7uvEoeRMRitkgn/IiyMA/q4eOJqazboQ0+v1uNxQifsWKHa4MD4/hy9qHqJ70jzdulgkwvYYOfYmKDhtJQkhSA+LhjwoDN+0NeBORyO0HN3SAGBZo0bH+DDjtpCrAssceBUAAoKTWdtZbelavQ5/LP8GTcP9glVoner+TrM7PykwFIcV2WY5hEgldjj4WPn0dUMVGoZ6OT/bMcYsAN4ubrCX2GFVq+G9nXgVgC0RsQjx9GG8RinFp5X3rNL55rI+ehlzQOWCp8wF7+TuQc/kKC7VlXPyX2DblYgIgbezK4bn+I9f5E0AJGIxDiSls16/1VqH+sEe3ivAB05SexxISkdOZDyrF9I6gzOTuNPeiOzIOMT4BYIYMaZG+gTgf+47hsreDlxvqsaiAcfQyQUlKKWM06e7k2xjC0BWeCyrN23/9ARuttTyXnhLERGC3KgEHEhMg5ORoNL55SVcbXr0ZMvXMNTLWesoIiLkRMZDERyBW611KO1sgY5hd7Oq1UCt0zKaqdksiJbCmwDkRScw/l9P9fhLdalVLFumEOsXhCOKbPi7eRi8T6vT4V7n2hby2Tm4ZWQA7WND2BadhH2Jxu0OjlJ7HFFkIzsyDl/VVaBtbOi5e9RaZgGQiITJ08WLAIR4+sCPxY5fO9DDSZVrLbydXXFYsQWJAYYDSymlaB7px+X6SoN+CDq9Hnc7GlHd34l8eSYny6Ovizv+ZtsBtI8Nobi+4lvh6GzPmuuPYAxeBCCZxaxJKcXd9gZBCm4q9hI77EtM5WSJHFPO4lJdmUnuWYurK7hY/QBl3a2cfA/WvINDEOMXhNKuFtxsqcWqVsM6iqxozU4IbhBeBCDOn3nVPDQ7JZhdnSsEQFZELPLlmay+hs/iKJWa7R08PDeNX935GimPvY88jVg/xSIRdsTKkR4WhdKuVtZF6MKy5QozJiwWAHuJHfxZXLgbrWBbN0SEtx+OpuYgmEHFbAg3Rxn+x5adT1S85hiNGoZ60TI6gJ2xydjNwf/Q2d4RB1l2UZRSwSyCFgtAgJsn67xlZQ/Xb7E1KhGvyDMtCu8K9fLFP+45gpqBblxpqDLZbKzV6XC7tQ6P+jrwSnIW0k3wQH4alXpFMJO1xQLg7cKsLdPp9Ri1YYoVdyfDQ/jEwhy+qquEzN4eh5KzWLewhBBkPFHx1uNuu+mOI8rlJXxaeRcPu1pwLDXH5BiE/inh4gUsFgBXB+aGUy6rrOphw5VltRq3Wmu/tRdvHO7D3vhUbI+Vw45lgWgvsUO+PBNbIuJwub7SrOltYGYSvyz5Culh0ThkQhRSx/iwYO1hsQA4sqxaN1ootJ7qUdXbgWsM2ji1VourTY9Q0duOI4otSAoMYx2qPWUueGfrHvRMjOFSXblZW9ya/i40DfVhT4KwcYhcsDgphIhl1aq1VcAjAz2TY/j5rWJcrC41qIqdUS3g/z28jd/cu2awYwkIonwD8KN9x/BGeh5kZqSmU+u0uNZUjXPXP0e3kbXSEUU2wk2cNrhisQCwRcpIRLZPODKrWsQfykrwqztfY8QEPXrXxAj+/eaX+KLmocGRTCQSIScqHj/NfxPbY5LM8nmcVi3gv+5exa3WOlZtqUQsxls5e+AogDrY4l5a1jD76zlz3HMLRf1gD352/SLqTTDHPo2eUjzsbsWH1y6id8qwV7Kj1B5HU3NQcOA1znmMnoaC4npTNf5SXcqq8XN3kjF6DFmKxQIwz+L94ubgxLqgsgbDc9Oc8wQZYkm9yjlzqK/rmor3vW0H4MPRLf1pKnrbUVxXzjoSpIdGIdKbX+cQiwWArXFEIhEC3b1MfNuLz7qKt+DAaziiyDY5pV1pVwvKe9pY332IwXvYEiwWgDHlLOs6INrX8syzUrFEMFOoJSyr1U/yAjAhFomxI1aOn77yJnIi401SABXXVWCCJRQuzMsXMb6BvNXDYgFQ67SsCyy22Dcm2OY+ZwdH/CT/TWyNSuAc32cNplXz+PDaRVT1dhi01DnbO+KNjDz8aN8xRHH07dPqdfii9iHrVLAtJom3evCyVG9nsGsDa1G5XKeB/ukJ1grL7B3wWvpWfLD/NV6l31IWVpZR9Og+fnm7GL1T4wbvDXT3wt/uPGQw+8nTdE2MonOcOT1tnH8wnO35WWTzIgANQ32MnUcIwa64ZE7vGFXOoKSt3qDjiL+bB87syMf3tu6DF48ZvCxlaHYK//nNZfyx/BvMLbG7nxNCcCApjTEAhIk7HcymdLFIBHlQKB9Fd+VFAEaVM6zTgCIkkvMocK2p2rgShhAkBYXh7IHX8WpKFucsH9agbrAHH167iBvNNVBrmQNQRESEYE9u1snO8RHW/IexZmw3GcvDV+UfdLWwVJjgjYw8k+Lz//3ml/jciBJGIhZjV1wKfvrKm2Zp4oRCo9PhZkstfnbtIjQ6diHgSvMIsxd1hBc/yd14E4Da/m7WVGehnj4GPYafRU8pyrpb8S9XP8ODzmaDeXlcHJw21Ciwztyyipf8f10saepl9g5w4yGlLW8CoKN6XG18xHp9T7wC6aFRJr1zWaPGpbpy/OuNL1gXmjbDSj6uwyxnGRFC4O1seYY/XhX2dYM9rBJLCMHJrB1QhESY/N6JhTkU3r+O//vgBmetXJiXLy/nCrg6OrEmrbQGymUVq0ZzQ40A6xRV3WcN6RaLRPhu9m7sNvPwhdbRQZy7/jm+qq8wGjaeFBj2WAkTZ5YXjkQkxt4EBX6S/yZrtJM1oACW1MxrIT4EnHcBmF1aRNGje6zbOdFjdeZ72w7A3QzHSx1dC6X+8NpnKO9pMxg+vqaE2YYf7TtmUoBlclA4fpz/BvLlmRtifaHVMdfRWBQTFwSx2TYN9+ObNsPu4PEBITib/wb2JqSaFfSwuLqCv1SX4ue3LqF7ctTglBzo7oX3dx7C2zl7DO7BA9w88bc7X8G7W/ca9ea1JhIxczfpeIgVEC5DCIdhd83NKgNbzIikXWdkbga/vnMFKcHheDVlC2vHEUKgCIlAYmAI7rY3oqSt4ck2TSa1x0F5BrIj4lgdXGwFASCTMm9zV3jIYSiYAMSaEGFrTiTtszQM9aFlZBA74+TYHa9gHbrtxBLsS0xDZngsrjRWQSZ1wP6ktA1pcAIAdydn1kAWPjyFBREAqUSCACMxd0yYEknLhFavw+3WelT1deKQETdsdycZvpu9y+g79VSPxZUV3o6RMRW2mAZKKSYXLI8VEGS883f1MHsoXY+k/Un+CeyIlUNshpvV/GM37P8o+cqiFOzdE6P4+c1LNg1wiWYxfqnUq1AuW55EUhABYDPUUEpxtfERp8xfjlIpjiiyUXDwdSQEhJhVjoGZSfxHyVf4c+VdkxprRrWAT8pu49d3r2DEhoGta3YPZqNPvxHrI1cEmQJcWfwBF1dXUNJWj8reds6RtD4ubvh+3n50jA+vOUoszJlUFgJATEScbBGrWg2+aWvA3fbGDRHTEO8fzBo7wJdmVBABsGdRUKyfwbseSfuwuxXHOEbSxvkH458OBOJhdytuNtewHtbwNOFea7GBIUasb5RSizJ8CQWbwkyv16NphJ9UO4IIANuv7dmsGCOPI2nX8vhvgYfMsJ18LXNXEtJDo3C9uRrlPe2MCic3RxleTclCakik0e3owMwkii3I8ScUsX5BiGD5YbSPD/OSXg8QSADYdNdSlgiY+mciaY2lkJfZO+D19DzkRiaguL78SRCqnViMnXHJ2B1n/B3zy0u42vgIj/o7hWgCi5CIxDhqwAW8lMcUe4IIAFtuX0Px+RqdDrda61DV18n51xvg7okf7HgFTSP9aBsdxL6ENKOjiKGULxuFo6nZ8HN1Z7w2ODOJdh5jBQURADa3KDuxBO6OMswZWJErl1X4U8UdlD6OpDVmiCGEIDkonDVLyTpcU77YmrzoROREMmdZpZTiSmMVr98TRADYTLaEEIR4+mBu2PiWrH96Ar+8XYzM8Bjkyy07z3dUOYPiugpWU/VGITsiDkdTc1hHvoahPt5zLggiANOL81hSrzKqV2P9gjgrViiAqr5ONAz1YW9CKrbHmHbSiGp1BTeaax5bDc0znCQFhiExkBcHTFYICA4kpWNvgoK18xdXlwVJGy+IAFAAvVNjjGlP5UFh+KK2jFMW8HVWtRpcaaxCRU8bjiiykRhoOMOXTq9HWXcrbrTUPtl6moq/mweOKnIQ7Rtg8SHShvCSueBE5nZEGQii0VOKC5X3sLjKf54gwYxBraODjALg7OCI5OAw1A+abvmbVi3gdw9vIcY3EEdTc57L8UcpRef4CIrry806ZApYS8h4UJ6BHCOWQW6HRbALjrO9A3bGJSMvOtFgfoA17WkVY05BPhBMAJqG+nA8LZfR1r8nXoGGwV6z3eo6J0bwbze/QE5kPHbFpcDdSYYR5QxuNNeYnVZdRAi2RidifyI3yyCXpE1ilpFjd1wKThlIqv009zqaBD09TDABUKlX0TzcD0XI84dGBLp7IS00CjUD3Wa/fz18+2F3KwghFmUijfMPxhEF+9brWZbVatxurTN4j51YzLpeMXSC6DqUUpS01eNaU7XZ9eKCoLlJ7nU0ISU4gnEOPazIRsf4sMkmXybM7XwfFzccUWQj3j+Y80FTLSMDKK6vMHrat7uTs9lrB41Ohy9qHqKqr8PitjGGoAIwMDOJ9rEhxDNY81wcHPGd7F34+P51wdKgsuFgJ8X+xDTkRSdAzNEdbUw5i+K6cnRy3Eqa60k8ppzFnyvvmOUUYw6CZye63FCJGL8gRgfGWL8gvJ6eh4vVD6xSWUIIsiPicFCezjm40tyt5NNnC3Fh/fzCux2NvASUcEVwARifn8O9jkbsjlcwXs+OjAMAfF5TKuhIEOUTgKOp2ZzjFC3dSnLVHSypV1HR04a7HU02yaxmlfxkN5prEOcfzNr42ZFx8JA5408Vd3hvBE+ZCw6nbIE8KIzbPA+g43EW7wkzt5IR3n4GvYrVWi26JkZQP9iDxuE+XlLZmItVBECr1+OTshL8cO9R1kxXsX5BKDjwOorrylHHw8ki9hI77IlXGEz++CyTC0p8VV+BVhPPKn6W7TFyxv/r9Xqcv38dfVNjGyaNntUyFE4tzuP3Zbfx3raDrNsjFwdHvJWzG9tjklDSVo+W0UGTV/iOdlJsiYzDzthkztnBn2QP7WqxeP4NcveCPIj5QOiO8eENZ4+QwGphjmtZLz4pK8E7uXsM6vRDvXzxvbz9UC6p0DDci46xYQzMTLKamT1lLojw9kNCQAgSAkI5HyGrp3qzPZCZIFg7MJNtqiljSf5kSyQUUFsz807L6AA+fnAD7+buhaPUcGybm5MM22Pk2B4jB6UUi6srmF9eglqrASEEjnZSuDs5w97O9PCt7olRFNebF4PAxq74FISzrP7HlLNoFejwR0uQENB5gFg1+rFrYgS/LCnGu7l7jZ7Zsw4hBC4OjpyHdTZmVAu43FCJxqE+XusU5x+M/KQM1uvXm6utN9SagAQUEyAwLXCfByYXlPjF7UvIl2diW3Si4CFZq1oNSlrrca/D9HTvxgj39sM7uXtY69A5Prxhz0uUUIJ+AuTa4uManQ5f1Vegur8Th1O2INo3UBDT68jcND6+f0OQQxeSAkPx3exdrD6IqxoNLlaX8v5dPqAAxHknjiUD2GXLgiysLKO6vwud4yNwsLODt7MbrzkBne0dIRaJ0DM5ypuySSwSIV+egWNpuawLWkopPqt+gJ7JMRPfbh0I1haBtRsl/WLf9Dj6ysYhs3dAclAY4gNCEentZ3GWbEIItsUkISEgBF83VFkc6rVmPdzCelTeOvc7m1HT32XtZuQMBUAKigr9CDAKYKPIwbcgWAs183V1h4eTM5yk9rATS0BBodZqsLiygmnVAsbnZ3EoOROZ4bFG3zmqnMHDrlY0DPWybi2fRSqRIDkoHFujExHi4W10qqod6MafK+5syIXfs+2LgqLCJgLwl3/UVpUhBCcytyGLgxAAa/r+gZlJ9E+NY2x+FsplFVY0Gmh0OjjY2cHNUQY/V3eEe/khwseP88ke1X2dKHp03+pWTlOgeDwFPP77Ml4CAaCUoqjqPpRLKuxNSDX6KxWLRIjw9jPZcmfo+7db63C9ucbWTWGU9ZYRAQCh+AxW1AgKzfXmGvyu9JZVrWuLK8v4benNF6Lzn0YMALknjo6C4E0CCHMwjQ2YXFTiUV8nXB2c4O/mIZhnL6UU1f1d+N3DW1Zz4uCTJ61ScOH83xNC/o+tCyQE65lKY/2CeBMESilaRwdxs6UGQ7PczyPaaDxpjbMXzjuBkD4AtkuKJzD+bh7IjoiDIiTSbJWyclmFusEeVPa0Y4Jj0sqNzLd+DmcvFP4YBB/aulDCV5ogxNMbUb4BCPHwgd/jLaZELH4yQlBKodZpMataxPj8HAZnJtE9OfJC/9qZ2+IpCooKHQhFGwjCzH3hi4xUIlnb6tG1k1DYsn2/TDw3IZ69cP44CPkcG1QxtAm/iBj+8yUF/czWBdvEOjD+ys8WFXoCtBYgwobFbmJzGA3YH508PUNBTlLQjXUC9Ca8w+qFce7k6QqAvAdgY7ivbiIIBt1wzp08/ScAH+AlUhP/NcGl04z7YVHRLwD6ATZHghcOLts4zlu9gguFbxGCjwFszLTam5iFSXv9s0XncwEUAYSfQ+s2sTkmueJ+dPJMGSjSAHyOzXXBS4HJvtgfnTozJRbTNyhwigIb7Cy3TUzFInVvQVGhE6H4gBL8EwFsd7baJmbDi76/4EKhKwjeI6B/B5AYW1dqE+7wavApuHCeEELyKHCCUHoYhETw/Y1N+EWwzjn7aSGoCBEAckFpKgiJJ0AYpfAjBG5Y205uCgcD6x671uD/A/Ace12OlJpfAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTAyLTIxVDA4OjQ4OjQ3KzAwOjAwg+QcegAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0wMi0yMVQwODo0ODo0NyswMDowMPK5pMYAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjMtMDItMjFUMDg6NDg6NDcrMDA6MDClrIUZAAAAAElFTkSuQmCC" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="c5df96ae-da57-4d59-92fb-519a4cdc3b6f" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="95">
+<p data-start="2" data-end="95"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="64">Unit I – Introduction to Operations Management</strong><br data-start="64" data-end="67">
+<strong data-start="69" data-end="95">Part 1 of ~3 (Approx.)</strong></p>
+</blockquote>
+<hr data-start="97" data-end="100">
+<h2 data-start="102" data-end="163"><strong data-start="105" data-end="163">UNIT I: INTRODUCTION TO OPERATIONS MANAGEMENT – PART 1</strong></h2>
+<p data-start="165" data-end="476">This part lays the <strong data-start="184" data-end="228">foundation of Operations Management (OM)</strong>. We will clearly understand <strong data-start="257" data-end="290">what operations management is</strong>, <strong data-start="292" data-end="315">why it is important</strong>, <strong data-start="317" data-end="338">what its scope is</strong>, and <strong data-start="344" data-end="374">what functions it performs</strong> in an organization.<br data-start="394" data-end="397">
+These concepts are <strong data-start="416" data-end="441">core theory questions</strong> and are frequently asked in exams.</p>
+<hr data-start="478" data-end="481">
+<h2 data-start="483" data-end="524"><strong data-start="486" data-end="524">1. Nature of Operations Management</strong></h2>
+<h3 data-start="526" data-end="546"><strong data-start="530" data-end="546">Introduction</strong></h3>
+<p data-start="547" data-end="781">Operations Management deals with <strong data-start="580" data-end="627">designing, operating, and improving systems</strong> that create and deliver a firm’s <strong data-start="661" data-end="693">primary products or services</strong>.<br data-start="694" data-end="697">
+In simple words, <strong data-start="714" data-end="780">operations management converts inputs into outputs efficiently</strong>.</p>
+<p data-start="783" data-end="914">Every organization—manufacturing or service—has an <strong data-start="834" data-end="857">operations function</strong>, because every organization produces something of value.</p>
+<hr data-start="916" data-end="919">
+<h3 data-start="921" data-end="941"><strong data-start="925" data-end="941">Key Concepts</strong></h3>
+<ul data-start="942" data-end="1085">
+<li data-start="942" data-end="968">
+<p data-start="944" data-end="968">Transformation process</p>
+</li>
+<li data-start="969" data-end="992">
+<p data-start="971" data-end="992">Input–Output system</p>
+</li>
+<li data-start="993" data-end="1011">
+<p data-start="995" data-end="1011">Value addition</p>
+</li>
+<li data-start="1012" data-end="1052">
+<p data-start="1014" data-end="1052">Manufacturing and service operations</p>
+</li>
+<li data-start="1053" data-end="1085">
+<p data-start="1055" data-end="1085">Efficiency and effectiveness</p>
+</li>
+</ul>
+<hr data-start="1087" data-end="1090">
+<h3 data-start="1092" data-end="1120"><strong data-start="1096" data-end="1120">Detailed Explanation</strong></h3>
+<h4 data-start="1122" data-end="1141"><strong data-start="1127" data-end="1141">Definition</strong></h4>
+<p data-start="1142" data-end="1344"><strong data-start="1142" data-end="1167">Operations Management</strong> is concerned with <strong data-start="1186" data-end="1238">planning, organizing, directing, and controlling</strong> the activities involved in the <strong data-start="1270" data-end="1343">transformation of resources (inputs) into goods or services (outputs)</strong>.</p>
+<hr data-start="1346" data-end="1349">
+<h3 data-start="1351" data-end="1396"><strong data-start="1355" data-end="1396">Operations as a Transformation System</strong></h3>
+<p data-start="1398" data-end="1453">All operations follow a <strong data-start="1422" data-end="1452">basic transformation model</strong>:</p>
+<p data-start="1455" data-end="1496"><strong data-start="1455" data-end="1496">Inputs → Conversion Process → Outputs</strong></p>
+<h4 data-start="1498" data-end="1513"><strong data-start="1503" data-end="1513">Inputs</strong></h4>
+<ul data-start="1514" data-end="1644">
+<li data-start="1514" data-end="1553">
+<p data-start="1516" data-end="1553">Materials (raw materials, components)</p>
+</li>
+<li data-start="1554" data-end="1576">
+<p data-start="1556" data-end="1576">Labor (human effort)</p>
+</li>
+<li data-start="1577" data-end="1608">
+<p data-start="1579" data-end="1608">Capital (machines, buildings)</p>
+</li>
+<li data-start="1609" data-end="1617">
+<p data-start="1611" data-end="1617">Energy</p>
+</li>
+<li data-start="1618" data-end="1644">
+<p data-start="1620" data-end="1644">Information &amp; technology</p>
+</li>
+</ul>
+<h4 data-start="1646" data-end="1673"><strong data-start="1651" data-end="1673">Conversion Process</strong></h4>
+<ul data-start="1674" data-end="1755">
+<li data-start="1674" data-end="1699">
+<p data-start="1676" data-end="1699">Manufacturing processes</p>
+</li>
+<li data-start="1700" data-end="1728">
+<p data-start="1702" data-end="1728">Service delivery processes</p>
+</li>
+<li data-start="1729" data-end="1755">
+<p data-start="1731" data-end="1755">Administrative processes</p>
+</li>
+</ul>
+<h4 data-start="1757" data-end="1773"><strong data-start="1762" data-end="1773">Outputs</strong></h4>
+<ul data-start="1774" data-end="1871">
+<li data-start="1774" data-end="1816">
+<p data-start="1776" data-end="1816">Tangible goods (cars, machines, clothes)</p>
+</li>
+<li data-start="1817" data-end="1871">
+<p data-start="1819" data-end="1871">Intangible services (education, healthcare, banking)</p>
+</li>
+</ul>
+<hr data-start="1873" data-end="1876">
+<h3 data-start="1878" data-end="1909"><strong data-start="1882" data-end="1909">Text-Based Flow Diagram</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="1911" data-end="2058"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Inputs
+(Materials, Labor, Capital, Energy, Information)
+        ↓
+Transformation / </span><span><span class="hljs-keyword">Conversion</span></span><span> Process
+        ↓
+Outputs
+(Goods </span><span><span class="hljs-keyword">or</span></span><span> Services)
+</span></span></code></div></div></pre>
+<hr data-start="2060" data-end="2063">
+<h3 data-start="2065" data-end="2104"><strong data-start="2069" data-end="2104">Nature of Operations Management</strong></h3>
+<ol data-start="2106" data-end="3004">
+<li data-start="2106" data-end="2314">
+<p data-start="2109" data-end="2159"><strong data-start="2109" data-end="2159">Operations Management is a Management Function</strong></p>
+<ul data-start="2163" data-end="2314">
+<li data-start="2163" data-end="2237">
+<p data-start="2165" data-end="2237">It involves planning, organizing, directing, and controlling operations.</p>
+</li>
+<li data-start="2241" data-end="2314">
+<p data-start="2243" data-end="2314">Similar to marketing or finance, but focused on <strong data-start="2291" data-end="2313">production systems</strong>.</p>
+</li>
+</ul>
+</li>
+<li data-start="2316" data-end="2521">
+<p data-start="2319" data-end="2359"><strong data-start="2319" data-end="2359">It is Both Strategic and Operational</strong></p>
+<ul data-start="2363" data-end="2521">
+<li data-start="2363" data-end="2445">
+<p data-start="2365" data-end="2445"><strong data-start="2365" data-end="2385">Strategic level:</strong> Capacity planning, facility location, technology selection.</p>
+</li>
+<li data-start="2449" data-end="2521">
+<p data-start="2451" data-end="2521"><strong data-start="2451" data-end="2473">Operational level:</strong> Scheduling, inventory control, quality control.</p>
+</li>
+</ul>
+</li>
+<li data-start="2523" data-end="2675">
+<p data-start="2526" data-end="2551"><strong data-start="2526" data-end="2551">It is System-Oriented</strong></p>
+<ul data-start="2555" data-end="2675">
+<li data-start="2555" data-end="2614">
+<p data-start="2557" data-end="2614">Focuses on <strong data-start="2568" data-end="2588">systems thinking</strong>, not isolated activities.</p>
+</li>
+<li data-start="2618" data-end="2675">
+<p data-start="2620" data-end="2675">All parts of the system must work together efficiently.</p>
+</li>
+</ul>
+</li>
+<li data-start="2677" data-end="2839">
+<p data-start="2680" data-end="2697"><strong data-start="2680" data-end="2697">It Adds Value</strong></p>
+<ul data-start="2701" data-end="2839">
+<li data-start="2701" data-end="2780">
+<p data-start="2703" data-end="2780">Operations convert inputs into outputs that customers are willing to pay for.</p>
+</li>
+<li data-start="2784" data-end="2839">
+<p data-start="2786" data-end="2839">Value addition is the <strong data-start="2808" data-end="2824">core purpose</strong> of operations.</p>
+</li>
+</ul>
+</li>
+<li data-start="2841" data-end="3004">
+<p data-start="2844" data-end="2893"><strong data-start="2844" data-end="2893">It Applies to Both Manufacturing and Services</strong></p>
+<ul data-start="2897" data-end="3004">
+<li data-start="2897" data-end="2933">
+<p data-start="2899" data-end="2933">Manufacturing → Physical products.</p>
+</li>
+<li data-start="2937" data-end="3004">
+<p data-start="2939" data-end="3004">Services → Intangible outputs (education, transport, healthcare).</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="3006" data-end="3009">
+<h3 data-start="3011" data-end="3027"><strong data-start="3015" data-end="3027">Examples</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3029" data-end="3359" class="w-fit min-w-(--thread-content-width)"><thead data-start="3029" data-end="3077"><tr data-start="3029" data-end="3077"><th data-start="3029" data-end="3049" data-col-size="sm">Organization Type</th><th data-start="3049" data-end="3057" data-col-size="sm">Input</th><th data-start="3057" data-end="3067" data-col-size="sm">Process</th><th data-start="3067" data-end="3077" data-col-size="sm">Output</th></tr></thead><tbody data-start="3124" data-end="3359"><tr data-start="3124" data-end="3176"><td data-start="3124" data-end="3143" data-col-size="sm">Automobile plant</td><td data-col-size="sm" data-start="3143" data-end="3158">Steel, labor</td><td data-col-size="sm" data-start="3158" data-end="3169">Assembly</td><td data-col-size="sm" data-start="3169" data-end="3176">Car</td></tr><tr data-start="3177" data-end="3238"><td data-start="3177" data-end="3188" data-col-size="sm">Hospital</td><td data-col-size="sm" data-start="3188" data-end="3209">Doctors, equipment</td><td data-col-size="sm" data-start="3209" data-end="3221">Treatment</td><td data-col-size="sm" data-start="3221" data-end="3238">Cured patient</td></tr><tr data-start="3239" data-end="3296"><td data-start="3239" data-end="3252" data-col-size="sm">University</td><td data-col-size="sm" data-start="3252" data-end="3272">Faculty, syllabus</td><td data-col-size="sm" data-start="3272" data-end="3283">Teaching</td><td data-col-size="sm" data-start="3283" data-end="3296">Graduates</td></tr><tr data-start="3297" data-end="3359"><td data-start="3297" data-end="3304" data-col-size="sm">Bank</td><td data-col-size="sm" data-start="3304" data-end="3322">Data, employees</td><td data-col-size="sm" data-start="3322" data-end="3337">Transactions</td><td data-col-size="sm" data-start="3337" data-end="3359">Financial services</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3361" data-end="3364">
+<h3 data-start="3366" data-end="3395"><strong data-start="3370" data-end="3395">Summary: Nature of OM</strong></h3>
+<ul data-start="3396" data-end="3561">
+<li data-start="3396" data-end="3457">
+<p data-start="3398" data-end="3457">OM is concerned with <strong data-start="3419" data-end="3456">conversion of inputs into outputs</strong>.</p>
+</li>
+<li data-start="3458" data-end="3495">
+<p data-start="3460" data-end="3495">It exists in <strong data-start="3473" data-end="3494">all organizations</strong>.</p>
+</li>
+<li data-start="3496" data-end="3561">
+<p data-start="3498" data-end="3561">It focuses on <strong data-start="3512" data-end="3560">efficiency, productivity, and value creation</strong>.</p>
+</li>
+</ul>
+<hr data-start="3563" data-end="3566">
+<h2 data-start="3568" data-end="3608"><strong data-start="3571" data-end="3608">2. Scope of Operations Management</strong></h2>
+<h3 data-start="3610" data-end="3630"><strong data-start="3614" data-end="3630">Introduction</strong></h3>
+<p data-start="3631" data-end="3787">The scope of Operations Management is <strong data-start="3669" data-end="3682">very wide</strong>. It covers activities from <strong data-start="3710" data-end="3728">product design</strong> to <strong data-start="3732" data-end="3753">customer delivery</strong> and even <strong data-start="3763" data-end="3786">after-sales service</strong>.</p>
+<hr data-start="3789" data-end="3792">
+<h3 data-start="3794" data-end="3814"><strong data-start="3798" data-end="3814">Key Concepts</strong></h3>
+<ul data-start="3815" data-end="3938">
+<li data-start="3815" data-end="3836">
+<p data-start="3817" data-end="3836">Design of systems</p>
+</li>
+<li data-start="3837" data-end="3861">
+<p data-start="3839" data-end="3861">Planning and control</p>
+</li>
+<li data-start="3862" data-end="3892">
+<p data-start="3864" data-end="3892">Manufacturing and services</p>
+</li>
+<li data-start="3893" data-end="3909">
+<p data-start="3895" data-end="3909">Supply chain</p>
+</li>
+<li data-start="3910" data-end="3938">
+<p data-start="3912" data-end="3938">Quality and productivity</p>
+</li>
+</ul>
+<hr data-start="3940" data-end="3943">
+<h3 data-start="3945" data-end="3973"><strong data-start="3949" data-end="3973">Detailed Explanation</strong></h3>
+<p data-start="3975" data-end="4049">The <strong data-start="3979" data-end="4013">scope of Operations Management</strong> includes the following major areas:</p>
+<hr data-start="4051" data-end="4054">
+<h3 data-start="4056" data-end="4093"><strong data-start="4060" data-end="4093">1. Product and Service Design</strong></h3>
+<ul data-start="4094" data-end="4235">
+<li data-start="4094" data-end="4184">
+<p data-start="4096" data-end="4124">Designing products that are:</p>
+<ul data-start="4127" data-end="4184">
+<li data-start="4127" data-end="4148">
+<p data-start="4129" data-end="4148">Easy to manufacture</p>
+</li>
+<li data-start="4151" data-end="4167">
+<p data-start="4153" data-end="4167">Cost-effective</p>
+</li>
+<li data-start="4170" data-end="4184">
+<p data-start="4172" data-end="4184">High quality</p>
+</li>
+</ul>
+</li>
+<li data-start="4185" data-end="4235">
+<p data-start="4187" data-end="4235">Includes <strong data-start="4196" data-end="4234">design for manufacturability (DFM)</strong>.</p>
+</li>
+</ul>
+<hr data-start="4237" data-end="4240">
+<h3 data-start="4242" data-end="4267"><strong data-start="4246" data-end="4267">2. Process Design</strong></h3>
+<ul data-start="4268" data-end="4389">
+<li data-start="4268" data-end="4327">
+<p data-start="4270" data-end="4327">Deciding <strong data-start="4279" data-end="4326">how the product or service will be produced</strong>.</p>
+</li>
+<li data-start="4328" data-end="4389">
+<p data-start="4330" data-end="4343">Selection of:</p>
+<ul data-start="4346" data-end="4389">
+<li data-start="4346" data-end="4358">
+<p data-start="4348" data-end="4358">Technology</p>
+</li>
+<li data-start="4361" data-end="4372">
+<p data-start="4363" data-end="4372">Equipment</p>
+</li>
+<li data-start="4375" data-end="4389">
+<p data-start="4377" data-end="4389">Work methods</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="4391" data-end="4394">
+<h3 data-start="4396" data-end="4424"><strong data-start="4400" data-end="4424">3. Capacity Planning</strong></h3>
+<ul data-start="4425" data-end="4541">
+<li data-start="4425" data-end="4506">
+<p data-start="4427" data-end="4439">Determining:</p>
+<ul data-start="4442" data-end="4506">
+<li data-start="4442" data-end="4464">
+<p data-start="4444" data-end="4464">How much to produce?</p>
+</li>
+<li data-start="4467" data-end="4506">
+<p data-start="4469" data-end="4506">How many machines/workers are needed?</p>
+</li>
+</ul>
+</li>
+<li data-start="4507" data-end="4541">
+<p data-start="4509" data-end="4541">Balancing <strong data-start="4519" data-end="4540">demand and supply</strong>.</p>
+</li>
+</ul>
+<hr data-start="4543" data-end="4546">
+<h3 data-start="4548" data-end="4587"><strong data-start="4552" data-end="4587">4. Facility Location and Layout</strong></h3>
+<ul data-start="4588" data-end="4690">
+<li data-start="4588" data-end="4690">
+<p data-start="4590" data-end="4599">Deciding:</p>
+<ul data-start="4602" data-end="4690">
+<li data-start="4602" data-end="4645">
+<p data-start="4604" data-end="4645">Where to locate the plant/service center?</p>
+</li>
+<li data-start="4648" data-end="4690">
+<p data-start="4650" data-end="4690">How to arrange machines and departments?</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="4692" data-end="4695">
+<h3 data-start="4697" data-end="4739"><strong data-start="4701" data-end="4739">5. Production Planning and Control</strong></h3>
+<ul data-start="4740" data-end="4855">
+<li data-start="4740" data-end="4758">
+<p data-start="4742" data-end="4758">What to produce?</p>
+</li>
+<li data-start="4759" data-end="4777">
+<p data-start="4761" data-end="4777">When to produce?</p>
+</li>
+<li data-start="4778" data-end="4800">
+<p data-start="4780" data-end="4800">How much to produce?</p>
+</li>
+<li data-start="4801" data-end="4855">
+<p data-start="4803" data-end="4812">Includes:</p>
+<ul data-start="4815" data-end="4855">
+<li data-start="4815" data-end="4827">
+<p data-start="4817" data-end="4827">Scheduling</p>
+</li>
+<li data-start="4830" data-end="4839">
+<p data-start="4832" data-end="4839">Routing</p>
+</li>
+<li data-start="4842" data-end="4855">
+<p data-start="4844" data-end="4855">Dispatching</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="4857" data-end="4860">
+<h3 data-start="4862" data-end="4893"><strong data-start="4866" data-end="4893">6. Inventory Management</strong></h3>
+<ul data-start="4894" data-end="5023">
+<li data-start="4894" data-end="4963">
+<p data-start="4896" data-end="4905">Managing:</p>
+<ul data-start="4908" data-end="4963">
+<li data-start="4908" data-end="4923">
+<p data-start="4910" data-end="4923">Raw materials</p>
+</li>
+<li data-start="4926" data-end="4944">
+<p data-start="4928" data-end="4944">Work-in-progress</p>
+</li>
+<li data-start="4947" data-end="4963">
+<p data-start="4949" data-end="4963">Finished goods</p>
+</li>
+</ul>
+</li>
+<li data-start="4964" data-end="5023">
+<p data-start="4966" data-end="5023">Objective: <strong data-start="4977" data-end="5023">Minimum cost with uninterrupted production</strong></p>
+</li>
+</ul>
+<hr data-start="5025" data-end="5028">
+<h3 data-start="5030" data-end="5059"><strong data-start="5034" data-end="5059">7. Quality Management</strong></h3>
+<ul data-start="5060" data-end="5182">
+<li data-start="5060" data-end="5109">
+<p data-start="5062" data-end="5109">Ensuring products/services meet specifications.</p>
+</li>
+<li data-start="5110" data-end="5182">
+<p data-start="5112" data-end="5121">Includes:</p>
+<ul data-start="5124" data-end="5182">
+<li data-start="5124" data-end="5136">
+<p data-start="5126" data-end="5136">Inspection</p>
+</li>
+<li data-start="5139" data-end="5168">
+<p data-start="5141" data-end="5168">Statistical Quality Control</p>
+</li>
+<li data-start="5171" data-end="5182">
+<p data-start="5173" data-end="5182">Six Sigma</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="5184" data-end="5187">
+<h3 data-start="5189" data-end="5222"><strong data-start="5193" data-end="5222">8. Maintenance Management</strong></h3>
+<ul data-start="5223" data-end="5317">
+<li data-start="5223" data-end="5277">
+<p data-start="5225" data-end="5277">Keeping machines and equipment in working condition.</p>
+</li>
+<li data-start="5278" data-end="5317">
+<p data-start="5280" data-end="5317">Preventive and breakdown maintenance.</p>
+</li>
+</ul>
+<hr data-start="5319" data-end="5322">
+<h3 data-start="5324" data-end="5358"><strong data-start="5328" data-end="5358">9. Supply Chain Management</strong></h3>
+<ul data-start="5359" data-end="5429">
+<li data-start="5359" data-end="5429">
+<p data-start="5361" data-end="5393">Managing flow of materials from:</p>
+<ul data-start="5396" data-end="5429">
+<li data-start="5396" data-end="5429">
+<p data-start="5398" data-end="5429">Suppliers → Factory → Customers</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="5431" data-end="5434">
+<h3 data-start="5436" data-end="5478"><strong data-start="5440" data-end="5478">Scope in Manufacturing vs Services</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5480" data-end="5716" class="w-fit min-w-(--thread-content-width)"><thead data-start="5480" data-end="5508"><tr data-start="5480" data-end="5508"><th data-start="5480" data-end="5496" data-col-size="sm">Manufacturing</th><th data-start="5496" data-end="5508" data-col-size="sm">Services</th></tr></thead><tbody data-start="5537" data-end="5716"><tr data-start="5537" data-end="5572"><td data-start="5537" data-end="5554" data-col-size="sm">Product design</td><td data-col-size="sm" data-start="5554" data-end="5572">Service design</td></tr><tr data-start="5573" data-end="5619"><td data-start="5573" data-end="5592" data-col-size="sm">Process planning</td><td data-col-size="sm" data-start="5592" data-end="5619">Service delivery system</td></tr><tr data-start="5620" data-end="5678"><td data-start="5620" data-end="5640" data-col-size="sm">Inventory control</td><td data-col-size="sm" data-start="5640" data-end="5678">Capacity &amp; waiting line management</td></tr><tr data-start="5679" data-end="5716"><td data-start="5679" data-end="5697" data-col-size="sm">Quality control</td><td data-col-size="sm" data-start="5697" data-end="5716">Service quality</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5718" data-end="5721">
+<h3 data-start="5723" data-end="5745"><strong data-start="5727" data-end="5745">Summary: Scope</strong></h3>
+<ul data-start="5746" data-end="5939">
+<li data-start="5746" data-end="5807">
+<p data-start="5748" data-end="5807">OM covers <strong data-start="5758" data-end="5806">design, planning, operation, and improvement</strong>.</p>
+</li>
+<li data-start="5808" data-end="5864">
+<p data-start="5810" data-end="5864">Applies to <strong data-start="5821" data-end="5863">both manufacturing and service sectors</strong>.</p>
+</li>
+<li data-start="5865" data-end="5939">
+<p data-start="5867" data-end="5939">Directly affects <strong data-start="5884" data-end="5938">cost, quality, delivery, and customer satisfaction</strong>.</p>
+</li>
+</ul>
+<hr data-start="5941" data-end="5944">
+<h2 data-start="5946" data-end="5991"><strong data-start="5949" data-end="5991">3. Importance of Operations Management</strong></h2>
+<h3 data-start="5993" data-end="6013"><strong data-start="5997" data-end="6013">Introduction</strong></h3>
+<p data-start="6014" data-end="6175">Operations Management is crucial because it <strong data-start="6058" data-end="6108">directly influences organizational performance</strong>. Poor operations lead to <strong data-start="6134" data-end="6174">high costs, delays, and poor quality</strong>.</p>
+<hr data-start="6177" data-end="6180">
+<h3 data-start="6182" data-end="6202"><strong data-start="6186" data-end="6202">Key Concepts</strong></h3>
+<ul data-start="6203" data-end="6314">
+<li data-start="6203" data-end="6221">
+<p data-start="6205" data-end="6221">Cost reduction</p>
+</li>
+<li data-start="6222" data-end="6245">
+<p data-start="6224" data-end="6245">Quality improvement</p>
+</li>
+<li data-start="6246" data-end="6271">
+<p data-start="6248" data-end="6271">Customer satisfaction</p>
+</li>
+<li data-start="6272" data-end="6288">
+<p data-start="6274" data-end="6288">Productivity</p>
+</li>
+<li data-start="6289" data-end="6314">
+<p data-start="6291" data-end="6314">Competitive advantage</p>
+</li>
+</ul>
+<hr data-start="6316" data-end="6319">
+<h3 data-start="6321" data-end="6349"><strong data-start="6325" data-end="6349">Detailed Explanation</strong></h3>
+<hr data-start="6351" data-end="6354">
+<h3 data-start="6356" data-end="6390"><strong data-start="6360" data-end="6390">1. Helps in Cost Reduction</strong></h3>
+<ul data-start="6391" data-end="6478">
+<li data-start="6391" data-end="6447">
+<p data-start="6393" data-end="6410">Efficient use of:</p>
+<ul data-start="6413" data-end="6447">
+<li data-start="6413" data-end="6424">
+<p data-start="6415" data-end="6424">Materials</p>
+</li>
+<li data-start="6427" data-end="6434">
+<p data-start="6429" data-end="6434">Labor</p>
+</li>
+<li data-start="6437" data-end="6447">
+<p data-start="6439" data-end="6447">Machines</p>
+</li>
+</ul>
+</li>
+<li data-start="6448" data-end="6478">
+<p data-start="6450" data-end="6478">Reduces waste and idle time.</p>
+</li>
+</ul>
+<hr data-start="6480" data-end="6483">
+<h3 data-start="6485" data-end="6512"><strong data-start="6489" data-end="6512">2. Improves Quality</strong></h3>
+<ul data-start="6513" data-end="6601">
+<li data-start="6513" data-end="6549">
+<p data-start="6515" data-end="6549">Quality is built into the process.</p>
+</li>
+<li data-start="6550" data-end="6601">
+<p data-start="6552" data-end="6561">Leads to:</p>
+<ul data-start="6564" data-end="6601">
+<li data-start="6564" data-end="6580">
+<p data-start="6566" data-end="6580">Customer trust</p>
+</li>
+<li data-start="6583" data-end="6601">
+<p data-start="6585" data-end="6601">Brand reputation</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="6603" data-end="6606">
+<h3 data-start="6608" data-end="6640"><strong data-start="6612" data-end="6640">3. Enhances Productivity</strong></h3>
+<ul data-start="6641" data-end="6715">
+<li data-start="6641" data-end="6672">
+<p data-start="6643" data-end="6672">Productivity = Output / Input</p>
+</li>
+<li data-start="6673" data-end="6715">
+<p data-start="6675" data-end="6715">Better operations increase productivity.</p>
+</li>
+</ul>
+<hr data-start="6717" data-end="6720">
+<h3 data-start="6722" data-end="6756"><strong data-start="6726" data-end="6756">4. Ensures Timely Delivery</strong></h3>
+<ul data-start="6757" data-end="6844">
+<li data-start="6757" data-end="6844">
+<p data-start="6759" data-end="6797">Proper scheduling and planning ensure:</p>
+<ul data-start="6800" data-end="6844">
+<li data-start="6800" data-end="6818">
+<p data-start="6802" data-end="6818">On-time delivery</p>
+</li>
+<li data-start="6821" data-end="6844">
+<p data-start="6823" data-end="6844">Customer satisfaction</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="6846" data-end="6849">
+<h3 data-start="6851" data-end="6891"><strong data-start="6855" data-end="6891">5. Supports Strategic Objectives</strong></h3>
+<ul data-start="6892" data-end="6969">
+<li data-start="6892" data-end="6969">
+<p data-start="6894" data-end="6913">Operations support:</p>
+<ul data-start="6916" data-end="6969">
+<li data-start="6916" data-end="6933">
+<p data-start="6918" data-end="6933">Cost leadership</p>
+</li>
+<li data-start="6936" data-end="6953">
+<p data-start="6938" data-end="6953">Differentiation</p>
+</li>
+<li data-start="6956" data-end="6969">
+<p data-start="6958" data-end="6969">Flexibility</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="6971" data-end="6974">
+<h3 data-start="6976" data-end="7016"><strong data-start="6980" data-end="7016">6. Essential for Economic Growth</strong></h3>
+<ul data-start="7017" data-end="7104">
+<li data-start="7017" data-end="7104">
+<p data-start="7019" data-end="7056">Efficient production systems improve:</p>
+<ul data-start="7059" data-end="7104">
+<li data-start="7059" data-end="7078">
+<p data-start="7061" data-end="7078">Industrial growth</p>
+</li>
+<li data-start="7081" data-end="7104">
+<p data-start="7083" data-end="7104">National productivity</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="7106" data-end="7109">
+<h3 data-start="7111" data-end="7137"><strong data-start="7115" data-end="7137">Real-World Example</strong></h3>
+<ul data-start="7138" data-end="7255">
+<li data-start="7138" data-end="7255">
+<p data-start="7140" data-end="7169"><strong data-start="7140" data-end="7168">Toyota Production System</strong>:</p>
+<ul data-start="7172" data-end="7255">
+<li data-start="7172" data-end="7198">
+<p data-start="7174" data-end="7198">Focus on waste reduction</p>
+</li>
+<li data-start="7201" data-end="7215">
+<p data-start="7203" data-end="7215">High quality</p>
+</li>
+<li data-start="7218" data-end="7228">
+<p data-start="7220" data-end="7228">Low cost</p>
+</li>
+<li data-start="7231" data-end="7255">
+<p data-start="7233" data-end="7255">Global competitiveness</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-start="7257" data-end="7260">
+<h3 data-start="7262" data-end="7289"><strong data-start="7266" data-end="7289">Summary: Importance</strong></h3>
+<ul data-start="7290" data-end="7420">
+<li data-start="7290" data-end="7332">
+<p data-start="7292" data-end="7332">OM is the <strong data-start="7302" data-end="7331">backbone of organizations</strong>.</p>
+</li>
+<li data-start="7333" data-end="7377">
+<p data-start="7335" data-end="7377">It affects <strong data-start="7346" data-end="7376">profitability and survival</strong>.</p>
+</li>
+<li data-start="7378" data-end="7420">
+<p data-start="7380" data-end="7420">Strong operations = Strong organization.</p>
+</li>
+</ul>
+<hr data-start="7422" data-end="7425">
+<h2 data-start="7427" data-end="7471"><strong data-start="7430" data-end="7471">4. Functions of Operations Management</strong></h2>
+<h3 data-start="7473" data-end="7493"><strong data-start="7477" data-end="7493">Introduction</strong></h3>
+<p data-start="7494" data-end="7609">Operations Management performs several <strong data-start="7533" data-end="7559">interrelated functions</strong> to ensure smooth production and service delivery.</p>
+<hr data-start="7611" data-end="7614">
+<h3 data-start="7616" data-end="7636"><strong data-start="7620" data-end="7636">Key Concepts</strong></h3>
+<ul data-start="7637" data-end="7710">
+<li data-start="7637" data-end="7649">
+<p data-start="7639" data-end="7649">Planning</p>
+</li>
+<li data-start="7650" data-end="7664">
+<p data-start="7652" data-end="7664">Organizing</p>
+</li>
+<li data-start="7665" data-end="7678">
+<p data-start="7667" data-end="7678">Directing</p>
+</li>
+<li data-start="7679" data-end="7694">
+<p data-start="7681" data-end="7694">Controlling</p>
+</li>
+<li data-start="7695" data-end="7710">
+<p data-start="7697" data-end="7710">Improvement</p>
+</li>
+</ul>
+<hr data-start="7712" data-end="7715">
+<h3 data-start="7717" data-end="7745"><strong data-start="7721" data-end="7745">Detailed Explanation</strong></h3>
+<hr data-start="7747" data-end="7750">
+<h3 data-start="7752" data-end="7771"><strong data-start="7756" data-end="7771">1. Planning</strong></h3>
+<ul data-start="7772" data-end="7850">
+<li data-start="7772" data-end="7850">
+<p data-start="7774" data-end="7783">Deciding:</p>
+<ul data-start="7786" data-end="7850">
+<li data-start="7786" data-end="7804">
+<p data-start="7788" data-end="7804">What to produce?</p>
+</li>
+<li data-start="7807" data-end="7829">
+<p data-start="7809" data-end="7829">How much to produce?</p>
+</li>
+<li data-start="7832" data-end="7850">
+<p data-start="7834" data-end="7850">When to produce?</p>
+</li>
+</ul>
+</li>
+</ul>
+<p data-start="7852" data-end="7861">Includes:</p>
+<ul data-start="7862" data-end="7916">
+<li data-start="7862" data-end="7875">
+<p data-start="7864" data-end="7875">Forecasting</p>
+</li>
+<li data-start="7876" data-end="7895">
+<p data-start="7878" data-end="7895">Capacity planning</p>
+</li>
+<li data-start="7896" data-end="7916">
+<p data-start="7898" data-end="7916">Aggregate planning</p>
+</li>
+</ul>
+<hr data-start="7918" data-end="7921">
+<h3 data-start="7923" data-end="7944"><strong data-start="7927" data-end="7944">2. Organizing</strong></h3>
+<ul data-start="7945" data-end="8037">
+<li data-start="7945" data-end="7998">
+<p data-start="7947" data-end="7957">Arranging:</p>
+<ul data-start="7960" data-end="7998">
+<li data-start="7960" data-end="7971">
+<p data-start="7962" data-end="7971">Resources</p>
+</li>
+<li data-start="7974" data-end="7984">
+<p data-start="7976" data-end="7984">Machines</p>
+</li>
+<li data-start="7987" data-end="7998">
+<p data-start="7989" data-end="7998">Workforce</p>
+</li>
+</ul>
+</li>
+<li data-start="7999" data-end="8037">
+<p data-start="8001" data-end="8037">Defining roles and responsibilities.</p>
+</li>
+</ul>
+<hr data-start="8039" data-end="8042">
+<h3 data-start="8044" data-end="8064"><strong data-start="8048" data-end="8064">3. Directing</strong></h3>
+<ul data-start="8065" data-end="8137">
+<li data-start="8065" data-end="8099">
+<p data-start="8067" data-end="8099">Guiding and supervising workers.</p>
+</li>
+<li data-start="8100" data-end="8137">
+<p data-start="8102" data-end="8137">Ensuring proper execution of plans.</p>
+</li>
+</ul>
+<hr data-start="8139" data-end="8142">
+<h3 data-start="8144" data-end="8166"><strong data-start="8148" data-end="8166">4. Controlling</strong></h3>
+<ul data-start="8167" data-end="8254">
+<li data-start="8167" data-end="8198">
+<p data-start="8169" data-end="8198">Measuring actual performance.</p>
+</li>
+<li data-start="8199" data-end="8226">
+<p data-start="8201" data-end="8226">Comparing with standards.</p>
+</li>
+<li data-start="8227" data-end="8254">
+<p data-start="8229" data-end="8254">Taking corrective action.</p>
+</li>
+</ul>
+<hr data-start="8256" data-end="8259">
+<h3 data-start="8261" data-end="8281"><strong data-start="8265" data-end="8281">5. Improving</strong></h3>
+<ul data-start="8282" data-end="8370">
+<li data-start="8282" data-end="8316">
+<p data-start="8284" data-end="8316">Continuous improvement (Kaizen).</p>
+</li>
+<li data-start="8317" data-end="8346">
+<p data-start="8319" data-end="8346">Adoption of new technology.</p>
+</li>
+<li data-start="8347" data-end="8370">
+<p data-start="8349" data-end="8370">Process optimization.</p>
+</li>
+</ul>
+<hr data-start="8372" data-end="8375">
+<h3 data-start="8377" data-end="8408"><strong data-start="8381" data-end="8408">Functions Summary Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="8410" data-end="8649" class="w-fit min-w-(--thread-content-width)"><thead data-start="8410" data-end="8436"><tr data-start="8410" data-end="8436"><th data-start="8410" data-end="8421" data-col-size="sm">Function</th><th data-start="8421" data-end="8436" data-col-size="sm">Description</th></tr></thead><tbody data-start="8461" data-end="8649"><tr data-start="8461" data-end="8499"><td data-start="8461" data-end="8472" data-col-size="sm">Planning</td><td data-col-size="sm" data-start="8472" data-end="8499">Deciding future actions</td></tr><tr data-start="8500" data-end="8536"><td data-start="8500" data-end="8513" data-col-size="sm">Organizing</td><td data-col-size="sm" data-start="8513" data-end="8536">Arranging resources</td></tr><tr data-start="8537" data-end="8571"><td data-start="8537" data-end="8549" data-col-size="sm">Directing</td><td data-col-size="sm" data-start="8549" data-end="8571">Leading operations</td></tr><tr data-start="8572" data-end="8610"><td data-start="8572" data-end="8586" data-col-size="sm">Controlling</td><td data-col-size="sm" data-start="8586" data-end="8610">Ensuring performance</td></tr><tr data-start="8611" data-end="8649"><td data-start="8611" data-end="8623" data-col-size="sm">Improving</td><td data-col-size="sm" data-start="8623" data-end="8649">Continuous enhancement</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="8651" data-end="8654">
+<h2 data-start="8656" data-end="8688"><strong data-start="8659" data-end="8688">Overall Summary of Part 1</strong></h2>
+<ul data-start="8689" data-end="8977">
+<li data-start="8689" data-end="8762">
+<p data-start="8691" data-end="8762">Operations Management focuses on <strong data-start="8724" data-end="8761">conversion of inputs into outputs</strong>.</p>
+</li>
+<li data-start="8763" data-end="8816">
+<p data-start="8765" data-end="8816">Its <strong data-start="8769" data-end="8786">scope is wide</strong>, covering design to delivery.</p>
+</li>
+<li data-start="8817" data-end="8888">
+<p data-start="8819" data-end="8888">It is <strong data-start="8825" data-end="8887">vital for cost, quality, productivity, and competitiveness</strong>.</p>
+</li>
+<li data-start="8889" data-end="8977">
+<p data-start="8891" data-end="8977">It performs <strong data-start="8903" data-end="8976">planning, organizing, directing, controlling, and improving functions</strong>.</p>
+</li>
+</ul>
+<hr data-start="8979" data-end="8982">
+<h3 data-start="8984" data-end="9019"><strong data-start="8988" data-end="9017"><em data-start="8990" data-end="9015">End of Unit I – Part 1.</em></strong></h3>
+<p data-start="9020" data-end="9127" data-is-last-node="" data-is-only-node=""><strong data-start="9020" data-end="9127" data-is-last-node="">Continue to <em data-start="9034" data-end="9051">Unit I – Part 2</em> (Evolution from Manufacturing to Operations Management &amp; Factory System)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-2">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="639c043f-354b-488b-a8b4-95c59518a701" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="95">
+<p data-start="2" data-end="95"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="64">Unit I – Introduction to Operations Management</strong><br data-start="64" data-end="67">
+<strong data-start="69" data-end="95">Part 2 of ~3 (Approx.)</strong></p>
+</blockquote>
+<hr data-start="97" data-end="100">
+<h2 data-start="102" data-end="163"><strong data-start="105" data-end="163">UNIT I: INTRODUCTION TO OPERATIONS MANAGEMENT – PART 2</strong></h2>
+<p data-start="165" data-end="427">In this part, we study the <strong data-start="192" data-end="216">historical evolution</strong> of Operations Management.<br data-start="242" data-end="245">
+Understanding this evolution is important because <strong data-start="295" data-end="342">modern OM practices did not appear suddenly</strong>—they developed gradually as industries, technology, and management thinking evolved.</p>
+<p data-start="429" data-end="498">This section is <strong data-start="445" data-end="471">highly theory-oriented</strong> and frequently appears as:</p>
+<ul data-start="499" data-end="601">
+<li data-start="499" data-end="553">
+<p data-start="501" data-end="553"><em data-start="501" data-end="551">“Explain the evolution of Operations Management”</em></p>
+</li>
+<li data-start="554" data-end="601">
+<p data-start="556" data-end="601"><em data-start="556" data-end="601">“Trace the evolution of the factory system”</em></p>
+</li>
+</ul>
+<hr data-start="603" data-end="606">
+<h2 data-start="608" data-end="682"><strong data-start="611" data-end="682">5. Evolution from Manufacturing Management to Operations Management</strong></h2>
+<h3 data-start="684" data-end="704"><strong data-start="688" data-end="704">Introduction</strong></h3>
+<p data-start="705" data-end="979">Originally, management attention was focused only on <strong data-start="758" data-end="786">manufacturing activities</strong>.<br data-start="787" data-end="790">
+With time, it was realized that <strong data-start="822" data-end="895">services, logistics, quality, productivity, and customer satisfaction</strong> are equally important. This led to the evolution of <strong data-start="948" data-end="978">Operations Management (OM)</strong>.</p>
+<hr data-start="981" data-end="984">
+<h3 data-start="986" data-end="1006"><strong data-start="990" data-end="1006">Key Concepts</strong></h3>
+<ul data-start="1007" data-end="1133">
+<li data-start="1007" data-end="1035">
+<p data-start="1009" data-end="1035">Manufacturing Management</p>
+</li>
+<li data-start="1036" data-end="1058">
+<p data-start="1038" data-end="1058">Service Operations</p>
+</li>
+<li data-start="1059" data-end="1079">
+<p data-start="1061" data-end="1079">Systems approach</p>
+</li>
+<li data-start="1080" data-end="1108">
+<p data-start="1082" data-end="1108">Productivity and quality</p>
+</li>
+<li data-start="1109" data-end="1133">
+<p data-start="1111" data-end="1133">Customer orientation</p>
+</li>
+</ul>
+<hr data-start="1135" data-end="1138">
+<h3 data-start="1140" data-end="1167"><strong data-start="1144" data-end="1167">Stages in Evolution</strong></h3>
+<hr data-start="1169" data-end="1172">
+<h3 data-start="1174" data-end="1222"><strong data-start="1178" data-end="1222">1. Early Manufacturing Era (Before 1900)</strong></h3>
+<h4 data-start="1224" data-end="1248"><strong data-start="1229" data-end="1248">Characteristics</strong></h4>
+<ul data-start="1249" data-end="1372">
+<li data-start="1249" data-end="1281">
+<p data-start="1251" data-end="1281">Production was <strong data-start="1266" data-end="1281">craft-based</strong></p>
+</li>
+<li data-start="1282" data-end="1324">
+<p data-start="1284" data-end="1324">Skilled artisans produced goods manually</p>
+</li>
+<li data-start="1325" data-end="1351">
+<p data-start="1327" data-end="1351">Low volume, high variety</p>
+</li>
+<li data-start="1352" data-end="1372">
+<p data-start="1354" data-end="1372">No standardization</p>
+</li>
+</ul>
+<h4 data-start="1374" data-end="1394"><strong data-start="1379" data-end="1394">Limitations</strong></h4>
+<ul data-start="1395" data-end="1448">
+<li data-start="1395" data-end="1406">
+<p data-start="1397" data-end="1406">High cost</p>
+</li>
+<li data-start="1407" data-end="1425">
+<p data-start="1409" data-end="1425">Low productivity</p>
+</li>
+<li data-start="1426" data-end="1448">
+<p data-start="1428" data-end="1448">Inconsistent quality</p>
+</li>
+</ul>
+<hr data-start="1450" data-end="1453">
+<h3 data-start="1455" data-end="1514"><strong data-start="1459" data-end="1514">2. Industrial Revolution (Late 18th – 19th Century)</strong></h3>
+<h4 data-start="1516" data-end="1538"><strong data-start="1521" data-end="1538">Major Changes</strong></h4>
+<ul data-start="1539" data-end="1642">
+<li data-start="1539" data-end="1569">
+<p data-start="1541" data-end="1569">Introduction of <strong data-start="1557" data-end="1569">machines</strong></p>
+</li>
+<li data-start="1570" data-end="1594">
+<p data-start="1572" data-end="1594">Use of <strong data-start="1579" data-end="1594">steam power</strong></p>
+</li>
+<li data-start="1595" data-end="1642">
+<p data-start="1597" data-end="1642">Shift from home-based production to factories</p>
+</li>
+</ul>
+<h4 data-start="1644" data-end="1659"><strong data-start="1649" data-end="1659">Impact</strong></h4>
+<ul data-start="1660" data-end="1734">
+<li data-start="1660" data-end="1684">
+<p data-start="1662" data-end="1684">Large-scale production</p>
+</li>
+<li data-start="1685" data-end="1704">
+<p data-start="1687" data-end="1704">Division of labor</p>
+</li>
+<li data-start="1705" data-end="1734">
+<p data-start="1707" data-end="1734">Beginning of factory system</p>
+</li>
+</ul>
+<hr data-start="1736" data-end="1739">
+<h3 data-start="1741" data-end="1789"><strong data-start="1745" data-end="1789">3. Scientific Management Era (1900–1930)</strong></h3>
+<h4 data-start="1791" data-end="1815"><strong data-start="1796" data-end="1815">Key Contributor</strong></h4>
+<ul data-start="1816" data-end="1846">
+<li data-start="1816" data-end="1846">
+<p data-start="1818" data-end="1846"><strong data-start="1818" data-end="1846">Frederick Winslow Taylor</strong></p>
+</li>
+</ul>
+<h4 data-start="1848" data-end="1862"><strong data-start="1853" data-end="1862">Focus</strong></h4>
+<ul data-start="1863" data-end="1926">
+<li data-start="1863" data-end="1896">
+<p data-start="1865" data-end="1896">Improving <strong data-start="1875" data-end="1896">worker efficiency</strong></p>
+</li>
+<li data-start="1897" data-end="1926">
+<p data-start="1899" data-end="1926">Scientific analysis of work</p>
+</li>
+</ul>
+<h4 data-start="1928" data-end="1960"><strong data-start="1933" data-end="1960">Important Contributions</strong></h4>
+<ul data-start="1961" data-end="2034">
+<li data-start="1961" data-end="1973">
+<p data-start="1963" data-end="1973">Time study</p>
+</li>
+<li data-start="1974" data-end="1999">
+<p data-start="1976" data-end="1999">Standardization of work</p>
+</li>
+<li data-start="2000" data-end="2034">
+<p data-start="2002" data-end="2034">Separation of planning and doing</p>
+</li>
+</ul>
+<p data-start="2036" data-end="2107">📌 This period laid the <strong data-start="2060" data-end="2106">foundation of modern production management</strong>.</p>
+<hr data-start="2109" data-end="2112">
+<h3 data-start="2114" data-end="2156"><strong data-start="2118" data-end="2156">4. Human Relations Era (1930–1950)</strong></h3>
+<h4 data-start="2158" data-end="2176"><strong data-start="2163" data-end="2176">Key Focus</strong></h4>
+<ul data-start="2177" data-end="2245">
+<li data-start="2177" data-end="2208">
+<p data-start="2179" data-end="2208">Human factors in productivity</p>
+</li>
+<li data-start="2209" data-end="2245">
+<p data-start="2211" data-end="2245">Worker motivation and satisfaction</p>
+</li>
+</ul>
+<h4 data-start="2247" data-end="2268"><strong data-start="2252" data-end="2268">Key Findings</strong></h4>
+<ul data-start="2269" data-end="2363">
+<li data-start="2269" data-end="2363">
+<p data-start="2271" data-end="2299">Productivity is affected by:</p>
+<ul data-start="2302" data-end="2363">
+<li data-start="2302" data-end="2322">
+<p data-start="2304" data-end="2322">Social environment</p>
+</li>
+<li data-start="2325" data-end="2343">
+<p data-start="2327" data-end="2343">Leadership style</p>
+</li>
+<li data-start="2346" data-end="2363">
+<p data-start="2348" data-end="2363">Employee morale</p>
+</li>
+</ul>
+</li>
+</ul>
+<p data-start="2365" data-end="2430">📌 Balance between <strong data-start="2384" data-end="2414">efficiency and human needs</strong> was emphasized.</p>
+<hr data-start="2432" data-end="2435">
+<h3 data-start="2437" data-end="2498"><strong data-start="2441" data-end="2498">5. Operations Research &amp; Quantitative Era (1950–1970)</strong></h3>
+<h4 data-start="2500" data-end="2525"><strong data-start="2505" data-end="2525">Key Developments</strong></h4>
+<ul data-start="2526" data-end="2592">
+<li data-start="2526" data-end="2561">
+<p data-start="2528" data-end="2561">Use of mathematics and statistics</p>
+</li>
+<li data-start="2562" data-end="2592">
+<p data-start="2564" data-end="2592">Decision-making using models</p>
+</li>
+</ul>
+<h4 data-start="2594" data-end="2624"><strong data-start="2599" data-end="2624">Techniques Introduced</strong></h4>
+<ul data-start="2625" data-end="2694">
+<li data-start="2625" data-end="2645">
+<p data-start="2627" data-end="2645">Linear programming</p>
+</li>
+<li data-start="2646" data-end="2664">
+<p data-start="2648" data-end="2664">Inventory models</p>
+</li>
+<li data-start="2665" data-end="2681">
+<p data-start="2667" data-end="2681">Queuing theory</p>
+</li>
+<li data-start="2682" data-end="2694">
+<p data-start="2684" data-end="2694">Simulation</p>
+</li>
+</ul>
+<p data-start="2696" data-end="2759">📌 This era made operations <strong data-start="2724" data-end="2758">more analytical and scientific</strong>.</p>
+<hr data-start="2761" data-end="2764">
+<h3 data-start="2766" data-end="2835"><strong data-start="2770" data-end="2835">6. From Manufacturing to Operations Management (1970 onwards)</strong></h3>
+<h4 data-start="2837" data-end="2857"><strong data-start="2842" data-end="2857">Major Shift</strong></h4>
+<ul data-start="2858" data-end="2951">
+<li data-start="2858" data-end="2885">
+<p data-start="2860" data-end="2885">Inclusion of <strong data-start="2873" data-end="2885">services</strong></p>
+</li>
+<li data-start="2886" data-end="2951">
+<p data-start="2888" data-end="2897">Focus on:</p>
+<ul data-start="2900" data-end="2951">
+<li data-start="2900" data-end="2909">
+<p data-start="2902" data-end="2909">Quality</p>
+</li>
+<li data-start="2912" data-end="2925">
+<p data-start="2914" data-end="2925">Flexibility</p>
+</li>
+<li data-start="2928" data-end="2951">
+<p data-start="2930" data-end="2951">Customer satisfaction</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 data-start="2953" data-end="2980"><strong data-start="2958" data-end="2980">Modern OM Includes</strong></h4>
+<ul data-start="2981" data-end="3058">
+<li data-start="2981" data-end="3007">
+<p data-start="2983" data-end="3007">Manufacturing + Services</p>
+</li>
+<li data-start="3008" data-end="3022">
+<p data-start="3010" data-end="3022">Supply chain</p>
+</li>
+<li data-start="3023" data-end="3043">
+<p data-start="3025" data-end="3043">Quality management</p>
+</li>
+<li data-start="3044" data-end="3058">
+<p data-start="3046" data-end="3058">Lean systems</p>
+</li>
+</ul>
+<hr data-start="3060" data-end="3063">
+<h3 data-start="3065" data-end="3096"><strong data-start="3069" data-end="3096">Evolution Summary Table</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3098" data-end="3407" class="w-fit min-w-(--thread-content-width)"><thead data-start="3098" data-end="3115"><tr data-start="3098" data-end="3115"><th data-start="3098" data-end="3106" data-col-size="sm">Stage</th><th data-start="3106" data-end="3115" data-col-size="sm">Focus</th></tr></thead><tbody data-start="3131" data-end="3407"><tr data-start="3131" data-end="3177"><td data-start="3131" data-end="3150" data-col-size="sm">Craft Production</td><td data-col-size="sm" data-start="3150" data-end="3177">Skill-based manual work</td></tr><tr data-start="3178" data-end="3228"><td data-start="3178" data-end="3202" data-col-size="sm">Industrial Revolution</td><td data-col-size="sm" data-start="3202" data-end="3228">Machines and factories</td></tr><tr data-start="3229" data-end="3281"><td data-start="3229" data-end="3253" data-col-size="sm">Scientific Management</td><td data-start="3253" data-end="3281" data-col-size="sm">Efficiency and standards</td></tr><tr data-start="3282" data-end="3323"><td data-start="3282" data-end="3300" data-col-size="sm">Human Relations</td><td data-start="3300" data-end="3323" data-col-size="sm">Worker satisfaction</td></tr><tr data-start="3324" data-end="3366"><td data-start="3324" data-end="3343" data-col-size="sm">Quantitative Era</td><td data-start="3343" data-end="3366" data-col-size="sm">Mathematical models</td></tr><tr data-start="3367" data-end="3407"><td data-start="3367" data-end="3379" data-col-size="sm">Modern OM</td><td data-start="3379" data-end="3407" data-col-size="sm">Manufacturing + Services</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="3409" data-end="3412">
+<h3 data-start="3414" data-end="3429"><strong data-start="3418" data-end="3429">Summary</strong></h3>
+<ul data-start="3430" data-end="3581">
+<li data-start="3430" data-end="3517">
+<p data-start="3432" data-end="3517">OM evolved from <strong data-start="3448" data-end="3480">simple manufacturing control</strong> to <strong data-start="3484" data-end="3516">integrated system management</strong>.</p>
+</li>
+<li data-start="3518" data-end="3581">
+<p data-start="3520" data-end="3581">Modern OM focuses on <strong data-start="3541" data-end="3559">value creation</strong>, not just production.</p>
+</li>
+</ul>
+<hr data-start="3583" data-end="3586">
+<h2 data-start="3588" data-end="3629"><strong data-start="3591" data-end="3629">6. Evolution of the Factory System</strong></h2>
+<h3 data-start="3631" data-end="3651"><strong data-start="3635" data-end="3651">Introduction</strong></h3>
+<p data-start="3652" data-end="3753">The factory system represents the <strong data-start="3686" data-end="3727">physical and organizational evolution</strong> of production facilities.</p>
+<hr data-start="3755" data-end="3758">
+<h3 data-start="3760" data-end="3780"><strong data-start="3764" data-end="3780">Key Concepts</strong></h3>
+<ul data-start="3781" data-end="3865">
+<li data-start="3781" data-end="3807">
+<p data-start="3783" data-end="3807">Centralized production</p>
+</li>
+<li data-start="3808" data-end="3825">
+<p data-start="3810" data-end="3825">Mechanization</p>
+</li>
+<li data-start="3826" data-end="3845">
+<p data-start="3828" data-end="3845">Standardization</p>
+</li>
+<li data-start="3846" data-end="3865">
+<p data-start="3848" data-end="3865">Mass production</p>
+</li>
+</ul>
+<hr data-start="3867" data-end="3870">
+<h3 data-start="3872" data-end="3914"><strong data-start="3876" data-end="3914">Stages of Factory System Evolution</strong></h3>
+<hr data-start="3916" data-end="3919">
+<h3 data-start="3921" data-end="3947"><strong data-start="3925" data-end="3947">1. Domestic System</strong></h3>
+<ul data-start="3948" data-end="4006">
+<li data-start="3948" data-end="3968">
+<p data-start="3950" data-end="3968">Production at home</p>
+</li>
+<li data-start="3969" data-end="3993">
+<p data-start="3971" data-end="3993">Tools owned by workers</p>
+</li>
+<li data-start="3994" data-end="4006">
+<p data-start="3996" data-end="4006">Low output</p>
+</li>
+</ul>
+<hr data-start="4008" data-end="4011">
+<h3 data-start="4013" data-end="4038"><strong data-start="4017" data-end="4038">2. Factory System</strong></h3>
+<ul data-start="4039" data-end="4121">
+<li data-start="4039" data-end="4062">
+<p data-start="4041" data-end="4062">Centralized workplace</p>
+</li>
+<li data-start="4063" data-end="4096">
+<p data-start="4065" data-end="4096">Machines owned by entrepreneurs</p>
+</li>
+<li data-start="4097" data-end="4121">
+<p data-start="4099" data-end="4121">Workers hired on wages</p>
+</li>
+</ul>
+<hr data-start="4123" data-end="4126">
+<h3 data-start="4128" data-end="4164"><strong data-start="4132" data-end="4164">3. Mechanized Factory System</strong></h3>
+<ul data-start="4165" data-end="4252">
+<li data-start="4165" data-end="4198">
+<p data-start="4167" data-end="4198">Use of steam and electric power</p>
+</li>
+<li data-start="4199" data-end="4214">
+<p data-start="4201" data-end="4214">Higher output</p>
+</li>
+<li data-start="4215" data-end="4252">
+<p data-start="4217" data-end="4252">Reduced dependence on skilled labor</p>
+</li>
+</ul>
+<hr data-start="4254" data-end="4257">
+<h3 data-start="4259" data-end="4290"><strong data-start="4263" data-end="4290">4. Assembly Line System</strong></h3>
+<ul data-start="4291" data-end="4371">
+<li data-start="4291" data-end="4321">
+<p data-start="4293" data-end="4321">Introduced by <strong data-start="4307" data-end="4321">Henry Ford</strong></p>
+</li>
+<li data-start="4322" data-end="4347">
+<p data-start="4324" data-end="4347">Continuous flow of work</p>
+</li>
+<li data-start="4348" data-end="4371">
+<p data-start="4350" data-end="4371">Standardized products</p>
+</li>
+</ul>
+<hr data-start="4373" data-end="4376">
+<h3 data-start="4378" data-end="4401"><strong data-start="4382" data-end="4401">Text-Based Flow</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="4403" data-end="4513"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">pgsql</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Domestic Production
+      ↓
+Factory </span><span><span class="hljs-keyword">System</span></span><span>
+      ↓
+Mechanized Factory
+      ↓
+Assembly </span><span><span class="hljs-type">Line</span></span><span> Production
+</span></span></code></div></div></pre>
+<hr data-start="4515" data-end="4518">
+<h3 data-start="4520" data-end="4556"><strong data-start="4524" data-end="4556">Advantages of Factory System</strong></h3>
+<ul data-start="4557" data-end="4643">
+<li data-start="4557" data-end="4577">
+<p data-start="4559" data-end="4577">Economies of scale</p>
+</li>
+<li data-start="4578" data-end="4598">
+<p data-start="4580" data-end="4598">Better supervision</p>
+</li>
+<li data-start="4599" data-end="4621">
+<p data-start="4601" data-end="4621">Standardized quality</p>
+</li>
+<li data-start="4622" data-end="4643">
+<p data-start="4624" data-end="4643">Lower cost per unit</p>
+</li>
+</ul>
+<hr data-start="4645" data-end="4648">
+<h3 data-start="4650" data-end="4669"><strong data-start="4654" data-end="4669">Limitations</strong></h3>
+<ul data-start="4670" data-end="4731">
+<li data-start="4670" data-end="4687">
+<p data-start="4672" data-end="4687">Worker monotony</p>
+</li>
+<li data-start="4688" data-end="4709">
+<p data-start="4690" data-end="4709">Lack of flexibility</p>
+</li>
+<li data-start="4710" data-end="4731">
+<p data-start="4712" data-end="4731">Industrial disputes</p>
+</li>
+</ul>
+<hr data-start="4733" data-end="4736">
+<h3 data-start="4738" data-end="4753"><strong data-start="4742" data-end="4753">Summary</strong></h3>
+<ul data-start="4754" data-end="4851">
+<li data-start="4754" data-end="4803">
+<p data-start="4756" data-end="4803">Factory system evolved to meet <strong data-start="4787" data-end="4802">mass demand</strong>.</p>
+</li>
+<li data-start="4804" data-end="4851">
+<p data-start="4806" data-end="4851">It enabled <strong data-start="4817" data-end="4850">large-scale industrialization</strong>.</p>
+</li>
+</ul>
+<hr data-start="4853" data-end="4856">
+<h2 data-start="4858" data-end="4889"><strong data-start="4861" data-end="4889">7. Manufacturing Systems</strong></h2>
+<h3 data-start="4891" data-end="4911"><strong data-start="4895" data-end="4911">Introduction</strong></h3>
+<p data-start="4912" data-end="4997">A manufacturing system is a <strong data-start="4940" data-end="4974">set of resources and processes</strong> used to produce goods.</p>
+<hr data-start="4999" data-end="5002">
+<h3 data-start="5004" data-end="5024"><strong data-start="5008" data-end="5024">Key Concepts</strong></h3>
+<ul data-start="5025" data-end="5081">
+<li data-start="5025" data-end="5044">
+<p data-start="5027" data-end="5044">Input resources</p>
+</li>
+<li data-start="5045" data-end="5061">
+<p data-start="5047" data-end="5061">Process flow</p>
+</li>
+<li data-start="5062" data-end="5081">
+<p data-start="5064" data-end="5081">Output products</p>
+</li>
+</ul>
+<hr data-start="5083" data-end="5086">
+<h3 data-start="5088" data-end="5126"><strong data-start="5092" data-end="5126">Types of Manufacturing Systems</strong></h3>
+<p data-start="5127" data-end="5163">(Overview – detailed in later units)</p>
+<ol data-start="5165" data-end="5246">
+<li data-start="5165" data-end="5182">
+<p data-start="5168" data-end="5182">Job Production</p>
+</li>
+<li data-start="5183" data-end="5202">
+<p data-start="5186" data-end="5202">Batch Production</p>
+</li>
+<li data-start="5203" data-end="5221">
+<p data-start="5206" data-end="5221">Mass Production</p>
+</li>
+<li data-start="5222" data-end="5246">
+<p data-start="5225" data-end="5246">Continuous Production</p>
+</li>
+</ol>
+<hr data-start="5248" data-end="5251">
+<h3 data-start="5253" data-end="5293"><strong data-start="5257" data-end="5293">Basic Manufacturing System Model</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="5295" data-end="5414"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">arduino</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Raw Materials + Labor + Machines
+            ↓
+      Manufacturing </span><span><span class="hljs-built_in">Process</span></span><span>
+            ↓
+        Finished Goods
+</span></span></code></div></div></pre>
+<hr data-start="5416" data-end="5419">
+<h3 data-start="5421" data-end="5436"><strong data-start="5425" data-end="5436">Summary</strong></h3>
+<ul data-start="5437" data-end="5554">
+<li data-start="5437" data-end="5500">
+<p data-start="5439" data-end="5500">Manufacturing systems define <strong data-start="5468" data-end="5499">how production is organized</strong>.</p>
+</li>
+<li data-start="5501" data-end="5554">
+<p data-start="5503" data-end="5554">Choice of system depends on <strong data-start="5531" data-end="5553">volume and variety</strong>.</p>
+</li>
+</ul>
+<hr data-start="5556" data-end="5559">
+<h2 data-start="5561" data-end="5592"><strong data-start="5564" data-end="5592">8. Quality in Operations</strong></h2>
+<h3 data-start="5594" data-end="5614"><strong data-start="5598" data-end="5614">Introduction</strong></h3>
+<p data-start="5615" data-end="5699">Quality is the degree to which a product or service <strong data-start="5667" data-end="5698">meets customer requirements</strong>.</p>
+<hr data-start="5701" data-end="5704">
+<h3 data-start="5706" data-end="5726"><strong data-start="5710" data-end="5726">Key Concepts</strong></h3>
+<ul data-start="5727" data-end="5803">
+<li data-start="5727" data-end="5760">
+<p data-start="5729" data-end="5760">Conformance to specifications</p>
+</li>
+<li data-start="5761" data-end="5786">
+<p data-start="5763" data-end="5786">Customer satisfaction</p>
+</li>
+<li data-start="5787" data-end="5803">
+<p data-start="5789" data-end="5803">Zero defects</p>
+</li>
+</ul>
+<hr data-start="5805" data-end="5808">
+<h3 data-start="5810" data-end="5837"><strong data-start="5814" data-end="5837">Quality Focus in OM</strong></h3>
+<ul data-start="5838" data-end="5916">
+<li data-start="5838" data-end="5877">
+<p data-start="5840" data-end="5877">Quality is <strong data-start="5851" data-end="5877">built into the process</strong></p>
+</li>
+<li data-start="5878" data-end="5916">
+<p data-start="5880" data-end="5916">Prevention is better than inspection</p>
+</li>
+</ul>
+<hr data-start="5918" data-end="5921">
+<h3 data-start="5923" data-end="5952"><strong data-start="5927" data-end="5952">Dimensions of Quality</strong></h3>
+<ul data-start="5953" data-end="6023">
+<li data-start="5953" data-end="5966">
+<p data-start="5955" data-end="5966">Performance</p>
+</li>
+<li data-start="5967" data-end="5980">
+<p data-start="5969" data-end="5980">Reliability</p>
+</li>
+<li data-start="5981" data-end="5993">
+<p data-start="5983" data-end="5993">Durability</p>
+</li>
+<li data-start="5994" data-end="6006">
+<p data-start="5996" data-end="6006">Aesthetics</p>
+</li>
+<li data-start="6007" data-end="6023">
+<p data-start="6009" data-end="6023">Serviceability</p>
+</li>
+</ul>
+<hr data-start="6025" data-end="6028">
+<h3 data-start="6030" data-end="6045"><strong data-start="6034" data-end="6045">Summary</strong></h3>
+<ul data-start="6046" data-end="6150">
+<li data-start="6046" data-end="6090">
+<p data-start="6048" data-end="6090">Quality is a <strong data-start="6061" data-end="6083">strategic priority</strong> in OM.</p>
+</li>
+<li data-start="6091" data-end="6150">
+<p data-start="6093" data-end="6150">Poor quality increases cost and customer dissatisfaction.</p>
+</li>
+</ul>
+<hr data-start="6152" data-end="6155">
+<h2 data-start="6157" data-end="6185"><strong data-start="6160" data-end="6185">9. Mass Customization</strong></h2>
+<h3 data-start="6187" data-end="6207"><strong data-start="6191" data-end="6207">Introduction</strong></h3>
+<p data-start="6208" data-end="6290">Mass customization combines <strong data-start="6236" data-end="6266">mass production efficiency</strong> with <strong data-start="6272" data-end="6289">customization</strong>.</p>
+<hr data-start="6292" data-end="6295">
+<h3 data-start="6297" data-end="6317"><strong data-start="6301" data-end="6317">Key Concepts</strong></h3>
+<ul data-start="6318" data-end="6395">
+<li data-start="6318" data-end="6342">
+<p data-start="6320" data-end="6342">Flexible manufacturing</p>
+</li>
+<li data-start="6343" data-end="6360">
+<p data-start="6345" data-end="6360">Customer choice</p>
+</li>
+<li data-start="6361" data-end="6395">
+<p data-start="6363" data-end="6395">Technology-enabled customization</p>
+</li>
+</ul>
+<hr data-start="6397" data-end="6400">
+<h3 data-start="6402" data-end="6418"><strong data-start="6406" data-end="6418">Examples</strong></h3>
+<ul data-start="6419" data-end="6485">
+<li data-start="6419" data-end="6439">
+<p data-start="6421" data-end="6439">Customized laptops</p>
+</li>
+<li data-start="6440" data-end="6460">
+<p data-start="6442" data-end="6460">Personalized shoes</p>
+</li>
+<li data-start="6461" data-end="6485">
+<p data-start="6463" data-end="6485">Online-configured cars</p>
+</li>
+</ul>
+<hr data-start="6487" data-end="6490">
+<h3 data-start="6492" data-end="6508"><strong data-start="6496" data-end="6508">Benefits</strong></h3>
+<ul data-start="6509" data-end="6581">
+<li data-start="6509" data-end="6532">
+<p data-start="6511" data-end="6532">Customer satisfaction</p>
+</li>
+<li data-start="6533" data-end="6556">
+<p data-start="6535" data-end="6556">Competitive advantage</p>
+</li>
+<li data-start="6557" data-end="6581">
+<p data-start="6559" data-end="6581">Reduced inventory risk</p>
+</li>
+</ul>
+<hr data-start="6583" data-end="6586">
+<h3 data-start="6588" data-end="6603"><strong data-start="6592" data-end="6603">Summary</strong></h3>
+<ul data-start="6604" data-end="6691">
+<li data-start="6604" data-end="6653">
+<p data-start="6606" data-end="6653">Mass customization is a <strong data-start="6630" data-end="6652">modern OM strategy</strong>.</p>
+</li>
+<li data-start="6654" data-end="6691">
+<p data-start="6656" data-end="6691">Enabled by IT and flexible systems.</p>
+</li>
+</ul>
+<hr data-start="6693" data-end="6696">
+<h2 data-start="6698" data-end="6730"><strong data-start="6701" data-end="6730">Overall Summary of Part 2</strong></h2>
+<ul data-start="6731" data-end="6936">
+<li data-start="6731" data-end="6805">
+<p data-start="6733" data-end="6805">OM evolved from <strong data-start="6749" data-end="6774">manufacturing-focused</strong> to <strong data-start="6778" data-end="6804">system-wide management</strong>.</p>
+</li>
+<li data-start="6806" data-end="6870">
+<p data-start="6808" data-end="6870">Factory systems evolved to support <strong data-start="6843" data-end="6869">large-scale production</strong>.</p>
+</li>
+<li data-start="6871" data-end="6936">
+<p data-start="6873" data-end="6936">Quality and customization are <strong data-start="6903" data-end="6935">central to modern operations</strong>.</p>
+</li>
+</ul>
+<hr data-start="6938" data-end="6941">
+<h3 data-start="6943" data-end="6978"><strong data-start="6947" data-end="6976"><em data-start="6949" data-end="6974">End of Unit I – Part 2.</em></strong></h3>
+<p data-start="6979" data-end="7069" data-is-last-node="" data-is-only-node=""><strong data-start="6979" data-end="7069" data-is-last-node="">Continue to <em data-start="6993" data-end="7010">Unit I – Part 3</em> (Contributions of Henry Ford, Deming, Crosby &amp; Taguchi)?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div>
+      </div>
+    </div>
+    <div class="message" id="message-3">
+      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
+      <div class="message-content">
+        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="0226109a-09e5-4e82-ba73-4ad43e54ccf1" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="98">
+<p data-start="2" data-end="98"><strong data-start="2" data-end="13">STATUS:</strong> <strong data-start="14" data-end="64">Unit I – Introduction to Operations Management</strong><br data-start="64" data-end="67">
+<strong data-start="69" data-end="98">Part 3 of ~3 (Final Part)</strong></p>
+</blockquote>
+<hr data-start="100" data-end="103">
+<h2 data-start="105" data-end="166"><strong data-start="108" data-end="166">UNIT I: INTRODUCTION TO OPERATIONS MANAGEMENT – PART 3</strong></h2>
+<p data-start="168" data-end="366">This final part of Unit I focuses on the <strong data-start="209" data-end="281">key contributors who shaped modern Operations and Quality Management</strong>.<br data-start="282" data-end="285">
+Questions from this section are <strong data-start="317" data-end="349">very common theory questions</strong>, often asked as:</p>
+<ul data-start="367" data-end="500">
+<li data-start="367" data-end="438">
+<p data-start="369" data-end="438"><em data-start="369" data-end="436">“Explain the contribution of Henry Ford to Operations Management”</em></p>
+</li>
+<li data-start="439" data-end="500">
+<p data-start="441" data-end="500"><em data-start="441" data-end="500">“Discuss Deming/Crosby/Taguchi’s contribution to quality”</em></p>
+</li>
+</ul>
+<hr data-start="502" data-end="505">
+<h2 data-start="507" data-end="556"><strong data-start="510" data-end="556">10. Contributions to Operations Management</strong></h2>
+<hr data-start="558" data-end="561">
+<h2 data-start="563" data-end="601"><strong data-start="566" data-end="601">10.1 Contribution of Henry Ford</strong></h2>
+<h3 data-start="603" data-end="623"><strong data-start="607" data-end="623">Introduction</strong></h3>
+<p data-start="624" data-end="819"><strong data-start="624" data-end="638">Henry Ford</strong> revolutionized manufacturing by introducing the concept of <strong data-start="698" data-end="717">mass production</strong> using the <strong data-start="728" data-end="752">moving assembly line</strong>.<br data-start="753" data-end="756">
+His ideas laid the <strong data-start="775" data-end="818">foundation of modern production systems</strong>.</p>
+<hr data-start="821" data-end="824">
+<h3 data-start="826" data-end="846"><strong data-start="830" data-end="846">Key Concepts</strong></h3>
+<ul data-start="847" data-end="953">
+<li data-start="847" data-end="866">
+<p data-start="849" data-end="866">Mass production</p>
+</li>
+<li data-start="867" data-end="884">
+<p data-start="869" data-end="884">Assembly line</p>
+</li>
+<li data-start="885" data-end="904">
+<p data-start="887" data-end="904">Standardization</p>
+</li>
+<li data-start="905" data-end="930">
+<p data-start="907" data-end="930">Interchangeable parts</p>
+</li>
+<li data-start="931" data-end="953">
+<p data-start="933" data-end="953">Economies of scale</p>
+</li>
+</ul>
+<hr data-start="955" data-end="958">
+<h3 data-start="960" data-end="988"><strong data-start="964" data-end="988">Detailed Explanation</strong></h3>
+<h4 data-start="990" data-end="1019"><strong data-start="995" data-end="1019">Moving Assembly Line</strong></h4>
+<ul data-start="1020" data-end="1130">
+<li data-start="1020" data-end="1071">
+<p data-start="1022" data-end="1071">Introduced in <strong data-start="1036" data-end="1044">1913</strong> for automobile production.</p>
+</li>
+<li data-start="1072" data-end="1130">
+<p data-start="1074" data-end="1130">Work moved to workers instead of workers moving to work.</p>
+</li>
+</ul>
+<pre class="overflow-visible! px-0!" data-start="1132" data-end="1209"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">css</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Chassis → Engine fitting → </span><span><span class="hljs-selector-tag">Body</span></span><span> fitting → Painting → Final inspection
+</span></span></code></div></div></pre>
+<hr data-start="1211" data-end="1214">
+<h3 data-start="1216" data-end="1241"><strong data-start="1220" data-end="1241">Key Contributions</strong></h3>
+<ol data-start="1243" data-end="1705">
+<li data-start="1243" data-end="1349">
+<p data-start="1246" data-end="1277"><strong data-start="1246" data-end="1277">Standardization of Products</strong></p>
+<ul data-start="1281" data-end="1349">
+<li data-start="1281" data-end="1315">
+<p data-start="1283" data-end="1315">Limited variety (e.g., Model T).</p>
+</li>
+<li data-start="1319" data-end="1349">
+<p data-start="1321" data-end="1349">Reduced complexity and cost.</p>
+</li>
+</ul>
+</li>
+<li data-start="1351" data-end="1470">
+<p data-start="1354" data-end="1379"><strong data-start="1354" data-end="1379">Interchangeable Parts</strong></p>
+<ul data-start="1383" data-end="1470">
+<li data-start="1383" data-end="1427">
+<p data-start="1385" data-end="1427">Parts manufactured to standard dimensions.</p>
+</li>
+<li data-start="1431" data-end="1470">
+<p data-start="1433" data-end="1470">Easy replacement and faster assembly.</p>
+</li>
+</ul>
+</li>
+<li data-start="1472" data-end="1581">
+<p data-start="1475" data-end="1496"><strong data-start="1475" data-end="1496">Division of Labor</strong></p>
+<ul data-start="1500" data-end="1581">
+<li data-start="1500" data-end="1549">
+<p data-start="1502" data-end="1549">Each worker performed a small, repetitive task.</p>
+</li>
+<li data-start="1553" data-end="1581">
+<p data-start="1555" data-end="1581">Reduced skill requirement.</p>
+</li>
+</ul>
+</li>
+<li data-start="1583" data-end="1705">
+<p data-start="1586" data-end="1617"><strong data-start="1586" data-end="1617">High Production at Low Cost</strong></p>
+<ul data-start="1621" data-end="1705">
+<li data-start="1621" data-end="1658">
+<p data-start="1623" data-end="1658">Reduced assembly time dramatically.</p>
+</li>
+<li data-start="1662" data-end="1705">
+<p data-start="1664" data-end="1705">Cars became affordable to the common man.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="1707" data-end="1710">
+<h3 data-start="1712" data-end="1743"><strong data-start="1716" data-end="1743">Impact of Ford’s System</strong></h3>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1745" data-end="1886" class="w-fit min-w-(--thread-content-width)"><thead data-start="1745" data-end="1764"><tr data-start="1745" data-end="1764"><th data-start="1745" data-end="1754" data-col-size="sm">Aspect</th><th data-start="1754" data-end="1764" data-col-size="sm">Result</th></tr></thead><tbody data-start="1780" data-end="1886"><tr data-start="1780" data-end="1808"><td data-start="1780" data-end="1795" data-col-size="sm">Productivity</td><td data-col-size="sm" data-start="1795" data-end="1808">Very high</td></tr><tr data-start="1809" data-end="1828"><td data-start="1809" data-end="1816" data-col-size="sm">Cost</td><td data-col-size="sm" data-start="1816" data-end="1828">Very low</td></tr><tr data-start="1829" data-end="1859"><td data-start="1829" data-end="1845" data-col-size="sm">Output volume</td><td data-col-size="sm" data-start="1845" data-end="1859">Mass scale</td></tr><tr data-start="1860" data-end="1886"><td data-start="1860" data-end="1874" data-col-size="sm">Flexibility</td><td data-col-size="sm" data-start="1874" data-end="1886">Very low</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="1888" data-end="1891">
+<h3 data-start="1893" data-end="1912"><strong data-start="1897" data-end="1912">Limitations</strong></h3>
+<ul data-start="1913" data-end="1989">
+<li data-start="1913" data-end="1930">
+<p data-start="1915" data-end="1930">Monotonous work</p>
+</li>
+<li data-start="1931" data-end="1964">
+<p data-start="1933" data-end="1964">No flexibility or customization</p>
+</li>
+<li data-start="1965" data-end="1989">
+<p data-start="1967" data-end="1989">Worker dissatisfaction</p>
+</li>
+</ul>
+<hr data-start="1991" data-end="1994">
+<h3 data-start="1996" data-end="2011"><strong data-start="2000" data-end="2011">Summary</strong></h3>
+<p data-start="2012" data-end="2133">Henry Ford transformed production from <strong data-start="2051" data-end="2066">craft-based</strong> to <strong data-start="2070" data-end="2089">mass production</strong>, making products affordable and consistent.</p>
+<hr data-start="2135" data-end="2138">
+<h2 data-start="2140" data-end="2185"><strong data-start="2143" data-end="2185">10.2 Contribution of W. Edwards Deming</strong></h2>
+<h3 data-start="2187" data-end="2207"><strong data-start="2191" data-end="2207">Introduction</strong></h3>
+<p data-start="2208" data-end="2366"><strong data-start="2208" data-end="2229">W. Edwards Deming</strong> is known as the <strong data-start="2246" data-end="2285">father of modern quality management</strong>.<br data-start="2286" data-end="2289">
+He emphasized that <strong data-start="2308" data-end="2365">quality improvement leads to productivity improvement</strong>.</p>
+<hr data-start="2368" data-end="2371">
+<h3 data-start="2373" data-end="2393"><strong data-start="2377" data-end="2393">Key Concepts</strong></h3>
+<ul data-start="2394" data-end="2502">
+<li data-start="2394" data-end="2420">
+<p data-start="2396" data-end="2420">Continuous improvement</p>
+</li>
+<li data-start="2421" data-end="2452">
+<p data-start="2423" data-end="2452">Statistical Quality Control</p>
+</li>
+<li data-start="2453" data-end="2472">
+<p data-start="2455" data-end="2472">System thinking</p>
+</li>
+<li data-start="2473" data-end="2502">
+<p data-start="2475" data-end="2502">Management responsibility</p>
+</li>
+</ul>
+<hr data-start="2504" data-end="2507">
+<h3 data-start="2509" data-end="2550"><strong data-start="2513" data-end="2539">Deming’s 14 Principles</strong> (Overview)</h3>
+<p data-start="2551" data-end="2574">Some key ideas include:</p>
+<ul data-start="2575" data-end="2730">
+<li data-start="2575" data-end="2604">
+<p data-start="2577" data-end="2604">Create constancy of purpose</p>
+</li>
+<li data-start="2605" data-end="2637">
+<p data-start="2607" data-end="2637">Improve constantly and forever</p>
+</li>
+<li data-start="2638" data-end="2671">
+<p data-start="2640" data-end="2671">Eliminate inspection dependence</p>
+</li>
+<li data-start="2672" data-end="2688">
+<p data-start="2674" data-end="2688">Drive out fear</p>
+</li>
+<li data-start="2689" data-end="2730">
+<p data-start="2691" data-end="2730">Break down barriers between departments</p>
+</li>
+</ul>
+<hr data-start="2732" data-end="2735">
+<h3 data-start="2737" data-end="2770"><strong data-start="2741" data-end="2770">Deming Cycle (PDCA Cycle)</strong></h3>
+<pre class="overflow-visible! px-0!" data-start="2772" data-end="2803"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">mathematica</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-variable">Plan</span></span><span> → </span><span><span class="hljs-built_in">Do</span></span><span> → </span><span><span class="hljs-built_in">Check</span></span><span> → </span><span><span class="hljs-variable">Act</span></span><span>
+</span></span></code></div></div></pre>
+<ul data-start="2805" data-end="2957">
+<li data-start="2805" data-end="2855">
+<p data-start="2807" data-end="2855"><strong data-start="2807" data-end="2816">Plan:</strong> Identify problems and plan improvement</p>
+</li>
+<li data-start="2856" data-end="2892">
+<p data-start="2858" data-end="2892"><strong data-start="2858" data-end="2865">Do:</strong> Implement on a small scale</p>
+</li>
+<li data-start="2893" data-end="2921">
+<p data-start="2895" data-end="2921"><strong data-start="2895" data-end="2905">Check:</strong> Measure results</p>
+</li>
+<li data-start="2922" data-end="2957">
+<p data-start="2924" data-end="2957"><strong data-start="2924" data-end="2932">Act:</strong> Standardize improvements</p>
+</li>
+</ul>
+<hr data-start="2959" data-end="2962">
+<h3 data-start="2964" data-end="2991"><strong data-start="2968" data-end="2991">Major Contributions</strong></h3>
+<ol data-start="2992" data-end="3189">
+<li data-start="2992" data-end="3036">
+<p data-start="2995" data-end="3036">Emphasized <strong data-start="3006" data-end="3036">prevention over inspection</strong></p>
+</li>
+<li data-start="3037" data-end="3085">
+<p data-start="3040" data-end="3085">Introduced <strong data-start="3051" data-end="3074">statistical methods</strong> in quality</p>
+</li>
+<li data-start="3086" data-end="3133">
+<p data-start="3089" data-end="3133">Highlighted <strong data-start="3101" data-end="3122">management’s role</strong> in quality</p>
+</li>
+<li data-start="3134" data-end="3189">
+<p data-start="3137" data-end="3189">Helped Japanese industries achieve global leadership</p>
+</li>
+</ol>
+<hr data-start="3191" data-end="3194">
+<h3 data-start="3196" data-end="3211"><strong data-start="3200" data-end="3211">Summary</strong></h3>
+<p data-start="3212" data-end="3314">Deming showed that <strong data-start="3231" data-end="3273">quality is a management responsibility</strong> and continuous improvement is essential.</p>
+<hr data-start="3316" data-end="3319">
+<h2 data-start="3321" data-end="3362"><strong data-start="3324" data-end="3362">10.3 Contribution of Philip Crosby</strong></h2>
+<h3 data-start="3364" data-end="3384"><strong data-start="3368" data-end="3384">Introduction</strong></h3>
+<p data-start="3385" data-end="3493"><strong data-start="3385" data-end="3402">Philip Crosby</strong> focused on the idea that <strong data-start="3428" data-end="3447">quality is free</strong>—doing things right the first time costs less.</p>
+<hr data-start="3495" data-end="3498">
+<h3 data-start="3500" data-end="3520"><strong data-start="3504" data-end="3520">Key Concepts</strong></h3>
+<ul data-start="3521" data-end="3589">
+<li data-start="3521" data-end="3537">
+<p data-start="3523" data-end="3537">Zero Defects</p>
+</li>
+<li data-start="3538" data-end="3557">
+<p data-start="3540" data-end="3557">Cost of Quality</p>
+</li>
+<li data-start="3558" data-end="3589">
+<p data-start="3560" data-end="3589">Conformance to requirements</p>
+</li>
+</ul>
+<hr data-start="3591" data-end="3594">
+<h3 data-start="3596" data-end="3634"><strong data-start="3600" data-end="3634">Crosby’s Definition of Quality</strong></h3>
+<blockquote data-start="3635" data-end="3682">
+<p data-start="3637" data-end="3682"><strong data-start="3637" data-end="3682">“Quality is conformance to requirements.”</strong></p>
+</blockquote>
+<hr data-start="3684" data-end="3687">
+<h3 data-start="3689" data-end="3722"><strong data-start="3693" data-end="3722">Four Absolutes of Quality</strong></h3>
+<ol data-start="3723" data-end="3900">
+<li data-start="3723" data-end="3767">
+<p data-start="3726" data-end="3767">Quality means conformance to requirements</p>
+</li>
+<li data-start="3768" data-end="3806">
+<p data-start="3771" data-end="3806">Prevention is the system of quality</p>
+</li>
+<li data-start="3807" data-end="3850">
+<p data-start="3810" data-end="3850">Zero defects is the performance standard</p>
+</li>
+<li data-start="3851" data-end="3900">
+<p data-start="3854" data-end="3900">Quality is measured by cost of non-conformance</p>
+</li>
+</ol>
+<hr data-start="3902" data-end="3905">
+<h3 data-start="3907" data-end="3930"><strong data-start="3911" data-end="3930">Cost of Quality</strong></h3>
+<ul data-start="3931" data-end="4011">
+<li data-start="3931" data-end="3951">
+<p data-start="3933" data-end="3951">Cost of prevention</p>
+</li>
+<li data-start="3952" data-end="3971">
+<p data-start="3954" data-end="3971">Cost of appraisal</p>
+</li>
+<li data-start="3972" data-end="4011">
+<p data-start="3974" data-end="4011">Cost of failure (internal &amp; external)</p>
+</li>
+</ul>
+<hr data-start="4013" data-end="4016">
+<h3 data-start="4018" data-end="4042"><strong data-start="4022" data-end="4042">Key Contribution</strong></h3>
+<ul data-start="4043" data-end="4130">
+<li data-start="4043" data-end="4084">
+<p data-start="4045" data-end="4084">Popularized <strong data-start="4057" data-end="4084">Zero Defects philosophy</strong></p>
+</li>
+<li data-start="4085" data-end="4130">
+<p data-start="4087" data-end="4130">Shifted focus from inspection to prevention</p>
+</li>
+</ul>
+<hr data-start="4132" data-end="4135">
+<h3 data-start="4137" data-end="4152"><strong data-start="4141" data-end="4152">Summary</strong></h3>
+<p data-start="4153" data-end="4258">Crosby emphasized that <strong data-start="4176" data-end="4209">doing it right the first time</strong> reduces cost and improves customer satisfaction.</p>
+<hr data-start="4260" data-end="4263">
+<h2 data-start="4265" data-end="4308"><strong data-start="4268" data-end="4308">10.4 Contribution of Genichi Taguchi</strong></h2>
+<h3 data-start="4310" data-end="4330"><strong data-start="4314" data-end="4330">Introduction</strong></h3>
+<p data-start="4331" data-end="4484"><strong data-start="4331" data-end="4350">Genichi Taguchi</strong> introduced a <strong data-start="4364" data-end="4392">design-centered approach</strong> to quality.<br data-start="4404" data-end="4407">
+He emphasized that quality should be built into the <strong data-start="4459" data-end="4483">product design stage</strong>.</p>
+<hr data-start="4486" data-end="4489">
+<h3 data-start="4491" data-end="4511"><strong data-start="4495" data-end="4511">Key Concepts</strong></h3>
+<ul data-start="4512" data-end="4587">
+<li data-start="4512" data-end="4529">
+<p data-start="4514" data-end="4529">Robust design</p>
+</li>
+<li data-start="4530" data-end="4555">
+<p data-start="4532" data-end="4555">Quality loss function</p>
+</li>
+<li data-start="4556" data-end="4587">
+<p data-start="4558" data-end="4587">Design of experiments (DOE)</p>
+</li>
+</ul>
+<hr data-start="4589" data-end="4592">
+<h3 data-start="4594" data-end="4623"><strong data-start="4598" data-end="4623">Quality Loss Function</strong></h3>
+<ul data-start="4624" data-end="4750">
+<li data-start="4624" data-end="4681">
+<p data-start="4626" data-end="4681">Any deviation from target causes a <strong data-start="4661" data-end="4680">loss to society</strong>.</p>
+</li>
+<li data-start="4682" data-end="4750">
+<p data-start="4684" data-end="4750">Loss increases continuously, not suddenly at specification limits.</p>
+</li>
+</ul>
+<pre class="overflow-visible! px-0!" data-start="4752" data-end="4797"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">scss</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span>Loss ∝ (Actual value – Target value)²
+</span></span></code></div></div></pre>
+<hr data-start="4799" data-end="4802">
+<h3 data-start="4804" data-end="4839"><strong data-start="4808" data-end="4839">Taguchi’s Key Contributions</strong></h3>
+<ol data-start="4841" data-end="5134">
+<li data-start="4841" data-end="4958">
+<p data-start="4844" data-end="4861"><strong data-start="4844" data-end="4861">Robust Design</strong></p>
+<ul data-start="4865" data-end="4958">
+<li data-start="4865" data-end="4902">
+<p data-start="4867" data-end="4902">Products insensitive to variations.</p>
+</li>
+<li data-start="4906" data-end="4958">
+<p data-start="4908" data-end="4958">Consistent performance under different conditions.</p>
+</li>
+</ul>
+</li>
+<li data-start="4960" data-end="5039">
+<p data-start="4963" data-end="4991"><strong data-start="4963" data-end="4991">Off-line Quality Control</strong></p>
+<ul data-start="4995" data-end="5039">
+<li data-start="4995" data-end="5039">
+<p data-start="4997" data-end="5039">Quality designed before production begins.</p>
+</li>
+</ul>
+</li>
+<li data-start="5041" data-end="5134">
+<p data-start="5044" data-end="5075"><strong data-start="5044" data-end="5075">Focus on Customer &amp; Society</strong></p>
+<ul data-start="5079" data-end="5134">
+<li data-start="5079" data-end="5134">
+<p data-start="5081" data-end="5134">Poor quality affects society, not just manufacturers.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr data-start="5136" data-end="5139">
+<h3 data-start="5141" data-end="5156"><strong data-start="5145" data-end="5156">Summary</strong></h3>
+<p data-start="5157" data-end="5266">Taguchi shifted quality thinking from <strong data-start="5195" data-end="5234">manufacturing stage to design stage</strong>, reducing variability and cost.</p>
+<hr data-start="5268" data-end="5271">
+<h2 data-start="5273" data-end="5315"><strong data-start="5276" data-end="5315">Comparative Summary of Contributors</strong></h2>
+<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="5317" data-end="5622" class="w-fit min-w-(--thread-content-width)"><thead data-start="5317" data-end="5364"><tr data-start="5317" data-end="5364"><th data-start="5317" data-end="5331" data-col-size="sm">Contributor</th><th data-start="5331" data-end="5343" data-col-size="sm">Key Focus</th><th data-start="5343" data-end="5364" data-col-size="sm">Main Contribution</th></tr></thead><tbody data-start="5408" data-end="5622"><tr data-start="5408" data-end="5469"><td data-start="5408" data-end="5421" data-col-size="sm">Henry Ford</td><td data-col-size="sm" data-start="5421" data-end="5434">Production</td><td data-col-size="sm" data-start="5434" data-end="5469">Mass production &amp; assembly line</td></tr><tr data-start="5470" data-end="5530"><td data-start="5470" data-end="5479" data-col-size="sm">Deming</td><td data-col-size="sm" data-start="5479" data-end="5497">Quality systems</td><td data-col-size="sm" data-start="5497" data-end="5530">Continuous improvement (PDCA)</td></tr><tr data-start="5531" data-end="5577"><td data-start="5531" data-end="5540" data-col-size="sm">Crosby</td><td data-col-size="sm" data-start="5540" data-end="5561">Quality philosophy</td><td data-col-size="sm" data-start="5561" data-end="5577">Zero defects</td></tr><tr data-start="5578" data-end="5622"><td data-start="5578" data-end="5588" data-col-size="sm">Taguchi</td><td data-col-size="sm" data-start="5588" data-end="5605">Product design</td><td data-col-size="sm" data-start="5605" data-end="5622">Robust design</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
+<hr data-start="5624" data-end="5627">
+<h2 data-start="5629" data-end="5658"><strong data-start="5632" data-end="5658">UNIT I – FINAL SUMMARY</strong></h2>
+<ul data-start="5660" data-end="5948">
+<li data-start="5660" data-end="5744">
+<p data-start="5662" data-end="5744">Operations Management evolved to manage <strong data-start="5702" data-end="5743">entire production and service systems</strong>.</p>
+</li>
+<li data-start="5745" data-end="5799">
+<p data-start="5747" data-end="5799"><strong data-start="5747" data-end="5761">Henry Ford</strong> revolutionized production efficiency.</p>
+</li>
+<li data-start="5800" data-end="5865">
+<p data-start="5802" data-end="5865"><strong data-start="5802" data-end="5833">Deming, Crosby, and Taguchi</strong> transformed quality management.</p>
+</li>
+<li data-start="5866" data-end="5948">
+<p data-start="5868" data-end="5948">Modern OM integrates <strong data-start="5889" data-end="5947">productivity, quality, flexibility, and customer focus</strong>.</p>
+</li>
+</ul>
+<hr data-start="5950" data-end="5953">
+<h2 data-start="5955" data-end="5979"><strong data-start="5958" data-end="5979">UNIT I COMPLETE ✅</strong></h2>
+<h3 data-start="5981" data-end="6005"><strong data-start="5985" data-end="6005">Review Questions</strong></h3>
+<p data-start="6006" data-end="6022"><strong data-start="6006" data-end="6022">Short Answer</strong></p>
+<ol data-start="6023" data-end="6131">
+<li data-start="6023" data-end="6057">
+<p data-start="6026" data-end="6057">Define Operations Management.</p>
+</li>
+<li data-start="6058" data-end="6090">
+<p data-start="6061" data-end="6090">What is mass customization?</p>
+</li>
+<li data-start="6091" data-end="6131">
+<p data-start="6094" data-end="6131">State Crosby’s definition of quality.</p>
+</li>
+</ol>
+<p data-start="6133" data-end="6148"><strong data-start="6133" data-end="6148">Descriptive</strong></p>
+<ol data-start="6149" data-end="6287">
+<li data-start="6149" data-end="6201">
+<p data-start="6152" data-end="6201">Explain the evolution of Operations Management.</p>
+</li>
+<li data-start="6202" data-end="6247">
+<p data-start="6205" data-end="6247">Discuss Henry Ford’s contribution to OM.</p>
+</li>
+<li data-start="6248" data-end="6287">
+<p data-start="6251" data-end="6287">Compare Deming, Crosby, and Taguchi.</p>
+</li>
+</ol>
+<hr data-start="6289" data-end="6292">
+<h3 data-start="6294" data-end="6311"><strong data-start="6298" data-end="6311">Next Step</strong></h3>
+<p data-start="6312" data-end="6384" data-is-last-node="" data-is-only-node="">👉 <strong data-start="6315" data-end="6384" data-is-last-node="">Shall I move to <em data-start="6333" data-end="6381">Unit II – Productivity and Work Study (Part 1)</em>?</strong></p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+  
+  <script>
+    // Theme Toggle functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeToggleBtn.textContent = '☀️';
+    }
+    
+    themeToggleBtn.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
