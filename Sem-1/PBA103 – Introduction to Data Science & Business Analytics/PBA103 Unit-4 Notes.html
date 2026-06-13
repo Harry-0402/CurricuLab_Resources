@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 4: Introduction to Maturity Stages in Analytics</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 4: Introduction to Maturity Stages in Analytics</h1>
+    
+    <h2>Introduction</h2>
+    <p>Organizations generate large amounts of data every day. However, merely collecting data does not create value. The real value comes from analyzing data and using insights for decision-making. As organizations become more data-driven, they progress through different stages of analytics maturity.</p>
+    <p>Analytics maturity refers to the level of sophistication with which an organization uses data to understand past events, identify causes, predict future outcomes, and recommend optimal actions.</p>
+    <p>This unit covers the four major stages of analytics maturity:</p>
+    <ul>
+      <li>Descriptive Analytics</li>
+      <li>Diagnostic Analytics</li>
+      <li>Predictive Analytics</li>
+      <li>Prescriptive Analytics</li>
+    </ul>
+    <p>These stages represent a journey from understanding "What happened?" to determining "What should be done?"</p>
+
+    <h2>Topic 1: Introduction to Analytics Maturity</h2>
+    <h3>Explanation</h3>
+    <p>Analytics maturity refers to the progressive development of analytical capabilities within an organization.</p>
+    <p>Organizations generally move through four stages:</p>
+    
+    <div class="flow-container">
+      <div class="flow-step">Descriptive Analytics</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Diagnostic Analytics</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Predictive Analytics</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Prescriptive Analytics</div>
+    </div>
+    
+    <p>Each stage provides deeper insights and greater business value.</p>
+    
+    <h3>Importance of Analytics Maturity</h3>
+    <ul>
+      <li>Improves decision-making.</li>
+      <li>Enhances business performance.</li>
+      <li>Reduces uncertainty.</li>
+      <li>Supports strategic planning.</li>
+      <li>Creates competitive advantage.</li>
+    </ul>
+
+    <h3>Analytics Maturity Framework</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Main Question</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Descriptive</strong></td>
+          <td>What happened?</td>
+        </tr>
+        <tr>
+          <td><strong>Diagnostic</strong></td>
+          <td>Why did it happen?</td>
+        </tr>
+        <tr>
+          <td><strong>Predictive</strong></td>
+          <td>What is likely to happen?</td>
+        </tr>
+        <tr>
+          <td><strong>Prescriptive</strong></td>
+          <td>What should we do?</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Amazon uses all stages of analytics to analyze customer behavior, predict demand, and optimize operations.</p>
+    <p><strong>Example 2 (Practical):</strong> A student reviews past exam marks, identifies weak subjects, predicts future performance, and creates a study plan.</p>
+
+    <h2>Topic 2: Descriptive Analytics</h2>
+    <h3>Explanation</h3>
+    <p>Descriptive Analytics is the simplest and most widely used form of analytics. It focuses on summarizing historical data to understand what has already happened.</p>
+
+    <h3>Main Question</h3>
+    <p>"What happened?"</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Summarize historical data.</li>
+      <li>Identify trends and patterns.</li>
+      <li>Monitor business performance.</li>
+      <li>Generate reports and dashboards.</li>
+    </ul>
+
+    <h3>Common Techniques</h3>
+    <ul>
+      <li>Data Aggregation</li>
+      <li>Reporting</li>
+      <li>Dashboards</li>
+      <li>Data Visualization</li>
+      <li>Summary Statistics</li>
+    </ul>
+
+    <h3>Examples of Descriptive Analytics</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Business Area</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sales</strong></td>
+          <td>Monthly Sales Report</td>
+        </tr>
+        <tr>
+          <td><strong>HR</strong></td>
+          <td>Employee Attendance Report</td>
+        </tr>
+        <tr>
+          <td><strong>Finance</strong></td>
+          <td>Profit &amp; Loss Statement</td>
+        </tr>
+        <tr>
+          <td><strong>Marketing</strong></td>
+          <td>Website Traffic Summary</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Easy to implement.</li>
+      <li>Provides business visibility.</li>
+      <li>Supports routine monitoring.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Does not explain causes.</li>
+      <li>Cannot predict future events.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Walmart generates daily sales reports showing products sold and revenue earned.</p>
+    <p><strong>Example 2 (Practical):</strong> A teacher prepares a report showing average marks obtained by students in an examination.</p>
+
+    <h2>Topic 3: Diagnostic Analytics</h2>
+    <h3>Explanation</h3>
+    <p>Diagnostic Analytics investigates the reasons behind observed events or trends.</p>
+    <p>It answers the question:</p>
+    <p>"Why did it happen?"</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Identify root causes.</li>
+      <li>Understand relationships among variables.</li>
+      <li>Investigate performance changes.</li>
+      <li>Support corrective actions.</li>
+    </ul>
+
+    <h3>Common Techniques</h3>
+    <ul>
+      <li>Drill-Down Analysis</li>
+      <li>Data Mining</li>
+      <li>Correlation Analysis</li>
+      <li>Root Cause Analysis</li>
+      <li>Comparative Analysis</li>
+    </ul>
+
+    <h3>Diagnostic Analytics Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Identify Problem</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Collect Relevant Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Analyze Causes</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Determine Root Cause</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Recommend Improvements</div>
+    </div>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Helps identify business problems.</li>
+      <li>Improves decision quality.</li>
+      <li>Supports performance improvement.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Depends on data quality.</li>
+      <li>May require advanced analytical skills.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company notices declining sales and analyzes customer feedback, pricing, and competitor activities to determine the cause.</p>
+    <p><strong>Example 2 (Practical):</strong> A student's grades decline, and analysis reveals poor attendance as the primary reason.</p>
+
+    <h2>Topic 4: Predictive Analytics</h2>
+    <h3>Explanation</h3>
+    <p>Predictive Analytics uses historical data, statistical techniques, and machine learning algorithms to forecast future outcomes.</p>
+
+    <h3>Main Question</h3>
+    <p>"What is likely to happen?"</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Forecast future trends.</li>
+      <li>Predict customer behavior.</li>
+      <li>Estimate risks.</li>
+      <li>Improve planning.</li>
+    </ul>
+
+    <h3>Techniques Used</h3>
+    <ul>
+      <li>Regression Analysis</li>
+      <li>Machine Learning</li>
+      <li>Time Series Forecasting</li>
+      <li>Statistical Modeling</li>
+      <li>Predictive Modeling</li>
+    </ul>
+
+    <h3>Predictive Analytics Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Historical Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Preparation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Model Development</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Prediction</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Decision Making</div>
+    </div>
+
+    <h3>Applications</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Banking</strong></td>
+          <td>Credit Risk Prediction</td>
+        </tr>
+        <tr>
+          <td><strong>Retail</strong></td>
+          <td>Demand Forecasting</td>
+        </tr>
+        <tr>
+          <td><strong>Healthcare</strong></td>
+          <td>Disease Prediction</td>
+        </tr>
+        <tr>
+          <td><strong>Marketing</strong></td>
+          <td>Customer Churn Prediction</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Supports proactive decision-making.</li>
+      <li>Reduces uncertainty.</li>
+      <li>Improves forecasting accuracy.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Predictions are not always accurate.</li>
+      <li>Requires quality data and models.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Netflix predicts user preferences and recommends content based on viewing history.</p>
+    <p><strong>Example 2 (Practical):</strong> A weather forecasting system predicts rainfall using historical weather data.</p>
+
+    <h2>Topic 5: Prescriptive Analytics</h2>
+    <h3>Explanation</h3>
+    <p>Prescriptive Analytics is the most advanced stage of analytics maturity. It recommends actions that organizations should take to achieve desired outcomes.</p>
+
+    <h3>Main Question</h3>
+    <p>"What should we do?"</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Recommend optimal decisions.</li>
+      <li>Improve resource allocation.</li>
+      <li>Automate decision-making.</li>
+      <li>Optimize business performance.</li>
+    </ul>
+
+    <h3>Techniques Used</h3>
+    <ul>
+      <li>Optimization Models</li>
+      <li>Artificial Intelligence</li>
+      <li>Simulation Models</li>
+      <li>Decision Analysis</li>
+      <li>Machine Learning</li>
+    </ul>
+
+    <h3>Prescriptive Analytics Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Prediction</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Alternative Evaluation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Optimization</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Recommended Action</div>
+    </div>
+
+    <h3>Applications</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Logistics</strong></td>
+          <td>Route Optimization</td>
+        </tr>
+        <tr>
+          <td><strong>Retail</strong></td>
+          <td>Inventory Optimization</td>
+        </tr>
+        <tr>
+          <td><strong>Finance</strong></td>
+          <td>Portfolio Optimization</td>
+        </tr>
+        <tr>
+          <td><strong>Healthcare</strong></td>
+          <td>Treatment Recommendations</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Provides actionable recommendations.</li>
+      <li>Improves efficiency.</li>
+      <li>Enhances strategic planning.</li>
+    </ul>
+
+    <h3>Limitations</h3>
+    <ul>
+      <li>Complex implementation.</li>
+      <li>Requires advanced technology and expertise.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Uber uses prescriptive analytics to optimize driver allocation and pricing.</p>
+    <p><strong>Example 2 (Practical):</strong> A GPS navigation app recommends the fastest route based on traffic conditions.</p>
+
+    <h2>Comparison of Analytics Maturity Stages</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Descriptive</th>
+          <th>Diagnostic</th>
+          <th>Predictive</th>
+          <th>Prescriptive</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Main Question</strong></td>
+          <td>What happened?</td>
+          <td>Why did it happen?</td>
+          <td>What will happen?</td>
+          <td>What should be done?</td>
+        </tr>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Past</td>
+          <td>Cause</td>
+          <td>Future</td>
+          <td>Action</td>
+        </tr>
+        <tr>
+          <td><strong>Complexity</strong></td>
+          <td>Low</td>
+          <td>Medium</td>
+          <td>High</td>
+          <td>Very High</td>
+        </tr>
+        <tr>
+          <td><strong>Techniques</strong></td>
+          <td>Reports</td>
+          <td>Root Cause Analysis</td>
+          <td>Forecasting</td>
+          <td>Optimization</td>
+        </tr>
+        <tr>
+          <td><strong>Output</strong></td>
+          <td>Information</td>
+          <td>Insights</td>
+          <td>Predictions</td>
+          <td>Recommendations</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Analytics Evolution Flowchart</h3>
+    <div class="flow-container">
+      <div class="flow-step">Raw Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Descriptive Analytics</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Diagnostic Analytics</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Predictive Analytics</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Prescriptive Analytics</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Business Value Creation</div>
+    </div>
+
+    <h3>Real-World Example of Analytics Maturity</h3>
+    <p>Consider an online shopping company:</p>
+    
+    <h4>Descriptive Analytics</h4>
+    <p>Sales dropped by 10% last month.</p>
+    
+    <h4>Diagnostic Analytics</h4>
+    <p>Analysis reveals that website downtime caused lower sales.</p>
+    
+    <h4>Predictive Analytics</h4>
+    <p>Forecasts indicate sales may decline further if downtime continues.</p>
+    
+    <h4>Prescriptive Analytics</h4>
+    <p>Recommends upgrading servers and increasing technical support resources.</p>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Analytics maturity refers to the progression of analytical capabilities.</li>
+      <li>Descriptive Analytics explains what happened.</li>
+      <li>Diagnostic Analytics explains why something happened.</li>
+      <li>Predictive Analytics forecasts future events.</li>
+      <li>Prescriptive Analytics recommends actions.</li>
+      <li>Organizations gain increasing business value as they move through higher analytics maturity levels.</li>
+      <li>Predictive and Prescriptive Analytics often use AI and Machine Learning techniques.</li>
+      <li>Prescriptive Analytics is the most advanced stage of analytics.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Analytics Maturity</strong></td>
+          <td>Level of analytical capability within an organization</td>
+        </tr>
+        <tr>
+          <td><strong>Descriptive Analytics</strong></td>
+          <td>Analysis of historical data</td>
+        </tr>
+        <tr>
+          <td><strong>Diagnostic Analytics</strong></td>
+          <td>Identification of causes behind events</td>
+        </tr>
+        <tr>
+          <td><strong>Predictive Analytics</strong></td>
+          <td>Forecasting future outcomes</td>
+        </tr>
+        <tr>
+          <td><strong>Prescriptive Analytics</strong></td>
+          <td>Recommending optimal actions</td>
+        </tr>
+        <tr>
+          <td><strong>Forecasting</strong></td>
+          <td>Predicting future events using data</td>
+        </tr>
+        <tr>
+          <td><strong>Optimization</strong></td>
+          <td>Selecting the best possible solution</td>
+        </tr>
+        <tr>
+          <td><strong>Root Cause Analysis</strong></td>
+          <td>Identifying underlying causes of problems</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>Analytics Maturity Model</h4>
+    <div class="flow-container">
+      <div class="flow-step">Descriptive</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Diagnostic</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Predictive</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Prescriptive</div>
+    </div>
+
+    <h4>Predictive Analytics Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Historical Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Preparation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Model Building</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Prediction</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Decision Making</div>
+    </div>
+
+    <h4>Prescriptive Analytics Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Prediction</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Optimization</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Recommendation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Action</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Analytics Maturity?</li>
+      <li>Define Descriptive Analytics.</li>
+      <li>What is Diagnostic Analytics?</li>
+      <li>Explain Predictive Analytics?</li>
+      <li>What is Prescriptive Analytics?</li>
+      <li>State two applications of Predictive Analytics.</li>
+      <li>What is Root Cause Analysis?</li>
+      <li>What is Forecasting?</li>
+      <li>Explain Optimization.</li>
+      <li>Differentiate between Predictive and Prescriptive Analytics.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the concept of Analytics Maturity.</li>
+      <li>Discuss Descriptive Analytics with examples.</li>
+      <li>Explain Diagnostic Analytics and its applications.</li>
+      <li>Discuss Predictive Analytics and forecasting techniques.</li>
+      <li>Explain Prescriptive Analytics and its importance.</li>
+      <li>Compare all four stages of analytics maturity.</li>
+      <li>Explain how organizations benefit from advanced analytics.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A retail company observes declining sales. Explain how Descriptive, Diagnostic, Predictive, and Prescriptive Analytics can be used to solve the problem.</li>
+      <li>A bank wants to reduce loan defaults. Explain how Predictive Analytics can help identify high-risk customers.</li>
+      <li>A logistics company wants to reduce transportation costs. Explain how Prescriptive Analytics can improve route planning and resource allocation.</li>
+    </ol>
+  </div>
+</body>
+</html>

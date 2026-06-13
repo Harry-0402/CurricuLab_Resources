@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 5: Exploratory Data Analysis (EDA), Business Intelligence, and Ethics in Data Science</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 5: Exploratory Data Analysis (EDA), Business Intelligence, and Ethics in Data Science</h1>
+    
+    <h2>Introduction</h2>
+    <p>Data Science is not only about collecting data but also about understanding it and extracting useful insights. Before building predictive models or making business decisions, analysts need to examine and explore data carefully. This process is known as Exploratory Data Analysis (EDA).</p>
+    <p>EDA helps identify patterns, trends, missing values, and anomalies in data. Along with EDA, organizations use Business Intelligence (BI) and Analytics tools to convert raw data into meaningful information. However, as data becomes more valuable, ethical concerns regarding privacy, fairness, and responsible use of data become increasingly important.</p>
+    <p>This unit covers EDA, its objectives and importance, the Data Science Process, Business Intelligence, Analytics, and Ethics in Data Science.</p>
+
+    <h2>Topic 1: Exploratory Data Analysis (EDA)</h2>
+    <h3>Explanation</h3>
+    <p>Exploratory Data Analysis (EDA) is the process of examining, summarizing, and visualizing data before applying advanced analytical techniques.</p>
+    <p>EDA helps analysts understand the structure and quality of data.</p>
+
+    <h3>Definition</h3>
+    <p>EDA is a method of analyzing datasets to summarize their main characteristics using statistical and visual techniques.</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Understand data structure.</li>
+      <li>Detect errors and inconsistencies.</li>
+      <li>Identify patterns and trends.</li>
+      <li>Discover relationships among variables.</li>
+      <li>Prepare data for analysis and modeling.</li>
+    </ul>
+
+    <h3>Activities in EDA</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Cleaning</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Exploration</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Visualization</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Pattern Identification</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Insight Generation</div>
+    </div>
+
+    <h3>Techniques Used in EDA</h3>
+    <h4>Statistical Techniques</h4>
+    <ul>
+      <li>Mean</li>
+      <li>Median</li>
+      <li>Mode</li>
+      <li>Standard Deviation</li>
+      <li>Variance</li>
+    </ul>
+
+    <h4>Visualization Techniques</h4>
+    <ul>
+      <li>Bar Charts</li>
+      <li>Histograms</li>
+      <li>Pie Charts</li>
+      <li>Scatter Plots</li>
+      <li>Box Plots</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Amazon analyzes customer purchase data using EDA to identify buying patterns.</p>
+    <p><strong>Example 2 (Practical):</strong> A college analyzes student marks to identify subjects with lower average performance.</p>
+
+    <h2>Topic 2: Objectives and Importance of EDA</h2>
+    <h3>Explanation</h3>
+    <p>EDA serves as the foundation of every data science project. Without understanding data properly, organizations may make incorrect conclusions.</p>
+    
+    <h3>Objectives of EDA</h3>
+    <p><strong>1. Data Understanding</strong><br>Helps analysts understand the nature of data.</p>
+    <p><strong>2. Data Cleaning</strong><br>Identifies missing or incorrect values.</p>
+    <p><strong>3. Pattern Discovery</strong><br>Finds trends and relationships.</p>
+    <p><strong>4. Feature Selection</strong><br>Identifies important variables.</p>
+    <p><strong>5. Decision Support</strong><br>Provides insights for business decisions.</p>
+
+    <h3>Importance of EDA</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Importance</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Improves Data Quality</strong></td>
+          <td>Detects errors</td>
+        </tr>
+        <tr>
+          <td><strong>Enhances Accuracy</strong></td>
+          <td>Improves model performance</td>
+        </tr>
+        <tr>
+          <td><strong>Identifies Trends</strong></td>
+          <td>Finds hidden patterns</td>
+        </tr>
+        <tr>
+          <td><strong>Reduces Risk</strong></td>
+          <td>Prevents wrong conclusions</td>
+        </tr>
+        <tr>
+          <td><strong>Supports Decisions</strong></td>
+          <td>Provides meaningful insights</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Benefits of EDA</h3>
+    <ul>
+      <li>Better understanding of data.</li>
+      <li>Improved business decisions.</li>
+      <li>More reliable predictions.</li>
+      <li>Increased analytical accuracy.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A retailer discovers seasonal sales patterns through EDA and adjusts inventory accordingly.</p>
+    <p><strong>Example 2 (Practical):</strong> A student analyzes attendance and marks data to understand academic performance trends.</p>
+
+    <h2>Topic 3: Data Science Process</h2>
+    <h3>Explanation</h3>
+    <p>The Data Science Process is a systematic approach used to solve problems using data. It converts raw data into actionable insights.</p>
+    
+    <h3>Steps in Data Science Process</h3>
+    <p><strong>Step 1: Problem Definition</strong><br>Identify business problem.</p>
+    <p><strong>Step 2: Data Collection</strong><br>Gather relevant data.</p>
+    <p><strong>Step 3: Data Cleaning</strong><br>Remove errors and inconsistencies.</p>
+    <p><strong>Step 4: Exploratory Data Analysis</strong><br>Understand data characteristics.</p>
+    <p><strong>Step 5: Model Building</strong><br>Develop predictive models.</p>
+    <p><strong>Step 6: Evaluation</strong><br>Assess model performance.</p>
+    <p><strong>Step 7: Deployment</strong><br>Implement solutions.</p>
+    <p><strong>Step 8: Monitoring</strong><br>Track performance continuously.</p>
+
+    <h3>Data Science Lifecycle</h3>
+    <div class="flow-container">
+      <div class="flow-step">Problem Identification</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Cleaning</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">EDA</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Model Building</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Evaluation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Deployment</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitoring</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> Netflix follows a structured data science process to recommend personalized content.</p>
+    <p><strong>Example 2 (Practical):</strong> A hospital develops a patient risk prediction system using a complete data science lifecycle.</p>
+
+    <h2>Topic 4: Introduction to Business Intelligence and Analytics</h2>
+    <h3>Explanation</h3>
+    <p>Business Intelligence (BI) and Analytics help organizations transform data into meaningful business insights.</p>
+    
+    <h4>Business Intelligence (BI)</h4>
+    <p>Focuses on historical data and reporting.</p>
+
+    <h4>Analytics</h4>
+    <p>Focuses on understanding, predicting, and improving business outcomes.</p>
+
+    <h3>Business Intelligence Components</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Warehouse</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Reporting</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Dashboards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Decision Making</div>
+    </div>
+
+    <h3>Objectives of BI</h3>
+    <ul>
+      <li>Improve reporting.</li>
+      <li>Monitor performance.</li>
+      <li>Support strategic decisions.</li>
+      <li>Improve operational efficiency.</li>
+    </ul>
+
+    <h3>Analytics Categories</h3>
+    <p><strong>Descriptive Analytics</strong><br>What happened?</p>
+    <p><strong>Diagnostic Analytics</strong><br>Why did it happen?</p>
+    <p><strong>Predictive Analytics</strong><br>What will happen?</p>
+    <p><strong>Prescriptive Analytics</strong><br>What should be done?</p>
+
+    <h3>BI vs Analytics</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>Business Intelligence</th>
+          <th>Analytics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Reporting</td>
+          <td>Prediction &amp; Optimization</td>
+        </tr>
+        <tr>
+          <td><strong>Orientation</strong></td>
+          <td>Historical</td>
+          <td>Future-oriented</td>
+        </tr>
+        <tr>
+          <td><strong>Output</strong></td>
+          <td>Dashboards</td>
+          <td>Insights &amp; Recommendations</td>
+        </tr>
+        <tr>
+          <td><strong>Complexity</strong></td>
+          <td>Lower</td>
+          <td>Higher</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Walmart uses BI dashboards to monitor daily sales and analytics to forecast future demand.</p>
+    <p><strong>Example 2 (Practical):</strong> A school generates attendance reports using BI and predicts student performance using analytics.</p>
+
+    <h2>Topic 5: Importance of Ethics in Data Science</h2>
+    <h3>Explanation</h3>
+    <p>As organizations collect and analyze large amounts of personal and business data, ethical concerns become critical. Ethics in Data Science refers to responsible and fair use of data and analytical techniques.</p>
+    
+    <h3>Why Ethics is Important</h3>
+    <ul>
+      <li>Protects privacy.</li>
+      <li>Prevents misuse of data.</li>
+      <li>Ensures fairness.</li>
+      <li>Builds trust.</li>
+      <li>Promotes transparency.</li>
+    </ul>
+
+    <h3>Major Ethical Issues in Data Science</h3>
+    <p><strong>1. Data Privacy</strong><br>Protecting personal information.</p>
+    <p><em>Example:</em> Customer banking information must remain confidential.</p>
+    
+    <p><strong>2. Data Security</strong><br>Preventing unauthorized access.</p>
+    <p><em>Example:</em> Protecting company databases from cyberattacks.</p>
+    
+    <p><strong>3. Bias and Fairness</strong><br>Ensuring decisions are not discriminatory.</p>
+    <p><em>Example:</em> A recruitment algorithm should not unfairly favor one group over another.</p>
+    
+    <p><strong>4. Transparency</strong><br>Users should understand how decisions are made.</p>
+    <p><em>Example:</em> Loan approval systems should explain reasons for rejection.</p>
+    
+    <p><strong>5. Informed Consent</strong><br>Individuals should know how their data is used.</p>
+    <p><em>Example:</em> Websites asking users to accept privacy policies.</p>
+
+    <h3>Ethical Data Science Framework</h3>
+    <div class="flow-container">
+      <div class="flow-step">Collect Data Responsibly</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Protect Privacy</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ensure Security</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Avoid Bias</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Maintain Transparency</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Use Data Ethically</div>
+    </div>
+
+    <h3>Benefits of Ethical Data Practices</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Trust</strong></td>
+          <td>Builds customer confidence</td>
+        </tr>
+        <tr>
+          <td><strong>Compliance</strong></td>
+          <td>Meets legal requirements</td>
+        </tr>
+        <tr>
+          <td><strong>Fairness</strong></td>
+          <td>Reduces discrimination</td>
+        </tr>
+        <tr>
+          <td><strong>Reputation</strong></td>
+          <td>Improves organizational image</td>
+        </tr>
+        <tr>
+          <td><strong>Sustainability</strong></td>
+          <td>Encourages responsible innovation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Microsoft publishes responsible AI principles to ensure ethical use of artificial intelligence and data.</p>
+    <p><strong>Example 2 (Practical):</strong> A healthcare application protects patient records through encryption and privacy controls.</p>
+
+    <h2>Comparison: Business Intelligence vs Analytics</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Business Intelligence</th>
+          <th>Analytics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Purpose</strong></td>
+          <td>Reporting</td>
+          <td>Prediction &amp; Optimization</td>
+        </tr>
+        <tr>
+          <td><strong>Data Focus</strong></td>
+          <td>Historical Data</td>
+          <td>Historical + Future Data</td>
+        </tr>
+        <tr>
+          <td><strong>Output</strong></td>
+          <td>Reports &amp; Dashboards</td>
+          <td>Insights &amp; Recommendations</td>
+        </tr>
+        <tr>
+          <td><strong>Decision Support</strong></td>
+          <td>Operational</td>
+          <td>Strategic</td>
+        </tr>
+        <tr>
+          <td><strong>Complexity</strong></td>
+          <td>Moderate</td>
+          <td>High</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Comparison: EDA vs Data Mining</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>EDA</th>
+          <th>Data Mining</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Purpose</strong></td>
+          <td>Understand Data</td>
+          <td>Discover Hidden Patterns</td>
+        </tr>
+        <tr>
+          <td><strong>Stage</strong></td>
+          <td>Initial Analysis</td>
+          <td>Advanced Analysis</td>
+        </tr>
+        <tr>
+          <td><strong>Tools</strong></td>
+          <td>Statistics &amp; Visualization</td>
+          <td>Machine Learning</td>
+        </tr>
+        <tr>
+          <td><strong>Output</strong></td>
+          <td>Insights</td>
+          <td>Predictions &amp; Models</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>EDA helps understand and prepare data for analysis.</li>
+      <li>EDA involves data cleaning, visualization, and pattern discovery.</li>
+      <li>The Data Science Process follows a structured lifecycle from problem identification to deployment.</li>
+      <li>Business Intelligence focuses on reporting and monitoring.</li>
+      <li>Analytics focuses on prediction and optimization.</li>
+      <li>Ethical Data Science ensures privacy, security, fairness, and transparency.</li>
+      <li>Data privacy and bias are major ethical concerns.</li>
+      <li>Responsible data use builds trust and improves decision-making.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>EDA</strong></td>
+          <td>Exploratory Data Analysis used to understand data</td>
+        </tr>
+        <tr>
+          <td><strong>Data Cleaning</strong></td>
+          <td>Removal of errors and inconsistencies</td>
+        </tr>
+        <tr>
+          <td><strong>Data Visualization</strong></td>
+          <td>Graphical representation of data</td>
+        </tr>
+        <tr>
+          <td><strong>Business Intelligence</strong></td>
+          <td>Technologies used for reporting and decision-making</td>
+        </tr>
+        <tr>
+          <td><strong>Analytics</strong></td>
+          <td>Use of data to generate insights and predictions</td>
+        </tr>
+        <tr>
+          <td><strong>Data Privacy</strong></td>
+          <td>Protection of personal information</td>
+        </tr>
+        <tr>
+          <td><strong>Data Security</strong></td>
+          <td>Protection against unauthorized access</td>
+        </tr>
+        <tr>
+          <td><strong>Bias</strong></td>
+          <td>Unfair influence in data or algorithms</td>
+        </tr>
+        <tr>
+          <td><strong>Transparency</strong></td>
+          <td>Clear explanation of decisions and processes</td>
+        </tr>
+        <tr>
+          <td><strong>Informed Consent</strong></td>
+          <td>Permission for data collection and usage</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>Exploratory Data Analysis Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Cleaning</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Exploration</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Visualization</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Pattern Discovery</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Insights</div>
+    </div>
+
+    <h4>Data Science Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Problem Definition</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Cleaning</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">EDA</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Model Building</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Evaluation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Deployment</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitoring</div>
+    </div>
+
+    <h4>Ethical Data Science Framework</h4>
+    <div class="flow-container">
+      <div class="flow-step">Responsible Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Privacy Protection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Security</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Bias Prevention</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Transparency</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ethical Use</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Exploratory Data Analysis (EDA)?</li>
+      <li>State the objectives of EDA.</li>
+      <li>What is Data Cleaning?</li>
+      <li>Explain Data Visualization.</li>
+      <li>What is Business Intelligence?</li>
+      <li>Define Analytics.</li>
+      <li>What is Data Privacy?</li>
+      <li>What is Data Security?</li>
+      <li>Explain Bias in Data Science.</li>
+      <li>What is Informed Consent?</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain Exploratory Data Analysis and its importance.</li>
+      <li>Discuss the objectives and benefits of EDA.</li>
+      <li>Explain the complete Data Science Process.</li>
+      <li>Discuss Business Intelligence and Analytics.</li>
+      <li>Differentiate between BI and Analytics.</li>
+      <li>Explain ethical issues in Data Science.</li>
+      <li>Discuss the importance of privacy, security, and fairness in data-driven organizations.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>An online retail company wants to understand customer purchasing behavior before launching a recommendation system. Explain how EDA can help.</li>
+      <li>A bank uses AI-based loan approval systems. Discuss the ethical issues related to bias, transparency, and fairness.</li>
+      <li>A healthcare organization collects patient information for predictive analytics. Explain how privacy and data security should be maintained.</li>
+    </ol>
+  </div>
+</body>
+</html>

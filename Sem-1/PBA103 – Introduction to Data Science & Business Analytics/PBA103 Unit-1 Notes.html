@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1: Introduction to Data Science and Business Analytics</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 1: Introduction to Data Science and Business Analytics</h1>
+    
+    <h2>Introduction</h2>
+    <p>In today's digital world, organizations generate enormous amounts of data every second through websites, mobile applications, social media, transactions, sensors, and business operations. Data Science and Business Analytics help organizations convert this raw data into meaningful insights for better decision-making.</p>
+    <p>Data Science focuses on extracting knowledge from data using statistical methods, machine learning, and computational techniques. Business Analytics focuses on using data to solve business problems and improve organizational performance.</p>
+    <p>This unit introduces the fundamentals of Data Science and Business Analytics, their evolution, data types, data sources, data collection techniques, and the distinction between analysis and analytics.</p>
+
+    <h2>Topic 1: Data Science and Business Analytics</h2>
+    <h3>Explanation</h3>
+    <h4>What is Data Science?</h4>
+    <p>Data Science is an interdisciplinary field that combines:</p>
+    <ul>
+      <li>Statistics</li>
+      <li>Mathematics</li>
+      <li>Computer Science</li>
+      <li>Machine Learning</li>
+      <li>Business Knowledge</li>
+    </ul>
+    <p>to extract useful information from data.</p>
+
+    <h3>Definition</h3>
+    <p>Data Science is the process of collecting, organizing, analyzing, and interpreting data to generate actionable insights.</p>
+
+    <h4>What is Business Analytics?</h4>
+    <p>Business Analytics refers to the systematic use of data, statistical methods, and analytical tools to support business decision-making.</p>
+
+    <h3>Objectives of Business Analytics</h3>
+    <ul>
+      <li>Improve decision-making</li>
+      <li>Increase efficiency</li>
+      <li>Reduce costs</li>
+      <li>Identify business opportunities</li>
+      <li>Improve customer satisfaction</li>
+    </ul>
+
+    <h3>Difference Between Data Science and Business Analytics</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>Data Science</th>
+          <th>Business Analytics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Data-driven insights</td>
+          <td>Business decision-making</td>
+        </tr>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td>Broad</td>
+          <td>Business-oriented</td>
+        </tr>
+        <tr>
+          <td><strong>Techniques</strong></td>
+          <td>Machine Learning, AI, Statistics</td>
+          <td>Reporting, Visualization, KPIs</td>
+        </tr>
+        <tr>
+          <td><strong>Outcome</strong></td>
+          <td>Predictive Models</td>
+          <td>Business Solutions</td>
+        </tr>
+        <tr>
+          <td><strong>Users</strong></td>
+          <td>Data Scientists</td>
+          <td>Managers &amp; Analysts</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Netflix uses Data Science to recommend movies and Business Analytics to understand customer viewing patterns.</p>
+    <p><strong>Example 2 (Practical):</strong> An online shopping website analyzes customer purchases to recommend products and improve sales.</p>
+
+    <h2>Topic 2: Definitions and Differences</h2>
+    <h3>Explanation</h3>
+    <p>Although Data Science and Business Analytics are closely related, they serve different purposes.</p>
+
+    <h4>Data Science</h4>
+    <p>Focuses on discovering hidden patterns and building predictive models.</p>
+
+    <h4>Business Analytics</h4>
+    <p>Focuses on using those insights to improve business performance.</p>
+
+    <h3>Relationship Between the Two</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Processing</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Analysis</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Insight Generation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Business Decision</div>
+    </div>
+    <p>Data Science mainly supports insight generation, while Business Analytics supports decision-making.</p>
+
+    <p><strong>Example 1 (Business):</strong> Amazon uses Data Science to predict customer behavior and Business Analytics to optimize inventory management.</p>
+    <p><strong>Example 2 (Practical):</strong> A retail store analyzes sales data to identify best-selling products and plan stock levels.</p>
+
+    <h2>Topic 3: Evolution and History of Data Science and Business Analytics</h2>
+    <h3>Explanation</h3>
+    <p>The development of Data Science has evolved through several stages.</p>
+
+    <h3>Historical Evolution</h3>
+    <div class="flow-container">
+      <div class="flow-step">Traditional Statistics</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Database Systems</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Warehousing</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Business Intelligence</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Mining</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Big Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Science</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Artificial Intelligence</div>
+    </div>
+
+    <h3>Key Milestones</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Period</th>
+          <th>Development</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1960s</strong></td>
+          <td>Statistical Analysis</td>
+        </tr>
+        <tr>
+          <td><strong>1980s</strong></td>
+          <td>Database Management Systems</td>
+        </tr>
+        <tr>
+          <td><strong>1990s</strong></td>
+          <td>Data Warehousing</td>
+        </tr>
+        <tr>
+          <td><strong>2000s</strong></td>
+          <td>Business Intelligence</td>
+        </tr>
+        <tr>
+          <td><strong>2010s</strong></td>
+          <td>Big Data and Data Science</td>
+        </tr>
+        <tr>
+          <td><strong>Present</strong></td>
+          <td>AI and Machine Learning</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Importance of Evolution</h3>
+    <ul>
+      <li>Better decision-making</li>
+      <li>Faster processing</li>
+      <li>Improved predictions</li>
+      <li>Automation of business processes</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Google uses advanced AI and Data Science techniques to improve search results.</p>
+    <p><strong>Example 2 (Practical):</strong> Smartphone applications use machine learning to personalize user experiences.</p>
+
+    <h2>Topic 4: Types of Data</h2>
+    <h3>Explanation</h3>
+    <p>Data can be categorized into different types based on structure and format.</p>
+
+    <h3>A. Structured Data</h3>
+    <h4>Definition</h4>
+    <p>Structured Data is organized in a predefined format and can be easily stored in databases.</p>
+
+    <h4>Characteristics</h4>
+    <ul>
+      <li>Organized in rows and columns</li>
+      <li>Easy to search</li>
+      <li>Easy to analyze</li>
+    </ul>
+
+    <h4>Examples</h4>
+    <ul>
+      <li>Customer databases</li>
+      <li>Sales records</li>
+      <li>Employee records</li>
+      <li>Banking transactions</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company's employee database containing employee ID, name, salary, and department.</p>
+    <p><strong>Example 2 (Practical):</strong> A school maintains student records in spreadsheets.</p>
+
+    <h3>B. Unstructured Data</h3>
+    <h4>Definition</h4>
+    <p>Unstructured Data lacks a predefined format.</p>
+
+    <h4>Characteristics</h4>
+    <ul>
+      <li>Complex</li>
+      <li>Large volume</li>
+      <li>Difficult to process</li>
+    </ul>
+
+    <h4>Examples</h4>
+    <ul>
+      <li>Videos</li>
+      <li>Emails</li>
+      <li>Social media posts</li>
+      <li>Images</li>
+      <li>Audio files</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company analyzes customer reviews posted on social media.</p>
+    <p><strong>Example 2 (Practical):</strong> Photos stored on a smartphone represent unstructured data.</p>
+
+    <h3>Comparison: Structured vs Unstructured Data</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Structured Data</th>
+          <th>Unstructured Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Format</strong></td>
+          <td>Fixed</td>
+          <td>Flexible</td>
+        </tr>
+        <tr>
+          <td><strong>Storage</strong></td>
+          <td>Databases</td>
+          <td>Files, Cloud Storage</td>
+        </tr>
+        <tr>
+          <td><strong>Analysis</strong></td>
+          <td>Easy</td>
+          <td>More Complex</td>
+        </tr>
+        <tr>
+          <td><strong>Examples</strong></td>
+          <td>Sales Records</td>
+          <td>Images, Videos</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Topic 5: Data Sources</h2>
+    <h3>Explanation</h3>
+    <p>Data Sources refer to locations from which data is obtained.</p>
+
+    <h3>A. Internal Data Sources</h3>
+    <h4>Definition</h4>
+    <p>Data generated within an organization.</p>
+
+    <h4>Examples</h4>
+    <ul>
+      <li>Sales Reports</li>
+      <li>Financial Statements</li>
+      <li>Employee Records</li>
+      <li>CRM Systems</li>
+      <li>Inventory Data</li>
+    </ul>
+
+    <h4>Advantages</h4>
+    <ul>
+      <li>Easily accessible</li>
+      <li>Reliable</li>
+      <li>Low cost</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company analyzes sales data from its ERP system.</p>
+    <p><strong>Example 2 (Practical):</strong> A college uses student attendance records for performance analysis.</p>
+
+    <h3>B. External Data Sources</h3>
+    <h4>Definition</h4>
+    <p>Data collected from outside the organization.</p>
+
+    <h4>Examples</h4>
+    <ul>
+      <li>Government Reports</li>
+      <li>Market Research</li>
+      <li>Social Media</li>
+      <li>Industry Databases</li>
+      <li>Economic Indicators</li>
+    </ul>
+
+    <h4>Advantages</h4>
+    <ul>
+      <li>Broader insights</li>
+      <li>Market understanding</li>
+      <li>Competitive analysis</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company studies government economic reports before expanding operations.</p>
+    <p><strong>Example 2 (Practical):</strong> A startup analyzes social media trends before launching a product.</p>
+
+    <h2>Topic 6: Techniques for Data Collection</h2>
+    <h3>Explanation</h3>
+    <p>Data Collection is the process of gathering information from various sources.</p>
+
+    <h3>Common Techniques</h3>
+    <p><strong>1. Surveys:</strong> Collect information through questionnaires.</p>
+    <p><strong>2. Interviews:</strong> Direct interaction with respondents.</p>
+    <p><strong>3. Observation:</strong> Monitoring behaviors and events.</p>
+    <p><strong>4. Experiments:</strong> Controlled testing to collect data.</p>
+    <p><strong>5. Online Tracking:</strong> Collection of website and app usage data.</p>
+    <p><strong>6. Sensors and IoT Devices:</strong> Automatic data collection from devices.</p>
+
+    <h3>Data Collection Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Identify Objective</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Select Data Source</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Choose Collection Method</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Collect Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Validate Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Store Data</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> Starbucks conducts customer surveys to improve service quality.</p>
+    <p><strong>Example 2 (Practical):</strong> A student conducts a questionnaire survey to study consumer preferences.</p>
+
+    <h2>Topic 7: Analysis vs Analytics</h2>
+    <h3>Explanation</h3>
+    <p>Many people use Analysis and Analytics interchangeably, but they differ.</p>
+
+    <h4>Analysis</h4>
+    <p>Analysis refers to examining historical data to understand what happened.</p>
+    <h5>Characteristics</h5>
+    <ul>
+      <li>Past-focused</li>
+      <li>Descriptive</li>
+      <li>Explains events</li>
+    </ul>
+    <p><strong>Example:</strong> Studying last year's sales performance.</p>
+
+    <h4>Analytics</h4>
+    <p>Analytics goes beyond analysis by predicting future outcomes and recommending actions.</p>
+    <h5>Characteristics</h5>
+    <ul>
+      <li>Future-focused</li>
+      <li>Predictive</li>
+      <li>Prescriptive</li>
+    </ul>
+    <p><strong>Example:</strong> Forecasting future sales using machine learning.</p>
+
+    <h3>Analysis vs Analytics Comparison</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>Analysis</th>
+          <th>Analytics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Past</td>
+          <td>Future</td>
+        </tr>
+        <tr>
+          <td><strong>Purpose</strong></td>
+          <td>Understand</td>
+          <td>Predict &amp; Improve</td>
+        </tr>
+        <tr>
+          <td><strong>Output</strong></td>
+          <td>Reports</td>
+          <td>Insights &amp; Recommendations</td>
+        </tr>
+        <tr>
+          <td><strong>Complexity</strong></td>
+          <td>Lower</td>
+          <td>Higher</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> A company reviews last quarter's sales (Analysis) and predicts next quarter's demand (Analytics).</p>
+    <p><strong>Example 2 (Practical):</strong> A student reviews previous exam scores (Analysis) and plans study hours to improve future performance (Analytics).</p>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Data Science extracts meaningful insights from data.</li>
+      <li>Business Analytics applies those insights for business decisions.</li>
+      <li>Data Science evolved from statistics, databases, and business intelligence.</li>
+      <li>Data can be structured or unstructured.</li>
+      <li>Data sources are internal or external.</li>
+      <li>Data collection techniques include surveys, interviews, observation, and experiments.</li>
+      <li>Analysis focuses on understanding past events.</li>
+      <li>Analytics focuses on predicting future outcomes and recommending actions.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Data Science</strong></td>
+          <td>Field that extracts knowledge from data</td>
+        </tr>
+        <tr>
+          <td><strong>Business Analytics</strong></td>
+          <td>Use of data for business decision-making</td>
+        </tr>
+        <tr>
+          <td><strong>Structured Data</strong></td>
+          <td>Data organized in rows and columns</td>
+        </tr>
+        <tr>
+          <td><strong>Unstructured Data</strong></td>
+          <td>Data without predefined format</td>
+        </tr>
+        <tr>
+          <td><strong>Internal Data</strong></td>
+          <td>Data generated within an organization</td>
+        </tr>
+        <tr>
+          <td><strong>External Data</strong></td>
+          <td>Data obtained from outside sources</td>
+        </tr>
+        <tr>
+          <td><strong>Data Collection</strong></td>
+          <td>Process of gathering information</td>
+        </tr>
+        <tr>
+          <td><strong>Analysis</strong></td>
+          <td>Examination of historical data</td>
+        </tr>
+        <tr>
+          <td><strong>Analytics</strong></td>
+          <td>Using data to predict and improve future outcomes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>Data Science Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Cleaning</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Analysis</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Model Building</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Insight Generation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Decision Making</div>
+    </div>
+
+    <h4>Data Collection Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Identify Objective</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Choose Data Source</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Collect Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Validate Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Store Data</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What is Data Science?</li>
+      <li>Define Business Analytics.</li>
+      <li>Differentiate between Data Science and Business Analytics.</li>
+      <li>What is structured data?</li>
+      <li>What is unstructured data?</li>
+      <li>What are internal data sources?</li>
+      <li>What are external data sources?</li>
+      <li>Name any four data collection techniques.</li>
+      <li>What is analysis?</li>
+      <li>What is analytics?</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the concept and importance of Data Science.</li>
+      <li>Discuss the relationship between Data Science and Business Analytics.</li>
+      <li>Explain the evolution and history of Data Science.</li>
+      <li>Differentiate between structured and unstructured data.</li>
+      <li>Discuss internal and external data sources with examples.</li>
+      <li>Explain various data collection techniques.</li>
+      <li>Compare analysis and analytics in detail.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>An e-commerce company wants to improve customer recommendations. Explain how Data Science and Business Analytics can help achieve this objective.</li>
+      <li>A retail chain collects sales data, customer reviews, and social media comments. Classify the data into structured and unstructured categories and explain their usefulness.</li>
+      <li>A startup wants to understand customer preferences before launching a new product. Recommend suitable data collection techniques and justify your choices.</li>
+    </ol>
+  </div>
+</body>
+</html>

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 3: Setting of Targets</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 3: Setting of Targets</h1>
+    
+    <h2>Introduction</h2>
+    <p>Every organization aims to achieve specific business objectives such as increasing profits, improving customer satisfaction, reducing costs, or expanding market share. To achieve these objectives, firms must identify what drives value, measure performance accurately, compare results with competitors, and maintain high-quality data.</p>
+    <p>This unit focuses on identifying key value drivers, understanding metrics and KPIs, constructing meaningful performance measures, benchmarking performance, understanding the importance of data, and governing master data effectively.</p>
+
+    <h2>Topic 1: Identifying a Firm's Key Value Drivers</h2>
+    <h3>Explanation</h3>
+    <p>Value Drivers are factors that directly influence the success, profitability, and growth of a business. They help organizations understand which activities create value and contribute to achieving business goals.</p>
+
+    <h3>Definition</h3>
+    <p>A Value Driver is any activity, process, or factor that significantly impacts organizational performance.</p>
+
+    <h3>Types of Value Drivers</h3>
+    <h4>1. Financial Value Drivers</h4>
+    <p>Factors affecting profitability and financial performance.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Revenue Growth</li>
+      <li>Cost Reduction</li>
+      <li>Profit Margin</li>
+      <li>Cash Flow</li>
+    </ul>
+
+    <h4>2. Operational Value Drivers</h4>
+    <p>Factors affecting efficiency and productivity.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Production Efficiency</li>
+      <li>Delivery Time</li>
+      <li>Resource Utilization</li>
+    </ul>
+
+    <h4>3. Customer Value Drivers</h4>
+    <p>Factors affecting customer satisfaction.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Product Quality</li>
+      <li>Customer Service</li>
+      <li>Brand Reputation</li>
+    </ul>
+
+    <h4>4. Innovation Value Drivers</h4>
+    <p>Factors supporting future growth.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Research and Development</li>
+      <li>New Product Launches</li>
+      <li>Technology Adoption</li>
+    </ul>
+
+    <h3>Process of Identifying Value Drivers</h3>
+    <div class="flow-container">
+      <div class="flow-step">Business Objectives</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Analyze Operations</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Identify Critical Success Factors</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Determine Value Drivers</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Measure Performance</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> Amazon considers fast delivery, customer satisfaction, and operational efficiency as major value drivers.</p>
+    <p><strong>Example 2 (Practical):</strong> A restaurant identifies food quality, service speed, and customer reviews as important value drivers.</p>
+
+    <h2>Topic 2: Metrics vs KPIs</h2>
+    <h3>Explanation</h3>
+    <p>Organizations use metrics and KPIs to measure performance and monitor progress toward goals. Although related, they are not identical.</p>
+
+    <h3>What are Metrics?</h3>
+    <p>Metrics are measurable values used to track business activities.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Number of customers</li>
+      <li>Revenue</li>
+      <li>Website visitors</li>
+      <li>Employee attendance</li>
+    </ul>
+
+    <h3>What are KPIs?</h3>
+    <p>KPIs (Key Performance Indicators) are critical metrics directly linked to strategic objectives.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Customer Retention Rate</li>
+      <li>Net Profit Margin</li>
+      <li>Employee Productivity</li>
+      <li>Market Share Growth</li>
+    </ul>
+
+    <h3>Difference Between Metrics and KPIs</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Basis</th>
+          <th>Metrics</th>
+          <th>KPIs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Purpose</strong></td>
+          <td>Measure activities</td>
+          <td>Measure strategic success</td>
+        </tr>
+        <tr>
+          <td><strong>Importance</strong></td>
+          <td>General</td>
+          <td>Critical</td>
+        </tr>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td>Broad</td>
+          <td>Specific</td>
+        </tr>
+        <tr>
+          <td><strong>Link to Goals</strong></td>
+          <td>Not always</td>
+          <td>Directly linked</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>Number of Website Visits</td>
+          <td>Conversion Rate</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Characteristics of Good KPIs</h3>
+    <ul>
+      <li><strong>S</strong>pecific</li>
+      <li><strong>M</strong>easurable</li>
+      <li><strong>A</strong>chievable</li>
+      <li><strong>R</strong>elevant</li>
+      <li><strong>T</strong>ime-bound</li>
+      <li>(SMART Framework)</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Netflix tracks subscriber growth as a KPI because it directly reflects business success.</p>
+    <p><strong>Example 2 (Practical):</strong> A student tracks daily study hours as a metric and examination score improvement as a KPI.</p>
+
+    <h2>Topic 3: Construction of Metrics</h2>
+    <h3>Explanation</h3>
+    <p>Constructing meaningful metrics requires selecting measures that accurately represent business performance.</p>
+
+    <h3>Steps in Metric Construction</h3>
+    <div class="flow-container">
+      <div class="flow-step">Define Objective</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Identify Relevant Activities</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Select Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Define Measurement Method</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitor Results</div>
+    </div>
+
+    <h3>Characteristics of Effective Metrics</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Characteristic</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Accuracy</strong></td>
+          <td>Reflects actual performance</td>
+        </tr>
+        <tr>
+          <td><strong>Simplicity</strong></td>
+          <td>Easy to understand</td>
+        </tr>
+        <tr>
+          <td><strong>Relevance</strong></td>
+          <td>Supports business goals</td>
+        </tr>
+        <tr>
+          <td><strong>Consistency</strong></td>
+          <td>Measured uniformly</td>
+        </tr>
+        <tr>
+          <td><strong>Timeliness</strong></td>
+          <td>Available when needed</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Types of Metrics</h3>
+    <h4>Financial Metrics</h4>
+    <ul>
+      <li>Revenue</li>
+      <li>Profit</li>
+      <li>Return on Investment (ROI)</li>
+    </ul>
+
+    <h4>Operational Metrics</h4>
+    <ul>
+      <li>Production Rate</li>
+      <li>Delivery Time</li>
+    </ul>
+
+    <h4>Customer Metrics</h4>
+    <ul>
+      <li>Customer Satisfaction Score</li>
+      <li>Customer Retention Rate</li>
+    </ul>
+
+    <h4>Employee Metrics</h4>
+    <ul>
+      <li>Productivity</li>
+      <li>Turnover Rate</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A company measures customer complaint resolution time to evaluate service quality.</p>
+    <p><strong>Example 2 (Practical):</strong> A gym tracks the number of active members each month.</p>
+
+    <h2>Topic 4: Benchmarking</h2>
+    <h3>Explanation</h3>
+    <p>Benchmarking is the process of comparing an organization's performance, processes, or products with industry leaders or competitors.</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Identify best practices.</li>
+      <li>Improve performance.</li>
+      <li>Enhance competitiveness.</li>
+      <li>Reduce inefficiencies.</li>
+    </ul>
+
+    <h3>Types of Benchmarking</h3>
+    <h4>Internal Benchmarking</h4>
+    <p>Comparison within the organization.</p>
+
+    <h4>Competitive Benchmarking</h4>
+    <p>Comparison with competitors.</p>
+
+    <h4>Functional Benchmarking</h4>
+    <p>Comparison with organizations performing similar functions.</p>
+
+    <h4>Strategic Benchmarking</h4>
+    <p>Comparison of business strategies.</p>
+
+    <h3>Benchmarking Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Identify Area for Improvement</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Select Benchmark Partner</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Collect Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Compare Performance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Implement Improvements</div>
+    </div>
+
+    <h3>Benefits</h3>
+    <ul>
+      <li>Continuous improvement</li>
+      <li>Better performance standards</li>
+      <li>Increased efficiency</li>
+      <li>Competitive advantage</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Toyota is often benchmarked by manufacturers for its production efficiency.</p>
+    <p><strong>Example 2 (Practical):</strong> A school compares its examination results with top-performing schools to improve academic performance.</p>
+
+    <h2>Topic 5: Importance of Data</h2>
+    <h3>Explanation</h3>
+    <p>Data is often called the "new oil" because it drives modern business decisions. Without accurate data, organizations cannot effectively analyze performance or predict future outcomes.</p>
+
+    <h3>Why Data is Important</h3>
+    <ul>
+      <li><strong>Decision Making:</strong> Supports evidence-based decisions.</li>
+      <li><strong>Business Growth:</strong> Identifies opportunities and risks.</li>
+      <li><strong>Customer Understanding:</strong> Improves customer experience.</li>
+      <li><strong>Operational Efficiency:</strong> Identifies inefficiencies and bottlenecks.</li>
+      <li><strong>Competitive Advantage:</strong> Provides market insights.</li>
+    </ul>
+
+    <h3>Data-Driven Decision Process</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Collection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Processing</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Analysis</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Insight Generation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Decision Making</div>
+    </div>
+
+    <h3>Characteristics of Good Data</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Characteristic</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Accuracy</strong></td>
+          <td>Correct and error-free</td>
+        </tr>
+        <tr>
+          <td><strong>Completeness</strong></td>
+          <td>No missing information</td>
+        </tr>
+        <tr>
+          <td><strong>Consistency</strong></td>
+          <td>Uniform across systems</td>
+        </tr>
+        <tr>
+          <td><strong>Timeliness</strong></td>
+          <td>Available when needed</td>
+        </tr>
+        <tr>
+          <td><strong>Reliability</strong></td>
+          <td>Trustworthy and dependable</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Google relies heavily on user data to improve search results and advertising performance.</p>
+    <p><strong>Example 2 (Practical):</strong> A shop owner uses sales records to determine which products should be reordered.</p>
+
+    <h2>Topic 6: Governance of Master Data</h2>
+    <h3>Explanation</h3>
+    <p>Master Data refers to core business information used across an organization.</p>
+    <p><strong>Examples include:</strong></p>
+    <ul>
+      <li>Customer Data</li>
+      <li>Product Data</li>
+      <li>Supplier Data</li>
+      <li>Employee Data</li>
+    </ul>
+    <p>Master Data Governance ensures that this information remains accurate, consistent, and secure.</p>
+
+    <h3>Objectives of Master Data Governance</h3>
+    <ul>
+      <li>Improve data quality.</li>
+      <li>Ensure consistency.</li>
+      <li>Reduce duplication.</li>
+      <li>Enhance compliance.</li>
+      <li>Improve decision-making.</li>
+    </ul>
+
+    <h3>Components of Master Data Governance</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Standards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Quality Rules</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Ownership</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Security</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Continuous Monitoring</div>
+    </div>
+
+    <h3>Benefits</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Better Data Quality</strong></td>
+          <td>Accurate information</td>
+        </tr>
+        <tr>
+          <td><strong>Reduced Errors</strong></td>
+          <td>Consistent records</td>
+        </tr>
+        <tr>
+          <td><strong>Improved Reporting</strong></td>
+          <td>Reliable insights</td>
+        </tr>
+        <tr>
+          <td><strong>Regulatory Compliance</strong></td>
+          <td>Meets legal requirements</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Challenges</h3>
+    <ul>
+      <li>Data duplication</li>
+      <li>Poor data quality</li>
+      <li>Lack of ownership</li>
+      <li>Integration issues</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> SAP provides Master Data Management solutions that help organizations maintain consistent data across departments.</p>
+    <p><strong>Example 2 (Practical):</strong> A university maintains a centralized database for student information to avoid duplicate records.</p>
+
+    <h2>Comparison: Metrics vs KPIs</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Metrics</th>
+          <th>KPIs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td>General Measurement</td>
+          <td>Strategic Measurement</td>
+        </tr>
+        <tr>
+          <td><strong>Importance</strong></td>
+          <td>Useful</td>
+          <td>Critical</td>
+        </tr>
+        <tr>
+          <td><strong>Goal Alignment</strong></td>
+          <td>May or may not align</td>
+          <td>Directly aligned</td>
+        </tr>
+        <tr>
+          <td><strong>Examples</strong></td>
+          <td>Sales Volume</td>
+          <td>Revenue Growth Target</td>
+        </tr>
+        <tr>
+          <td><strong>Decision Impact</strong></td>
+          <td>Moderate</td>
+          <td>High</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Value Drivers are factors that influence business success.</li>
+      <li>Financial, operational, customer, and innovation drivers affect performance.</li>
+      <li>Metrics measure activities, while KPIs measure strategic objectives.</li>
+      <li>Effective metrics should be accurate, relevant, and timely.</li>
+      <li>Benchmarking compares performance with best practices.</li>
+      <li>Data supports decision-making and business growth.</li>
+      <li>Master Data includes key organizational information.</li>
+      <li>Master Data Governance ensures data quality, consistency, and security.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Value Driver</strong></td>
+          <td>Factor influencing business performance</td>
+        </tr>
+        <tr>
+          <td><strong>Metric</strong></td>
+          <td>Quantifiable measure of performance</td>
+        </tr>
+        <tr>
+          <td><strong>KPI</strong></td>
+          <td>Key Performance Indicator linked to strategic goals</td>
+        </tr>
+        <tr>
+          <td><strong>Benchmarking</strong></td>
+          <td>Comparing performance against standards</td>
+        </tr>
+        <tr>
+          <td><strong>Data Governance</strong></td>
+          <td>Management of data quality and security</td>
+        </tr>
+        <tr>
+          <td><strong>Master Data</strong></td>
+          <td>Core business data used across systems</td>
+        </tr>
+        <tr>
+          <td><strong>Data Quality</strong></td>
+          <td>Accuracy and reliability of data</td>
+        </tr>
+        <tr>
+          <td><strong>Benchmark Partner</strong></td>
+          <td>Organization used for comparison</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>Value Driver Identification</h4>
+    <div class="flow-container">
+      <div class="flow-step">Business Goals</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Critical Success Factors</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Value Drivers</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Measurement</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Performance Improvement</div>
+    </div>
+
+    <h4>Benchmarking Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Identify Process</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Select Benchmark</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Collect Data</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Compare Results</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Implement Improvements</div>
+    </div>
+
+    <h4>Master Data Governance</h4>
+    <div class="flow-container">
+      <div class="flow-step">Data Standards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Quality Checks</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Ownership</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Security Controls</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitoring &amp; Improvement</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>What are Value Drivers?</li>
+      <li>Define KPI.</li>
+      <li>What is a Metric?</li>
+      <li>Differentiate between Metrics and KPIs.</li>
+      <li>What is Benchmarking?</li>
+      <li>Explain Internal Benchmarking.</li>
+      <li>Why is data important in business?</li>
+      <li>What is Master Data?</li>
+      <li>Define Data Governance.</li>
+      <li>State any two characteristics of good data.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain the concept and importance of Value Drivers.</li>
+      <li>Discuss Metrics and KPIs with suitable examples.</li>
+      <li>Explain the process of constructing effective metrics.</li>
+      <li>Discuss various types of Benchmarking.</li>
+      <li>Explain the importance of data in business decision-making.</li>
+      <li>Discuss Master Data Governance and its benefits.</li>
+      <li>Explain the characteristics of high-quality data.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A retail company wants to improve customer satisfaction and profitability. Identify suitable value drivers and KPIs for the company.</li>
+      <li>A manufacturing firm compares its production efficiency with industry leaders. Explain how benchmarking can improve performance.</li>
+      <li>A multinational organization is facing duplicate customer records across departments. Explain how Master Data Governance can solve this issue.</li>
+    </ol>
+  </div>
+</body>
+</html>

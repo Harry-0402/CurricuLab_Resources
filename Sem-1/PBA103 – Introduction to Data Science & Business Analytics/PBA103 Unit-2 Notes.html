@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 2: Understanding Business</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f7f7f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #e5e7eb; }
+    }
+    .message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    @media (prefers-color-scheme: dark) {
+      .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    }
+    h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+    h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    @media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+    th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+    @media (prefers-color-scheme: dark) {
+      th, td { border-color: #404040; }
+      th { background: #1f2937; color: #9ca3af; }
+    }
+    pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+    pre code { background: none; padding: 0; color: inherit; }
+    @media (prefers-color-scheme: dark) {
+      code { background: #374151; color: #fca5a5; }
+      pre { background: #000000; border: 1px solid #404040; }
+    }
+
+    /* Workflow Diagram Styles */
+    .flow-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 20px 0; }
+    .flow-step { background: #f3f4f6; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-align: center; width: 280px; border: 1px solid #e5e7eb; color: #1f2937; }
+    .flow-arrow { font-size: 20px; color: #9ca3af; }
+    @media (prefers-color-scheme: dark) {
+      .flow-step { background: #374151; border-color: #4b5563; color: #f9fafb; }
+    }
+  </style>
+  <!-- MathJax Configuration and Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="message-content">
+    <h1>Unit 2: Understanding Business</h1>
+    
+    <h2>Introduction</h2>
+    <p>Before analyzing data, it is important to understand how a business operates. Every organization consists of stakeholders, processes, departments, and decision-makers who work together to achieve business goals. Data becomes meaningful only when it is connected to business operations and objectives.</p>
+    <p>This unit introduces stakeholder mapping, business intelligence, end-to-end process mapping, major business processes such as Hire-to-Retire, Source-to-Pay, Record-to-Report, Order-to-Cash, and the role of Global Process Owners.</p>
+
+    <h2>Topic 1: Stakeholder Mapping</h2>
+    <h3>Explanation</h3>
+    <p>A stakeholder is any individual, group, or organization that can affect or be affected by a business's activities.</p>
+    <p>Stakeholder Mapping is the process of identifying stakeholders and understanding their influence, interests, and relationships with the organization.</p>
+
+    <h3>Objectives of Stakeholder Mapping</h3>
+    <ul>
+      <li>Identify key stakeholders.</li>
+      <li>Understand stakeholder expectations.</li>
+      <li>Improve communication.</li>
+      <li>Reduce conflicts.</li>
+      <li>Support decision-making.</li>
+    </ul>
+
+    <h3>Types of Stakeholders</h3>
+    <h4>Internal Stakeholders</h4>
+    <p>People within the organization.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Employees</li>
+      <li>Managers</li>
+      <li>Owners</li>
+      <li>Shareholders</li>
+    </ul>
+
+    <h4>External Stakeholders</h4>
+    <p>People outside the organization.</p>
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>Customers</li>
+      <li>Suppliers</li>
+      <li>Government</li>
+      <li>Investors</li>
+      <li>Society</li>
+    </ul>
+
+    <h3>Stakeholder Mapping Matrix</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Stakeholder</th>
+          <th>Interest</th>
+          <th>Influence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Customers</strong></td>
+          <td>High</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td><strong>Shareholders</strong></td>
+          <td>High</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td><strong>Employees</strong></td>
+          <td>High</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td><strong>Government</strong></td>
+          <td>Medium</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td><strong>Suppliers</strong></td>
+          <td>Medium</td>
+          <td>Medium</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Amazon manages relationships with customers, employees, investors, suppliers, and regulators through stakeholder management practices.</p>
+    <p><strong>Example 2 (Practical):</strong> A college considers students, teachers, parents, and university authorities as important stakeholders.</p>
+
+    <h2>Topic 2: Business Intelligence (BI)</h2>
+    <h3>Explanation</h3>
+    <p>Business Intelligence (BI) refers to technologies, processes, and tools used to collect, analyze, and present business information for decision-making.</p>
+
+    <h3>Definition</h3>
+    <p>Business Intelligence transforms raw data into useful information that supports strategic and operational decisions.</p>
+
+    <h3>Components of Business Intelligence</h3>
+    <div class="flow-container">
+      <div class="flow-step">Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Warehouse</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Processing</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Reporting &amp; Dashboards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Decision Making</div>
+    </div>
+
+    <h3>Objectives of BI</h3>
+    <ul>
+      <li>Improve business performance.</li>
+      <li>Support strategic planning.</li>
+      <li>Identify trends.</li>
+      <li>Monitor KPIs.</li>
+      <li>Enhance customer satisfaction.</li>
+    </ul>
+
+    <h3>Benefits of BI</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Better Decisions</strong></td>
+          <td>Data-driven decisions</td>
+        </tr>
+        <tr>
+          <td><strong>Increased Efficiency</strong></td>
+          <td>Faster reporting</td>
+        </tr>
+        <tr>
+          <td><strong>Improved Planning</strong></td>
+          <td>Better forecasting</td>
+        </tr>
+        <tr>
+          <td><strong>Competitive Advantage</strong></td>
+          <td>Market insights</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Example 1 (Business):</strong> Walmart uses Business Intelligence systems to analyze sales trends and inventory levels.</p>
+    <p><strong>Example 2 (Practical):</strong> A retail shop owner uses sales dashboards to monitor daily revenue and product performance.</p>
+
+    <h2>Topic 3: Introduction to End-to-End Process Mapping</h2>
+    <h3>Explanation</h3>
+    <p>End-to-End Process Mapping is the visual representation of all activities involved in completing a business process from beginning to end.</p>
+    <p>It helps organizations understand workflows, identify inefficiencies, and improve performance.</p>
+
+    <h3>Objectives</h3>
+    <ul>
+      <li>Understand business processes.</li>
+      <li>Identify bottlenecks.</li>
+      <li>Improve efficiency.</li>
+      <li>Standardize operations.</li>
+      <li>Support automation.</li>
+    </ul>
+
+    <h3>Generic Process Mapping Flow</h3>
+    <div class="flow-container">
+      <div class="flow-step">Input</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Process</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Activity</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Output</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Customer</div>
+    </div>
+
+    <h3>Advantages</h3>
+    <ul>
+      <li>Improved transparency</li>
+      <li>Better coordination</li>
+      <li>Faster operations</li>
+      <li>Reduced costs</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A manufacturing company maps its procurement process to identify delays in purchasing raw materials.</p>
+    <p><strong>Example 2 (Practical):</strong> A hospital maps patient admission and discharge processes to reduce waiting time.</p>
+
+    <h2>Topic 4: End-to-End Process Mapping in a Firm</h2>
+    <p>Business organizations perform several standard end-to-end processes.</p>
+
+    <h3>A. Hire-to-Retire (H2R)</h3>
+    <h4>Explanation</h4>
+    <p>Hire-to-Retire covers the complete employee lifecycle from recruitment to retirement.</p>
+
+    <h4>Process Flow</h4>
+    <div class="flow-container">
+      <div class="flow-step">Job Requirement</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Recruitment</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Selection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Hiring</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Training</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Performance Management</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Promotion</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Retirement/Exit</div>
+    </div>
+
+    <h4>Objectives</h4>
+    <ul>
+      <li>Efficient workforce management.</li>
+      <li>Employee development.</li>
+      <li>Talent retention.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Infosys manages employee recruitment, training, and career development through a structured H2R process.</p>
+    <p><strong>Example 2 (Practical):</strong> A company recruits a graduate, trains them, evaluates performance, and eventually processes retirement benefits.</p>
+
+    <h3>B. Source-to-Pay (S2P)</h3>
+    <h4>Explanation</h4>
+    <p>Source-to-Pay manages procurement activities from identifying suppliers to making payments.</p>
+
+    <h4>Process Flow</h4>
+    <div class="flow-container">
+      <div class="flow-step">Requirement Identification</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Supplier Selection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Purchase Order</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Goods Receipt</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Invoice Verification</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Payment</div>
+    </div>
+
+    <h4>Benefits</h4>
+    <ul>
+      <li>Better supplier management</li>
+      <li>Cost control</li>
+      <li>Improved procurement efficiency</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Toyota uses Source-to-Pay systems to manage supplier relationships and procurement operations.</p>
+    <p><strong>Example 2 (Practical):</strong> A restaurant purchases ingredients from vendors and processes payments after receiving supplies.</p>
+
+    <h3>C. Record-to-Report (R2R)</h3>
+    <h4>Explanation</h4>
+    <p>Record-to-Report is the financial process that collects, processes, and reports financial information.</p>
+
+    <h4>Process Flow</h4>
+    <div class="flow-container">
+      <div class="flow-step">Transaction Recording</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Ledger Posting</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Trial Balance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Financial Statements</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Reporting</div>
+    </div>
+
+    <h4>Objectives</h4>
+    <ul>
+      <li>Ensure accurate reporting.</li>
+      <li>Support compliance.</li>
+      <li>Improve financial transparency.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> A multinational company prepares monthly financial reports using an R2R process.</p>
+    <p><strong>Example 2 (Practical):</strong> A small business records transactions and prepares financial statements at year-end.</p>
+
+    <h3>D. Order-to-Cash (O2C)</h3>
+    <h4>Explanation</h4>
+    <p>Order-to-Cash covers the complete customer sales cycle from receiving an order to collecting payment.</p>
+
+    <h4>Process Flow</h4>
+    <div class="flow-container">
+      <div class="flow-step">Customer Order</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Order Processing</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Product Delivery</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Invoice Generation</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Payment Collection</div>
+    </div>
+
+    <h4>Benefits</h4>
+    <ul>
+      <li>Faster revenue generation.</li>
+      <li>Improved customer service.</li>
+      <li>Better cash flow management.</li>
+    </ul>
+
+    <p><strong>Example 1 (Business):</strong> Flipkart processes customer orders, delivers products, and collects payments through an O2C system.</p>
+    <p><strong>Example 2 (Practical):</strong> A local electronics store receives an order, delivers the product, and collects payment.</p>
+
+    <h2>Topic 5: Global Process Owners (GPOs)</h2>
+    <h3>Explanation</h3>
+    <p>Global Process Owners are senior managers responsible for managing and standardizing business processes across an organization.</p>
+
+    <h3>Responsibilities</h3>
+    <ul>
+      <li>Process design</li>
+      <li>Process improvement</li>
+      <li>Standardization</li>
+      <li>Performance monitoring</li>
+      <li>Compliance management</li>
+    </ul>
+
+    <h3>Importance</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Consistency</strong></td>
+          <td>Uniform processes</td>
+        </tr>
+        <tr>
+          <td><strong>Efficiency</strong></td>
+          <td>Improved operations</td>
+        </tr>
+        <tr>
+          <td><strong>Accountability</strong></td>
+          <td>Clear ownership</td>
+        </tr>
+        <tr>
+          <td><strong>Standardization</strong></td>
+          <td>Global best practices</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Role of a Global Process Owner</h3>
+    <div class="flow-container">
+      <div class="flow-step">Define Process Standards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Monitor Performance</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Identify Improvements</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Implement Changes</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Measure Results</div>
+    </div>
+
+    <p><strong>Example 1 (Business):</strong> Unilever appoints global process owners to standardize procurement and finance operations worldwide.</p>
+    <p><strong>Example 2 (Practical):</strong> A large educational institution assigns process owners to standardize admission procedures across campuses.</p>
+
+    <h2>Comparison of Major Business Processes</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Process</th>
+          <th>Purpose</th>
+          <th>Main Focus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Hire-to-Retire</strong></td>
+          <td>Employee Lifecycle</td>
+          <td>Human Resources</td>
+        </tr>
+        <tr>
+          <td><strong>Source-to-Pay</strong></td>
+          <td>Procurement</td>
+          <td>Purchasing</td>
+        </tr>
+        <tr>
+          <td><strong>Record-to-Report</strong></td>
+          <td>Financial Reporting</td>
+          <td>Finance</td>
+        </tr>
+        <tr>
+          <td><strong>Order-to-Cash</strong></td>
+          <td>Sales &amp; Collection</td>
+          <td>Revenue Generation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Quick Revision Summary</h2>
+    <ul>
+      <li>Stakeholders are individuals or groups affected by business activities.</li>
+      <li>Stakeholder mapping helps identify influence and interest levels.</li>
+      <li>Business Intelligence converts data into actionable information.</li>
+      <li>End-to-end process mapping visualizes business workflows.</li>
+      <li>Hire-to-Retire manages the employee lifecycle.</li>
+      <li>Source-to-Pay handles procurement activities.</li>
+      <li>Record-to-Report focuses on financial reporting.</li>
+      <li>Order-to-Cash manages customer orders and payments.</li>
+      <li>Global Process Owners ensure process standardization and efficiency.</li>
+    </ul>
+
+    <h2>Important Terms and Definitions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Stakeholder</strong></td>
+          <td>Individual or group affected by business activities</td>
+        </tr>
+        <tr>
+          <td><strong>Stakeholder Mapping</strong></td>
+          <td>Identification and analysis of stakeholders</td>
+        </tr>
+        <tr>
+          <td><strong>Business Intelligence</strong></td>
+          <td>Use of data and tools for decision-making</td>
+        </tr>
+        <tr>
+          <td><strong>Process Mapping</strong></td>
+          <td>Visual representation of business processes</td>
+        </tr>
+        <tr>
+          <td><strong>Hire-to-Retire</strong></td>
+          <td>Employee lifecycle process</td>
+        </tr>
+        <tr>
+          <td><strong>Source-to-Pay</strong></td>
+          <td>Procurement process</td>
+        </tr>
+        <tr>
+          <td><strong>Record-to-Report</strong></td>
+          <td>Financial reporting process</td>
+        </tr>
+        <tr>
+          <td><strong>Order-to-Cash</strong></td>
+          <td>Customer sales and payment process</td>
+        </tr>
+        <tr>
+          <td><strong>Global Process Owner</strong></td>
+          <td>Manager responsible for process standardization</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Important Flowcharts</h2>
+    
+    <h4>Business Intelligence Process</h4>
+    <div class="flow-container">
+      <div class="flow-step">Data Sources</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Data Warehouse</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Analysis</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Reports &amp; Dashboards</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Decision Making</div>
+    </div>
+
+    <h4>Hire-to-Retire</h4>
+    <div class="flow-container">
+      <div class="flow-step">Recruitment</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Selection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Hiring</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Training</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Performance Management</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Retirement</div>
+    </div>
+
+    <h4>Source-to-Pay</h4>
+    <div class="flow-container">
+      <div class="flow-step">Requirement</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Supplier Selection</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Purchase Order</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Goods Receipt</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Invoice Verification</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Payment</div>
+    </div>
+
+    <h4>Order-to-Cash</h4>
+    <div class="flow-container">
+      <div class="flow-step">Order Received</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Order Processing</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Delivery</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Invoice</div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step">Payment Collection</div>
+    </div>
+
+    <h2>Short Answer Questions</h2>
+    <ol>
+      <li>Who are stakeholders?</li>
+      <li>What is stakeholder mapping?</li>
+      <li>Define Business Intelligence.</li>
+      <li>What is process mapping?</li>
+      <li>Explain Hire-to-Retire.</li>
+      <li>What is Source-to-Pay?</li>
+      <li>Define Record-to-Report.</li>
+      <li>What is Order-to-Cash?</li>
+      <li>Who is a Global Process Owner?</li>
+      <li>State two benefits of Business Intelligence.</li>
+    </ol>
+
+    <h2>Long Answer Questions</h2>
+    <ol>
+      <li>Explain stakeholder mapping and its importance.</li>
+      <li>Discuss the concept and benefits of Business Intelligence.</li>
+      <li>Explain end-to-end process mapping.</li>
+      <li>Describe the Hire-to-Retire process.</li>
+      <li>Explain the Source-to-Pay process with examples.</li>
+      <li>Discuss the Record-to-Report process.</li>
+      <li>Explain the Order-to-Cash process and its benefits.</li>
+      <li>Discuss the role and importance of Global Process Owners.</li>
+    </ol>
+
+    <h2>Case-Based Questions</h2>
+    <ol>
+      <li>A multinational company is experiencing delays in procurement. Explain how Source-to-Pay process mapping can help identify and solve the problem.</li>
+      <li>A retail organization wants to improve customer payment collection. Explain how optimizing the Order-to-Cash process can improve cash flow.</li>
+      <li>A company operating in multiple countries wants consistent procurement procedures worldwide. Explain the role of a Global Process Owner in achieving this objective.</li>
+    </ol>
+  </div>
+</body>
+</html>
