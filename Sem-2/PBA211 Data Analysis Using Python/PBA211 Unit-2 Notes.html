@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit II: Advanced Python</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit II: Advanced Python</h1>
+
+<h2>Introduction</h2>
+
+<p>After learning the basics of Python, the next step is to explore advanced programming concepts that make Python more powerful and practical for data analysis. Advanced Python includes custom functions, while loops, dictionaries, sets, slicing techniques, and file handling. These concepts help analysts automate repetitive tasks, organize data efficiently, and process large datasets.</p>
+
+<p>This unit also introduces reading text and CSV files, which is a crucial skill for Business Analytics because real-world data is often stored in files.</p>
+
+<hr>
+
+<h1>Topic 1: Creating Custom Functions</h1>
+
+<h2>Explanation</h2>
+
+<p>A Function is a block of reusable code designed to perform a specific task.</p>
+
+<p>Instead of writing the same code repeatedly, functions allow us to write it once and reuse it whenever needed.</p>
+
+<h2>Syntax</h2>
+
+<pre><code>def function_name():
+    statements</code></pre>
+
+<h2>Example</h2>
+
+<pre><code>def greet():
+    print("Welcome to Python")
+    
+greet()</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Welcome to Python</code></pre>
+
+<h2>Function with Parameters</h2>
+
+<pre><code>def add(a, b):
+    return a + b
+
+result = add(10, 20)
+print(result)</code></pre>
+
+<p>Output:</p>
+
+<pre><code>30</code></pre>
+
+<h2>Advantages of Functions</h2>
+
+<ul>
+<li>Code reusability</li>
+<li>Better organization</li>
+<li>Reduced errors</li>
+<li>Easier maintenance</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>A bank creates a function to calculate loan interest.</p>
+
+<pre><code>def interest(principal, rate):
+    return principal * rate / 100</code></pre>
+
+<h3>Example 2</h3>
+
+<p>A retailer creates a function to calculate discounts.</p>
+
+<pre><code>def discount(price, percent):
+    return price * percent / 100</code></pre>
+
+<hr>
+
+<h1>Topic 2: Indefinite Loops – While Loops</h1>
+
+<h2>Explanation</h2>
+
+<p>A While Loop executes repeatedly as long as a specified condition remains true.</p>
+
+<p>Unlike a for loop, the number of iterations is not known beforehand.</p>
+
+<h2>Syntax</h2>
+
+<pre><code>while condition:
+    statements</code></pre>
+
+<h2>Example</h2>
+
+<pre><code>count = 1
+
+while count <= 5:
+    print(count)
+    count += 1</code></pre>
+
+<p>Output:</p>
+
+<pre><code>1
+2
+3
+4
+5</code></pre>
+
+<h2>Infinite Loop</h2>
+
+<p>If the condition never becomes false, the loop runs forever.</p>
+
+<p>Example:</p>
+
+<pre><code>while True:
+    print("Hello")</code></pre>
+
+<h2>While Loop with User Input</h2>
+
+<pre><code>password = ""
+
+while password != "python":
+    password = input("Enter Password: ")
+
+print("Access Granted")</code></pre>
+
+<h2>For Loop vs While Loop</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>For Loop</th>
+<th>While Loop</th>
+</tr>
+<tr>
+<td>Iterations</td>
+<td>Known</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>Control</td>
+<td>Automatic</td>
+<td>Manual</td>
+</tr>
+<tr>
+<td>Use Case</td>
+<td>Fixed Repetition</td>
+<td>Condition-Based Repetition</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+
+<p>ATM machine keeps asking for PIN until correct PIN is entered.</p>
+
+<h3>Example 2</h3>
+
+<p>Online login system repeatedly asks for credentials.</p>
+
+<hr>
+
+<h1>Topic 3: Data Types – Dictionary and Set</h1>
+
+<h1>A. Dictionary</h1>
+
+<h2>Explanation</h2>
+
+<p>A Dictionary stores data in key-value pairs.</p>
+
+<p>It is one of the most powerful Python data structures.</p>
+
+<h2>Syntax</h2>
+
+<pre><code>dictionary = {
+    key:value
+}</code></pre>
+
+<h2>Example</h2>
+
+<pre><code>student = {
+    "Name":"Rahul",
+    "Age":22,
+    "Marks":85
+}</code></pre>
+
+<h2>Accessing Values</h2>
+
+<pre><code>print(student["Name"])</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Rahul</code></pre>
+
+<h2>Adding Data</h2>
+
+<pre><code>student["City"] = "Mumbai"</code></pre>
+
+<h2>Advantages</h2>
+
+<ul>
+<li>Fast retrieval</li>
+<li>Organized storage</li>
+<li>Flexible structure</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Customer database.</p>
+
+<pre><code>customer = {
+    "ID":101,
+    "Name":"Amit"
+}</code></pre>
+
+<h3>Example 2</h3>
+
+<p>Employee records.</p>
+
+<pre><code>employee = {
+    "EmpID":5001,
+    "Salary":45000
+}</code></pre>
+
+<hr>
+
+<h1>B. Set</h1>
+
+<h2>Explanation</h2>
+
+<p>A Set is an unordered collection of unique values.</p>
+
+<p>Duplicate values are automatically removed.</p>
+
+<h2>Example</h2>
+
+<pre><code>numbers = {1,2,3,4,4,5}
+print(numbers)</code></pre>
+
+<p>Output:</p>
+
+<pre><code>{1,2,3,4,5}</code></pre>
+
+<h2>Set Operations</h2>
+
+<h3>Add Element</h3>
+
+<pre><code>numbers.add(6)</code></pre>
+
+<h3>Remove Element</h3>
+
+<pre><code>numbers.remove(2)</code></pre>
+
+<h2>Applications</h2>
+
+<ul>
+<li>Removing duplicates</li>
+<li>Membership testing</li>
+<li>Mathematical operations</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Removing duplicate customer IDs.</p>
+
+<h3>Example 2</h3>
+
+<p>Finding unique products sold.</p>
+
+<hr>
+
+<h1>Topic 4: Slicing Data Types</h1>
+
+<h2>Explanation</h2>
+
+<p>Slicing allows extraction of specific portions of data from strings, lists, and tuples.</p>
+
+<h2>Syntax</h2>
+
+<pre><code>data[start:end]</code></pre>
+
+<h2>String Slicing</h2>
+
+<pre><code>text = "Python"
+
+print(text[0:3])</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Pyt</code></pre>
+
+<h2>List Slicing</h2>
+
+<pre><code>numbers = [10,20,30,40,50]
+
+print(numbers[1:4])</code></pre>
+
+<p>Output:</p>
+
+<pre><code>[20,30,40]</code></pre>
+
+<h2>Tuple Slicing</h2>
+
+<pre><code>values = (1,2,3,4,5)
+
+print(values[2:5])</code></pre>
+
+<p>Output:</p>
+
+<pre><code>(3,4,5)</code></pre>
+
+<h2>Advantages</h2>
+
+<ul>
+<li>Quick extraction</li>
+<li>Efficient processing</li>
+<li>Reduced coding effort</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Extracting first three customer names.</p>
+
+<h3>Example 2</h3>
+
+<p>Selecting monthly sales data for a quarter.</p>
+
+<hr>
+
+<h1>Topic 5: Reading Text Files with Python</h1>
+
+<h2>Explanation</h2>
+
+<p>Real-world data is often stored in text files. Python provides built-in functions to read and process file data.</p>
+
+<h2>Opening a File</h2>
+
+<pre><code>file = open("sample.txt", "r")</code></pre>
+
+<h2>Reading Entire File</h2>
+
+<pre><code>file = open("sample.txt", "r")
+
+content = file.read()
+
+print(content)
+
+file.close()</code></pre>
+
+<h2>Reading Line by Line</h2>
+
+<pre><code>file = open("sample.txt")
+
+for line in file:
+    print(line)</code></pre>
+
+<h2>Using with Statement</h2>
+
+<pre><code>with open("sample.txt","r") as file:
+    content = file.read()</code></pre>
+
+<p>Automatically closes file.</p>
+
+<h3>Example 1</h3>
+
+<p>Reading customer feedback from text files.</p>
+
+<h3>Example 2</h3>
+
+<p>Reading employee records stored in text format.</p>
+
+<hr>
+
+<h1>Topic 6: Analyze Data from Text and CSV Files</h1>
+
+<h2>Explanation</h2>
+
+<p>CSV (Comma-Separated Values) files are widely used in Business Analytics because they store structured data efficiently.</p>
+
+<h2>Reading CSV Files</h2>
+
+<pre><code>import csv
+
+with open("sales.csv") as file:
+    reader = csv.reader(file)
+
+    for row in reader:
+        print(row)</code></pre>
+
+<h2>Sample CSV Data</h2>
+
+<pre><code>Name,Sales
+Amit,5000
+Rahul,7000
+Neha,9000</code></pre>
+
+<h2>Calculating Total Sales</h2>
+
+<pre><code>import csv
+
+total = 0
+
+with open("sales.csv") as file:
+    reader = csv.reader(file)
+
+    next(reader)
+
+    for row in reader:
+        total += int(row[1])
+
+print("Total Sales =", total)</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Total Sales = 21000</code></pre>
+
+<h2>Finding Maximum Sales</h2>
+
+<pre><code>highest = 0
+
+with open("sales.csv") as file:
+    reader = csv.reader(file)
+
+    next(reader)
+
+    for row in reader:
+        sale = int(row[1])
+
+        if sale > highest:
+            highest = sale
+
+print(highest)</code></pre>
+
+<p>Output:</p>
+
+<pre><code>9000</code></pre>
+
+<h2>Applications of CSV Analysis</h2>
+
+<ul>
+<li>Sales analysis</li>
+<li>Customer analysis</li>
+<li>Financial reporting</li>
+<li>Inventory management</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>A retail company analyzes monthly sales stored in CSV files.</p>
+
+<h3>Example 2</h3>
+
+<p>A university analyzes student marks exported from Excel.</p>
+
+<hr>
+
+<h1>Comparison: Dictionary vs Set</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Dictionary</th>
+<th>Set</th>
+</tr>
+<tr>
+<td>Structure</td>
+<td>Key-Value Pair</td>
+<td>Unique Values</td>
+</tr>
+<tr>
+<td>Order</td>
+<td>Maintained (Python 3.7+)</td>
+<td>Unordered</td>
+</tr>
+<tr>
+<td>Duplicate Keys</td>
+<td>Not Allowed</td>
+<td>Not Allowed</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>By Key</td>
+<td>Not Indexed</td>
+</tr>
+<tr>
+<td>Use Case</td>
+<td>Record Storage</td>
+<td>Duplicate Removal</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Quick Revision Summary</h1>
+
+<ul>
+<li>Functions improve code reusability and organization.</li>
+<li>While loops execute until a condition becomes false.</li>
+<li>Dictionaries store data as key-value pairs.</li>
+<li>Sets store unique values.</li>
+<li>Slicing extracts portions of data structures.</li>
+<li>Text files can be read using open().</li>
+<li>CSV files are widely used for structured business data.</li>
+<li>Python can analyze and summarize data from CSV files.</li>
+</ul>
+
+<h1>Important Terms and Definitions</h1>
+
+<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td>Function</td><td>Reusable block of code</td></tr>
+<tr><td>Parameter</td><td>Input supplied to a function</td></tr>
+<tr><td>While Loop</td><td>Condition-based repetition structure</td></tr>
+<tr><td>Dictionary</td><td>Collection of key-value pairs</td></tr>
+<tr><td>Set</td><td>Collection of unique values</td></tr>
+<tr><td>Slicing</td><td>Extracting part of a sequence</td></tr>
+<tr><td>Text File</td><td>File containing plain text</td></tr>
+<tr><td>CSV File</td><td>Comma-separated values file</td></tr>
+<tr><td>File Handling</td><td>Reading and writing files</td></tr>
+</table>
+
+<h1>Important Formulae</h1>
+
+<p>No mathematical formulae are specifically prescribed in this unit.</p>
+
+<h1>Short Answer Questions</h1>
+
+<ol>
+<li>Define a function in Python.</li>
+<li>What is a while loop?</li>
+<li>Explain dictionaries.</li>
+<li>What is a set?</li>
+<li>Define slicing.</li>
+<li>How do you read a text file in Python?</li>
+<li>What is a CSV file?</li>
+<li>Explain file handling.</li>
+<li>Differentiate between dictionary and set.</li>
+<li>What are the advantages of functions?</li>
+</ol>
+
+<h1>Long Answer Questions</h1>
+
+<ol>
+<li>Explain custom functions with examples.</li>
+<li>Discuss while loops and their applications.</li>
+<li>Explain dictionaries and sets in Python.</li>
+<li>Discuss slicing techniques for strings, lists, and tuples.</li>
+<li>Explain file handling in Python.</li>
+<li>Describe how to analyze CSV data using Python.</li>
+</ol>
+
+<h1>Case-Based Questions</h1>
+
+<h3>Case 1</h3>
+
+<p>A bank wants to automate loan interest calculations.</p>
+
+<ul>
+<li>How can custom functions help?</li>
+<li>Write a suitable function design.</li>
+</ul>
+
+<h3>Case 2</h3>
+
+<p>A retailer has sales data stored in CSV files.</p>
+
+<ul>
+<li>Explain how Python can be used to calculate total sales and highest sales.</li>
+</ul>
+
+<h3>Case 3</h3>
+
+<p>A university maintains student records.</p>
+
+<ul>
+<li>Which data structure is most suitable for storing student information?</li>
+<li>Justify your answer.</li>
+</ul>
+
+</div>
+</body>
+</html>

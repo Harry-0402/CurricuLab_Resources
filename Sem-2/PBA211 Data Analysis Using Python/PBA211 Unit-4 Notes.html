@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit IV: Data Manipulation</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit IV: Data Manipulation</h1>
+
+<h2>Introduction</h2>
+
+<p>In Data Analytics, collecting data is only the first step. Real-world datasets are often incomplete, inconsistent, duplicated, or poorly formatted. Before analysis can begin, data must be cleaned, transformed, filtered, and organized. This process is known as <strong>Data Manipulation</strong>.</p>
+
+<p>Python's <strong>Pandas</strong> library provides powerful tools for manipulating datasets efficiently. This unit focuses on creating DataFrames, slicing and filtering data, lambda functions, conditional operations, and business data analysis using CSV files.</p>
+
+<hr>
+
+<h1>Topic 1: Five Ways to Create a DataFrame</h1>
+
+<h2>Explanation</h2>
+
+<p>A DataFrame is the most important data structure in Pandas. It organizes data in rows and columns similar to Excel spreadsheets and database tables.</p>
+
+<h2>Method 1: From Dictionary</h2>
+
+<pre><code>import pandas as pd
+
+data = {
+    "Name":["Amit","Rahul","Neha"],
+    "Marks":[80,90,85]
+}
+
+df = pd.DataFrame(data)
+print(df)</code></pre>
+
+<p>Output:</p>
+
+<pre><code>    Name  Marks
+0   Amit     80
+1  Rahul     90
+2   Neha     85</code></pre>
+
+<h2>Method 2: From List</h2>
+
+<pre><code>data = [
+    ["Amit",80],
+    ["Rahul",90],
+    ["Neha",85]
+]
+
+df = pd.DataFrame(data,
+                  columns=["Name","Marks"])</code></pre>
+
+<h2>Method 3: From NumPy Array</h2>
+
+<pre><code>import numpy as np
+
+arr = np.array([
+    [1,2],
+    [3,4]
+])
+
+df = pd.DataFrame(arr)</code></pre>
+
+<h2>Method 4: From CSV File</h2>
+
+<pre><code>df = pd.read_csv("sales.csv")</code></pre>
+
+<h2>Method 5: From Excel File</h2>
+
+<pre><code>df = pd.read_excel("sales.xlsx")</code></pre>
+
+<h3>Example 1</h3>
+
+<p>A retail company imports sales data from CSV files.</p>
+
+<h3>Example 2</h3>
+
+<p>A university creates DataFrames from student records stored in Excel.</p>
+
+<hr>
+
+<h1>Topic 2: Slicing and Filtering DataFrame</h1>
+
+<h2>Explanation</h2>
+
+<p>Slicing and filtering allow analysts to select specific rows and columns from large datasets.</p>
+
+<h2>Selecting Columns</h2>
+
+<pre><code>df["Name"]</code></pre>
+
+<p>Output:</p>
+
+<pre><code>0    Amit
+1    Rahul
+2    Neha</code></pre>
+
+<h2>Multiple Columns</h2>
+
+<pre><code>df[["Name","Marks"]]</code></pre>
+
+<h2>Row Selection Using iloc</h2>
+
+<pre><code>df.iloc[0]</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Name     Amit
+Marks      80</code></pre>
+
+<h2>Row Selection Using loc</h2>
+
+<pre><code>df.loc[0]</code></pre>
+
+<h2>Filtering Data</h2>
+
+<h3>Example</h3>
+
+<pre><code>df[df["Marks"] > 80]</code></pre>
+
+<p>Output:</p>
+
+<pre><code>    Name  Marks
+1  Rahul     90
+2   Neha     85</code></pre>
+
+<h2>Multiple Conditions</h2>
+
+<pre><code>df[
+    (df["Marks"] > 80)
+    &
+    (df["Marks"] < 90)
+]</code></pre>
+
+<h3>Example 1</h3>
+
+<p>Selecting customers with purchases above ₹10,000.</p>
+
+<h3>Example 2</h3>
+
+<p>Selecting students scoring above 75%.</p>
+
+<hr>
+
+<h1>Topic 3: Lambda Functions</h1>
+
+<h2>Explanation</h2>
+
+<p>A Lambda Function is an anonymous (unnamed) function used for short operations.</p>
+
+<p>It is useful when simple functions are required temporarily.</p>
+
+<h2>Syntax</h2>
+
+<pre><code>lambda arguments : expression</code></pre>
+
+<h2>Example</h2>
+
+<pre><code>square = lambda x : x*x
+
+print(square(5))</code></pre>
+
+<p>Output:</p>
+
+<pre><code>25</code></pre>
+
+<h2>Lambda with Multiple Arguments</h2>
+
+<pre><code>add = lambda a,b : a+b
+
+print(add(10,20))</code></pre>
+
+<p>Output:</p>
+
+<pre><code>30</code></pre>
+
+<h2>Using Lambda in DataFrames</h2>
+
+<pre><code>df["Bonus"] = df["Marks"].apply(
+    lambda x : x + 5
+)</code></pre>
+
+<p>Output:</p>
+
+<table>
+<tr>
+<th>Marks</th>
+<th>Bonus</th>
+</tr>
+<tr>
+<td>80</td>
+<td>85</td>
+</tr>
+<tr>
+<td>90</td>
+<td>95</td>
+</tr>
+<tr>
+<td>85</td>
+<td>90</td>
+</tr>
+</table>
+
+<h2>Advantages</h2>
+
+<ul>
+<li>Short and concise</li>
+<li>Improves readability</li>
+<li>Useful with apply()</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Calculating employee bonuses.</p>
+
+<h3>Example 2</h3>
+
+<p>Applying discounts to product prices.</p>
+
+<hr>
+
+<h1>Topic 4: Run If and Else Scenarios</h1>
+
+<h2>Explanation</h2>
+
+<p>Business analytics frequently requires conditional decision-making.</p>
+
+<p>Pandas allows conditional logic through standard Python functions and lambda expressions.</p>
+
+<h2>Using If-Else</h2>
+
+<pre><code>marks = 85
+
+if marks >= 50:
+    print("Pass")
+else:
+    print("Fail")</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Pass</code></pre>
+
+<h2>Using Lambda with If-Else</h2>
+
+<pre><code>df["Result"] = df["Marks"].apply(
+    lambda x:
+    "Pass" if x >= 50
+    else "Fail"
+)</code></pre>
+
+<p>Output:</p>
+
+<table>
+<tr>
+<th>Marks</th>
+<th>Result</th>
+</tr>
+<tr>
+<td>80</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>90</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>45</td>
+<td>Fail</td>
+</tr>
+</table>
+
+<h2>Multiple Conditions</h2>
+
+<pre><code>df["Grade"] = df["Marks"].apply(
+ lambda x:
+ "A" if x>=90
+ else "B" if x>=75
+ else "C"
+)</code></pre>
+
+<h3>Example 1</h3>
+
+<p>Employee performance classification.</p>
+
+<h3>Example 2</h3>
+
+<p>Customer segmentation based on spending.</p>
+
+<hr>
+
+<h1>Topic 5: Gather and Manipulate Data with Pandas</h1>
+
+<h2>Explanation</h2>
+
+<p>Data gathering involves importing information from various sources and preparing it for analysis.</p>
+
+<h2>Reading CSV Files</h2>
+
+<pre><code>import pandas as pd
+
+df = pd.read_csv("sales.csv")</code></pre>
+
+<h2>Reading Excel Files</h2>
+
+<pre><code>df = pd.read_excel("sales.xlsx")</code></pre>
+
+<h2>Display First Records</h2>
+
+<pre><code>df.head()</code></pre>
+
+<h2>Display Last Records</h2>
+
+<pre><code>df.tail()</code></pre>
+
+<h2>Data Information</h2>
+
+<pre><code>df.info()</code></pre>
+
+<h2>Statistical Summary</h2>
+
+<pre><code>df.describe()</code></pre>
+
+<h2>Handling Missing Values</h2>
+
+<h3>Check Missing Values</h3>
+
+<pre><code>df.isnull().sum()</code></pre>
+
+<h3>Remove Missing Values</h3>
+
+<pre><code>df.dropna()</code></pre>
+
+<h3>Replace Missing Values</h3>
+
+<pre><code>df.fillna(0)</code></pre>
+
+<h2>Sorting Data</h2>
+
+<pre><code>df.sort_values(
+    by="Sales",
+    ascending=False
+)</code></pre>
+
+<h3>Example 1</h3>
+
+<p>A bank gathers customer transaction data for analysis.</p>
+
+<h3>Example 2</h3>
+
+<p>A hospital gathers patient records from multiple departments.</p>
+
+<hr>
+
+<h1>Topic 6: Analyze Business Data from CSV Files</h1>
+
+<h2>Explanation</h2>
+
+<p>CSV files are the most common format used for business data.</p>
+
+<p>Examples:</p>
+
+<ul>
+<li>Sales records</li>
+<li>Customer data</li>
+<li>Employee records</li>
+<li>Financial transactions</li>
+</ul>
+
+<h2>Sample CSV File</h2>
+
+<pre><code>Product,Sales
+Laptop,50000
+Mobile,30000
+Tablet,20000</code></pre>
+
+<h2>Reading CSV</h2>
+
+<pre><code>df = pd.read_csv("sales.csv")</code></pre>
+
+<h2>Total Sales</h2>
+
+<pre><code>total = df["Sales"].sum()
+
+print(total)</code></pre>
+
+<p>Output:</p>
+
+<pre><code>100000</code></pre>
+
+<h2>Average Sales</h2>
+
+<pre><code>average = df["Sales"].mean()</code></pre>
+
+<p>Output:</p>
+
+<pre><code>33333.33</code></pre>
+
+<h2>Maximum Sales</h2>
+
+<pre><code>highest = df["Sales"].max()</code></pre>
+
+<p>Output:</p>
+
+<pre><code>50000</code></pre>
+
+<h2>Minimum Sales</h2>
+
+<pre><code>lowest = df["Sales"].min()</code></pre>
+
+<p>Output:</p>
+
+<pre><code>20000</code></pre>
+
+<h2>Visualization Preparation</h2>
+
+<pre><code>df.groupby(
+    "Product"
+)["Sales"].sum()</code></pre>
+
+<p>Useful before plotting graphs.</p>
+
+<h3>Example 1</h3>
+
+<p>A retailer analyzes product-wise sales performance.</p>
+
+<h3>Example 2</h3>
+
+<p>A university analyzes department-wise student results.</p>
+
+<hr>
+
+<h1>Comparison: loc vs iloc</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>loc</th>
+<th>iloc</th>
+</tr>
+<tr>
+<td>Selection Type</td>
+<td>Label-Based</td>
+<td>Position-Based</td>
+</tr>
+<tr>
+<td>Index Usage</td>
+<td>Uses Labels</td>
+<td>Uses Numbers</td>
+</tr>
+<tr>
+<td>Flexibility</td>
+<td>High</td>
+<td>Simple</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>df.loc[0]</td>
+<td>df.iloc[0]</td>
+</tr>
+</table>
+
+<h1>Comparison: Lambda Function vs Normal Function</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Lambda Function</th>
+<th>Normal Function</th>
+</tr>
+<tr>
+<td>Name</td>
+<td>Anonymous</td>
+<td>Named</td>
+</tr>
+<tr>
+<td>Length</td>
+<td>Short</td>
+<td>Longer</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Simple Operations</td>
+<td>Complex Logic</td>
+</tr>
+<tr>
+<td>Syntax</td>
+<td>One Line</td>
+<td>Multiple Lines</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Quick Revision Summary</h1>
+
+<ul>
+<li>DataFrames can be created from dictionaries, lists, arrays, CSV, and Excel files.</li>
+<li>Slicing and filtering help select relevant data.</li>
+<li>Lambda functions simplify calculations and transformations.</li>
+<li>Conditional logic supports decision-making.</li>
+<li>Pandas helps gather, clean, and manipulate datasets.</li>
+<li>CSV files are widely used in business analytics.</li>
+<li>Functions like sum(), mean(), max(), and min() support business data analysis.</li>
+</ul>
+
+<h1>Important Terms and Definitions</h1>
+
+<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td>DataFrame</td><td>Two-dimensional Pandas data structure</td></tr>
+<tr><td>Filtering</td><td>Selecting rows based on conditions</td></tr>
+<tr><td>Slicing</td><td>Selecting portions of data</td></tr>
+<tr><td>Lambda Function</td><td>Anonymous one-line function</td></tr>
+<tr><td>Missing Values</td><td>Empty or unavailable data</td></tr>
+<tr><td>CSV File</td><td>Comma-Separated Values file</td></tr>
+<tr><td>Data Manipulation</td><td>Cleaning and transforming data</td></tr>
+<tr><td>loc</td><td>Label-based row selection</td></tr>
+<tr><td>iloc</td><td>Position-based row selection</td></tr>
+</table>
+
+<h1>Important Formulae</h1>
+
+<p><strong>Average (Mean)</strong></p>
+
+<p>x̄ = Σx / n</p>
+
+<p><strong>Percentage Calculation</strong></p>
+
+<p>Percentage = (Obtained Marks / Total Marks) × 100</p>
+
+<h1>Short Answer Questions</h1>
+
+<ol>
+<li>What is a DataFrame?</li>
+<li>Explain five methods of creating a DataFrame.</li>
+<li>What is slicing?</li>
+<li>Define filtering in Pandas.</li>
+<li>What is a lambda function?</li>
+<li>Explain loc and iloc.</li>
+<li>How are missing values handled in Pandas?</li>
+<li>What is a CSV file?</li>
+<li>How can business data be analyzed using Pandas?</li>
+<li>Explain conditional logic in DataFrames.</li>
+</ol>
+
+<h1>Long Answer Questions</h1>
+
+<ol>
+<li>Explain different methods of creating a DataFrame.</li>
+<li>Discuss slicing and filtering operations in Pandas.</li>
+<li>Explain lambda functions with examples.</li>
+<li>Discuss conditional operations using if-else and lambda expressions.</li>
+<li>Explain data gathering and manipulation using Pandas.</li>
+<li>Discuss analysis of business data stored in CSV files.</li>
+</ol>
+
+<h1>Case-Based Questions</h1>
+
+<h3>Case 1</h3>
+
+<p>A retail company has sales data stored in CSV files.</p>
+
+<ul>
+<li>Explain how Pandas can be used to analyze total, average, and maximum sales.</li>
+<li>Suggest suitable filtering operations.</li>
+</ul>
+
+<h3>Case 2</h3>
+
+<p>A university wants to identify students scoring above 80%.</p>
+
+<ul>
+<li>Explain slicing and filtering techniques.</li>
+<li>Write suitable Pandas logic.</li>
+</ul>
+
+<h3>Case 3</h3>
+
+<p>A company wants to automatically classify employees into performance categories.</p>
+
+<ul>
+<li>Explain how lambda functions can be used.</li>
+<li>Design a suitable grading system.</li>
+</ul>
+
+</div>
+</body>
+</html>
