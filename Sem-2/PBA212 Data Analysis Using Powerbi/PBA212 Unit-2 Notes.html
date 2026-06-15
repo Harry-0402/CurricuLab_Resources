@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Power Query</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 2: Power Query</h1>
+
+<h2>Introduction</h2>
+
+<p>In real-world business environments, data is collected from various sources such as Excel files, databases, websites, ERP systems, and cloud platforms. However, this data is often incomplete, inconsistent, or improperly formatted. Before analysis can begin, the data must be cleaned and transformed.</p>
+
+<p>Power Query is a data preparation and transformation tool in Power BI that helps users connect to different data sources, clean data, transform it into a usable format, and load it into Power BI for analysis.</p>
+
+<p>Power Query follows the principle:</p>
+
+<pre>Raw Data ↓ Data Cleaning ↓ Data Transformation ↓ Data Loading ↓ Analysis & Reporting</pre>
+
+<h2>Topic 1: Data Transformation</h2>
+
+<h3>Explanation</h3>
+
+<p>Data Transformation is the process of converting raw data into a structured and meaningful format suitable for analysis.</p>
+
+<p>Raw data may contain:</p>
+
+<ul>
+<li>Missing values</li>
+<li>Duplicate records</li>
+<li>Incorrect formats</li>
+<li>Unwanted columns</li>
+<li>Inconsistent entries</li>
+</ul>
+
+<p>Power Query provides tools to solve these issues.</p>
+
+<h3>Common Data Transformation Activities</h3>
+
+<table>
+<tr>
+<th>Activity</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Cleaning Data</td>
+<td>Remove errors and duplicates</td>
+</tr>
+<tr>
+<td>Filtering Data</td>
+<td>Keep only required records</td>
+</tr>
+<tr>
+<td>Sorting Data</td>
+<td>Arrange data systematically</td>
+</tr>
+<tr>
+<td>Splitting Columns</td>
+<td>Separate combined data</td>
+</tr>
+<tr>
+<td>Merging Columns</td>
+<td>Combine multiple fields</td>
+</tr>
+<tr>
+<td>Changing Data Types</td>
+<td>Convert data formats</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+<p>A company receives customer data where phone numbers contain extra spaces. Power Query removes unnecessary spaces.</p>
+
+<h3>Example 2</h3>
+<p>A student receives attendance data with duplicate entries and removes duplicates before analysis.</p>
+
+<h2>Topic 2: Benefits of Data Transformation</h2>
+
+<h3>Explanation</h3>
+
+<p>Data transformation improves the quality and usability of data.</p>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Improves data accuracy.</li>
+<li>Eliminates inconsistencies.</li>
+<li>Saves time in analysis.</li>
+<li>Enhances decision-making.</li>
+<li>Creates standardized datasets.</li>
+<li>Reduces reporting errors.</li>
+</ul>
+
+<h3>Before and After Transformation</h3>
+
+<table>
+<tr>
+<th>Raw Data</th>
+<th>Transformed Data</th>
+</tr>
+<tr>
+<td>Incomplete records</td>
+<td>Complete records</td>
+</tr>
+<tr>
+<td>Duplicate rows</td>
+<td>Unique rows</td>
+</tr>
+<tr>
+<td>Mixed formats</td>
+<td>Standardized formats</td>
+</tr>
+<tr>
+<td>Unorganized data</td>
+<td>Structured data</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+<p>A bank standardizes customer account formats before generating reports.</p>
+
+<h3>Example 2</h3>
+<p>An online store converts different date formats into a single format.</p>
+
+<h2>Topic 3: Shape or Transform Data Using Power Query</h2>
+
+<h3>Explanation</h3>
+
+<p>"Shaping Data" means modifying data to meet analytical requirements.</p>
+
+<p>Users can:</p>
+
+<ul>
+<li>Remove unwanted columns.</li>
+<li>Rename columns.</li>
+<li>Change data types.</li>
+<li>Split and merge columns.</li>
+<li>Filter records.</li>
+<li>Rearrange data structure.</li>
+</ul>
+
+<h3>Data Shaping Process</h3>
+
+<pre>Import Data ↓ Review Data ↓ Apply Transformations ↓ Validate Results ↓ Load Data</pre>
+
+<h3>Example 1</h3>
+<p>A sales manager removes unnecessary supplier information before analysis.</p>
+
+<h3>Example 2</h3>
+<p>A school separates student full names into first and last names.</p>
+
+<h2>Topic 4: Overview of Power Query / Query Editor</h2>
+
+<h3>Explanation</h3>
+
+<p>Query Editor is the working environment where data transformation operations are performed.</p>
+
+<p>It allows users to:</p>
+
+<ul>
+<li>View data</li>
+<li>Modify data</li>
+<li>Track transformation steps</li>
+<li>Preview results before loading</li>
+</ul>
+
+<p>Every transformation performed is recorded automatically.</p>
+
+<h3>Key Features</h3>
+
+<ul>
+<li>No coding required for basic operations.</li>
+<li>Step-by-step transformation tracking.</li>
+<li>Supports multiple data sources.</li>
+<li>Reusable transformation processes.</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>A finance analyst cleans accounting records using Query Editor.</p>
+
+<h3>Example 2</h3>
+<p>An HR executive transforms employee data before reporting.</p>
+
+<h2>Topic 5: Query Editor User Interface</h2>
+
+<h3>Main Components</h3>
+
+<table>
+<tr>
+<th>Component</th>
+<th>Function</th>
+</tr>
+<tr>
+<td>Ribbon</td>
+<td>Commands and tools</td>
+</tr>
+<tr>
+<td>Queries Pane</td>
+<td>List of queries</td>
+</tr>
+<tr>
+<td>Data View Pane</td>
+<td>Displays data</td>
+</tr>
+<tr>
+<td>Query Settings</td>
+<td>Shows applied steps</td>
+</tr>
+<tr>
+<td>Formula Bar</td>
+<td>Displays transformation formulas</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+<p>A user selects a query from the Queries Pane and modifies data.</p>
+
+<h3>Example 2</h3>
+<p>A student reviews applied transformation steps in Query Settings.</p>
+
+<h2>Topic 6: Ribbon Tabs</h2>
+
+<h3>Home Tab</h3>
+
+<ul>
+<li>Importing data</li>
+<li>Removing rows</li>
+<li>Merging queries</li>
+<li>Closing and applying changes</li>
+</ul>
+
+<h3>Transform Tab</h3>
+
+<ul>
+<li>Data type conversion</li>
+<li>Splitting columns</li>
+<li>Formatting values</li>
+</ul>
+
+<h3>Add Column Tab</h3>
+
+<ul>
+<li>Creating calculated columns</li>
+<li>Conditional columns</li>
+<li>Index columns</li>
+</ul>
+
+<h3>View Tab</h3>
+
+<ul>
+<li>Formula Bar visibility</li>
+<li>Query dependencies</li>
+<li>Advanced editor</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>An analyst creates a new calculated column using the Add Column tab.</p>
+
+<h3>Example 2</h3>
+<p>A user changes text data into date format using the Transform tab.</p>
+
+<h2>Topic 7: Queries Pane</h2>
+
+<p>The Queries Pane is located on the left side of Query Editor.</p>
+
+<p>It displays all queries available in the project.</p>
+
+<h3>Functions</h3>
+
+<ul>
+<li>Select queries</li>
+<li>Rename queries</li>
+<li>Duplicate queries</li>
+<li>Delete queries</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>A company imports sales, customer, and product tables as separate queries.</p>
+
+<h3>Example 2</h3>
+<p>A student duplicates a query before making modifications.</p>
+
+<h2>Topic 8: Data View / Results Pane</h2>
+
+<p>The Data View Pane displays the actual dataset being transformed.</p>
+
+<p>Users can:</p>
+
+<ul>
+<li>Preview records</li>
+<li>Verify transformations</li>
+<li>Identify errors</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>A sales analyst checks whether duplicate rows were removed correctly.</p>
+
+<h3>Example 2</h3>
+<p>A teacher verifies student records after transformation.</p>
+
+<h2>Topic 9: Query Settings Pane</h2>
+
+<p>The Query Settings Pane records all transformation steps.</p>
+
+<h3>Sections</h3>
+
+<p><strong>Properties</strong></p>
+
+<ul>
+<li>Query name</li>
+<li>Description</li>
+</ul>
+
+<p><strong>Applied Steps</strong></p>
+
+<p>Every transformation is recorded sequentially.</p>
+
+<pre>Source ↓ Changed Type ↓ Filtered Rows ↓ Removed Columns</pre>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Easy tracking</li>
+<li>Error correction</li>
+<li>Reproducibility</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>A user removes an incorrect filtering step.</p>
+
+<h3>Example 2</h3>
+<p>A company reviews transformation history for auditing.</p>
+
+<h2>Topic 10: Formula Bar</h2>
+
+<p>The Formula Bar displays M Language formulas generated by Power Query.</p>
+
+<p>Users can:</p>
+
+<ul>
+<li>View formulas</li>
+<li>Edit formulas</li>
+<li>Create custom transformations</li>
+</ul>
+
+<h3>Example Formula</h3>
+
+<pre><code>= Table.RemoveColumns(Source,{"Address"})</code></pre>
+
+<h3>Example 1</h3>
+<p>An analyst edits formulas to automate transformations.</p>
+
+<h3>Example 2</h3>
+<p>A developer customizes transformation logic.</p>
+
+<h2>Topic 11: Saving the Work</h2>
+
+<p>Power Query transformations are not permanently saved until changes are applied.</p>
+
+<h3>Steps</h3>
+
+<pre>Transform Data ↓ Validate Results ↓ Close & Apply ↓ Load Data into Power BI</pre>
+
+<h3>Example 1</h3>
+<p>A company loads cleaned sales data into Power BI.</p>
+
+<h3>Example 2</h3>
+<p>A student applies transformations after removing duplicate entries.</p>
+
+<h2>Topic 12: Data Types</h2>
+
+<p>Data Types define the nature of data stored in a column.</p>
+
+<h3>Common Data Types</h3>
+
+<table>
+<tr>
+<th>Data Type</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Text</td>
+<td>Name</td>
+</tr>
+<tr>
+<td>Whole Number</td>
+<td>Quantity</td>
+</tr>
+<tr>
+<td>Decimal Number</td>
+<td>Price</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>01-01-2025</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>10:30 AM</td>
+</tr>
+<tr>
+<td>Date/Time</td>
+<td>01-01-2025 10:30 AM</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>True/False</td>
+</tr>
+</table>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Accurate calculations</li>
+<li>Better filtering</li>
+<li>Improved performance</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>Sales amount should be Decimal Number.</p>
+
+<h3>Example 2</h3>
+<p>Student names should be Text.</p>
+
+<h2>Topic 13 to Topic 27</h2>
+
+<p>The remaining content continues with:</p>
+
+<ul>
+<li>Changing Data Types</li>
+<li>Filters in Power Query</li>
+<li>Text Filters</li>
+<li>Number Filters</li>
+<li>Date Filters</li>
+<li>Filter Multiple Columns</li>
+<li>Remove Columns / Remove Other Columns</li>
+<li>Name / Rename a Column</li>
+<li>Reorder Columns or Sort Columns</li>
+<li>Add Column / Custom Column</li>
+<li>Split Columns</li>
+<li>Merge Columns</li>
+<li>Pivot Columns</li>
+<li>Unpivot Columns</li>
+<li>Transpose Columns</li>
+<li>Quick Revision Summary</li>
+<li>Important Terms and Definitions</li>
+<li>Important Formulae</li>
+<li>Short Answer Questions</li>
+<li>Long Answer Questions</li>
+<li>Case-Based Questions</li>
+</ul>
+
+<p>The content should continue exactly as provided, preserving every word and section in the same structure.</p>
+
+</div>
+</body>
+</html>

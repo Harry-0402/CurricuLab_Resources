@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5: Visualizations and Dashboards</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 5: Visualizations and Dashboards</h1>
+
+<h2>Introduction</h2>
+
+<p>Data analysis becomes meaningful only when insights are presented in a clear and understandable manner. Visualizations help convert raw numbers into charts, graphs, and interactive reports that are easier to interpret. Power BI provides a wide variety of visualization tools that enable users to discover trends, compare performance, identify patterns, and make better decisions.</p>
+
+<p>A Dashboard is a collection of visualizations displayed on a single screen that provides a summary of important business information.</p>
+
+<h3>Visualization Process</h3>
+
+<p>Raw Data ↓ Data Modeling ↓ DAX Calculations ↓ Visualizations ↓ Reports ↓ Dashboards ↓ Business Decisions</p>
+
+<h2>Topic 1: Visualizing Data</h2>
+
+<h3>Explanation</h3>
+
+<p>Data Visualization is the graphical representation of information using charts, graphs, maps, tables, and dashboards.</p>
+
+<p>Visualization helps users understand complex data quickly without analyzing large tables of numbers.</p>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Simplifies complex information.</li>
+<li>Improves decision-making.</li>
+<li>Identifies trends and patterns.</li>
+<li>Enhances communication.</li>
+<li>Makes reports interactive.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>A retail company uses charts to analyze monthly sales performance.</p>
+
+<h3>Example 2</h3>
+
+<p>A student uses graphs to compare marks across subjects.</p>
+
+<h2>Topic 2: Why Visualizations?</h2>
+
+<h3>Explanation</h3>
+
+<p>Humans understand visual information much faster than numerical data.</p>
+
+<h3>Reasons for Using Visualizations</h3>
+
+<ul>
+<li>Easy interpretation.</li>
+<li>Quick identification of trends.</li>
+<li>Better business decisions.</li>
+<li>Increased report attractiveness.</li>
+<li>Improved communication.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>A sales manager quickly identifies declining sales through a line chart.</p>
+
+<h3>Example 2</h3>
+
+<p>A teacher identifies top-performing students using a bar chart.</p>
+
+<h2>Topic 3: Visualization Types</h2>
+
+<h3>Explanation</h3>
+
+<p>Power BI offers various visualization types depending on the nature of the data.</p>
+
+<table>
+<tr>
+<th>Visualization</th>
+<th>Best Use</th>
+</tr>
+<tr><td>Bar Chart</td><td>Category comparison</td></tr>
+<tr><td>Column Chart</td><td>Vertical comparison</td></tr>
+<tr><td>Pie Chart</td><td>Part-to-whole analysis</td></tr>
+<tr><td>Line Chart</td><td>Trend analysis</td></tr>
+<tr><td>Scatter Chart</td><td>Relationship analysis</td></tr>
+<tr><td>Table</td><td>Detailed information</td></tr>
+<tr><td>Matrix</td><td>Multi-dimensional data</td></tr>
+<tr><td>Funnel Chart</td><td>Process stages</td></tr>
+<tr><td>Waterfall Chart</td><td>Incremental changes</td></tr>
+</table>
+
+<h3>Example 1</h3>
+
+<p>A company compares branch sales using a bar chart.</p>
+
+<h3>Example 2</h3>
+
+<p>A student tracks attendance trends using a line chart.</p>
+
+<h2>Topic 4: Create and Format Bar and Column Charts</h2>
+
+<h3>Explanation</h3>
+
+<p><strong>Bar Chart</strong></p>
+
+<p>Displays data using horizontal bars.</p>
+
+<p><strong>Column Chart</strong></p>
+
+<p>Displays data using vertical columns.</p>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Compare categories.</li>
+<li>Analyze performance.</li>
+<li>Rank values.</li>
+</ul>
+
+<h3>Formatting Options</h3>
+
+<ul>
+<li>Titles</li>
+<li>Data Labels</li>
+<li>Colors</li>
+<li>Axis Labels</li>
+<li>Background</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Compare sales across different regions.</p>
+
+<h3>Example 2</h3>
+
+<p>Compare marks obtained in different subjects.</p>
+
+<h2>Topic 5: Create and Format Stacked Bar Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>A Stacked Bar Chart shows both total values and category composition.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Compare totals.</li>
+<li>Compare contributions of subcategories.</li>
+</ul>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Region</th>
+<th>Product A</th>
+<th>Product B</th>
+</tr>
+<tr>
+<td>North</td>
+<td>100</td>
+<td>200</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+
+<p>Sales contribution by product category.</p>
+
+<h3>Example 2</h3>
+
+<p>Department-wise employee distribution.</p>
+
+<h2>Topic 6: Create and Format Stacked Column Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>A Stacked Column Chart displays stacked values vertically.</p>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Compare total values.</li>
+<li>Analyze category contribution.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Monthly sales categorized by products.</p>
+
+<h3>Example 2</h3>
+
+<p>Student attendance categorized by semester.</p>
+
+<h2>Topic 7: Create and Format Clustered Bar Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Clustered Bar Charts place multiple categories side by side for comparison.</p>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Direct comparison.</li>
+<li>Clear visualization.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Compare current-year and previous-year sales.</p>
+
+<h3>Example 2</h3>
+
+<p>Compare boys' and girls' performance.</p>
+
+<h2>Topic 8: Create and Format Clustered Column Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Clustered Column Charts display grouped columns for easy comparison.</p>
+
+<h3>Example 1</h3>
+
+<p>Compare branch performance.</p>
+
+<h3>Example 2</h3>
+
+<p>Compare yearly revenue.</p>
+
+<h2>Topic 9: Create and Format 100% Stacked Bar Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Shows percentage contribution rather than actual values.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Total always equals 100%.</li>
+<li>Highlights proportions.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Market share analysis.</p>
+
+<h3>Example 2</h3>
+
+<p>Survey response percentages.</p>
+
+<h2>Topic 10: Create and Format 100% Stacked Column Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Displays percentage contributions vertically.</p>
+
+<h3>Example 1</h3>
+
+<p>Product category contribution to total sales.</p>
+
+<h3>Example 2</h3>
+
+<p>Department budget allocation percentages.</p>
+
+<h2>Topic 11: Create and Format Pie Charts</h2>
+
+<h3>Explanation</h3>
+
+<p>Pie Charts represent parts of a whole using slices.</p>
+
+<h3>Suitable For</h3>
+
+<ul>
+<li>Percentage analysis.</li>
+<li>Composition analysis.</li>
+</ul>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Easy to understand.</li>
+<li>Attractive presentation.</li>
+</ul>
+
+<h3>Limitations</h3>
+
+<ul>
+<li>Difficult with many categories.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Market share analysis.</p>
+
+<h3>Example 2</h3>
+
+<p>Household expense distribution.</p>
+
+<h2>Topic 12: Create and Format Donut Charts</h2>
+
+<h3>Explanation</h3>
+
+<p>A Donut Chart is similar to a Pie Chart but contains a hole in the center.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>More modern appearance.</li>
+<li>Can display totals in center.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Department budget allocation.</p>
+
+<h3>Example 2</h3>
+
+<p>Monthly expense breakdown.</p>
+
+<h2>Topic 13: Create and Format Scatter Charts</h2>
+
+<h3>Explanation</h3>
+
+<p>Scatter Charts show relationships between two numerical variables.</p>
+
+<h3>Applications</h3>
+
+<ul>
+<li>Correlation analysis.</li>
+<li>Trend identification.</li>
+<li>Outlier detection.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Advertising expenditure vs sales.</p>
+
+<h3>Example 2</h3>
+
+<p>Study hours vs examination scores.</p>
+
+<h2>Topic 14: Create and Format Table Visual</h2>
+
+<h3>Explanation</h3>
+
+<p>Table Visual displays data in rows and columns.</p>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Detailed information.</li>
+<li>Precise values.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Employee information report.</p>
+
+<h3>Example 2</h3>
+
+<p>Student marks report.</p>
+
+<h2>Topic 15: Matrix Visualization</h2>
+
+<h3>Explanation</h3>
+
+<p>Matrix Visualization is an advanced table that supports grouping and drill-down.</p>
+
+<h3>Features</h3>
+
+<ul>
+<li>Hierarchical data.</li>
+<li>Subtotals.</li>
+<li>Expand/Collapse options.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Sales by Region → State → City.</p>
+
+<h3>Example 2</h3>
+
+<p>Student performance by Department → Course.</p>
+
+<h2>Topic 16: Line and Area Charts</h2>
+
+<h3>Explanation</h3>
+
+<p>These charts are used for trend analysis.</p>
+
+<p><strong>Line Chart</strong></p>
+
+<p>Displays trends using connected points.</p>
+
+<p><strong>Area Chart</strong></p>
+
+<p>Similar to line charts but with shaded areas.</p>
+
+<h3>Example 1</h3>
+
+<p>Monthly sales trend.</p>
+
+<h3>Example 2</h3>
+
+<p>Temperature variation throughout the year.</p>
+
+<h2>Topic 17: Create and Format Line Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Line Charts are ideal for time-based data.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Trend analysis.</li>
+<li>Forecasting support.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Revenue growth over years.</p>
+
+<h3>Example 2</h3>
+
+<p>Attendance trends over semesters.</p>
+
+<h2>Topic 18: Area Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Area Charts emphasize the magnitude of values.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Shows trends.</li>
+<li>Highlights volume.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Monthly production output.</p>
+
+<h3>Example 2</h3>
+
+<p>Daily website traffic.</p>
+
+<h2>Topic 19: Stacked Area Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Displays trends while showing category contributions.</p>
+
+<h3>Example 1</h3>
+
+<p>Sales trend by product category.</p>
+
+<h3>Example 2</h3>
+
+<p>Department-wise expenditure trends.</p>
+
+<h2>Topic 20: Combo Charts</h2>
+
+<h3>Explanation</h3>
+
+<p>Combo Charts combine multiple chart types.</p>
+
+<p>Most commonly:</p>
+
+<ul>
+<li>Line Chart</li>
+<li>Column Chart</li>
+</ul>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Compare different metrics simultaneously.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Revenue and profit analysis.</p>
+
+<h3>Example 2</h3>
+
+<p>Attendance and marks comparison.</p>
+
+<h2>Topic 21: Create and Format Line and Stacked Column Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Combines a line chart with stacked columns.</p>
+
+<h3>Example 1</h3>
+
+<p>Monthly sales with product-wise breakdown.</p>
+
+<h3>Example 2</h3>
+
+<p>Student enrollment with departmental contribution.</p>
+
+<h2>Topic 22: Line and Clustered Column Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Combines line charts and clustered columns.</p>
+
+<h3>Example 1</h3>
+
+<p>Sales versus target analysis.</p>
+
+<h3>Example 2</h3>
+
+<p>Production versus demand analysis.</p>
+
+<h2>Topic 23: Create and Format Ribbon Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Ribbon Charts show ranking changes over time.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Track movement in rankings.</li>
+<li>Identify top performers.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Market share ranking of companies.</p>
+
+<h3>Example 2</h3>
+
+<p>Student rank progression.</p>
+
+<h2>Topic 24: Waterfall Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Waterfall Charts show how positive and negative values contribute to a final result.</p>
+
+<h3>Applications</h3>
+
+<ul>
+<li>Profit analysis.</li>
+<li>Financial reporting.</li>
+</ul>
+
+<p>Example</p>
+
+<p>Revenue ↓ Expenses ↓ Taxes ↓ Net Profit</p>
+
+<h3>Example 1</h3>
+
+<p>Business profit calculation.</p>
+
+<h3>Example 2</h3>
+
+<p>Personal income and expenditure tracking.</p>
+
+<h2>Topic 25: Funnel Chart</h2>
+
+<h3>Explanation</h3>
+
+<p>Funnel Charts display stages of a process.</p>
+
+<h3>Applications</h3>
+
+<ul>
+<li>Sales pipeline.</li>
+<li>Recruitment process.</li>
+<li>Admission process.</li>
+</ul>
+
+<p>Example</p>
+
+<p>Leads ↓ Prospects ↓ Customers</p>
+
+<h3>Example 1</h3>
+
+<p>Sales conversion analysis.</p>
+
+<h3>Example 2</h3>
+
+<p>College admission process.</p>
+
+<h2>Topic 26: Creating Dashboards</h2>
+
+<h3>Explanation</h3>
+
+<p>A Dashboard is a single-page visual interface that combines multiple reports and visualizations.</p>
+
+<p>It provides a consolidated view of business performance.</p>
+
+<h3>Dashboard Components</h3>
+
+<ul>
+<li>Charts</li>
+<li>KPIs</li>
+<li>Tables</li>
+<li>Filters</li>
+<li>Slicers</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Sales Performance Dashboard.</p>
+
+<h3>Example 2</h3>
+
+<p>Student Performance Dashboard.</p>
+
+<h2>Topic 27: Advantages of Dashboards</h2>
+
+<h3>Explanation</h3>
+
+<ul>
+<li>Real-time monitoring.</li>
+<li>Better decision-making.</li>
+<li>Easy information sharing.</li>
+<li>Improved productivity.</li>
+<li>Quick problem identification.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Management monitors company performance daily.</p>
+
+<h3>Example 2</h3>
+
+<p>School administrators track student results.</p>
+
+<h2>Topic 28: Interacting with Dashboards</h2>
+
+<h3>Explanation</h3>
+
+<p>Power BI dashboards are interactive.</p>
+
+<h3>Interaction Features</h3>
+
+<ul>
+<li>Drill Down</li>
+<li>Drill Through</li>
+<li>Filters</li>
+<li>Slicers</li>
+<li>Cross Highlighting</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Clicking a region shows region-specific sales.</p>
+
+<h3>Example 2</h3>
+
+<p>Selecting a class displays student performance.</p>
+
+<h2>Topic 29: Formatting Dashboard</h2>
+
+<h3>Explanation</h3>
+
+<p>Dashboard formatting improves readability and appearance.</p>
+
+<table>
+<tr>
+<th>Element</th>
+<th>Purpose</th>
+</tr>
+<tr><td>Titles</td><td>Identify visuals</td></tr>
+<tr><td>Themes</td><td>Consistent appearance</td></tr>
+<tr><td>Colors</td><td>Better understanding</td></tr>
+<tr><td>Alignment</td><td>Professional layout</td></tr>
+<tr><td>Labels</td><td>Improve readability</td></tr>
+</table>
+
+<h3>Example 1</h3>
+
+<p>A company applies corporate branding colors.</p>
+
+<h3>Example 2</h3>
+
+<p>A college dashboard uses uniform fonts and layouts.</p>
+
+<h2>Topic 30: Sharing Dashboard</h2>
+
+<h3>Explanation</h3>
+
+<p>Power BI allows dashboards to be shared with users through Power BI Service.</p>
+
+<h3>Sharing Methods</h3>
+
+<ul>
+<li>Direct Sharing</li>
+<li>Workspace Access</li>
+<li>Publish to Web</li>
+<li>Mobile Access</li>
+</ul>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Team collaboration.</li>
+<li>Centralized reporting.</li>
+<li>Remote accessibility.</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Managers access company dashboards online.</p>
+
+<h3>Example 2</h3>
+
+<p>Teachers share performance reports with administrators.</p>
+
+<h2>Comparison of Major Visualizations</h2>
+
+<table>
+<tr>
+<th>Visualization</th>
+<th>Best For</th>
+<th>Example</th>
+</tr>
+<tr><td>Bar Chart</td><td>Category comparison</td><td>Branch sales</td></tr>
+<tr><td>Column Chart</td><td>Vertical comparison</td><td>Subject marks</td></tr>
+<tr><td>Pie Chart</td><td>Percentage share</td><td>Market share</td></tr>
+<tr><td>Line Chart</td><td>Trend analysis</td><td>Monthly revenue</td></tr>
+<tr><td>Scatter Chart</td><td>Relationship analysis</td><td>Sales vs Advertising</td></tr>
+<tr><td>Table</td><td>Detailed data</td><td>Employee records</td></tr>
+<tr><td>Matrix</td><td>Hierarchical data</td><td>Region-wise sales</td></tr>
+<tr><td>Funnel</td><td>Process stages</td><td>Sales pipeline</td></tr>
+<tr><td>Waterfall</td><td>Incremental changes</td><td>Profit analysis</td></tr>
+</table>
+
+<h2>Flowchart: Dashboard Creation Process</h2>
+
+<p>Import Data ↓ Transform Data ↓ Create Data Model ↓ Build Visualizations ↓ Arrange Dashboard ↓ Format Dashboard ↓ Publish & Share</p>
+
+<h2>Quick Revision Summary</h2>
+
+<ul>
+<li>Visualizations convert data into graphical insights.</li>
+<li>Bar, Column, Pie, and Line charts are the most commonly used visuals.</li>
+<li>Scatter charts analyze relationships between variables.</li>
+<li>Waterfall charts show incremental changes.</li>
+<li>Dashboards provide a consolidated view of business performance.</li>
+<li>Power BI dashboards support interactive analysis and sharing.</li>
+</ul>
+
+<h2>Important Terms and Definitions</h2>
+
+<table>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+<tr><td>Visualization</td><td>Graphical representation of data</td></tr>
+<tr><td>Dashboard</td><td>Single-page collection of visual insights</td></tr>
+<tr><td>Pie Chart</td><td>Visual showing part-to-whole relationship</td></tr>
+<tr><td>Scatter Chart</td><td>Visual showing relationship between variables</td></tr>
+<tr><td>Matrix</td><td>Hierarchical table visualization</td></tr>
+<tr><td>Funnel Chart</td><td>Process stage visualization</td></tr>
+<tr><td>Waterfall Chart</td><td>Incremental change analysis</td></tr>
+<tr><td>Slicer</td><td>Interactive filtering tool</td></tr>
+<tr><td>Drill Down</td><td>Navigate into detailed data</td></tr>
+<tr><td>Cross Highlighting</td><td>Interaction among visuals</td></tr>
+</table>
+
+<h2>Important Formulae</h2>
+
+<p>No mathematical formulas are prescribed in this unit.</p>
+
+<p>Important visualization selection guide:</p>
+
+<ul>
+<li>Trend Analysis → Line Chart</li>
+<li>Category Comparison → Bar/Column Chart</li>
+<li>Part-to-Whole Analysis → Pie/Donut Chart</li>
+<li>Relationship Analysis → Scatter Chart</li>
+<li>Process Analysis → Funnel Chart</li>
+<li>Profit Analysis → Waterfall Chart</li>
+</ul>
+
+<h2>Short Answer Questions</h2>
+
+<ol>
+<li>What is Data Visualization?</li>
+<li>Why are visualizations important?</li>
+<li>What is a Bar Chart?</li>
+<li>What is a Pie Chart?</li>
+<li>Define Scatter Chart.</li>
+<li>What is Matrix Visualization?</li>
+<li>What is a Funnel Chart?</li>
+<li>What is a Dashboard?</li>
+<li>What is a Slicer?</li>
+<li>What is Cross Highlighting?</li>
+</ol>
+
+<h2>Long Answer Questions</h2>
+
+<ol>
+<li>Explain the importance of data visualization in Power BI.</li>
+<li>Discuss various visualization types available in Power BI.</li>
+<li>Explain Bar Charts, Column Charts, and Pie Charts with examples.</li>
+<li>Describe Line Charts, Area Charts, and Combo Charts.</li>
+<li>Explain Funnel Charts, Waterfall Charts, and Ribbon Charts.</li>
+<li>Discuss Dashboard creation and formatting in Power BI.</li>
+<li>Explain dashboard sharing and interaction features.</li>
+</ol>
+
+<h2>Case-Based Questions</h2>
+
+<h3>Case 1</h3>
+
+<p>A sales manager wants to compare sales across different regions and identify monthly trends.</p>
+
+<p>Which visualizations should be used?</p>
+
+<p>Justify your answer.</p>
+
+<h3>Case 2</h3>
+
+<p>A company wants to analyze the conversion of leads into customers.</p>
+
+<p>Which Power BI visualization is most suitable?</p>
+
+<p>Explain why.</p>
+
+<h3>Case 3</h3>
+
+<p>A university wants a single screen showing admissions, attendance, results, and placement statistics.</p>
+
+<p>What Power BI feature should be used?</p>
+
+<p>Explain its advantages.</p>
+
+</div>
+</body>
+</html>

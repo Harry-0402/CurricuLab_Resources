@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3: Data Modeling</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 3: Data Modeling</h1>
+
+<h2>Introduction</h2>
+
+<p>After data has been cleaned and transformed using Power Query, the next important step is Data Modeling. Data Modeling is the process of organizing data from different tables and creating relationships between them so that meaningful analysis can be performed.</p>
+
+<p>In Power BI, data modeling helps users connect related tables, avoid data duplication, improve report performance, and create accurate calculations.</p>
+
+<p>Without proper data modeling, reports may produce incorrect results and become difficult to manage.</p>
+
+<h3>Data Modeling Process</h3>
+
+<pre>Import Data ↓ Identify Related Tables ↓ Create Relationships ↓ Validate Relationships ↓ Build Data Model ↓ Create Reports & Dashboards</pre>
+
+<h2>Topic 1: Data Modeling Introduction</h2>
+
+<h3>Explanation</h3>
+
+<p>Data Modeling is the process of defining how data tables are connected and how information flows between them.</p>
+
+<p>A good data model:</p>
+
+<ul>
+<li>Improves report performance.</li>
+<li>Reduces redundancy.</li>
+<li>Ensures data accuracy.</li>
+<li>Simplifies analysis.</li>
+<li>Supports advanced calculations.</li>
+</ul>
+
+<h3>Components of a Data Model</h3>
+
+<table>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Tables</td>
+<td>Store data</td>
+</tr>
+<tr>
+<td>Columns</td>
+<td>Store attributes</td>
+</tr>
+<tr>
+<td>Relationships</td>
+<td>Connect tables</td>
+</tr>
+<tr>
+<td>Keys</td>
+<td>Establish connections</td>
+</tr>
+<tr>
+<td>Measures</td>
+<td>Perform calculations</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+<p>A retail company stores Customer, Product, and Sales information in separate tables and connects them through relationships.</p>
+
+<h3>Example 2</h3>
+<p>A school maintains Student, Course, and Marks tables and links them for performance analysis.</p>
+
+<h2>Topic 2: Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>A Relationship is a connection between two tables based on a common column.</p>
+
+<p>Relationships allow Power BI to combine information from multiple tables during analysis.</p>
+
+<h3>Example</h3>
+
+<p><strong>Customer Table</strong></p>
+
+<table>
+<tr>
+<th>Customer ID</th>
+<th>Customer Name</th>
+</tr>
+<tr>
+<td>101</td>
+<td>Amit</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Priya</td>
+</tr>
+</table>
+
+<p><strong>Sales Table</strong></p>
+
+<table>
+<tr>
+<th>Customer ID</th>
+<th>Sales Amount</th>
+</tr>
+<tr>
+<td>101</td>
+<td>5000</td>
+</tr>
+<tr>
+<td>102</td>
+<td>7000</td>
+</tr>
+</table>
+
+<p>Customer ID acts as the common field connecting both tables.</p>
+
+<h3>Example 1</h3>
+<p>An e-commerce company links customer and order tables.</p>
+
+<h3>Example 2</h3>
+<p>A college links student and examination tables.</p>
+
+<h2>Topic 3: Need of Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>Relationships are required when data is distributed across multiple tables.</p>
+
+<h3>Why Relationships are Needed</h3>
+
+<ul>
+<li>Combine information from different tables.</li>
+<li>Avoid duplicate data storage.</li>
+<li>Improve database efficiency.</li>
+<li>Enable accurate calculations.</li>
+<li>Support filtering across tables.</li>
+</ul>
+
+<h3>Without Relationship</h3>
+
+<p>Customer data and sales data cannot communicate.</p>
+
+<h3>With Relationship</h3>
+
+<p>Customer data can be linked directly to sales transactions.</p>
+
+<h3>Example 1</h3>
+<p>A company analyzes which customers generate the highest revenue.</p>
+
+<h3>Example 2</h3>
+<p>A university tracks student performance across multiple subjects.</p>
+
+<h2>Topic 4: Relationship Types / Cardinality in General</h2>
+
+<h3>Explanation</h3>
+
+<p>Cardinality defines how records in one table relate to records in another table.</p>
+
+<p>Power BI supports different types of relationships.</p>
+
+<h3>Relationship Types</h3>
+
+<table>
+<tr>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>One-to-One</td>
+<td>One record relates to one record</td>
+</tr>
+<tr>
+<td>One-to-Many</td>
+<td>One record relates to many records</td>
+</tr>
+<tr>
+<td>Many-to-One</td>
+<td>Many records relate to one record</td>
+</tr>
+<tr>
+<td>Many-to-Many</td>
+<td>Multiple records relate on both sides</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+<p>Employee and Employee ID Card relationship.</p>
+
+<h3>Example 2</h3>
+<p>Customer and Sales relationship.</p>
+
+<h2>Topic 5: One-to-One Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>In a One-to-One relationship, each record in one table corresponds to exactly one record in another table.</p>
+
+<h3>Example</h3>
+
+<p><strong>Employee Table</strong></p>
+
+<table>
+<tr>
+<th>Employee ID</th>
+<th>Name</th>
+</tr>
+<tr>
+<td>1</td>
+<td>Rahul</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Neha</td>
+</tr>
+</table>
+
+<p><strong>ID Card Table</strong></p>
+
+<table>
+<tr>
+<th>Employee ID</th>
+<th>Card Number</th>
+</tr>
+<tr>
+<td>1</td>
+<td>C101</td>
+</tr>
+<tr>
+<td>2</td>
+<td>C102</td>
+</tr>
+</table>
+
+<p>Each employee has one ID card.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Unique records on both sides.</li>
+<li>Less commonly used.</li>
+<li>Suitable for sensitive information separation.</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>Employee and ID card information.</p>
+
+<h3>Example 2</h3>
+<p>Student and Library Membership record.</p>
+
+<h2>Topic 6: One-to-Many Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>This is the most common relationship in Power BI.</p>
+
+<p>One record in the first table can relate to many records in the second table.</p>
+
+<h3>Example</h3>
+
+<p><strong>Customer Table</strong></p>
+
+<table>
+<tr>
+<th>Customer ID</th>
+<th>Name</th>
+</tr>
+<tr>
+<td>101</td>
+<td>Amit</td>
+</tr>
+</table>
+
+<p><strong>Sales Table</strong></p>
+
+<table>
+<tr>
+<th>Customer ID</th>
+<th>Amount</th>
+</tr>
+<tr>
+<td>101</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>101</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>101</td>
+<td>5000</td>
+</tr>
+</table>
+
+<p>One customer can have many sales transactions.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Most frequently used.</li>
+<li>Supports efficient analysis.</li>
+<li>Easy to manage.</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>Customer and Orders.</p>
+
+<h3>Example 2</h3>
+<p>Department and Employees.</p>
+
+<h2>Topic 7: Many-to-One Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>Many records from one table correspond to a single record in another table.</p>
+
+<p>This is simply the reverse perspective of One-to-Many.</p>
+
+<h3>Example</h3>
+
+<p>Many employees belong to one department.</p>
+
+<table>
+<tr>
+<th>Department ID</th>
+<th>Department</th>
+</tr>
+<tr>
+<td>D01</td>
+<td>HR</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<th>Employee ID</th>
+<th>Department ID</th>
+</tr>
+<tr>
+<td>E01</td>
+<td>D01</td>
+</tr>
+<tr>
+<td>E02</td>
+<td>D01</td>
+</tr>
+<tr>
+<td>E03</td>
+<td>D01</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+<p>Multiple products belong to one category.</p>
+
+<h3>Example 2</h3>
+<p>Many students belong to one class.</p>
+
+<h2>Topic 8: Many-to-Many Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>In a Many-to-Many relationship, multiple records in one table relate to multiple records in another table.</p>
+
+<h3>Example</h3>
+
+<p><strong>Students Table</strong></p>
+
+<table>
+<tr>
+<th>Student</th>
+</tr>
+<tr>
+<td>A</td>
+</tr>
+<tr>
+<td>B</td>
+</tr>
+</table>
+
+<p><strong>Courses Table</strong></p>
+
+<table>
+<tr>
+<th>Course</th>
+</tr>
+<tr>
+<td>Power BI</td>
+</tr>
+<tr>
+<td>Python</td>
+</tr>
+</table>
+
+<p>A student can enroll in many courses, and a course can have many students.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>More complex.</li>
+<li>Can create ambiguity.</li>
+<li>Requires careful modeling.</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>Students and Courses.</p>
+
+<h3>Example 2</h3>
+<p>Customers and Products.</p>
+
+<h2>Topic 9: Auto Detect Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>Power BI can automatically identify relationships when tables contain matching fields.</p>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Saves time.</li>
+<li>Reduces manual work.</li>
+<li>Quick model creation.</li>
+</ul>
+
+<h3>Process</h3>
+
+<pre>Import Tables ↓ Detect Common Fields ↓ Generate Relationships ↓ Validate Results</pre>
+
+<h3>Example 1</h3>
+<p>Customer ID appears in both Customer and Sales tables.</p>
+
+<h3>Example 2</h3>
+<p>Product ID appears in Product and Inventory tables.</p>
+
+<h2>Topic 10: Create a New Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>Users can manually create relationships when Power BI cannot detect them automatically.</p>
+
+<h3>Steps</h3>
+
+<ol>
+<li>Open Model View.</li>
+<li>Select Manage Relationships.</li>
+<li>Click New.</li>
+<li>Select tables.</li>
+<li>Select matching columns.</li>
+<li>Define cardinality.</li>
+<li>Save relationship.</li>
+</ol>
+
+<h3>Example 1</h3>
+<p>Link Product ID between Product and Sales tables.</p>
+
+<h3>Example 2</h3>
+<p>Connect Student ID between Student and Result tables.</p>
+
+<h2>Topic 11: Edit Existing Relationships</h2>
+
+<h3>Explanation</h3>
+
+<p>Existing relationships can be modified whenever business requirements change.</p>
+
+<h3>Editable Properties</h3>
+
+<ul>
+<li>Related tables</li>
+<li>Related columns</li>
+<li>Cardinality</li>
+<li>Cross-filter direction</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>Change relationship type from Many-to-Many to One-to-Many.</p>
+
+<h3>Example 2</h3>
+<p>Modify filtering direction between tables.</p>
+
+<h2>Topic 12: Make Relationship Active or Inactive</h2>
+
+<h3>Explanation</h3>
+
+<p>Power BI allows multiple relationships between tables, but only one can be active at a time.</p>
+
+<h3>Active Relationship</h3>
+
+<p>Used automatically during report calculations.</p>
+
+<h3>Inactive Relationship</h3>
+
+<p>Stored but not used unless explicitly referenced.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Sales Table</th>
+</tr>
+<tr>
+<td>Order Date</td>
+</tr>
+<tr>
+<td>01-Jan-2025</td>
+</tr>
+<tr>
+<td>Delivery Date</td>
+</tr>
+<tr>
+<td>05-Jan-2025</td>
+</tr>
+</table>
+
+<p>A Date table can connect with both fields:</p>
+
+<ul>
+<li>Order Date → Active</li>
+<li>Delivery Date → Inactive</li>
+</ul>
+
+<h3>Example 1</h3>
+<p>Sales analysis by order date.</p>
+
+<h3>Example 2</h3>
+<p>Delivery performance analysis using inactive relationship.</p>
+
+<h2>Topic 13: Delete a Relationship</h2>
+
+<h3>Explanation</h3>
+
+<p>Relationships can be removed when they are unnecessary or causing incorrect results.</p>
+
+<h3>Reasons to Delete</h3>
+
+<ul>
+<li>Incorrect linkage.</li>
+<li>Duplicate relationships.</li>
+<li>Business requirement changes.</li>
+</ul>
+
+<h3>Steps</h3>
+
+<pre>Model View ↓ Select Relationship ↓ Delete Relationship ↓ Confirm</pre>
+
+<h3>Example 1</h3>
+<p>Remove an outdated relationship between legacy tables.</p>
+
+<h3>Example 2</h3>
+<p>Delete a duplicate relationship causing report errors.</p>
+
+<h2>Comparison of Relationship Types</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>One-to-One</th>
+<th>One-to-Many</th>
+<th>Many-to-One</th>
+<th>Many-to-Many</th>
+</tr>
+<tr>
+<td>Uniqueness</td>
+<td>Unique both sides</td>
+<td>One side unique</td>
+<td>Many side repeated</td>
+<td>Repeated both sides</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Low</td>
+<td>Low</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Usage Frequency</td>
+<td>Rare</td>
+<td>Very Common</td>
+<td>Common</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Employee-ID Card</td>
+<td>Customer-Sales</td>
+<td>Employee-Department</td>
+<td>Student-Course</td>
+</tr>
+</table>
+
+<h2>Flowchart: Relationship Creation in Power BI</h2>
+
+<pre>Import Tables ↓ Identify Common Columns ↓ Determine Cardinality ↓ Create Relationship ↓ Validate Relationship ↓ Build Reports</pre>
+
+<h2>Quick Revision Summary</h2>
+
+<ul>
+<li>Data Modeling organizes data for analysis.</li>
+<li>Relationships connect tables using common fields.</li>
+<li>One-to-Many is the most commonly used relationship.</li>
+<li>Power BI can automatically detect relationships.</li>
+<li>Relationships can be active, inactive, edited, or deleted.</li>
+</ul>
+
+<h2>Important Terms and Definitions</h2>
+
+<table>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+<tr>
+<td>Data Model</td>
+<td>Structured organization of related tables</td>
+</tr>
+<tr>
+<td>Relationship</td>
+<td>Connection between two tables</td>
+</tr>
+<tr>
+<td>Cardinality</td>
+<td>Nature of relationship between tables</td>
+</tr>
+<tr>
+<td>One-to-One</td>
+<td>One record relates to one record</td>
+</tr>
+<tr>
+<td>One-to-Many</td>
+<td>One record relates to many records</td>
+</tr>
+<tr>
+<td>Many-to-Many</td>
+<td>Multiple records relate on both sides</td>
+</tr>
+<tr>
+<td>Active Relationship</td>
+<td>Relationship used automatically</td>
+</tr>
+<tr>
+<td>Inactive Relationship</td>
+<td>Relationship stored but not automatically used</td>
+</tr>
+<tr>
+<td>Foreign Key</td>
+<td>Column linking tables</td>
+</tr>
+<tr>
+<td>Auto Detect</td>
+<td>Automatic relationship creation by Power BI</td>
+</tr>
+</table>
+
+<h2>Important Formulae</h2>
+
+<p>No mathematical formulas are included in this unit.</p>
+
+<p>Important concept:</p>
+
+<pre>Primary Key ↓ Relationship ↓ Foreign Key</pre>
+
+<p>This forms the foundation of data modeling.</p>
+
+<h2>Short Answer Questions</h2>
+
+<ol>
+<li>What is Data Modeling?</li>
+<li>Define Relationship in Power BI.</li>
+<li>Why are relationships required?</li>
+<li>What is Cardinality?</li>
+<li>Define One-to-One Relationship.</li>
+<li>Define One-to-Many Relationship.</li>
+<li>What is Many-to-Many Relationship?</li>
+<li>What is Auto Detect Relationship?</li>
+<li>Differentiate Active and Inactive Relationships.</li>
+<li>How can a relationship be deleted?</li>
+</ol>
+
+<h2>Long Answer Questions</h2>
+
+<ol>
+<li>Explain Data Modeling and its importance in Power BI.</li>
+<li>Discuss various types of relationships with examples.</li>
+<li>Explain One-to-One, One-to-Many, and Many-to-Many relationships.</li>
+<li>Describe the process of creating relationships in Power BI.</li>
+<li>Explain Active and Inactive Relationships with examples.</li>
+<li>Discuss Auto Detect Relationship and its advantages.</li>
+<li>Explain relationship management in Power BI.</li>
+</ol>
+
+<h2>Case-Based Questions</h2>
+
+<h3>Case 1</h3>
+
+<p>A retail company has separate Customer, Product, and Sales tables.</p>
+
+<p>Which relationship type should be used?</p>
+
+<p>Explain how relationships improve reporting.</p>
+
+<h3>Case 2</h3>
+
+<p>A university stores Student and Course information where one student can enroll in multiple courses.</p>
+
+<p>Identify the relationship type.</p>
+
+<p>Explain why.</p>
+
+<h3>Case 3</h3>
+
+<p>A company accidentally created duplicate relationships between two tables.</p>
+
+<p>What problems may occur?</p>
+
+<p>How can the issue be resolved?</p>
+
+</div>
+</body>
+</html>
