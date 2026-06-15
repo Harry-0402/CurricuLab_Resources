@@ -1,1421 +1,741 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChatGPT - NoteSmith</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f7f7f8;
-      color: #1f2937;
-      line-height: 1.6;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    
-    /* Dark Mode Styles */
-    body.dark-mode {
-      background: #1a1a1a;
-      color: #e5e7eb;
-    }
-    body.dark-mode .header {
-      background: #2d2d2d;
-      color: #f9fafb;
-    }
-    body.dark-mode .header h1 {
-      color: #f9fafb;
-    }
-    body.dark-mode .summary-section,
-    body.dark-mode .toc-section,
-    body.dark-mode .message {
-      background: #2d2d2d;
-      color: #e5e7eb;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    body.dark-mode .summary-section h2,
-    body.dark-mode .toc-section h2 {
-      color: #f9fafb;
-    }
-    body.dark-mode .message-role.user {
-      color: #60a5fa;
-    }
-    body.dark-mode .message-role.assistant {
-      color: #c084fc;
-    }
-    body.dark-mode .message-content {
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content * {
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content h1,
-    body.dark-mode .message-content h2,
-    body.dark-mode .message-content h3,
-    body.dark-mode .message-content h4,
-    body.dark-mode .message-content h5,
-    body.dark-mode .message-content h6 {
-      color: #f9fafb;
-    }
-    body.dark-mode .message-content pre {
-      background: #1e1e1e !important;
-      border: 1px solid #404040;
-    }
-    body.dark-mode .message-content pre code {
-      background: transparent !important;
-      color: #d4d4d4 !important;
-    }
-    body.dark-mode .message-content code {
-      background: #374151 !important;
-      color: #f9fafb !important;
-    }
-    /* Keep syntax highlighting colors in dark mode */
-    body.dark-mode .message-content pre .hljs-keyword,
-    body.dark-mode .message-content pre .hljs-selector-tag,
-    body.dark-mode .message-content pre .hljs-literal,
-    body.dark-mode .message-content pre .hljs-tag {
-      color: #569cd6 !important;
-    }
-    body.dark-mode .message-content pre .hljs-string,
-    body.dark-mode .message-content pre .hljs-doctag {
-      color: #ce9178 !important;
-    }
-    body.dark-mode .message-content pre .hljs-title,
-    body.dark-mode .message-content pre .hljs-section,
-    body.dark-mode .message-content pre .hljs-selector-id {
-      color: #dcdcaa !important;
-    }
-    body.dark-mode .message-content pre .hljs-subst,
-    body.dark-mode .message-content pre .hljs-type,
-    body.dark-mode .message-content pre .hljs-class .hljs-title,
-    body.dark-mode .message-content pre .hljs-title.class_,
-    body.dark-mode .message-content pre .hljs-attr {
-      color: #4ec9b0 !important;
-    }
-    body.dark-mode .message-content pre .hljs-comment,
-    body.dark-mode .message-content pre .hljs-quote {
-      color: #6a9955 !important;
-    }
-    body.dark-mode .message-content pre .hljs-number,
-    body.dark-mode .message-content pre .hljs-built_in,
-    body.dark-mode .message-content pre .hljs-builtin-name {
-      color: #b5cea8 !important;
-    }
-    body.dark-mode .message-content pre .hljs-variable,
-    body.dark-mode .message-content pre .hljs-template-variable,
-    body.dark-mode .message-content pre .hljs-params {
-      color: #9cdcfe !important;
-    }
-    body.dark-mode .message-content pre .hljs-function {
-      color: #dcdcaa !important;
-    }
-    body.dark-mode .message-content pre .hljs-meta {
-      color: #c586c0 !important;
-    }
-    body.dark-mode .message-content pre .hljs-regexp,
-    body.dark-mode .message-content pre .hljs-symbol {
-      color: #d16969 !important;
-    }
-    body.dark-mode .message-content table th,
-    body.dark-mode .message-content table td {
-      border-color: #404040;
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content table th {
-      background: #374151;
-      color: #f9fafb;
-    }
-    body.dark-mode a {
-      color: #60a5fa;
-    }
-    body.dark-mode .summary-section > div > div {
-      color: #e5e7eb;
-    }
-    body.dark-mode .toc-section a {
-      color: #e5e7eb;
-    }
-    body.dark-mode .toc-link {
-      color: #e5e7eb !important;
-    }
-    body.dark-mode .toc-link:hover {
-      background: #374151 !important;
-    }
-    body.dark-mode .toc-role {
-      color: #9ca3af !important;
-    }
-    body.dark-mode .toc-preview {
-      color: #e5e7eb !important;
-    }
-    body.dark-mode .summary-export-info {
-      background: #374151 !important;
-    }
-    body.dark-mode .summary-card {
-      background: #374151 !important;
-      color: #e5e7eb !important;
-    }
-    body.dark-mode .summary-card > div {
-      color: #e5e7eb !important;
-    }
-    body.dark-mode .summary-card-blue {
-      background: #1e3a5f !important;
-      color: #93c5fd !important;
-    }
-    body.dark-mode .summary-card-blue > div {
-      color: #93c5fd !important;
-    }
-    body.dark-mode .summary-card-purple {
-      background: #4c1d95 !important;
-      color: #d8b4fe !important;
-    }
-    body.dark-mode .summary-card-purple > div {
-      color: #d8b4fe !important;
-    }
-    .summary-section {
-      background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .toc-section {
-      background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .summary-export-info {
-      background: #f9fafb;
-    }
-    .summary-card {
-      background: #f3f4f6;
-      color: #1f2937;
-    }
-    .summary-card > div:first-child {
-      color: #6b7280;
-    }
-    .summary-card > div:last-child {
-      color: #1f2937;
-    }
-    .summary-card-blue {
-      background: #dbeafe;
-    }
-    .summary-card-blue > div:first-child {
-      color: #1e40af;
-    }
-    .summary-card-blue > div:last-child {
-      color: #1e40af;
-    }
-    .summary-card-purple {
-      background: #e9d5ff;
-    }
-    .summary-card-purple > div:first-child {
-      color: #6b21a8;
-    }
-    .summary-card-purple > div:last-child {
-      color: #6b21a8;
-    }
-    .toc-link {
-      color: inherit;
-      transition: background 0.2s;
-    }
-    .toc-link:hover {
-      background: #f3f4f6;
-    }
-    .toc-role {
-      color: #6b7280;
-    }
-    .toc-preview {
-      color: #1f2937;
-    }
-    .header {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .header h1 {
-      margin: 0 0 10px 0;
-      color: #1f2937;
-    }
-    .metadata {
-      font-size: 14px;
-      color: #6b7280;
-    }
-    .message {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .message-role {
-      font-weight: 600;
-      margin-bottom: 10px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .message-role.user {
-      color: #2563eb;
-    }
-    .message-role.assistant {
-      color: #7c3aed;
-    }
-    .message-role img.chatgpt-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 4px;
-    }
-    .message-content {
-      line-height: 1.6;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-    }
-    .message-content h1, .message-content h2, .message-content h3 {
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
-    .message-content pre {
-      background: #1f2937;
-      color: #f9fafb;
-      padding: 16px;
-      border-radius: 6px;
-      overflow-x: auto;
-      margin: 12px 0;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .message-content code {
-      font-family: 'Courier New', Consolas, Monaco, monospace;
-      font-size: 14px;
-      background: #f3f4f6;
-      padding: 2px 6px;
-      border-radius: 3px;
-    }
-    .message-content pre code {
-      background: none;
-      padding: 0;
-      color: inherit;
-    }
-    
-    /* Syntax Highlighting - VS Code Dark+ Theme */
-    .message-content pre .hljs-keyword,
-    .message-content pre .hljs-selector-tag,
-    .message-content pre .hljs-literal,
-    .message-content pre .hljs-tag {
-      color: #569cd6; /* Blue for keywords */
-    }
-    .message-content pre .hljs-string,
-    .message-content pre .hljs-doctag {
-      color: #ce9178; /* Orange for strings */
-    }
-    .message-content pre .hljs-title,
-    .message-content pre .hljs-section,
-    .message-content pre .hljs-selector-id {
-      color: #dcdcaa; /* Yellow for function names */
-    }
-    .message-content pre .hljs-subst,
-    .message-content pre .hljs-type,
-    .message-content pre .hljs-class .hljs-title,
-    .message-content pre .hljs-title.class_,
-    .message-content pre .hljs-attr {
-      color: #4ec9b0; /* Cyan for types/classes */
-    }
-    .message-content pre .hljs-comment,
-    .message-content pre .hljs-quote {
-      color: #6a9955; /* Green for comments */
-      font-style: italic;
-    }
-    .message-content pre .hljs-number,
-    .message-content pre .hljs-built_in,
-    .message-content pre .hljs-builtin-name {
-      color: #b5cea8; /* Light green for numbers */
-    }
-    .message-content pre .hljs-variable,
-    .message-content pre .hljs-template-variable,
-    .message-content pre .hljs-params {
-      color: #9cdcfe; /* Light blue for variables */
-    }
-    .message-content pre .hljs-function {
-      color: #dcdcaa; /* Yellow for functions */
-    }
-    .message-content pre .hljs-meta {
-      color: #c586c0; /* Purple for meta/decorators */
-    }
-    .message-content pre .hljs-operator,
-    .message-content pre .hljs-punctuation {
-      color: #d4d4d4; /* Light gray for operators */
-    }
-    .message-content pre .hljs-regexp,
-    .message-content pre .hljs-symbol {
-      color: #d16969; /* Red for regex */
-    }
-    .message-content table {
-      border-collapse: collapse;
-      width: 100%;
-      margin: 12px 0;
-    }
-    .message-content table th,
-    .message-content table td {
-      border: 1px solid #e5e7eb;
-      padding: 8px 12px;
-      text-align: left;
-    }
-    .message-content table th {
-      background: #f3f4f6;
-      font-weight: 600;
-    }
-    .message-content ul, .message-content ol {
-      margin: 12px 0;
-      padding-left: 24px;
-    }
-    .message-content li {
-      margin: 4px 0;
-    }
-    .message-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-      margin: 12px 0;
-    }
-    .message-content a {
-      color: #2563eb;
-      text-decoration: none;
-    }
-    .message-content a:hover {
-      text-decoration: underline;
-    }
-    /* Hide "You said:", "ChatGPT said:" labels */
-    .message-content > div > div.text-sm {
-      display: none;
-    }
-    
-    /* Back to Top Button */
-    .back-to-top {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-    .back-to-top:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-    }
-    .back-to-top.show {
-      display: flex;
-    }
-    
-    /* Theme Toggle Button */
-    .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    body.dark-mode .theme-toggle {
-      background: #2d2d2d;
-      border-color: #404040;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit V: Analytical Techniques</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
 </head>
 <body>
-  <div class="header">
-    <h1>ChatGPT - NoteSmith</h1>
-  </div>
-  
-  <!-- Conversation Summary -->
-  
-  
-  <!-- Table of Contents -->
-  
-  
-  <div class="messages">
-    <div class="message" id="message-0">
-      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
-      <div class="message-content">
-        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="6aeae0df-eace-4959-8c5d-aca9b33b3c06" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="66">
-<p data-start="2" data-end="66"><strong data-start="2" data-end="13">STATUS:</strong> Unit 5: Analytical Techniques | Part 1 of 3 (Approx)</p>
-</blockquote>
-<hr data-start="68" data-end="71">
-<h1 data-start="73" data-end="109"><strong data-start="75" data-end="109">UNIT 5 – Analytical Techniques</strong></h1>
-<p data-start="111" data-end="280">This is the most application-oriented unit of the syllabus.<br data-start="170" data-end="173">
-Here we move from basic analysis (Unit 4) to <strong data-start="218" data-end="279">advanced statistical techniques used in business research</strong>.</p>
-<hr data-start="282" data-end="285">
-<h1 data-start="287" data-end="330"><strong data-start="289" data-end="330">1. Parametric vs Non-Parametric Tests</strong></h1>
-<hr data-start="332" data-end="335">
-<h2 data-start="337" data-end="355">🔹 Introduction</h2>
-<p data-start="357" data-end="426">In hypothesis testing, statistical tests are broadly classified into:</p>
-<ol data-start="428" data-end="479">
-<li data-start="428" data-end="451">
-<p data-start="431" data-end="451"><strong data-start="431" data-end="451">Parametric Tests</strong></p>
-</li>
-<li data-start="452" data-end="479">
-<p data-start="455" data-end="479"><strong data-start="455" data-end="479">Non-Parametric Tests</strong></p>
-</li>
+<div class="message-content">
+
+<h1>Unit V: Analytical Techniques</h1>
+
+<h2>Introduction</h2>
+
+<p>After collecting and analyzing data, researchers use various statistical techniques to test hypotheses, identify relationships, make predictions, and support business decisions. These techniques help transform raw data into meaningful insights.</p>
+
+<p>Analytical techniques are broadly classified into Parametric Tests and Non-Parametric Tests. This unit covers ANOVA, Correlation and Regression, Chi-Square Test, Normality Tests, Run Test, and Advanced Data Analysis Techniques such as Factor Analysis, Determinant Analysis, and Conjoint Analysis.</p>
+
+<h1>Topic 1: Parametric vs Non-Parametric Tests</h1>
+
+<h2>Explanation</h2>
+
+<p>Statistical tests are used to analyze data and test hypotheses.</p>
+
+<h2>Parametric Tests</h2>
+
+<p>Parametric tests assume that data follows a normal distribution and satisfies specific statistical assumptions.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Data is quantitative.</li>
+<li>Population parameters are known or estimated.</li>
+<li>Normally distributed data.</li>
+<li>More powerful and accurate.</li>
+</ul>
+
+<h3>Examples</h3>
+
+<ul>
+<li>t-Test</li>
+<li>ANOVA</li>
+<li>Regression Analysis</li>
+<li>Pearson Correlation</li>
+</ul>
+
+<h2>Non-Parametric Tests</h2>
+
+<p>Non-parametric tests do not require normal distribution assumptions.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Suitable for ordinal and nominal data.</li>
+<li>Useful for small samples.</li>
+<li>Flexible and easy to apply.</li>
+</ul>
+
+<h3>Examples</h3>
+
+<ul>
+<li>Chi-Square Test</li>
+<li>Run Test</li>
+<li>Mann-Whitney Test</li>
+<li>Kruskal-Wallis Test</li>
+</ul>
+
+<h2>Comparison: Parametric vs Non-Parametric Tests</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Parametric Test</th>
+<th>Non-Parametric Test</th>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>Normal Distribution Required</td>
+<td>No Distribution Assumption</td>
+</tr>
+<tr>
+<td>Data Type</td>
+<td>Interval/Ratio</td>
+<td>Nominal/Ordinal</td>
+</tr>
+<tr>
+<td>Accuracy</td>
+<td>Higher</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>Sample Size</td>
+<td>Usually Larger</td>
+<td>Small or Large</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>ANOVA, Regression</td>
+<td>Chi-Square, Run Test</td>
+</tr>
+</table>
+
+<h3>Example 1</h3>
+<p>A company compares employee productivity using ANOVA.</p>
+
+<h3>Example 2</h3>
+<p>A retailer uses Chi-Square analysis to study customer preferences.</p>
+
+<h1>Topic 2: ANOVA (Analysis of Variance)</h1>
+
+<h2>Explanation</h2>
+
+<p>ANOVA is a statistical technique used to compare the means of three or more groups.</p>
+
+<p>It determines whether significant differences exist among group averages.</p>
+
+<h3>Purpose of ANOVA</h3>
+
+<ul>
+<li>Compare multiple groups.</li>
+<li>Test hypotheses.</li>
+<li>Reduce multiple t-tests.</li>
+<li>Support business decisions.</li>
+</ul>
+
+<h3>Types of ANOVA</h3>
+
+<h3>1. One-Way ANOVA</h3>
+
+<p>Compares groups based on one factor.</p>
+
+<h4>Example</h4>
+
+<p>Comparing sales performance across different regions.</p>
+
+<h3>2. Two-Way ANOVA</h3>
+
+<p>Compares groups using two factors.</p>
+
+<h4>Example</h4>
+
+<p>Comparing employee performance across departments and experience levels.</p>
+
+<h3>ANOVA Procedure</h3>
+
+<pre>State Hypotheses
+↓
+Calculate Variance
+↓
+Compute F-Statistic
+↓
+Compare with Critical Value
+↓
+Decision</pre>
+
+<h3>Hypotheses</h3>
+
+<p>H₀: All group means are equal.</p>
+
+<p>H₁: At least one group mean differs.</p>
+
+<h3>Example 1</h3>
+
+<p>A company compares customer satisfaction levels across four branches.</p>
+
+<h3>Example 2</h3>
+
+<p>A university compares examination performance among different departments.</p>
+
+<h1>Topic 3: Correlation and Regression</h1>
+
+<h2>A. Correlation Analysis</h2>
+
+<h3>Explanation</h3>
+
+<p>Correlation measures the strength and direction of a relationship between two variables.</p>
+
+<h3>Types of Correlation</h3>
+
+<h4>Positive Correlation</h4>
+
+<p>Both variables increase together.</p>
+
+<p>Example:</p>
+
+<p>Advertising ↑ → Sales ↑</p>
+
+<h4>Negative Correlation</h4>
+
+<p>One variable increases while the other decreases.</p>
+
+<p>Example:</p>
+
+<p>Price ↑ → Demand ↓</p>
+
+<h4>Zero Correlation</h4>
+
+<p>No relationship exists.</p>
+
+<h3>Correlation Coefficient</h3>
+
+<pre>r = Σ(x − x̄)(y − ȳ) / √[Σ(x − x̄)² Σ(y − ȳ)²]</pre>
+
+<p>Range:</p>
+
+<p>-1 ≤ r ≤ +1</p>
+
+<h3>Interpretation of Correlation</h3>
+
+<table>
+<tr>
+<th>Value of r</th>
+<th>Interpretation</th>
+</tr>
+<tr>
+<td>+1</td>
+<td>Perfect Positive</td>
+</tr>
+<tr>
+<td>0</td>
+<td>No Correlation</td>
+</tr>
+<tr>
+<td>-1</td>
+<td>Perfect Negative</td>
+</tr>
+</table>
+
+<h2>B. Regression Analysis</h2>
+
+<h3>Explanation</h3>
+
+<p>Regression predicts the value of a dependent variable using one or more independent variables.</p>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Forecasting</li>
+<li>Prediction</li>
+<li>Trend analysis</li>
+<li>Decision-making</li>
+</ul>
+
+<h3>Simple Linear Regression</h3>
+
+<pre>y = a + bx</pre>
+
+<p>Where:</p>
+
+<ul>
+<li>y = Dependent Variable</li>
+<li>x = Independent Variable</li>
+<li>a = Intercept</li>
+<li>b = Regression Coefficient</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>Predicting sales using advertising expenditure.</p>
+
+<h3>Example 2</h3>
+
+<p>Predicting student performance using study hours.</p>
+
+<h1>Topic 4: Chi-Square Test</h1>
+
+<h2>Explanation</h2>
+
+<p>The Chi-Square Test is a non-parametric test used to examine relationships between categorical variables.</p>
+
+<h3>Applications</h3>
+
+<ul>
+<li>Consumer preference analysis</li>
+<li>Market research</li>
+<li>Survey analysis</li>
+<li>Demographic studies</li>
+</ul>
+
+<h3>Types of Chi-Square Tests</h3>
+
+<h3>1. Test of Independence</h3>
+
+<p>Determines whether two variables are related.</p>
+
+<h4>Example</h4>
+
+<p>Gender and product preference.</p>
+
+<h3>2. Goodness of Fit Test</h3>
+
+<p>Determines whether observed data fits expected distribution.</p>
+
+<h4>Example</h4>
+
+<p>Customer preferences across product categories.</p>
+
+<h3>Chi-Square Formula</h3>
+
+<pre>χ² = Σ (O − E)² / E</pre>
+
+<p>Where:</p>
+
+<ul>
+<li>O = Observed Frequency</li>
+<li>E = Expected Frequency</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>A retailer examines whether gender influences purchasing decisions.</p>
+
+<h3>Example 2</h3>
+
+<p>A university studies the relationship between department and placement outcomes.</p>
+
+<h1>Topic 5: Non-Parametric Tests for Normality</h1>
+
+<h2>Explanation</h2>
+
+<p>Before applying many statistical techniques, researchers need to determine whether data follows a normal distribution.</p>
+
+<p>Normality tests help assess this requirement.</p>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Selection of appropriate statistical methods.</li>
+<li>Validation of assumptions.</li>
+<li>Improved reliability of results.</li>
+</ul>
+
+<h3>Common Normality Tests</h3>
+
+<h4>1. Shapiro-Wilk Test</h4>
+
+<p>Suitable for small samples.</p>
+
+<h4>2. Kolmogorov-Smirnov Test</h4>
+
+<p>Suitable for larger samples.</p>
+
+<h4>3. Anderson-Darling Test</h4>
+
+<p>Sensitive to deviations from normality.</p>
+
+<h3>Interpretation</h3>
+
+<p>If p-value &gt; 0.05</p>
+
+<p>Data is normally distributed.</p>
+
+<p>If p-value &lt; 0.05</p>
+
+<p>Data is not normally distributed.</p>
+
+<h3>Example 1</h3>
+
+<p>A bank checks whether customer income data follows normal distribution.</p>
+
+<h3>Example 2</h3>
+
+<p>A researcher verifies normality before applying ANOVA.</p>
+
+<h1>Topic 6: Run Test</h1>
+
+<h2>Explanation</h2>
+
+<p>Run Test is a non-parametric test used to determine whether observations occur randomly.</p>
+
+<p>A "run" is a sequence of similar observations.</p>
+
+<h3>Purpose</h3>
+
+<ul>
+<li>Test randomness.</li>
+<li>Detect patterns.</li>
+<li>Evaluate independence.</li>
+</ul>
+
+<h3>Applications</h3>
+
+<ul>
+<li>Quality control</li>
+<li>Stock market analysis</li>
+<li>Survey data analysis</li>
+</ul>
+
+<h3>Run Test Procedure</h3>
+
+<pre>Arrange Data
+↓
+Identify Runs
+↓
+Count Runs
+↓
+Calculate Test Statistic
+↓
+Decision</pre>
+
+<h4>Example</h4>
+
+<p>Sequence:</p>
+
+<p>H H H T T H T T</p>
+
+<p>Runs:</p>
+
+<p>(HHH) (TT) (H) (TT)</p>
+
+<p>Total Runs = 4</p>
+
+<h3>Example 1</h3>
+
+<p>A manufacturing company checks whether defects occur randomly.</p>
+
+<h3>Example 2</h3>
+
+<p>A financial analyst studies stock market price movements.</p>
+
+<h1>Topic 7: Advanced Data Analysis Techniques</h1>
+
+<h2>A. Factor Analysis</h2>
+
+<h3>Explanation</h3>
+
+<p>Factor Analysis identifies underlying factors responsible for observed relationships among variables.</p>
+
+<p>It reduces large datasets into smaller groups of related variables.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Data reduction</li>
+<li>Pattern identification</li>
+<li>Simplification</li>
+</ul>
+
+<h4>Example</h4>
+
+<p>Customer satisfaction factors:</p>
+
+<ul>
+<li>Service Quality</li>
+<li>Product Quality</li>
+<li>Pricing</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>A telecom company identifies key factors affecting customer loyalty.</p>
+
+<h3>Example 2</h3>
+
+<p>A university identifies factors affecting academic performance.</p>
+
+<h2>B. Determinant Analysis</h2>
+
+<h3>Explanation</h3>
+
+<p>Determinant Analysis examines factors influencing outcomes and helps identify important determinants of behavior or decisions.</p>
+
+<h3>Applications</h3>
+
+<ul>
+<li>Consumer choice analysis</li>
+<li>Risk assessment</li>
+<li>Strategic planning</li>
+</ul>
+
+<h3>Example 1</h3>
+
+<p>A bank identifies determinants of loan defaults.</p>
+
+<h3>Example 2</h3>
+
+<p>A retailer studies factors influencing repeat purchases.</p>
+
+<h2>C. Conjoint Analysis</h2>
+
+<h3>Explanation</h3>
+
+<p>Conjoint Analysis is used to understand customer preferences regarding product features.</p>
+
+<p>It helps determine which product attributes are most important to customers.</p>
+
+<h3>Applications</h3>
+
+<ul>
+<li>Product design</li>
+<li>Pricing decisions</li>
+<li>Market segmentation</li>
+</ul>
+
+<h4>Example</h4>
+
+<p>A smartphone company studies customer preferences regarding:</p>
+
+<ul>
+<li>Price</li>
+<li>Battery Life</li>
+<li>Camera Quality</li>
+<li>Storage Capacity</li>
+</ul>
+
+<h3>Conjoint Analysis Process</h3>
+
+<pre>Identify Attributes
+↓
+Create Product Profiles
+↓
+Collect Customer Ratings
+↓
+Analyze Preferences
+↓
+Determine Attribute Importance</pre>
+
+<h3>Example 1</h3>
+
+<p>An automobile manufacturer studies customer preferences for vehicle features.</p>
+
+<h3>Example 2</h3>
+
+<p>A hotel chain identifies service attributes most valued by guests.</p>
+
+<h1>Comparison of Major Analytical Techniques</h1>
+
+<table>
+<tr>
+<th>Technique</th>
+<th>Purpose</th>
+<th>Data Type</th>
+</tr>
+<tr>
+<td>ANOVA</td>
+<td>Compare Group Means</td>
+<td>Parametric</td>
+</tr>
+<tr>
+<td>Correlation</td>
+<td>Measure Relationship</td>
+<td>Parametric</td>
+</tr>
+<tr>
+<td>Regression</td>
+<td>Prediction</td>
+<td>Parametric</td>
+</tr>
+<tr>
+<td>Chi-Square</td>
+<td>Test Association</td>
+<td>Non-Parametric</td>
+</tr>
+<tr>
+<td>Run Test</td>
+<td>Test Randomness</td>
+<td>Non-Parametric</td>
+</tr>
+<tr>
+<td>Factor Analysis</td>
+<td>Data Reduction</td>
+<td>Multivariate</td>
+</tr>
+<tr>
+<td>Conjoint Analysis</td>
+<td>Preference Analysis</td>
+<td>Multivariate</td>
+</tr>
+</table>
+
+<h1>Quick Revision Summary</h1>
+
+<ul>
+<li>Parametric tests require normal distribution assumptions.</li>
+<li>Non-parametric tests do not require distribution assumptions.</li>
+<li>ANOVA compares means of multiple groups.</li>
+<li>Correlation measures relationships between variables.</li>
+<li>Regression predicts outcomes.</li>
+<li>Chi-Square tests relationships among categorical variables.</li>
+<li>Normality tests verify distribution assumptions.</li>
+<li>Run Test checks randomness.</li>
+<li>Factor Analysis reduces data complexity.</li>
+<li>Conjoint Analysis identifies customer preferences.</li>
+</ul>
+
+<h1>Important Terms and Definitions</h1>
+
+<table>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+<tr>
+<td>Parametric Test</td>
+<td>Statistical test assuming normal distribution</td>
+</tr>
+<tr>
+<td>Non-Parametric Test</td>
+<td>Statistical test without distribution assumptions</td>
+</tr>
+<tr>
+<td>ANOVA</td>
+<td>Analysis of Variance</td>
+</tr>
+<tr>
+<td>Correlation</td>
+<td>Measure of relationship between variables</td>
+</tr>
+<tr>
+<td>Regression</td>
+<td>Technique for prediction</td>
+</tr>
+<tr>
+<td>Chi-Square Test</td>
+<td>Test of association among categorical variables</td>
+</tr>
+<tr>
+<td>Run Test</td>
+<td>Test of randomness</td>
+</tr>
+<tr>
+<td>Factor Analysis</td>
+<td>Data reduction technique</td>
+</tr>
+<tr>
+<td>Conjoint Analysis</td>
+<td>Customer preference analysis</td>
+</tr>
+<tr>
+<td>Normality Test</td>
+<td>Test for distribution assumptions</td>
+</tr>
+</table>
+
+<h1>Important Formulae</h1>
+
+<h3>Correlation Coefficient</h3>
+
+<pre>r = Σ(x − x̄)(y − ȳ) / √[Σ(x − x̄)² Σ(y − ȳ)²]</pre>
+
+<h3>Simple Linear Regression</h3>
+
+<pre>y = a + bx</pre>
+
+<h3>Chi-Square Test</h3>
+
+<pre>χ² = Σ (O − E)² / E</pre>
+
+<h1>Short Answer Questions</h1>
+
+<ol>
+<li>Define parametric tests.</li>
+<li>What are non-parametric tests?</li>
+<li>Explain ANOVA.</li>
+<li>What is correlation?</li>
+<li>Define regression analysis.</li>
+<li>What is a Chi-Square Test?</li>
+<li>Explain normality testing.</li>
+<li>What is a Run Test?</li>
+<li>Define Factor Analysis.</li>
+<li>Explain Conjoint Analysis.</li>
 </ol>
-<p data-start="481" data-end="506">The selection depends on:</p>
-<ul data-start="508" data-end="595">
-<li data-start="508" data-end="526">
-<p data-start="510" data-end="526">Nature of data</p>
-</li>
-<li data-start="527" data-end="548">
-<p data-start="529" data-end="548">Measurement scale</p>
-</li>
-<li data-start="549" data-end="579">
-<p data-start="551" data-end="579">Distribution of population</p>
-</li>
-<li data-start="580" data-end="595">
-<p data-start="582" data-end="595">Sample size</p>
-</li>
-</ul>
-<p data-start="597" data-end="663">Understanding this distinction is extremely important in research.</p>
-<hr data-start="665" data-end="668">
-<h2 data-start="670" data-end="688">🔹 Key Concepts</h2>
-<ul data-start="690" data-end="795">
-<li data-start="690" data-end="709">
-<p data-start="692" data-end="709">Parametric Test</p>
-</li>
-<li data-start="710" data-end="733">
-<p data-start="712" data-end="733">Non-parametric Test</p>
-</li>
-<li data-start="734" data-end="749">
-<p data-start="736" data-end="749">Assumptions</p>
-</li>
-<li data-start="750" data-end="773">
-<p data-start="752" data-end="773">Normal Distribution</p>
-</li>
-<li data-start="774" data-end="795">
-<p data-start="776" data-end="795">Measurement Scale</p>
-</li>
-</ul>
-<hr data-start="797" data-end="800">
-<h1 data-start="802" data-end="827">🔹 1️⃣ Parametric Tests</h1>
-<hr data-start="829" data-end="832">
-<h2 data-start="834" data-end="847">🔹 Meaning</h2>
-<p data-start="849" data-end="893">Parametric tests are statistical tests that:</p>
-<blockquote data-start="895" data-end="981">
-<p data-start="897" data-end="981">Assume the population follows a specific distribution (usually normal distribution).</p>
-</blockquote>
-<p data-start="983" data-end="996">They require:</p>
-<p data-start="998" data-end="1103">✔ Interval or ratio data<br data-start="1022" data-end="1025">
-✔ Known population parameters (mean, variance)<br data-start="1071" data-end="1074">
-✔ Normally distributed data</p>
-<hr data-start="1105" data-end="1108">
-<h2 data-start="1110" data-end="1139">🔹 Common Parametric Tests</h2>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1141" data-end="1367" class="w-fit min-w-(--thread-content-width)"><thead data-start="1141" data-end="1159"><tr data-start="1141" data-end="1159"><th data-start="1141" data-end="1148" data-col-size="sm" class="">Test</th><th data-start="1148" data-end="1159" data-col-size="sm" class="">Purpose</th></tr></thead><tbody data-start="1180" data-end="1367"><tr data-start="1180" data-end="1221"><td data-start="1180" data-end="1189" data-col-size="sm">Z-test</td><td data-start="1189" data-end="1221" data-col-size="sm">Compare means (large sample)</td></tr><tr data-start="1222" data-end="1263"><td data-start="1222" data-end="1231" data-col-size="sm">t-test</td><td data-col-size="sm" data-start="1231" data-end="1263">Compare means (small sample)</td></tr><tr data-start="1264" data-end="1294"><td data-start="1264" data-end="1273" data-col-size="sm">F-test</td><td data-start="1273" data-end="1294" data-col-size="sm">Compare variances</td></tr><tr data-start="1295" data-end="1329"><td data-start="1295" data-end="1303" data-col-size="sm">ANOVA</td><td data-col-size="sm" data-start="1303" data-end="1329">Compare multiple means</td></tr><tr data-start="1330" data-end="1367"><td data-start="1330" data-end="1343" data-col-size="sm">Regression</td><td data-start="1343" data-end="1367" data-col-size="sm">Predict relationship</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<hr data-start="1369" data-end="1372">
-<h2 data-start="1374" data-end="1411">🔹 Assumptions of Parametric Tests</h2>
-<ol data-start="1413" data-end="1535">
-<li data-start="1413" data-end="1446">
-<p data-start="1416" data-end="1446">Data is normally distributed</p>
-</li>
-<li data-start="1447" data-end="1475">
-<p data-start="1450" data-end="1475">Homogeneity of variance</p>
-</li>
-<li data-start="1476" data-end="1509">
-<p data-start="1479" data-end="1509">Independence of observations</p>
-</li>
-<li data-start="1510" data-end="1535">
-<p data-start="1513" data-end="1535">Interval/ratio scale</p>
-</li>
+
+<h1>Long Answer Questions</h1>
+
+<ol>
+<li>Differentiate between parametric and non-parametric tests.</li>
+<li>Explain ANOVA and its applications.</li>
+<li>Discuss correlation and regression analysis.</li>
+<li>Explain Chi-Square Test with examples.</li>
+<li>Discuss normality tests and Run Test.</li>
+<li>Explain Factor Analysis and Conjoint Analysis.</li>
 </ol>
-<p data-start="1537" data-end="1592">If assumptions are violated, results may be misleading.</p>
-<hr data-start="1594" data-end="1597">
-<h2 data-start="1599" data-end="1615">🔹 Advantages</h2>
-<p data-start="1617" data-end="1684">✔ Powerful tests<br data-start="1633" data-end="1636">
-✔ More precise<br data-start="1650" data-end="1653">
-✔ Efficient for large samples</p>
-<hr data-start="1686" data-end="1689">
-<h1 data-start="1691" data-end="1720">🔹 2️⃣ Non-Parametric Tests</h1>
-<hr data-start="1722" data-end="1725">
-<h2 data-start="1727" data-end="1740">🔹 Meaning</h2>
-<p data-start="1742" data-end="1767">Non-parametric tests are:</p>
-<blockquote data-start="1769" data-end="1841">
-<p data-start="1771" data-end="1841">Statistical tests that do not assume specific population distribution.</p>
-</blockquote>
-<p data-start="1843" data-end="1883">Also called <strong data-start="1855" data-end="1882">distribution-free tests</strong>.</p>
-<p data-start="1885" data-end="1895">Used when:</p>
-<ul data-start="1897" data-end="1989">
-<li data-start="1897" data-end="1927">
-<p data-start="1899" data-end="1927">Data is ordinal or nominal</p>
-</li>
-<li data-start="1928" data-end="1952">
-<p data-start="1930" data-end="1952">Sample size is small</p>
-</li>
-<li data-start="1953" data-end="1989">
-<p data-start="1955" data-end="1989">Data is not normally distributed</p>
-</li>
+
+<h1>Case-Based Questions</h1>
+
+<h3>Case 1</h3>
+
+<p>A retail company wants to compare customer satisfaction levels across five branches.</p>
+
+<ul>
+<li>Which analytical technique should be used?</li>
+<li>Explain the procedure.</li>
 </ul>
-<hr data-start="1991" data-end="1994">
-<h2 data-start="1996" data-end="2029">🔹 Common Non-Parametric Tests</h2>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2031" data-end="2311" class="w-fit min-w-(--thread-content-width)"><thead data-start="2031" data-end="2049"><tr data-start="2031" data-end="2049"><th data-start="2031" data-end="2038" data-col-size="sm" class="">Test</th><th data-start="2038" data-end="2049" data-col-size="md" class="">Purpose</th></tr></thead><tbody data-start="2070" data-end="2311"><tr data-start="2070" data-end="2133"><td data-start="2070" data-end="2088" data-col-size="sm">Chi-square test</td><td data-start="2088" data-end="2133" data-col-size="md">Association between categorical variables</td></tr><tr data-start="2134" data-end="2186"><td data-start="2134" data-end="2151" data-col-size="sm">Mann-Whitney U</td><td data-start="2151" data-end="2186" data-col-size="md">Compare two independent samples</td></tr><tr data-start="2187" data-end="2230"><td data-start="2187" data-end="2203" data-col-size="sm">Wilcoxon test</td><td data-start="2203" data-end="2230" data-col-size="md">Compare related samples</td></tr><tr data-start="2231" data-end="2280"><td data-start="2231" data-end="2248" data-col-size="sm">Kruskal-Wallis</td><td data-start="2248" data-end="2280" data-col-size="md">Compare more than two groups</td></tr><tr data-start="2281" data-end="2311"><td data-start="2281" data-end="2292" data-col-size="sm">Run test</td><td data-start="2292" data-end="2311" data-col-size="md">Test randomness</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<hr data-start="2313" data-end="2316">
-<h2 data-start="2318" data-end="2334">🔹 Advantages</h2>
-<p data-start="2336" data-end="2407">✔ Flexible<br data-start="2346" data-end="2349">
-✔ No strict assumptions<br data-start="2372" data-end="2375">
-✔ Suitable for non-normal data</p>
-<hr data-start="2409" data-end="2412">
-<h2 data-start="2414" data-end="2436">🔹 Comparison Table</h2>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="2438" data-end="2672" class="w-fit min-w-(--thread-content-width)"><thead data-start="2438" data-end="2479"><tr data-start="2438" data-end="2479"><th data-start="2438" data-end="2448" data-col-size="sm" class="">Feature</th><th data-start="2448" data-end="2461" data-col-size="sm" class="">Parametric</th><th data-start="2461" data-end="2479" data-col-size="sm" class="">Non-Parametric</th></tr></thead><tbody data-start="2523" data-end="2672"><tr data-start="2523" data-end="2561"><td data-start="2523" data-end="2549" data-col-size="sm">Distribution Assumption</td><td data-start="2549" data-end="2555" data-col-size="sm">Yes</td><td data-start="2555" data-end="2561" data-col-size="sm">No</td></tr><tr data-start="2562" data-end="2610"><td data-start="2562" data-end="2574" data-col-size="sm">Data Type</td><td data-col-size="sm" data-start="2574" data-end="2591">Interval/Ratio</td><td data-col-size="sm" data-start="2591" data-end="2610">Nominal/Ordinal</td></tr><tr data-start="2611" data-end="2637"><td data-start="2611" data-end="2619" data-col-size="sm">Power</td><td data-start="2619" data-end="2628" data-col-size="sm">Higher</td><td data-start="2628" data-end="2637" data-col-size="sm">Lower</td></tr><tr data-start="2638" data-end="2672"><td data-start="2638" data-end="2651" data-col-size="sm">Complexity</td><td data-col-size="sm" data-start="2651" data-end="2662">Moderate</td><td data-col-size="sm" data-start="2662" data-end="2672">Simple</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<hr data-start="2674" data-end="2677">
-<h2 data-start="2679" data-end="2701">🔹 Business Example</h2>
-<p data-start="2703" data-end="2725">If a company compares:</p>
-<p data-start="2727" data-end="2782">Average sales in two regions → Parametric test (t-test)</p>
-<p data-start="2784" data-end="2797">If comparing:</p>
-<p data-start="2799" data-end="2859">Customer preference categories → Non-parametric (Chi-square)</p>
-<hr data-start="2861" data-end="2864">
-<h1 data-start="2866" data-end="2903"><strong data-start="2868" data-end="2903">2. Analysis of Variance (ANOVA)</strong></h1>
-<hr data-start="2905" data-end="2908">
-<h2 data-start="2910" data-end="2928">🔹 Introduction</h2>
-<p data-start="2930" data-end="2985">Sometimes we need to compare more than two group means.</p>
-<p data-start="2987" data-end="3039">Example:<br>
-Compare sales performance across 3 regions.</p>
-<p data-start="3041" data-end="3080">Using multiple t-tests increases error.</p>
-<p data-start="3082" data-end="3102">Solution → <strong data-start="3093" data-end="3102">ANOVA</strong></p>
-<hr data-start="3104" data-end="3107">
-<h2 data-start="3109" data-end="3131">🔹 Meaning of ANOVA</h2>
-<p data-start="3133" data-end="3150">ANOVA stands for:</p>
-<blockquote data-start="3152" data-end="3174">
-<p data-start="3154" data-end="3174">Analysis of Variance</p>
-</blockquote>
-<p data-start="3176" data-end="3193">It tests whether:</p>
-<blockquote data-start="3195" data-end="3269">
-<p data-start="3197" data-end="3269">There is a significant difference between means of three or more groups.</p>
-</blockquote>
-<hr data-start="3271" data-end="3274">
-<h2 data-start="3276" data-end="3297">🔹 Basic Principle</h2>
-<p data-start="3299" data-end="3314">ANOVA compares:</p>
-<ul data-start="3316" data-end="3376">
-<li data-start="3316" data-end="3346">
-<p data-start="3318" data-end="3346">Variation <strong data-start="3328" data-end="3346">between groups</strong></p>
-</li>
-<li data-start="3347" data-end="3376">
-<p data-start="3349" data-end="3376">Variation <strong data-start="3359" data-end="3376">within groups</strong></p>
-</li>
+
+<h3>Case 2</h3>
+
+<p>A bank wants to predict loan default risk using customer income and credit score.</p>
+
+<ul>
+<li>Which analytical technique is most appropriate?</li>
+<li>Justify your answer.</li>
 </ul>
-<p data-start="3378" data-end="3456">If between-group variation is significantly larger, we reject null hypothesis.</p>
-<hr data-start="3458" data-end="3461">
-<h2 data-start="3463" data-end="3488">🔹 Hypotheses in ANOVA</h2>
-<p data-start="3490" data-end="3559">H₀: All group means are equal<br data-start="3519" data-end="3522">
-H₁: At least one group mean differs</p>
-<hr data-start="3561" data-end="3564">
-<h2 data-start="3566" data-end="3598">🔹 ANOVA Formula (Basic Idea)</h2>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mo>=</mo><mfrac><mtext>Between&nbsp;Group&nbsp;Variance</mtext><mtext>Within&nbsp;Group&nbsp;Variance</mtext></mfrac></mrow><annotation encoding="application/x-tex">F = \frac{\text{Between Group Variance}}{\text{Within Group Variance}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">F</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.2408em; vertical-align: -0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.3603em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord text"><span class="mord">Within&nbsp;Group&nbsp;Variance</span></span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord text"><span class="mord">Between&nbsp;Group&nbsp;Variance</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<p data-start="3678" data-end="3718">If calculated F &gt; critical F → Reject H₀</p>
-<hr data-start="3720" data-end="3723">
-<h2 data-start="3725" data-end="3738">🔹 Example</h2>
-<p data-start="3740" data-end="3776">Three advertising strategies tested:</p>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="3778" data-end="3866" class="w-fit min-w-(--thread-content-width)"><thead data-start="3778" data-end="3803"><tr data-start="3778" data-end="3803"><th data-start="3778" data-end="3789" data-col-size="sm" class="">Strategy</th><th data-start="3789" data-end="3803" data-col-size="sm" class="">Mean Sales</th></tr></thead><tbody data-start="3831" data-end="3866"><tr data-start="3831" data-end="3842"><td data-start="3831" data-end="3835" data-col-size="sm">A</td><td data-start="3835" data-end="3842" data-col-size="sm">100</td></tr><tr data-start="3843" data-end="3854"><td data-start="3843" data-end="3847" data-col-size="sm">B</td><td data-start="3847" data-end="3854" data-col-size="sm">120</td></tr><tr data-start="3855" data-end="3866"><td data-start="3855" data-end="3859" data-col-size="sm">C</td><td data-start="3859" data-end="3866" data-col-size="sm">150</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<p data-start="3868" data-end="3930">ANOVA tests whether differences are statistically significant.</p>
-<hr data-start="3932" data-end="3935">
-<h2 data-start="3937" data-end="3957">🔹 Types of ANOVA</h2>
-<ol data-start="3959" data-end="4062">
-<li data-start="3959" data-end="4009">
-<p data-start="3962" data-end="3977">One-way ANOVA</p>
-<ul data-start="3981" data-end="4009">
-<li data-start="3981" data-end="4009">
-<p data-start="3983" data-end="4009">One independent variable</p>
-</li>
+
+<h3>Case 3</h3>
+
+<p>A smartphone manufacturer wants to identify features most valued by customers.</p>
+
+<ul>
+<li>Which analytical technique should be used?</li>
+<li>Explain the implementation process.</li>
 </ul>
-</li>
-<li data-start="4011" data-end="4062">
-<p data-start="4014" data-end="4029">Two-way ANOVA</p>
-<ul data-start="4033" data-end="4062">
-<li data-start="4033" data-end="4062">
-<p data-start="4035" data-end="4062">Two independent variables</p>
-</li>
-</ul>
-</li>
-</ol>
-<p data-start="4064" data-end="4088">Example:<br>
-Sales based on:</p>
-<ul data-start="4089" data-end="4120">
-<li data-start="4089" data-end="4099">
-<p data-start="4091" data-end="4099">Region</p>
-</li>
-<li data-start="4100" data-end="4120">
-<p data-start="4102" data-end="4120">Advertising type</p>
-</li>
-</ul>
-<hr data-start="4122" data-end="4125">
-<h2 data-start="4127" data-end="4152">🔹 Advantages of ANOVA</h2>
-<p data-start="4154" data-end="4232">✔ Avoids multiple t-tests<br data-start="4179" data-end="4182">
-✔ Controls Type I error<br data-start="4205" data-end="4208">
-✔ Efficient comparison</p>
-<hr data-start="4234" data-end="4237">
-<h1 data-start="4239" data-end="4288"><strong data-start="4241" data-end="4288">3. Correlation &amp; Regression (Advanced View)</strong></h1>
-<hr data-start="4290" data-end="4293">
-<p data-start="4295" data-end="4403">We introduced correlation and regression in Unit 4.<br data-start="4346" data-end="4349">
-Now we understand their advanced business application.</p>
-<hr data-start="4405" data-end="4408">
-<h1 data-start="4410" data-end="4445">🔹 Correlation (Recap + Advanced)</h1>
-<hr data-start="4447" data-end="4450">
-<h2 data-start="4452" data-end="4478">🔹 Types of Correlation</h2>
-<ol data-start="4480" data-end="4530">
-<li data-start="4480" data-end="4493">
-<p data-start="4483" data-end="4493">Positive</p>
-</li>
-<li data-start="4494" data-end="4507">
-<p data-start="4497" data-end="4507">Negative</p>
-</li>
-<li data-start="4508" data-end="4517">
-<p data-start="4511" data-end="4517">Zero</p>
-</li>
-<li data-start="4518" data-end="4530">
-<p data-start="4521" data-end="4530">Perfect</p>
-</li>
-</ol>
-<hr data-start="4532" data-end="4535">
-<h2 data-start="4537" data-end="4562">🔹 Partial Correlation</h2>
-<p data-start="4564" data-end="4641">Measures relationship between two variables while controlling third variable.</p>
-<p data-start="4643" data-end="4692">Example:<br>
-Sales and advertising controlling price.</p>
-<hr data-start="4694" data-end="4697">
-<h1 data-start="4699" data-end="4725">🔹 Regression (Advanced)</h1>
-<hr data-start="4727" data-end="4730">
-<h2 data-start="4732" data-end="4757">🔹 Multiple Regression</h2>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Y</mi><mo>=</mo><mi>a</mi><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><msub><mi>X</mi><mn>2</mn></msub><mo>+</mo><msub><mi>b</mi><mn>3</mn></msub><msub><mi>X</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">Y = a + b_1X_1 + b_2X_2 + b_3X_3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6833em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 0.6667em; vertical-align: -0.0833em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.8444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span style="top: -2.55em; margin-left: -0.0785em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.8444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span style="top: -2.55em; margin-left: -0.0785em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 0.8444em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3011em;"><span style="top: -2.55em; margin-left: -0.0785em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span></span></span></span></span></span></span></span></span></span></span>
-<p data-start="4799" data-end="4807">Used in:</p>
-<ul data-start="4809" data-end="4870">
-<li data-start="4809" data-end="4830">
-<p data-start="4811" data-end="4830">Sales forecasting</p>
-</li>
-<li data-start="4831" data-end="4850">
-<p data-start="4833" data-end="4850">Demand analysis</p>
-</li>
-<li data-start="4851" data-end="4870">
-<p data-start="4853" data-end="4870">Risk assessment</p>
-</li>
-</ul>
-<hr data-start="4872" data-end="4875">
-<h2 data-start="4877" data-end="4906">🔹 Business Interpretation</h2>
-<p data-start="4908" data-end="4911">If:</p>
-<p data-start="4913" data-end="4921">b₁ = 4</p>
-<p data-start="4923" data-end="4986">Means:<br>
-For every 1-unit increase in X₁, Y increases by 4 units.</p>
-<hr data-start="4988" data-end="4991">
-<h1 data-start="4993" data-end="5021">🔹 Practical Business Case</h1>
-<p data-start="5023" data-end="5040">A company models:</p>
-<p data-start="5042" data-end="5084">Profit = f(Price, Advertising, Labor Cost)</p>
-<p data-start="5086" data-end="5135">Using multiple regression, management identifies:</p>
-<p data-start="5137" data-end="5164">Price has strongest effect.</p>
-<p data-start="5166" data-end="5202">Decision:<br>
-Focus on pricing strategy.</p>
-<hr data-start="5204" data-end="5207">
-<h1 data-start="5209" data-end="5237">🔹 Summary of This Section</h1>
-<ul data-start="5239" data-end="5497">
-<li data-start="5239" data-end="5285">
-<p data-start="5241" data-end="5285">Parametric tests assume normal distribution.</p>
-</li>
-<li data-start="5286" data-end="5331">
-<p data-start="5288" data-end="5331">Non-parametric tests are distribution-free.</p>
-</li>
-<li data-start="5332" data-end="5369">
-<p data-start="5334" data-end="5369">ANOVA compares more than two means.</p>
-</li>
-<li data-start="5370" data-end="5406">
-<p data-start="5372" data-end="5406">Correlation measures relationship.</p>
-</li>
-<li data-start="5407" data-end="5438">
-<p data-start="5409" data-end="5438">Regression predicts outcomes.</p>
-</li>
-<li data-start="5439" data-end="5497">
-<p data-start="5441" data-end="5497">These tools support evidence-based management decisions.</p>
-</li>
-</ul>
-<hr data-start="5499" data-end="5502">
-<blockquote data-start="5504" data-end="5555" data-is-last-node="" data-is-only-node="">
-<p data-start="5506" data-end="5555" data-is-last-node=""><strong data-start="5506" data-end="5555" data-is-last-node=""><em data-start="5508" data-end="5553">End of Unit 5 – Part 1. Continue to Part 2?</em></strong></p>
-</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
-      </div>
-    </div>
-    <div class="message" id="message-1">
-      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
-      <div class="message-content">
-        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="c64e7cd6-c97f-403d-b1f2-c99398e82fe4" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="66">
-<p data-start="2" data-end="66"><strong data-start="2" data-end="13">STATUS:</strong> Unit 5: Analytical Techniques | Part 2 of 3 (Approx)</p>
-</blockquote>
-<hr data-start="68" data-end="71">
-<h1 data-start="73" data-end="102"><strong data-start="75" data-end="102">4. Chi-Square (χ²) Test</strong></h1>
-<hr data-start="104" data-end="107">
-<h2 data-start="109" data-end="127">🔹 Introduction</h2>
-<p data-start="129" data-end="230">The <strong data-start="133" data-end="152">Chi-square test</strong> is one of the most widely used <strong data-start="184" data-end="208">non-parametric tests</strong> in business research.</p>
-<p data-start="232" data-end="248">It is used when:</p>
-<ul data-start="250" data-end="361">
-<li data-start="250" data-end="273">
-<p data-start="252" data-end="273">Data is categorical</p>
-</li>
-<li data-start="274" data-end="310">
-<p data-start="276" data-end="310">Variables are nominal or ordinal</p>
-</li>
-<li data-start="311" data-end="361">
-<p data-start="313" data-end="361">We want to test association between attributes</p>
-</li>
-</ul>
-<p data-start="363" data-end="435">Unlike t-test or ANOVA, Chi-square does not require normal distribution.</p>
-<hr data-start="437" data-end="440">
-<h2 data-start="442" data-end="460">🔹 Key Concepts</h2>
-<ul data-start="462" data-end="618">
-<li data-start="462" data-end="491">
-<p data-start="464" data-end="491">Chi-square (χ²) statistic</p>
-</li>
-<li data-start="492" data-end="518">
-<p data-start="494" data-end="518">Observed frequency (O)</p>
-</li>
-<li data-start="519" data-end="545">
-<p data-start="521" data-end="545">Expected frequency (E)</p>
-</li>
-<li data-start="546" data-end="573">
-<p data-start="548" data-end="573">Degrees of freedom (df)</p>
-</li>
-<li data-start="574" data-end="593">
-<p data-start="576" data-end="593">Goodness of fit</p>
-</li>
-<li data-start="594" data-end="618">
-<p data-start="596" data-end="618">Test of independence</p>
-</li>
-</ul>
-<hr data-start="620" data-end="623">
-<h1 data-start="625" data-end="656">🔹 Meaning of Chi-Square Test</h1>
-<p data-start="658" data-end="683">Chi-square test measures:</p>
-<blockquote data-start="685" data-end="744">
-<p data-start="687" data-end="744">The difference between observed and expected frequencies.</p>
-</blockquote>
-<p data-start="746" data-end="754">Formula:</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>χ</mi><mn>2</mn></msup><mo>=</mo><mo>∑</mo><mfrac><mrow><mo stretchy="false">(</mo><mi>O</mi><mo>−</mo><mi>E</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><mi>E</mi></mfrac></mrow><annotation encoding="application/x-tex">\chi^2 = \sum \frac{(O - E)^2}{E}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.0585em; vertical-align: -0.1944em;"></span><span class="mord"><span class="mord mathnormal">χ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8641em;"><span style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 2.1771em; vertical-align: -0.686em;"></span><span class="mop op-symbol large-op" style="position: relative; top: 0em;">∑</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.4911em;"><span style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.05764em;">E</span></span></span><span style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">E</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.8141em;"><span style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-<p data-start="797" data-end="803">Where:</p>
-<p data-start="805" data-end="854">O = Observed frequency<br data-start="827" data-end="830">
-E = Expected frequency</p>
-<hr data-start="856" data-end="859">
-<h1 data-start="861" data-end="891">🔹 Types of Chi-Square Tests</h1>
-<hr data-start="893" data-end="896">
-<h2 data-start="898" data-end="925">1️⃣ Test of Independence</h2>
-<p data-start="927" data-end="991">Used to determine whether two categorical variables are related.</p>
-<p data-start="993" data-end="1047">Example:<br>
-Is gender associated with product preference?</p>
-<hr data-start="1049" data-end="1052">
-<h3 data-start="1054" data-end="1071">Example Table</h3>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1073" data-end="1210" class="w-fit min-w-(--thread-content-width)"><thead data-start="1073" data-end="1115"><tr data-start="1073" data-end="1115"><th data-start="1073" data-end="1082" data-col-size="sm" class="">Gender</th><th data-start="1082" data-end="1094" data-col-size="sm" class="">Product A</th><th data-start="1094" data-end="1106" data-col-size="sm" class="">Product B</th><th data-start="1106" data-end="1115" data-col-size="sm" class="">Total</th></tr></thead><tbody data-start="1161" data-end="1210"><tr data-start="1161" data-end="1184"><td data-start="1161" data-end="1168" data-col-size="sm">Male</td><td data-start="1168" data-end="1173" data-col-size="sm">40</td><td data-start="1173" data-end="1178" data-col-size="sm">20</td><td data-start="1178" data-end="1184" data-col-size="sm">60</td></tr><tr data-start="1185" data-end="1210"><td data-start="1185" data-end="1194" data-col-size="sm">Female</td><td data-start="1194" data-end="1199" data-col-size="sm">30</td><td data-start="1199" data-end="1204" data-col-size="sm">30</td><td data-start="1204" data-end="1210" data-col-size="sm">60</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<p data-start="1212" data-end="1276">Chi-square test checks whether product choice depends on gender.</p>
-<hr data-start="1278" data-end="1281">
-<h2 data-start="1283" data-end="1310">2️⃣ Goodness of Fit Test</h2>
-<p data-start="1312" data-end="1382">Used to test whether observed distribution fits expected distribution.</p>
-<p data-start="1384" data-end="1453">Example:<br>
-Are customer preferences equally distributed among 4 brands?</p>
-<hr data-start="1455" data-end="1458">
-<h1 data-start="1460" data-end="1488">🔹 Degrees of Freedom (df)</h1>
-<p data-start="1490" data-end="1512">For contingency table:</p>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>d</mi><mi>f</mi><mo>=</mo><mo stretchy="false">(</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>c</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">df = (r - 1)(c - 1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8889em; vertical-align: -0.1944em;"></span><span class="mord mathnormal" style="margin-right: 0.10764em;">df</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.2778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mopen">(</span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right: 0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.2222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span>
-<p data-start="1541" data-end="1592">Where:<br>
-r = number of rows<br data-start="1566" data-end="1569">
-c = number of columns</p>
-<hr data-start="1594" data-end="1597">
-<h1 data-start="1599" data-end="1629">🔹 Assumptions of Chi-Square</h1>
-<p data-start="1631" data-end="1723">✔ Data must be categorical<br data-start="1657" data-end="1660">
-✔ Observations must be independent<br data-start="1694" data-end="1697">
-✔ Expected frequency ≥ 5</p>
-<hr data-start="1725" data-end="1728">
-<h1 data-start="1730" data-end="1751">🔹 Business Example</h1>
-<p data-start="1753" data-end="1777">A company tests whether:</p>
-<p data-start="1779" data-end="1836">“Customer satisfaction level depends on service quality.”</p>
-<p data-start="1838" data-end="1882">If χ² calculated &gt; χ² critical → Reject H₀</p>
-<p data-start="1884" data-end="1947">Conclusion:<br>
-Service quality significantly affects satisfaction.</p>
-<hr data-start="1949" data-end="1952">
-<h1 data-start="1954" data-end="1997"><strong data-start="1956" data-end="1997">5. Non-Parametric Tests for Normality</strong></h1>
-<hr data-start="1999" data-end="2002">
-<h2 data-start="2004" data-end="2022">🔹 Introduction</h2>
-<p data-start="2024" data-end="2109">Before applying parametric tests, we must check whether data is normally distributed.</p>
-<p data-start="2111" data-end="2152">If not normal → Use non-parametric tests.</p>
-<hr data-start="2154" data-end="2157">
-<h2 data-start="2159" data-end="2191">🔹 Common Tests for Normality</h2>
-<ol data-start="2193" data-end="2258">
-<li data-start="2193" data-end="2221">
-<p data-start="2196" data-end="2221">Kolmogorov-Smirnov Test</p>
-</li>
-<li data-start="2222" data-end="2244">
-<p data-start="2225" data-end="2244">Shapiro-Wilk Test</p>
-</li>
-<li data-start="2245" data-end="2258">
-<p data-start="2248" data-end="2258">Run Test</p>
-</li>
-</ol>
-<p data-start="2260" data-end="2306">In syllabus, special focus is on <strong data-start="2293" data-end="2305">Run Test</strong>.</p>
-<hr data-start="2308" data-end="2311">
-<h1 data-start="2313" data-end="2330"><strong data-start="2315" data-end="2330">6. Run Test</strong></h1>
-<hr data-start="2332" data-end="2335">
-<h2 data-start="2337" data-end="2350">🔹 Meaning</h2>
-<p data-start="2352" data-end="2368">Run test checks:</p>
-<blockquote data-start="2370" data-end="2404">
-<p data-start="2372" data-end="2404">Whether data sequence is random.</p>
-</blockquote>
-<p data-start="2406" data-end="2452">A “run” is a sequence of similar observations.</p>
-<p data-start="2454" data-end="2478">Example:<br>
-+++ --- ++ --</p>
-<p data-start="2480" data-end="2519">Each uninterrupted sequence is one run.</p>
-<hr data-start="2521" data-end="2524">
-<h2 data-start="2526" data-end="2543">🔹 Application</h2>
-<p data-start="2545" data-end="2553">Used in:</p>
-<ul data-start="2555" data-end="2642">
-<li data-start="2555" data-end="2574">
-<p data-start="2557" data-end="2574">Quality control</p>
-</li>
-<li data-start="2575" data-end="2606">
-<p data-start="2577" data-end="2606">Stock market trend analysis</p>
-</li>
-<li data-start="2607" data-end="2642">
-<p data-start="2609" data-end="2642">Business performance evaluation</p>
-</li>
-</ul>
-<hr data-start="2644" data-end="2647">
-<h2 data-start="2649" data-end="2671">🔹 Business Example</h2>
-<p data-start="2673" data-end="2742">If sales data shows non-random pattern → There may be seasonal trend.</p>
-<hr data-start="2744" data-end="2747">
-<h1 data-start="2749" data-end="2791"><strong data-start="2751" data-end="2791">7. Advanced Data Analysis Techniques</strong></h1>
-<p data-start="2793" data-end="2866">Now we move to advanced multivariate tools required in business research.</p>
-<hr data-start="2868" data-end="2871">
-<h1 data-start="2873" data-end="2914">🔹 1️⃣ Factor Analysis (Basic Concepts)</h1>
-<hr data-start="2916" data-end="2919">
-<h2 data-start="2921" data-end="2934">🔹 Meaning</h2>
-<p data-start="2936" data-end="3016">Factor analysis reduces large number of variables into fewer underlying factors.</p>
-<p data-start="3018" data-end="3028">Used when:</p>
-<ul data-start="3030" data-end="3095">
-<li data-start="3030" data-end="3069">
-<p data-start="3032" data-end="3069">Many variables measure same concept</p>
-</li>
-<li data-start="3070" data-end="3095">
-<p data-start="3072" data-end="3095">Need to simplify data</p>
-</li>
-</ul>
-<hr data-start="3097" data-end="3100">
-<h2 data-start="3102" data-end="3115">🔹 Example</h2>
-<p data-start="3117" data-end="3176">Suppose customer satisfaction survey includes 20 questions.</p>
-<p data-start="3178" data-end="3215">Factor analysis may reduce them into:</p>
-<ul data-start="3217" data-end="3268">
-<li data-start="3217" data-end="3236">
-<p data-start="3219" data-end="3236">Service Quality</p>
-</li>
-<li data-start="3237" data-end="3252">
-<p data-start="3239" data-end="3252">Price Value</p>
-</li>
-<li data-start="3253" data-end="3268">
-<p data-start="3255" data-end="3268">Brand Trust</p>
-</li>
-</ul>
-<p data-start="3270" data-end="3326">Instead of analyzing 20 variables, we analyze 3 factors.</p>
-<hr data-start="3328" data-end="3331">
-<h2 data-start="3333" data-end="3363">🔹 Types of Factor Analysis</h2>
-<ol data-start="3365" data-end="3443">
-<li data-start="3365" data-end="3403">
-<p data-start="3368" data-end="3403">Exploratory Factor Analysis (EFA)</p>
-</li>
-<li data-start="3404" data-end="3443">
-<p data-start="3407" data-end="3443">Confirmatory Factor Analysis (CFA)</p>
-</li>
-</ol>
-<hr data-start="3445" data-end="3448">
-<h2 data-start="3450" data-end="3466">🔹 Advantages</h2>
-<p data-start="3468" data-end="3546">✔ Data reduction<br data-start="3484" data-end="3487">
-✔ Identifies hidden patterns<br data-start="3515" data-end="3518">
-✔ Improves decision-making</p>
-<hr data-start="3548" data-end="3551">
-<h1 data-start="3553" data-end="3596">🔹 2️⃣ Discriminant Analysis (Basic Idea)</h1>
-<hr data-start="3598" data-end="3601">
-<h2 data-start="3603" data-end="3616">🔹 Meaning</h2>
-<p data-start="3618" data-end="3626">Used to:</p>
-<blockquote data-start="3628" data-end="3674">
-<p data-start="3630" data-end="3674">Classify individuals into predefined groups.</p>
-</blockquote>
-<p data-start="3676" data-end="3710">Example:<br>
-Classifying customers as:</p>
-<ul data-start="3712" data-end="3757">
-<li data-start="3712" data-end="3726">
-<p data-start="3714" data-end="3726">High-value</p>
-</li>
-<li data-start="3727" data-end="3743">
-<p data-start="3729" data-end="3743">Medium-value</p>
-</li>
-<li data-start="3744" data-end="3757">
-<p data-start="3746" data-end="3757">Low-value</p>
-</li>
-</ul>
-<p data-start="3759" data-end="3768">Based on:</p>
-<ul data-start="3770" data-end="3821">
-<li data-start="3770" data-end="3780">
-<p data-start="3772" data-end="3780">Income</p>
-</li>
-<li data-start="3781" data-end="3803">
-<p data-start="3783" data-end="3803">Purchase frequency</p>
-</li>
-<li data-start="3804" data-end="3821">
-<p data-start="3806" data-end="3821">Loyalty score</p>
-</li>
-</ul>
-<hr data-start="3823" data-end="3826">
-<h2 data-start="3828" data-end="3845">🔹 Application</h2>
-<ul data-start="3847" data-end="3921">
-<li data-start="3847" data-end="3877">
-<p data-start="3849" data-end="3877">Credit risk classification</p>
-</li>
-<li data-start="3878" data-end="3901">
-<p data-start="3880" data-end="3901">Market segmentation</p>
-</li>
-<li data-start="3902" data-end="3921">
-<p data-start="3904" data-end="3921">Fraud detection</p>
-</li>
-</ul>
-<hr data-start="3923" data-end="3926">
-<h1 data-start="3928" data-end="3954">🔹 3️⃣ Conjoint Analysis</h1>
-<hr data-start="3956" data-end="3959">
-<h2 data-start="3961" data-end="3974">🔹 Meaning</h2>
-<p data-start="3976" data-end="4005">Conjoint analysis is used to:</p>
-<blockquote data-start="4007" data-end="4074">
-<p data-start="4009" data-end="4074">Understand how customers value different attributes of a product.</p>
-</blockquote>
-<hr data-start="4076" data-end="4079">
-<h2 data-start="4081" data-end="4094">🔹 Example</h2>
-<p data-start="4096" data-end="4124">A smartphone has attributes:</p>
-<ul data-start="4126" data-end="4168">
-<li data-start="4126" data-end="4135">
-<p data-start="4128" data-end="4135">Price</p>
-</li>
-<li data-start="4136" data-end="4147">
-<p data-start="4138" data-end="4147">Battery</p>
-</li>
-<li data-start="4148" data-end="4158">
-<p data-start="4150" data-end="4158">Camera</p>
-</li>
-<li data-start="4159" data-end="4168">
-<p data-start="4161" data-end="4168">Brand</p>
-</li>
-</ul>
-<p data-start="4170" data-end="4199">Conjoint analysis identifies:</p>
-<p data-start="4201" data-end="4238">Which attribute customers value most.</p>
-<hr data-start="4240" data-end="4243">
-<h2 data-start="4245" data-end="4263">🔹 Business Use</h2>
-<p data-start="4265" data-end="4331">✔ Product design<br data-start="4281" data-end="4284">
-✔ Pricing strategy<br data-start="4302" data-end="4305">
-✔ Feature prioritization</p>
-<hr data-start="4333" data-end="4336">
-<h1 data-start="4338" data-end="4376">🔹 Comparison of Advanced Techniques</h1>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="4378" data-end="4562" class="w-fit min-w-(--thread-content-width)"><thead data-start="4378" data-end="4401"><tr data-start="4378" data-end="4401"><th data-start="4378" data-end="4390" data-col-size="sm" class="">Technique</th><th data-start="4390" data-end="4401" data-col-size="sm" class="">Purpose</th></tr></thead><tbody data-start="4428" data-end="4562"><tr data-start="4428" data-end="4466"><td data-start="4428" data-end="4446" data-col-size="sm">Factor Analysis</td><td data-start="4446" data-end="4466" data-col-size="sm">Reduce variables</td></tr><tr data-start="4467" data-end="4510"><td data-start="4467" data-end="4491" data-col-size="sm">Discriminant Analysis</td><td data-start="4491" data-end="4510" data-col-size="sm">Classify groups</td></tr><tr data-start="4511" data-end="4562"><td data-start="4511" data-end="4531" data-col-size="sm">Conjoint Analysis</td><td data-col-size="sm" data-start="4531" data-end="4562">Measure customer preference</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<hr data-start="4564" data-end="4567">
-<h1 data-start="4569" data-end="4598">🔹 Integrated Business Case</h1>
-<p data-start="4600" data-end="4632">A company launching new product:</p>
-<p data-start="4634" data-end="4838">Step 1 → Survey customers (Likert scale)<br data-start="4674" data-end="4677">
-Step 2 → Use Factor Analysis to identify key factors<br data-start="4729" data-end="4732">
-Step 3 → Use Conjoint Analysis to identify preferred features<br data-start="4793" data-end="4796">
-Step 4 → Use Regression to predict sales</p>
-<p data-start="4840" data-end="4888">This shows integration of analytical techniques.</p>
-<hr data-start="4890" data-end="4893">
-<h1 data-start="4895" data-end="4923">🔹 Summary of This Section</h1>
-<ul data-start="4925" data-end="5187">
-<li data-start="4925" data-end="4969">
-<p data-start="4927" data-end="4969">Chi-square test analyzes categorical data.</p>
-</li>
-<li data-start="4970" data-end="4999">
-<p data-start="4972" data-end="4999">Run test checks randomness.</p>
-</li>
-<li data-start="5000" data-end="5036">
-<p data-start="5002" data-end="5036">Factor analysis reduces variables.</p>
-</li>
-<li data-start="5037" data-end="5079">
-<p data-start="5039" data-end="5079">Discriminant analysis classifies groups.</p>
-</li>
-<li data-start="5080" data-end="5130">
-<p data-start="5082" data-end="5130">Conjoint analysis measures attribute importance.</p>
-</li>
-<li data-start="5131" data-end="5187">
-<p data-start="5133" data-end="5187">Advanced techniques improve strategic decision-making.</p>
-</li>
-</ul>
-<hr data-start="5189" data-end="5192">
-<blockquote data-start="5194" data-end="5245" data-is-last-node="" data-is-only-node="">
-<p data-start="5196" data-end="5245" data-is-last-node=""><strong data-start="5196" data-end="5245" data-is-last-node=""><em data-start="5198" data-end="5243">End of Unit 5 – Part 2. Continue to Part 3?</em></strong></p>
-</blockquote></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div></div></div><span class="sr-only"><br></span>
-      </div>
-    </div>
-    <div class="message" id="message-2">
-      <div class="message-role assistant"><img src="data:image/png;base64,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" alt="ChatGPT" class="chatgpt-icon"> ChatGPT</div>
-      <div class="message-content">
-        <h6 class="sr-only">NoteSmith said:</h6><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div data-message-author-role="assistant" data-message-id="9afdf3b1-3c3b-4106-8338-9efeeecf754c" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><blockquote data-start="0" data-end="66">
-<p data-start="2" data-end="66"><strong data-start="2" data-end="13">STATUS:</strong> Unit 5: Analytical Techniques | Part 3 of 3 (Approx)</p>
-</blockquote>
-<hr data-start="68" data-end="71">
-<h1 data-start="73" data-end="146"><strong data-start="75" data-end="146">8. Integration of Analytical Techniques in Business Decision Making</strong></h1>
-<p data-start="148" data-end="181">In Part 1 and Part 2, we studied:</p>
-<ul data-start="183" data-end="361">
-<li data-start="183" data-end="221">
-<p data-start="185" data-end="221">Parametric vs Non-parametric tests</p>
-</li>
-<li data-start="222" data-end="231">
-<p data-start="224" data-end="231">ANOVA</p>
-</li>
-<li data-start="232" data-end="260">
-<p data-start="234" data-end="260">Correlation &amp; Regression</p>
-</li>
-<li data-start="261" data-end="280">
-<p data-start="263" data-end="280">Chi-square test</p>
-</li>
-<li data-start="281" data-end="293">
-<p data-start="283" data-end="293">Run test</p>
-</li>
-<li data-start="294" data-end="313">
-<p data-start="296" data-end="313">Factor analysis</p>
-</li>
-<li data-start="314" data-end="339">
-<p data-start="316" data-end="339">Discriminant analysis</p>
-</li>
-<li data-start="340" data-end="361">
-<p data-start="342" data-end="361">Conjoint analysis</p>
-</li>
-</ul>
-<p data-start="363" data-end="391">In this final part, we will:</p>
-<ul data-start="393" data-end="565">
-<li data-start="393" data-end="431">
-<p data-start="395" data-end="431">Integrate all techniques logically</p>
-</li>
-<li data-start="432" data-end="474">
-<p data-start="434" data-end="474">Understand their strategic application</p>
-</li>
-<li data-start="475" data-end="514">
-<p data-start="477" data-end="514">Compare when to use which technique</p>
-</li>
-<li data-start="515" data-end="565">
-<p data-start="517" data-end="565">Complete the syllabus with structured revision</p>
-</li>
-</ul>
-<hr data-start="567" data-end="570">
-<h1 data-start="572" data-end="616">🔹 Choosing the Right Analytical Technique</h1>
-<p data-start="618" data-end="666">One of the most important skills in research is:</p>
-<blockquote data-start="668" data-end="714">
-<p data-start="670" data-end="714">Selecting the correct statistical technique.</p>
-</blockquote>
-<p data-start="716" data-end="759">Wrong selection leads to wrong conclusions.</p>
-<hr data-start="761" data-end="764">
-<h2 data-start="766" data-end="801">🔹 Technique Selection Framework</h2>
-<pre class="overflow-visible! px-0!" data-start="803" data-end="971"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">vbnet</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-keyword">Step</span></span><span> </span><span><span class="hljs-number">1</span></span><span>: Identify Research Objective
-</span><span><span class="hljs-keyword">Step</span></span><span> </span><span><span class="hljs-number">2</span></span><span>: Identify Type </span><span><span class="hljs-keyword">of</span></span><span> Data
-</span><span><span class="hljs-keyword">Step</span></span><span> </span><span><span class="hljs-number">3</span></span><span>: Identify Number </span><span><span class="hljs-keyword">of</span></span><span> Variables
-</span><span><span class="hljs-keyword">Step</span></span><span> </span><span><span class="hljs-number">4</span></span><span>: Check Assumptions
-</span><span><span class="hljs-keyword">Step</span></span><span> </span><span><span class="hljs-number">5</span></span><span>: </span><span><span class="hljs-keyword">Select</span></span><span> Appropriate Test
-</span></span></code></div></div></pre>
-<hr data-start="973" data-end="976">
-<h1 data-start="978" data-end="1021">🔹 Decision Table for Technique Selection</h1>
-<div class="TyagGW_tableContainer"><div tabindex="-1" class="group TyagGW_tableWrapper flex flex-col-reverse w-fit"><table data-start="1023" data-end="1493" class="w-fit min-w-(--thread-content-width)"><thead data-start="1023" data-end="1066"><tr data-start="1023" data-end="1066"><th data-start="1023" data-end="1044" data-col-size="sm" class="">Research Situation</th><th data-start="1044" data-end="1066" data-col-size="sm" class="">Suitable Technique</th></tr></thead><tbody data-start="1111" data-end="1493"><tr data-start="1111" data-end="1141"><td data-start="1111" data-end="1131" data-col-size="sm">Compare two means</td><td data-col-size="sm" data-start="1131" data-end="1141">t-test</td></tr><tr data-start="1142" data-end="1181"><td data-start="1142" data-end="1172" data-col-size="sm">Compare more than two means</td><td data-start="1172" data-end="1181" data-col-size="sm">ANOVA</td></tr><tr data-start="1182" data-end="1234"><td data-start="1182" data-end="1219" data-col-size="sm">Relationship between two variables</td><td data-col-size="sm" data-start="1219" data-end="1234">Correlation</td></tr><tr data-start="1235" data-end="1262"><td data-start="1235" data-end="1248" data-col-size="sm">Prediction</td><td data-start="1248" data-end="1262" data-col-size="sm">Regression</td></tr><tr data-start="1263" data-end="1303"><td data-start="1263" data-end="1289" data-col-size="sm">Categorical association</td><td data-col-size="sm" data-start="1289" data-end="1303">Chi-square</td></tr><tr data-start="1304" data-end="1354"><td data-start="1304" data-end="1330" data-col-size="sm">Non-normal small sample</td><td data-start="1330" data-end="1354" data-col-size="sm">Non-parametric tests</td></tr><tr data-start="1355" data-end="1398"><td data-start="1355" data-end="1379" data-col-size="sm">Reduce many variables</td><td data-start="1379" data-end="1398" data-col-size="sm">Factor analysis</td></tr><tr data-start="1399" data-end="1442"><td data-start="1399" data-end="1417" data-col-size="sm">Classify groups</td><td data-start="1417" data-end="1442" data-col-size="sm">Discriminant analysis</td></tr><tr data-start="1443" data-end="1493"><td data-start="1443" data-end="1472" data-col-size="sm">Study customer preferences</td><td data-start="1472" data-end="1493" data-col-size="sm">Conjoint analysis</td></tr></tbody></table><div class="sticky h-0 select-none end-(--thread-content-margin) self-end"><div class="absolute end-0 flex items-end" style="height: 33px;"><span class="" data-state="closed"></span></div></div></div></div>
-<hr data-start="1495" data-end="1498">
-<h1 data-start="1500" data-end="1536">🔹 Practical Business Applications</h1>
-<hr data-start="1538" data-end="1541">
-<h2 data-start="1543" data-end="1568">1️⃣ Marketing Research</h2>
-<p data-start="1570" data-end="1620">Problem:<br>
-Which features influence buying behavior?</p>
-<p data-start="1622" data-end="1638">Techniques Used:</p>
-<ul data-start="1639" data-end="1768">
-<li data-start="1639" data-end="1684">
-<p data-start="1641" data-end="1684">Factor Analysis → Identify feature groups</p>
-</li>
-<li data-start="1685" data-end="1737">
-<p data-start="1687" data-end="1737">Conjoint Analysis → Measure attribute importance</p>
-</li>
-<li data-start="1738" data-end="1768">
-<p data-start="1740" data-end="1768">Regression → Predict sales</p>
-</li>
-</ul>
-<hr data-start="1770" data-end="1773">
-<h2 data-start="1775" data-end="1807">2️⃣ Human Resource Management</h2>
-<p data-start="1809" data-end="1852">Problem:<br>
-Does training improve performance?</p>
-<p data-start="1854" data-end="1870">Techniques Used:</p>
-<ul data-start="1871" data-end="2005">
-<li data-start="1871" data-end="1917">
-<p data-start="1873" data-end="1917">t-test → Compare before and after training</p>
-</li>
-<li data-start="1918" data-end="1958">
-<p data-start="1920" data-end="1958">ANOVA → Compare multiple departments</p>
-</li>
-<li data-start="1959" data-end="2005">
-<p data-start="1961" data-end="2005">Correlation → Training hours &amp; performance</p>
-</li>
-</ul>
-<hr data-start="2007" data-end="2010">
-<h2 data-start="2012" data-end="2026">3️⃣ Finance</h2>
-<p data-start="2028" data-end="2072">Problem:<br>
-What affects company profitability?</p>
-<p data-start="2074" data-end="2090">Techniques Used:</p>
-<ul data-start="2091" data-end="2155">
-<li data-start="2091" data-end="2114">
-<p data-start="2093" data-end="2114">Multiple Regression</p>
-</li>
-<li data-start="2115" data-end="2130">
-<p data-start="2117" data-end="2130">Correlation</p>
-</li>
-<li data-start="2131" data-end="2155">
-<p data-start="2133" data-end="2155">Time-series analysis</p>
-</li>
-</ul>
-<hr data-start="2157" data-end="2160">
-<h2 data-start="2162" data-end="2197">4️⃣ Operations &amp; Quality Control</h2>
-<p data-start="2199" data-end="2237">Problem:<br>
-Is production process stable?</p>
-<p data-start="2239" data-end="2255">Techniques Used:</p>
-<ul data-start="2256" data-end="2302">
-<li data-start="2256" data-end="2268">
-<p data-start="2258" data-end="2268">Run Test</p>
-</li>
-<li data-start="2269" data-end="2287">
-<p data-start="2271" data-end="2287">Control charts</p>
-</li>
-<li data-start="2288" data-end="2302">
-<p data-start="2290" data-end="2302">Chi-square</p>
-</li>
-</ul>
-<hr data-start="2304" data-end="2307">
-<h1 data-start="2309" data-end="2362">🔹 Parametric vs Non-Parametric: Strategic Decision</h1>
-<p data-start="2364" data-end="2375">If data is:</p>
-<p data-start="2377" data-end="2437">✔ Normally distributed<br data-start="2399" data-end="2402">
-✔ Interval/ratio<br data-start="2418" data-end="2421">
-✔ Large sample</p>
-<p data-start="2439" data-end="2463">→ Use Parametric Tests</p>
-<p data-start="2465" data-end="2476">If data is:</p>
-<p data-start="2478" data-end="2543">✔ Ordinal/nominal<br data-start="2495" data-end="2498">
-✔ Small sample<br data-start="2512" data-end="2515">
-✔ Not normally distributed</p>
-<p data-start="2545" data-end="2573">→ Use Non-Parametric Tests</p>
-<hr data-start="2575" data-end="2578">
-<h1 data-start="2580" data-end="2628">🔹 Advanced Interpretation in Business Context</h1>
-<p data-start="2630" data-end="2676">Statistical significance does not always mean:</p>
-<p data-start="2678" data-end="2701">Practical significance.</p>
-<p data-start="2703" data-end="2711">Example:</p>
-<p data-start="2713" data-end="2778">Advertising increases sales by ₹100<br data-start="2748" data-end="2751">
-Statistically significant</p>
-<p data-start="2780" data-end="2817">But cost of advertisement = ₹10,000</p>
-<p data-start="2819" data-end="2850">Managerial decision may differ.</p>
-<p data-start="2852" data-end="2897">Always interpret results with business logic.</p>
-<hr data-start="2899" data-end="2902">
-<h1 data-start="2904" data-end="2945">🔹 Limitations of Analytical Techniques</h1>
-<ol data-start="2947" data-end="3107">
-<li data-start="2947" data-end="2974">
-<p data-start="2950" data-end="2974">Depend on data quality</p>
-</li>
-<li data-start="2975" data-end="3014">
-<p data-start="2978" data-end="3014">Sensitive to assumption violations</p>
-</li>
-<li data-start="3015" data-end="3054">
-<p data-start="3018" data-end="3054">Cannot replace managerial judgment</p>
-</li>
-<li data-start="3055" data-end="3107">
-<p data-start="3058" data-end="3107">Statistical significance ≠ Practical importance</p>
-</li>
-</ol>
-<hr data-start="3109" data-end="3112">
-<h1 data-start="3114" data-end="3147">🔹 Ethical Use of Data Analysis</h1>
-<p data-start="3149" data-end="3166">Researchers must:</p>
-<p data-start="3168" data-end="3264">✔ Avoid data manipulation<br data-start="3193" data-end="3196">
-✔ Avoid p-hacking<br data-start="3213" data-end="3216">
-✔ Report limitations<br data-start="3236" data-end="3239">
-✔ Maintain transparency</p>
-<p data-start="3266" data-end="3324">Unethical data analysis leads to wrong business decisions.</p>
-<hr data-start="3326" data-end="3329">
-<h1 data-start="3331" data-end="3374">🔹 Integrated Analytical Flow in Research</h1>
-<pre class="overflow-visible! px-0!" data-start="3376" data-end="3584"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">mathematica</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-variable">Research</span></span><span> </span><span><span class="hljs-variable">Problem</span></span><span>
-        ↓
-</span><span><span class="hljs-variable">Formulate</span></span><span> </span><span><span class="hljs-variable">Hypothesis</span></span><span>
-        ↓
-</span><span><span class="hljs-built_in">Collect</span></span><span> </span><span><span class="hljs-variable">Data</span></span><span>
-        ↓
-</span><span><span class="hljs-built_in">Select</span></span><span> </span><span><span class="hljs-variable">Appropriate</span></span><span> </span><span><span class="hljs-variable">Technique</span></span><span>
-        ↓
-</span><span><span class="hljs-built_in">Apply</span></span><span> </span><span><span class="hljs-variable">Statistical</span></span><span> </span><span><span class="hljs-variable">Test</span></span><span>
-        ↓
-</span><span><span class="hljs-variable">Interpret</span></span><span> </span><span><span class="hljs-variable">Results</span></span><span>
-        ↓
-</span><span><span class="hljs-variable">Managerial</span></span><span> </span><span><span class="hljs-variable">Decision</span></span><span>
-</span></span></code></div></div></pre>
-<hr data-start="3586" data-end="3589">
-<h1 data-start="3591" data-end="3629">🔹 Complete Conceptual Map of Unit 5</h1>
-<pre class="overflow-visible! px-0!" data-start="3631" data-end="3972"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="flex items-center text-token-text-secondary px-4 py-2 text-xs font-sans justify-between h-9 bg-token-sidebar-surface-primary select-none rounded-t-2xl corner-t-superellipse/1.1">mathematica</div><div class="sticky top-[calc(var(--sticky-padding-top)+9*var(--spacing))]"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre!"><span><span><span class="hljs-variable">Analytical</span></span><span> </span><span><span class="hljs-variable">Techniques</span></span><span>
-│
-├── </span><span><span class="hljs-variable">Parametric</span></span><span> </span><span><span class="hljs-variable">Tests</span></span><span>
-│     ├── </span><span><span class="hljs-variable">t</span></span><span><span class="hljs-operator">-</span></span><span><span class="hljs-variable">test</span></span><span>
-│     ├── </span><span><span class="hljs-variable">ANOVA</span></span><span>
-│     ├── </span><span><span class="hljs-variable">Regression</span></span><span>
-│     └── </span><span><span class="hljs-built_in">Correlation</span></span><span>
-│
-├── </span><span><span class="hljs-variable">Non</span></span><span><span class="hljs-operator">-</span></span><span><span class="hljs-variable">Parametric</span></span><span> </span><span><span class="hljs-variable">Tests</span></span><span>
-│     ├── </span><span><span class="hljs-variable">Chi</span></span><span><span class="hljs-operator">-</span></span><span><span class="hljs-variable">square</span></span><span>
-│     ├── </span><span><span class="hljs-built_in">Run</span></span><span> </span><span><span class="hljs-variable">Test</span></span><span>
-│     └── </span><span><span class="hljs-variable">Rank</span></span><span> </span><span><span class="hljs-variable">Tests</span></span><span>
-│
-└── </span><span><span class="hljs-variable">Advanced</span></span><span> </span><span><span class="hljs-variable">Multivariate</span></span><span> </span><span><span class="hljs-variable">Techniques</span></span><span>
-      ├── </span><span><span class="hljs-built_in">Factor</span></span><span> </span><span><span class="hljs-variable">Analysis</span></span><span>
-      ├── </span><span><span class="hljs-built_in">Discriminant</span></span><span> </span><span><span class="hljs-variable">Analysis</span></span><span>
-      └── </span><span><span class="hljs-variable">Conjoint</span></span><span> </span><span><span class="hljs-variable">Analysis</span></span><span>
-</span></span></code></div></div></pre>
-<hr data-start="3974" data-end="3977">
-<h1 data-start="3979" data-end="4015">🔹 Comprehensive Summary of Unit 5</h1>
-<p data-start="4017" data-end="4042">In this unit, we learned:</p>
-<p data-start="4044" data-end="4388">✔ Difference between parametric and non-parametric tests<br data-start="4100" data-end="4103">
-✔ Application of ANOVA<br data-start="4125" data-end="4128">
-✔ Chi-square test for categorical data<br data-start="4166" data-end="4169">
-✔ Run test for randomness<br data-start="4194" data-end="4197">
-✔ Correlation &amp; regression for relationships and prediction<br data-start="4256" data-end="4259">
-✔ Factor analysis for data reduction<br data-start="4295" data-end="4298">
-✔ Discriminant analysis for classification<br data-start="4340" data-end="4343">
-✔ Conjoint analysis for customer preference</p>
-<hr data-start="4390" data-end="4393">
-<h1 data-start="4395" data-end="4415">🎯 Unit 5 Complete</h1>
-<hr data-start="4417" data-end="4420">
-<h1 data-start="4422" data-end="4456">📘 Final Review Section (Unit 5)</h1>
-<hr data-start="4458" data-end="4461">
-<h2 data-start="4463" data-end="4473">🔹 MCQs</h2>
-<ol data-start="4475" data-end="4857">
-<li data-start="4475" data-end="4594">
-<p data-start="4478" data-end="4594">ANOVA is used to compare:<br data-start="4503" data-end="4506">
-a) Two means<br data-start="4521" data-end="4524">
-b) Three or more means<br data-start="4549" data-end="4552">
-c) Variances only<br data-start="4572" data-end="4575">
-d) Proportions</p>
-</li>
-<li data-start="4596" data-end="4723">
-<p data-start="4599" data-end="4723">Chi-square test is suitable for:<br data-start="4631" data-end="4634">
-a) Ratio data<br data-start="4650" data-end="4653">
-b) Interval data<br data-start="4672" data-end="4675">
-c) Categorical data<br data-start="4697" data-end="4700">
-d) Continuous data</p>
-</li>
-<li data-start="4725" data-end="4857">
-<p data-start="4728" data-end="4857">Factor analysis is mainly used for:<br data-start="4763" data-end="4766">
-a) Prediction<br data-start="4782" data-end="4785">
-b) Classification<br data-start="4805" data-end="4808">
-c) Data reduction<br data-start="4828" data-end="4831">
-d) Hypothesis testing</p>
-</li>
-</ol>
-<hr data-start="4859" data-end="4862">
-<h2 data-start="4864" data-end="4892">🔹 Short Answer Questions</h2>
-<ol data-start="4894" data-end="5031">
-<li data-start="4894" data-end="4949">
-<p data-start="4897" data-end="4949">Differentiate parametric and non-parametric tests.</p>
-</li>
-<li data-start="4950" data-end="4977">
-<p data-start="4953" data-end="4977">Explain one-way ANOVA.</p>
-</li>
-<li data-start="4978" data-end="5009">
-<p data-start="4981" data-end="5009">What is conjoint analysis?</p>
-</li>
-<li data-start="5010" data-end="5031">
-<p data-start="5013" data-end="5031">Define run test.</p>
-</li>
-</ol>
-<hr data-start="5033" data-end="5036">
-<h2 data-start="5038" data-end="5065">🔹 Descriptive Questions</h2>
-<ol data-start="5067" data-end="5223">
-<li data-start="5067" data-end="5128">
-<p data-start="5070" data-end="5128">Discuss analytical techniques used in business research.</p>
-</li>
-<li data-start="5129" data-end="5179">
-<p data-start="5132" data-end="5179">Explain factor analysis and its applications.</p>
-</li>
-<li data-start="5180" data-end="5223">
-<p data-start="5183" data-end="5223">Describe chi-square test with example.</p>
-</li>
-</ol>
-<hr data-start="5225" data-end="5228">
-<h1 data-start="5230" data-end="5254">🎓 All Units Completed</h1>
-<hr data-start="5256" data-end="5259">
-<h2 data-start="5261" data-end="5321">🚀 As per Writing Protocol – End-of-Syllabus Deliverables</h2>
-<p data-start="5323" data-end="5343">Now I will generate:</p>
-<ol data-start="5345" data-end="5454">
-<li data-start="5345" data-end="5382">
-<p data-start="5348" data-end="5382"><strong data-start="5348" data-end="5380">5 Research-Oriented Projects</strong></p>
-</li>
-<li data-start="5383" data-end="5414">
-<p data-start="5386" data-end="5414"><strong data-start="5386" data-end="5412">Master Subject Summary</strong></p>
-</li>
-<li data-start="5415" data-end="5454">
-<p data-start="5418" data-end="5454"><strong data-start="5418" data-end="5454">Comprehensive Index of Key Terms</strong></p>
-</li>
-</ol>
-<p data-start="5456" data-end="5500" data-is-last-node="" data-is-only-node="">Shall I proceed with the final deliverables?</p></div></div></div></div><div class="z-0 flex min-h-[46px] justify-start"></div><div class="mt-3 w-full empty:hidden"><div class="text-center"></div></div></div></div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Theme Toggle Button -->
-  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
-  
-  <!-- Back to Top Button -->
-  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
-  
-  <script>
-    // Theme Toggle functionality
-    const themeToggleBtn = document.getElementById('themeToggle');
-    const body = document.body;
-    
-    // Check for saved theme preference or default to light mode
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
-      body.classList.add('dark-mode');
-      themeToggleBtn.textContent = '☀️';
-    }
-    
-    themeToggleBtn.addEventListener('click', function() {
-      body.classList.toggle('dark-mode');
-      
-      if (body.classList.contains('dark-mode')) {
-        themeToggleBtn.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        themeToggleBtn.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
-      }
-    });
-    
-    // Back to Top button functionality
-    const backToTopBtn = document.getElementById('backToTop');
-    
-    window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 300) {
-        backToTopBtn.classList.add('show');
-      } else {
-        backToTopBtn.classList.remove('show');
-      }
-    });
-    
-    backToTopBtn.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-  </script>
+
+</div>
 </body>
 </html>
