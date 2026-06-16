@@ -1,362 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PBA206 Unit-4 Case Study - Business Law</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f7f7f8;
-      color: #1f2937;
-      line-height: 1.6;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    
-    /* Dark Mode Styles */
-    body.dark-mode {
-      background: #1a1a1a;
-      color: #e5e7eb;
-    }
-    body.dark-mode .header {
-      background: #2d2d2d;
-      color: #f9fafb;
-    }
-    body.dark-mode .header h1 {
-      color: #f9fafb;
-    }
-    body.dark-mode .summary-section,
-    body.dark-mode .toc-section,
-    body.dark-mode .message {
-      background: #2d2d2d;
-      color: #e5e7eb;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    body.dark-mode .summary-section h2,
-    body.dark-mode .toc-section h2 {
-      color: #f9fafb;
-    }
-    body.dark-mode .message-role.user {
-      color: #60a5fa;
-    }
-    body.dark-mode .message-role.assistant {
-      color: #c084fc;
-    }
-    body.dark-mode .message-content {
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content * {
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content h1,
-    body.dark-mode .message-content h2,
-    body.dark-mode .message-content h3,
-    body.dark-mode .message-content h4,
-    body.dark-mode .message-content h5,
-    body.dark-mode .message-content h6 {
-      color: #f9fafb;
-    }
-    body.dark-mode .message-content pre {
-      background: #1e1e1e !important;
-      border: 1px solid #404040;
-    }
-    body.dark-mode .message-content pre code {
-      background: transparent !important;
-      color: #d4d4d4 !important;
-    }
-    body.dark-mode .message-content code {
-      background: #374151 !important;
-      color: #f9fafb !important;
-    }
-    body.dark-mode .message-content table th,
-    body.dark-mode .message-content table td {
-      border-color: #404040;
-      color: #e5e7eb;
-    }
-    body.dark-mode .message-content table th {
-      background: #374151;
-      color: #f9fafb;
-    }
-    body.dark-mode a {
-      color: #60a5fa;
-    }
-    body.dark-mode .theme-toggle {
-      background: #2d2d2d;
-      border-color: #404040;
-    }
-    .summary-section {
-      background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .toc-section {
-      background: white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .header {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .header h1 {
-      margin: 0 0 10px 0;
-      color: #1f2937;
-    }
-    .metadata {
-      font-size: 14px;
-      color: #6b7280;
-    }
-    .message {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .message-role {
-      font-weight: 600;
-      margin-bottom: 10px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .message-role.user {
-      color: #2563eb;
-    }
-    .message-role.assistant {
-      color: #7c3aed;
-    }
-    .message-content {
-      line-height: 1.6;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-    }
-    .message-content h1, .message-content h2, .message-content h3 {
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
-    .message-content h1 {
-      font-size: 2em;
-      border-bottom: 2px solid #e5e7eb;
-      padding-bottom: 10px;
-    }
-    .message-content h2 {
-      font-size: 1.5em;
-      border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 8px;
-    }
-    .message-content h3 {
-      font-size: 1.25em;
-    }
-    .message-content pre {
-      background: #1f2937;
-      color: #f9fafb;
-      padding: 16px;
-      border-radius: 6px;
-      overflow-x: auto;
-      margin: 12px 0;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .message-content code {
-      font-family: 'Courier New', Consolas, Monaco, monospace;
-      font-size: 14px;
-      background: #f3f4f6;
-      padding: 2px 6px;
-      border-radius: 3px;
-    }
-    .message-content pre code {
-      background: none;
-      padding: 0;
-      color: inherit;
-    }
-    .message-content ul, .message-content ol {
-      margin: 10px 0;
-      padding-left: 30px;
-    }
-    .message-content li {
-      margin: 5px 0;
-    }
-    .message-content p {
-      margin: 10px 0;
-    }
-    .message-content strong {
-      font-weight: 600;
-      color: #1f2937;
-    }
-    body.dark-mode .message-content strong {
-      color: #f9fafb;
-    }
-    .message-content hr {
-      border: none;
-      border-top: 1px solid #e5e7eb;
-      margin: 20px 0;
-    }
-    body.dark-mode .message-content hr {
-      border-top-color: #404040;
-    }
-    .theme-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: white;
-      border: 2px solid #e5e7eb;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study: Managing Business Risk in Crisis: Tata Steel's Insurance, Insolvency, and Arbitration Challenge</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
 </head>
 <body>
-  <div class="header">
-    <h1>PBA206 Unit-4 Case Study</h1>
-    <div class="metadata">Business Law - Insurance, Insolvency & Arbitration</div>
-  </div>
-  
-  <div class="messages">
-    <div class="message" id="message-0">
-      <div class="message-role assistant">Case Study Set</div>
-      <div class="message-content">
-        <h1>UNIT 4 – CASE STUDY SET</h1>
+<div class="message-content">
+
+<h1>Case Study: Insurance Claim, Insolvency Risk, and Arbitration Dispute at Tata Steel</h1>
+
+<h2>1. Title</h2>
+<p><strong>Managing Business Risk in Crisis: Tata Steel's Insurance, Insolvency, and Arbitration Challenge</strong></p>
 
 <hr>
 
-<h2>CASE STUDY 1</h2>
-
-<h3>Insurance: Life, Fire, Marine & General Insurance</h3>
-
-<h4>Background</h4>
-
-<p>Prism Textiles Ltd. is a medium-sized manufacturing company operating in Gujarat. The company has taken:</p>
-
-<ul>
-<li>A fire insurance policy for its factory premises</li>
-<li>A marine insurance policy for export consignments</li>
-<li>A group life insurance policy for employees</li>
-<li>A general insurance policy for machinery and vehicles</li>
-</ul>
-
-<p>In 2023, a major fire broke out in the factory due to an electrical short circuit, causing heavy damage to raw materials and finished goods. At the same time, one export consignment was damaged during sea transit due to improper packing. The insurer rejected part of the claims stating breach of policy conditions and non-disclosure of material facts.</p>
-
-<p>The legal heirs of a deceased employee also filed a claim under the life insurance policy, which the insurer delayed citing incomplete documentation.</p>
-
-<h4>Questions</h4>
-
-<ol>
-<li>Explain the nature and essential principles of insurance contracts.</li>
-<li>What is the significance of utmost good faith in insurance contracts?</li>
-<li>Distinguish between life insurance and general insurance.</li>
-<li>Examine the insurer's liability under fire insurance in this case.</li>
-<li>Discuss the scope of marine insurance for damaged export consignments.</li>
-<li>Can delay in settlement of life insurance claims be legally challenged?</li>
-</ol>
+<h2>2. Company Background</h2>
+<p>Tata Steel is one of the world's leading steel producers, supplying products to construction, automotive, infrastructure, and engineering industries. The company operates large manufacturing facilities, extensive logistics networks, and international supply chains. Due to the scale of operations, Tata Steel faces various business risks, including production disruptions, transportation losses, contractual disputes, and financial exposure arising from customers and suppliers. To mitigate these risks, the company relies on insurance coverage, transportation agreements, credit management systems, and dispute-resolution mechanisms. Effective management of these legal and operational risks is essential for maintaining profitability and business continuity.</p>
 
 <hr>
 
-<h2>CASE STUDY 2</h2>
+<h2>3. Business Context</h2>
+<p>The steel industry is highly capital-intensive and exposed to operational, market, and financial risks. Large inventories, transportation dependencies, international trade activities, and long-term customer contracts create significant legal and commercial challenges.</p>
 
-<h3>Insolvency: Property, Debts & Discharge of Insolvent</h3>
+<p>Manufacturers increasingly rely on insurance protection against property damage, transportation losses, fire incidents, and marine shipment risks. Simultaneously, economic fluctuations can increase customer insolvency risk, resulting in delayed payments and bad debts.</p>
 
-<h4>Background</h4>
+<p>Disputes regarding transportation liabilities, insurance claims, and contract performance are common in large industrial sectors. Arbitration has emerged as a preferred mechanism for resolving commercial disputes due to its speed and confidentiality compared to traditional litigation.</p>
 
-<p>Rohan Enterprises, a sole proprietorship engaged in construction materials, suffered heavy financial losses due to market slowdown and non-payment by major clients. The business failed to repay bank loans, supplier dues, and statutory liabilities.</p>
-
-<p>Creditors initiated insolvency proceedings against Rohan. During the process, it was discovered that:</p>
-
-<ul>
-<li>Certain assets were transferred to relatives before insolvency</li>
-<li>Some debts were unsecured</li>
-<li>Rohan applied for discharge claiming inability to pay</li>
-</ul>
-
-<p>The court must now decide on distribution of assets, validity of transfers, and eligibility for discharge.</p>
-
-<h4>Questions</h4>
-
-<ol>
-<li>Explain the object and scope of insolvency law.</li>
-<li>What is meant by property of the insolvent?</li>
-<li>How are secured and unsecured debts treated in insolvency?</li>
-<li>Can pre-insolvency transfer of property be challenged?</li>
-<li>What conditions must be satisfied for discharge of an insolvent?</li>
-<li>What are the legal effects of discharge?</li>
-</ol>
+<p>Against this backdrop, Tata Steel faces a complex situation involving insurance recovery, transportation losses, customer insolvency, and contractual disputes.</p>
 
 <hr>
 
-<h2>CASE STUDY 3</h2>
+<h2>4. Strategic Problem Situation</h2>
+<p>A major Tata Steel production facility experienced a fire accident that damaged inventory valued at approximately ₹320 crore. The company immediately filed a claim under its industrial fire insurance policy.</p>
 
-<h3>Carriage of Goods & Arbitration</h3>
+<p>During the same period, a shipment of steel products destined for export customers suffered damage while being transported to a seaport. The logistics provider denied full liability, arguing that improper packaging contributed to the damage.</p>
 
-<h4>Background</h4>
+<p>Compounding the situation, one of Tata Steel's largest customers entered insolvency proceedings before settling outstanding payments totaling ₹185 crore. The company must now determine whether recovery is possible through insolvency procedures.</p>
 
-<p>SkyBridge Electronics Ltd. transported goods:</p>
+<p>The insurance company has raised concerns regarding policy compliance and documentation requirements, delaying settlement of the fire claim. Meanwhile, disputes with the logistics provider threaten to escalate into lengthy legal proceedings.</p>
 
+<p>Management is evaluating whether arbitration should be used to resolve transportation disputes while simultaneously pursuing insurance recovery and insolvency claims. The executive committee must balance financial recovery, operational continuity, legal costs, and stakeholder confidence.</p>
+
+<hr>
+
+<h2>5. Analytics and Business Data</h2>
+
+<h3>Table 1: Financial Exposure Assessment</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Estimated Financial Impact (₹ Crore)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fire Damage Loss</td>
+<td>320</td>
+</tr>
+<tr>
+<td>Transportation Damage</td>
+<td>95</td>
+</tr>
+<tr>
+<td>Customer Insolvency Exposure</td>
+<td>185</td>
+</tr>
+<tr>
+<td>Legal &amp; Advisory Costs</td>
+<td>18</td>
+</tr>
+<tr>
+<td>Operational Disruption Costs</td>
+<td>42</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Table 2: Insurance Coverage Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Coverage Area</th>
+<th>Coverage Amount (₹ Crore)</th>
+<th>Claim Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fire Insurance</td>
+<td>350</td>
+<td>Under Review</td>
+</tr>
+<tr>
+<td>Property Damage</td>
+<td>100</td>
+<td>Approved</td>
+</tr>
+<tr>
+<td>Marine Insurance</td>
+<td>120</td>
+<td>Partially Approved</td>
+</tr>
+<tr>
+<td>Business Interruption Insurance</td>
+<td>80</td>
+<td>Pending</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Table 3: Insolvency Recovery Estimates</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Recovery Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full Recovery</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Successful Insolvency Proceedings</td>
+<td>55%</td>
+</tr>
+<tr>
+<td>Delayed Settlement</td>
+<td>35%</td>
+</tr>
+<tr>
+<td>Liquidation Outcome</td>
+<td>15%</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Table 4: Transportation Dispute Alternatives</h3>
+<table>
+<thead>
+<tr>
+<th>Alternative</th>
+<th>Cost (₹ Crore)</th>
+<th>Estimated Resolution Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Court Litigation</td>
+<td>22</td>
+<td>3–5 Years</td>
+</tr>
+<tr>
+<td>Arbitration</td>
+<td>8</td>
+<td>6–12 Months</td>
+</tr>
+<tr>
+<td>Negotiated Settlement</td>
+<td>5</td>
+<td>2–4 Months</td>
+</tr>
+<tr>
+<td>Insurance Recovery Route</td>
+<td>10</td>
+<td>8–15 Months</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Table 5: Risk Assessment</h3>
+<table>
+<thead>
+<tr>
+<th>Risk Factor</th>
+<th>Impact Score (100)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insurance Claim Rejection</td>
+<td>87</td>
+</tr>
+<tr>
+<td>Insolvency Recovery Failure</td>
+<td>82</td>
+</tr>
+<tr>
+<td>Transportation Liability Dispute</td>
+<td>79</td>
+</tr>
+<tr>
+<td>Supply Chain Disruption</td>
+<td>75</td>
+</tr>
+<tr>
+<td>Reputational Impact</td>
+<td>68</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>6. Decision Dilemma</h2>
+<p>Tata Steel's executive committee must determine the most effective legal and financial recovery strategy.</p>
+
+<p><strong>Option 1:</strong> Pursue litigation against both the insurer and logistics provider while participating in insolvency proceedings.</p>
+
+<p><strong>Option 2:</strong> Resolve transportation disputes through arbitration while aggressively pursuing insurance claims and insolvency recovery.</p>
+
+<p><strong>Option 3:</strong> Negotiate settlements with insurers and logistics providers while focusing resources on operational recovery.</p>
+
+<p><strong>Option 4:</strong> Implement a hybrid strategy combining arbitration, negotiated settlements, insurance recovery efforts, and insolvency participation.</p>
+
+<p>Litigation may maximize recovery but involves substantial costs and delays. Arbitration offers faster dispute resolution but may require compromise. Negotiated settlements improve speed but may reduce financial recovery. Management must determine the most effective balance between recovery, risk, and operational continuity.</p>
+
+<hr>
+
+<h2>7. Critical Thinking and Evaluation Questions</h2>
+
+<h3>Question 1</h3>
+<p>Using the case data, analyze the legal and business risks associated with the fire insurance claim, transportation dispute, and customer insolvency. Which issue poses the greatest threat to Tata Steel?</p>
+
+<h3>Question 2</h3>
+<p>Evaluate the four strategic alternatives. Which option should management pursue and why?</p>
+
+<h3>Question 3</h3>
+<p>How can the principles of insurance law, insolvency law, carriage of goods, and arbitration be applied to improve Tata Steel's future risk management framework?</p>
+
+<h3>Question 4</h3>
+<p>What governance systems, contractual safeguards, insurance policies, and dispute-resolution mechanisms should Tata Steel implement to minimize future financial and operational risks?</p>
+
+<hr>
+
+<h1>Model Answers</h1>
+
+<h2>Answer 1</h2>
+<p>The case presents three major legal and financial risks: insurance claim uncertainty, customer insolvency exposure, and transportation liability disputes.</p>
+
+<p>The fire damage represents the largest immediate financial exposure at ₹320 crore. Although insurance coverage exists, the claim remains under review, creating uncertainty regarding recovery. The risk assessment score of 87 for claim rejection indicates that documentation and compliance issues could significantly affect reimbursement.</p>
+
+<p>Customer insolvency poses the second major challenge. Tata Steel faces an exposure of ₹185 crore, but recovery rates under insolvency proceedings may vary substantially. Even under successful proceedings, only 55% recovery is expected, implying significant potential losses.</p>
+
+<p>The transportation dispute involves ₹95 crore in damages and uncertainty regarding liability allocation. While financially smaller than the other issues, prolonged legal disputes could increase costs and operational disruptions.</p>
+
+<p>Among these risks, the insurance claim represents the greatest threat because of its size and impact on liquidity. If recovery is delayed or denied, Tata Steel may need to absorb substantial losses while simultaneously managing insolvency exposure and transportation disputes.</p>
+
+<p>Therefore, management should prioritize insurance recovery while developing parallel strategies for insolvency participation and transportation dispute resolution.</p>
+
+<h2>Answer 2</h2>
+<p>Option 4, the hybrid strategy, offers the most balanced and effective solution.</p>
+
+<p>Option 1 relies heavily on litigation, which is costly and time-consuming. Given the size of financial exposure, prolonged court proceedings could negatively affect cash flow and management focus.</p>
+
+<p>Option 2 improves dispute resolution through arbitration but may not fully address opportunities for negotiated settlements or operational recovery. Option 3 emphasizes settlement and operational continuity but may result in lower financial recoveries.</p>
+
+<p>Option 4 combines the strengths of multiple approaches. Arbitration provides an efficient mechanism for resolving transportation disputes, reducing costs and resolution time compared with litigation. Simultaneously, management can aggressively pursue insurance claims through documentation and compliance support while participating in insolvency proceedings to maximize debt recovery.</p>
+
+<p>The hybrid approach also preserves flexibility. Negotiated settlements can be pursued where economically advantageous, while arbitration remains available when disputes cannot be resolved amicably.</p>
+
+<p>Given the total exposure exceeding ₹600 crore, management should prioritize financial recovery while minimizing legal delays and operational disruption. Option 4 best aligns with these objectives because it balances recovery potential, speed, cost control, and business continuity.</p>
+
+<p>Therefore, the hybrid strategy offers the highest probability of maximizing stakeholder value while managing legal and operational risks effectively.</p>
+
+<hr>
+
+<p><strong>Learning Focus:</strong><br>
+Applying insurance law, insolvency procedures, carriage of goods regulations, and arbitration mechanisms to manage business risks, financial recovery, and commercial dispute resolution.</p>
+
+<p><strong>Primary Concepts:</strong></p>
 <ul>
-<li>By road from Pune to Mumbai</li>
-<li>By sea to Singapore</li>
-<li>By air for urgent deliveries</li>
+<li>Principles of Insurance</li>
+<li>Fire Insurance</li>
+<li>Marine Insurance</li>
+<li>Insolvency Law</li>
+<li>Insolvency Procedures</li>
+<li>Property and Debt of Insolvent</li>
+<li>Carriage of Goods by Land</li>
+<li>Carriage of Goods by Sea</li>
+<li>Arbitration</li>
+<li>Commercial Dispute Resolution</li>
 </ul>
 
-<p>In multiple instances:</p>
-
-<ul>
-<li>Goods were damaged during road transport</li>
-<li>Sea cargo delivery was delayed</li>
-<li>Air cargo was lost in transit</li>
-</ul>
-
-<p>Contracts with carriers contained arbitration clauses. The company initiated arbitration proceedings instead of approaching courts. The carriers disputed liability, citing exceptions under carriage laws.</p>
-
-<h4>Questions</h4>
-
-<ol>
-<li>Explain the rights and liabilities of carriers under carriage of goods by land.</li>
-<li>Discuss carrier liability under carriage of goods by sea.</li>
-<li>What is the legal position of carriers under air carriage?</li>
-<li>Explain the nature and advantages of arbitration.</li>
-<li>What are the modes of arbitration available?</li>
-<li>Can arbitration replace court proceedings in commercial disputes?</li>
-</ol>
-
-      </div>
-    </div>
-  </div>
-
-  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-    <span class="theme-icon">🌙</span>
-  </button>
-
-  <script>
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-      const themeIcon = document.querySelector('.theme-icon');
-      themeIcon.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    }
-
-    // Load saved theme preference
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark-mode');
-      document.querySelector('.theme-icon').textContent = '☀️';
-    }
-  </script>
+</div>
 </body>
 </html>
