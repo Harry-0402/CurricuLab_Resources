@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3: Data Modeling</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 3: Data Modeling</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Data Modeling is the process of organizing data from different tables and creating relationships between them to enable accurate analysis and reporting. In Power BI, data modeling helps combine data from multiple sources into a structured model, improving report performance and ensuring correct calculations.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>Data Modeling Introduction</h2>
+
+<h3>Definition</h3>
+
+<p>Data Modeling is the process of creating relationships among different tables to organize data efficiently for analysis.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Connects multiple tables.</li>
+<li>Reduces data redundancy.</li>
+<li>Improves report accuracy.</li>
+<li>Supports advanced analysis and DAX calculations.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Connecting Sales, Customer, and Product tables using common fields.</p>
+
+<hr>
+
+<h2>Relationship</h2>
+
+<h3>Definition</h3>
+
+<p>A relationship is a connection between two tables using common columns (keys).</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Links data across tables.</li>
+<li>Enables cross-table analysis.</li>
+<li>Essential for report creation.</li>
+<li>Helps create a unified data model.</li>
+</ul>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Customer Table</th>
+<th>Sales Table</th>
+</tr>
+<tr>
+<td>Customer ID</td>
+<td>Customer ID</td>
+</tr>
+</table>
+
+<p>Customer ID acts as the common key.</p>
+
+<hr>
+
+<h2>Need for Relationships</h2>
+
+<h3>Why Relationships are Required</h3>
+
+<ul>
+<li>Combine data from different tables.</li>
+<li>Avoid duplicate information.</li>
+<li>Create meaningful reports.</li>
+<li>Enable filtering across tables.</li>
+<li>Improve data consistency.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Without relationships:</p>
+
+<ul>
+<li>Customer data and Sales data remain separate.</li>
+</ul>
+
+<p>With relationships:</p>
+
+<ul>
+<li>Sales can be analyzed customer-wise.</li>
+</ul>
+
+<hr>
+
+<h1>Relationship Types (Cardinality)</h1>
+
+<h2>What is Cardinality?</h2>
+
+<p>Cardinality defines how records in one table relate to records in another table.</p>
+
+<hr>
+
+<h2>One-to-One Relationship (1:1)</h2>
+
+<h3>Definition</h3>
+
+<p>One record in Table A matches exactly one record in Table B.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Employee Table</th>
+<th>Passport Table</th>
+</tr>
+<tr>
+<td>One Employee</td>
+<td>One Passport</td>
+</tr>
+</table>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Rarely used.</li>
+<li>Unique values on both sides.</li>
+<li>No duplicate keys allowed.</li>
+</ul>
+
+<hr>
+
+<h2>One-to-Many Relationship (1:M)</h2>
+
+<h3>Definition</h3>
+
+<p>One record in one table can be related to many records in another table.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Customer</th>
+<th>Orders</th>
+</tr>
+<tr>
+<td>One Customer</td>
+<td>Many Orders</td>
+</tr>
+</table>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Most common relationship type.</li>
+<li>Primary key on one side.</li>
+<li>Foreign key on many side.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Customer ID = C101</p>
+
+<p>Orders:</p>
+
+<ul>
+<li>Order 1</li>
+<li>Order 2</li>
+<li>Order 3</li>
+</ul>
+
+<p>All belong to Customer C101.</p>
+
+<hr>
+
+<h2>Many-to-One Relationship (M:1)</h2>
+
+<h3>Definition</h3>
+
+<p>Many records from one table relate to a single record in another table.</p>
+
+<h3>Example</h3>
+
+<pre><code>Many Sales Records
+↓
+One Product</code></pre>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Reverse view of One-to-Many.</li>
+<li>Common in transactional databases.</li>
+</ul>
+
+<hr>
+
+<h2>Many-to-Many Relationship (M:M)</h2>
+
+<h3>Definition</h3>
+
+<p>Many records in one table can relate to many records in another table.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Students</th>
+<th>Courses</th>
+</tr>
+<tr>
+<td>One Student → Many Courses</td>
+<td></td>
+</tr>
+<tr>
+<td>One Course → Many Students</td>
+<td></td>
+</tr>
+</table>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>More complex.</li>
+<li>Can affect performance.</li>
+<li>Often requires bridge tables.</li>
+</ul>
+
+<hr>
+
+<h1>Relationship Comparison Table</h1>
+
+<table>
+<tr>
+<th>Relationship Type</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>One-to-One</td>
+<td>Employee ↔ Passport</td>
+</tr>
+<tr>
+<td>One-to-Many</td>
+<td>Customer ↔ Orders</td>
+</tr>
+<tr>
+<td>Many-to-One</td>
+<td>Orders ↔ Customer</td>
+</tr>
+<tr>
+<td>Many-to-Many</td>
+<td>Students ↔ Courses</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Auto Detect Relationship</h1>
+
+<h2>Definition</h2>
+
+<p>Power BI can automatically identify and create relationships between tables based on matching column names and values.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Saves time.</li>
+<li>Quick model creation.</li>
+<li>Useful for beginners.</li>
+</ul>
+
+<h3>Limitations</h3>
+
+<ul>
+<li>May create incorrect relationships.</li>
+<li>Requires verification.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Customer ID present in both tables.</p>
+
+<p>Power BI automatically creates the relationship.</p>
+
+<hr>
+
+<h1>Create a New Relationship</h1>
+
+<h2>Definition</h2>
+
+<p>Manually creating a relationship between two tables.</p>
+
+<h3>Steps</h3>
+
+<pre><code>Home/Model View
+↓
+Manage Relationships
+↓
+New
+↓
+Select Tables
+↓
+Select Matching Columns
+↓
+Choose Cardinality
+↓
+Save</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>Customer Table.CustomerID
+↔
+Sales Table.CustomerID</code></pre>
+
+<hr>
+
+<h1>Edit Existing Relationships</h1>
+
+<h2>Definition</h2>
+
+<p>Modifying an already created relationship.</p>
+
+<h3>Editable Properties</h3>
+
+<ul>
+<li>Cardinality</li>
+<li>Cross-filter direction</li>
+<li>Active/Inactive status</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Changing relationship from Many-to-Many to One-to-Many.</p>
+
+<hr>
+
+<h1>Active and Inactive Relationships</h1>
+
+<h2>Active Relationship</h2>
+
+<h3>Definition</h3>
+
+<p>The default relationship used by Power BI during calculations and reporting.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Represented by a solid line.</li>
+<li>Only one active relationship between two tables.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>Customer Table
+──────►
+Sales Table</code></pre>
+
+<hr>
+
+<h2>Inactive Relationship</h2>
+
+<h3>Definition</h3>
+
+<p>A relationship that exists but is not used automatically.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Represented by a dashed line.</li>
+<li>Can be activated using DAX functions such as USERELATIONSHIP().</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Order Date Relationship → Active</p>
+
+<p>Ship Date Relationship → Inactive</p>
+
+<hr>
+
+<h2>Active vs Inactive Relationship</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Active</th>
+<th>Inactive</th>
+</tr>
+<tr>
+<td>Used Automatically</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Line Type</td>
+<td>Solid</td>
+<td>Dashed</td>
+</tr>
+<tr>
+<td>DAX Required</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Default Reporting</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Delete a Relationship</h1>
+
+<h2>Definition</h2>
+
+<p>Removing an unwanted relationship from the model.</p>
+
+<h3>Steps</h3>
+
+<pre><code>Model View
+↓
+Select Relationship
+↓
+Delete</code></pre>
+
+<h3>Reasons for Deletion</h3>
+
+<ul>
+<li>Incorrect relationship.</li>
+<li>Duplicate relationship.</li>
+<li>Performance optimization.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Removing a mistakenly created Many-to-Many relationship.</p>
+
+<hr>
+
+<h1>Model View in Power BI</h1>
+
+<h3>Purpose</h3>
+
+<p>Provides a graphical representation of relationships between tables.</p>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Easy relationship management.</li>
+<li>Visual understanding of data flow.</li>
+<li>Simplifies troubleshooting.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>Customer
+↓
+Sales
+↓
+Product</code></pre>
+
+<hr>
+
+<h1>Best Practices for Data Modeling</h1>
+
+<h3>Key Points</h3>
+
+<ol>
+<li>Use One-to-Many relationships whenever possible.</li>
+<li>Avoid unnecessary Many-to-Many relationships.</li>
+<li>Keep table names meaningful.</li>
+<li>Remove unused columns.</li>
+<li>Verify Auto Detect results.</li>
+<li>Use star schema design.</li>
+<li>Maintain clean primary keys.</li>
+</ol>
+
+<hr>
+
+<h1>Star Schema</h1>
+
+<h2>Definition</h2>
+
+<p>A data model where a central Fact Table is connected to multiple Dimension Tables.</p>
+
+<h3>Structure</h3>
+
+<pre><code>Product
+↓
+Customer → Sales (Fact Table) ← Date
+↓
+Region</code></pre>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Faster performance.</li>
+<li>Easier analysis.</li>
+<li>Better scalability.</li>
+</ul>
+
+<hr>
+
+<h1>Snowflake Schema</h1>
+
+<h2>Definition</h2>
+
+<p>An extension of the Star Schema where dimension tables are further normalized.</p>
+
+<h3>Example</h3>
+
+<pre><code>Country
+↓
+State
+↓
+City
+↓
+Customer</code></pre>
+
+<h3>Advantage</h3>
+
+<p>Reduces redundancy.</p>
+
+<h3>Disadvantage</h3>
+
+<p>More complex than Star Schema.</p>
+
+<hr>
+
+<h1>Star Schema vs Snowflake Schema</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Star Schema</th>
+<th>Snowflake Schema</th>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Simple</td>
+<td>Complex</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Faster</td>
+<td>Slightly Slower</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>More</td>
+<td>Less</td>
+</tr>
+<tr>
+<td>Maintenance</td>
+<td>Easier</td>
+<td>Difficult</td>
+</tr>
+<tr>
+<td>Preferred in Power BI</td>
+<td>Yes</td>
+<td>Less Common</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Data Modeling</strong> – Organizing data through relationships.</li>
+<li><strong>Relationship</strong> – Connection between tables.</li>
+<li><strong>Cardinality</strong> – Type of relationship between tables.</li>
+<li><strong>Primary Key</strong> – Unique identifier in a table.</li>
+<li><strong>Foreign Key</strong> – Column referencing another table.</li>
+<li><strong>Active Relationship</strong> – Default relationship used by Power BI.</li>
+<li><strong>Inactive Relationship</strong> – Relationship requiring DAX activation.</li>
+<li><strong>Star Schema</strong> – Fact table surrounded by dimension tables.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Flowchart</h1>
+
+<pre><code>Import Tables
+↓
+Identify Common Fields
+↓
+Create Relationships
+↓
+Set Cardinality
+↓
+Validate Model
+↓
+Create Reports</code></pre>
+
+<hr>
+
+<h1>Unit 3 Summary</h1>
+
+<p>Data Modeling is the foundation of Power BI analysis. It involves creating and managing relationships among tables, defining cardinality, and organizing data efficiently. Understanding relationship types, active/inactive relationships, Auto Detect, and schema design helps create accurate, scalable, and high-performance Power BI reports.</p>
+
+<h2>Important Exam Questions</h2>
+
+<ol>
+<li>What is Data Modeling? Explain its importance.</li>
+<li>Define Relationship and explain its need.</li>
+<li>Explain different types of relationships with examples.</li>
+<li>Differentiate One-to-Many and Many-to-Many relationships.</li>
+<li>Explain Auto Detect Relationship in Power BI.</li>
+<li>How do you create and edit relationships in Power BI?</li>
+<li>Differentiate Active and Inactive Relationships.</li>
+<li>Explain Star Schema and Snowflake Schema.</li>
+<li>Write short notes on Cardinality.</li>
+<li>Explain the process of deleting relationships in Power BI.</li>
+</ol>
+
+</div>
+</body>
+</html>

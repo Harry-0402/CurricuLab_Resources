@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Visualization of Structured Data</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 2: Visualization of Structured Data</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Structured data is organized data stored in rows and columns, such as databases, spreadsheets, and data warehouses. Visualization of structured data helps analysts discover patterns, trends, and relationships through charts, dashboards, and reports. This unit covers exploratory analysis, univariate and multivariate analysis, visualization techniques, modeling, and deployment visualization.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>1. Introduction to Structured Data Visualization</h2>
+
+<h3>Definition</h3>
+
+<p>Structured data visualization refers to presenting organized data graphically to improve understanding and decision-making.</p>
+
+<h3>Sources of Structured Data</h3>
+
+<ul>
+<li>Databases</li>
+<li>Excel Sheets</li>
+<li>ERP Systems</li>
+<li>CRM Systems</li>
+<li>Data Warehouses</li>
+</ul>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Organized into rows and columns.</li>
+<li>Easy to store and retrieve.</li>
+<li>Suitable for statistical analysis.</li>
+<li>Supports business intelligence tools.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>A company's sales database visualized through dashboards showing revenue, profit, and customer growth.</p>
+
+<hr>
+
+<h1>2. Exploratory Data Analysis (EDA)</h1>
+
+<h2>Definition</h2>
+
+<p>Exploratory Data Analysis is the process of examining data before formal analysis to discover patterns, trends, and anomalies.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Understand dataset characteristics.</li>
+<li>Detect outliers.</li>
+<li>Identify missing values.</li>
+<li>Generate insights.</li>
+</ul>
+
+<h3>Key Activities</h3>
+
+<ul>
+<li>Data Cleaning</li>
+<li>Data Summarization</li>
+<li>Pattern Identification</li>
+<li>Trend Analysis</li>
+</ul>
+
+<h3>EDA Process</h3>
+
+<pre><code>Collect Data
+↓
+Clean Data
+↓
+Explore Variables
+↓
+Identify Patterns
+↓
+Generate Insights</code></pre>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Improves data quality.</li>
+<li>Supports better modeling.</li>
+<li>Reduces analytical errors.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Analyzing customer purchase data to identify high-value customers.</p>
+
+<hr>
+
+<h1>3. Univariate Analysis</h1>
+
+<h2>Definition</h2>
+
+<p>Univariate analysis studies one variable at a time.</p>
+
+<h3>Purpose</h3>
+
+<ul>
+<li>Understand distribution.</li>
+<li>Identify central tendency.</li>
+<li>Detect variation.</li>
+</ul>
+
+<h3>Common Visualizations</h3>
+
+<h4>Histogram</h4>
+<p>Shows frequency distribution.</p>
+<p><strong>Example:</strong> Distribution of student marks.</p>
+
+<hr>
+
+<h4>Box Plot</h4>
+<p>Displays spread and outliers.</p>
+<p><strong>Example:</strong> Salary distribution among employees.</p>
+
+<hr>
+
+<h4>Pie Chart</h4>
+<p>Shows percentage contribution.</p>
+<p><strong>Example:</strong> Market share by brand.</p>
+
+<hr>
+
+<h4>Bar Chart</h4>
+<p>Compares categorical values.</p>
+<p><strong>Example:</strong> Product sales comparison.</p>
+
+<hr>
+
+<h2>Measures Used</h2>
+
+<table>
+<tr>
+<th>Measure</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Mean</td>
+<td>Average value</td>
+</tr>
+<tr>
+<td>Median</td>
+<td>Middle value</td>
+</tr>
+<tr>
+<td>Mode</td>
+<td>Most frequent value</td>
+</tr>
+<tr>
+<td>Range</td>
+<td>Spread of data</td>
+</tr>
+<tr>
+<td>Standard Deviation</td>
+<td>Variability</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>4. Multivariate Analysis</h1>
+
+<h2>Definition</h2>
+
+<p>Multivariate analysis examines multiple variables simultaneously.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Discover relationships.</li>
+<li>Identify influencing factors.</li>
+<li>Improve predictions.</li>
+</ul>
+
+<h3>Common Visualizations</h3>
+
+<h4>Scatter Plot Matrix</h4>
+<p>Shows relationships among variables.</p>
+
+<h4>Bubble Chart</h4>
+<p>Displays three variables simultaneously.</p>
+
+<h4>Heat Map</h4>
+<p>Represents values using color intensity.</p>
+
+<h4>Treemap</h4>
+<p>Visualizes hierarchical data.</p>
+
+<hr>
+
+<h3>Example</h3>
+
+<p>Analyzing customer satisfaction using:</p>
+<ul>
+<li>Service Quality</li>
+<li>Price</li>
+<li>Product Availability</li>
+<li>Brand Image</li>
+</ul>
+
+<hr>
+
+<h2>Univariate vs Multivariate Analysis</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Univariate</th>
+<th>Multivariate</th>
+</tr>
+<tr>
+<td>Variables</td>
+<td>One</td>
+<td>Multiple</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Description</td>
+<td>Relationship Analysis</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Age Distribution</td>
+<td>Age, Income & Spending</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>5. Charts to Visualize Multiple Measures</h1>
+
+<h2>Definition</h2>
+
+<p>Multiple-measure charts display more than one metric in a single visualization.</p>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Compare metrics simultaneously.</li>
+<li>Detect patterns quickly.</li>
+<li>Improve dashboard efficiency.</li>
+</ul>
+
+<hr>
+
+<h2>Common Multi-Measure Charts</h2>
+
+<h3>A. Combination Chart</h3>
+<p>Combines bar and line charts.</p>
+<p><strong>Example:</strong> Sales (bar) and Profit (line).</p>
+
+<hr>
+
+<h3>B. Dual Axis Chart</h3>
+<p>Uses two different scales.</p>
+<p><strong>Example:</strong> Revenue and Customer Count.</p>
+
+<hr>
+
+<h3>C. Bubble Chart</h3>
+<p>Displays:</p>
+<ul>
+<li>X-axis variable</li>
+<li>Y-axis variable</li>
+<li>Bubble size variable</li>
+</ul>
+
+<hr>
+
+<h3>D. Heat Map</h3>
+<p>Shows relationships among multiple variables.</p>
+
+<hr>
+
+<h3>E. Radar Chart</h3>
+<p>Compares multiple dimensions.</p>
+<p><strong>Example:</strong> Employee performance across skills.</p>
+
+<hr>
+
+<h2>Multi-Measure Visualization Table</h2>
+
+<table>
+<tr>
+<th>Chart Type</th>
+<th>Best Use</th>
+</tr>
+<tr>
+<td>Combination Chart</td>
+<td>Compare trends and values</td>
+</tr>
+<tr>
+<td>Bubble Chart</td>
+<td>Three-dimensional analysis</td>
+</tr>
+<tr>
+<td>Heat Map</td>
+<td>Pattern identification</td>
+</tr>
+<tr>
+<td>Radar Chart</td>
+<td>Multi-factor comparison</td>
+</tr>
+<tr>
+<td>Dual Axis Chart</td>
+<td>Comparing different scales</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>6. Modeling</h1>
+
+<h2>Definition</h2>
+
+<p>Modeling is the process of creating analytical or predictive models using data.</p>
+
+<h3>Purpose</h3>
+
+<ul>
+<li>Forecast future outcomes.</li>
+<li>Identify key drivers.</li>
+<li>Support business decisions.</li>
+</ul>
+
+<h3>Types of Models</h3>
+
+<h4>Descriptive Models</h4>
+<p>Describe historical data.</p>
+<p><strong>Example:</strong> Sales performance reports.</p>
+
+<hr>
+
+<h4>Predictive Models</h4>
+<p>Predict future events.</p>
+<p><strong>Example:</strong> Customer churn prediction.</p>
+
+<hr>
+
+<h4>Prescriptive Models</h4>
+<p>Recommend actions.</p>
+<p><strong>Example:</strong> Inventory optimization.</p>
+
+<hr>
+
+<h2>Modeling Process</h2>
+
+<pre><code>Data Collection
+↓
+Data Preparation
+↓
+Model Building
+↓
+Model Testing
+↓
+Model Deployment</code></pre>
+
+<hr>
+
+<h2>Visualization in Modeling</h2>
+
+<p>Visualization helps:</p>
+<ul>
+<li>Understand variables.</li>
+<li>Evaluate model performance.</li>
+<li>Identify trends and patterns.</li>
+<li>Communicate model results.</li>
+</ul>
+
+<h3>Example</h3>
+<p>A regression line visualizing the relationship between advertising and sales.</p>
+
+<hr>
+
+<h1>7. Visualization During Deployment</h1>
+
+<h2>Definition</h2>
+
+<p>Deployment visualization refers to monitoring and communicating model performance after implementation.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Track KPIs.</li>
+<li>Monitor business performance.</li>
+<li>Detect issues early.</li>
+<li>Support continuous improvement.</li>
+</ul>
+
+<hr>
+
+<h2>Common Deployment Visualizations</h2>
+
+<h3>Dashboards</h3>
+<p>Real-time monitoring of KPIs.</p>
+
+<hr>
+
+<h3>Scorecards</h3>
+<p>Performance measurement reports.</p>
+
+<hr>
+
+<h3>KPI Visualizations</h3>
+<p>Track critical metrics.</p>
+
+<hr>
+
+<h3>Alert Systems</h3>
+<p>Highlight deviations from targets.</p>
+
+<hr>
+
+<h2>Deployment Monitoring Flowchart</h2>
+
+<pre><code>Deploy Model
+↓
+Monitor Performance
+↓
+Visualize KPIs
+↓
+Detect Issues
+↓
+Take Corrective Action</code></pre>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Structured Data</strong> – Organized data stored in rows and columns.</li>
+<li><strong>Exploratory Data Analysis (EDA)</strong> – Initial examination of data.</li>
+<li><strong>Univariate Analysis</strong> – Analysis of one variable.</li>
+<li><strong>Multivariate Analysis</strong> – Analysis of multiple variables.</li>
+<li><strong>Modeling</strong> – Building analytical or predictive systems.</li>
+<li><strong>Dashboard</strong> – Visual interface displaying KPIs.</li>
+<li><strong>Heat Map</strong> – Color-coded representation of values.</li>
+<li><strong>Bubble Chart</strong> – Chart displaying three variables simultaneously.</li>
+<li><strong>Deployment</strong> – Implementation of a model in real-world use.</li>
+</ul>
+
+<hr>
+
+<h1>Comparison Table</h1>
+
+<h2>Exploratory Analysis vs Modeling</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Exploratory Analysis</th>
+<th>Modeling</th>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Understand data</td>
+<td>Predict/Explain outcomes</td>
+</tr>
+<tr>
+<td>Stage</td>
+<td>Early</td>
+<td>Later</td>
+</tr>
+<tr>
+<td>Focus</td>
+<td>Patterns and insights</td>
+<td>Forecasting and decision-making</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Visual insights</td>
+<td>Predictive models</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+<tr>
+<td>Structured Data</td>
+<td>Organized rows and columns</td>
+</tr>
+<tr>
+<td>EDA</td>
+<td>Initial data exploration</td>
+</tr>
+<tr>
+<td>Univariate Analysis</td>
+<td>One variable</td>
+</tr>
+<tr>
+<td>Multivariate Analysis</td>
+<td>Multiple variables</td>
+</tr>
+<tr>
+<td>Heat Map</td>
+<td>Pattern visualization</td>
+</tr>
+<tr>
+<td>Bubble Chart</td>
+<td>Three-variable visualization</td>
+</tr>
+<tr>
+<td>Modeling</td>
+<td>Prediction and analysis</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td>KPI monitoring</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>Real-world implementation</td>
+</tr>
+<tr>
+<td>Scorecard</td>
+<td>Performance measurement</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Frequently Asked Exam Questions</h1>
+
+<ol>
+<li>What is structured data visualization?</li>
+<li>Explain the concept and objectives of Exploratory Data Analysis.</li>
+<li>Discuss univariate and multivariate analysis.</li>
+<li>Explain charts used to visualize multiple measures.</li>
+<li>What is modeling? Explain its types.</li>
+<li>Describe the role of visualization in modeling.</li>
+<li>Explain visualization during deployment.</li>
+</ol>
+
+<hr>
+
+<h1>5-Mark Revision Summary</h1>
+
+<ul>
+<li>Structured data is organized in rows and columns and is easy to analyze.</li>
+<li>EDA helps understand data before advanced analysis.</li>
+<li>Univariate analysis studies one variable; multivariate analysis studies multiple variables.</li>
+<li>Multi-measure charts help compare several metrics simultaneously.</li>
+<li>Modeling is used for description, prediction, and decision-making.</li>
+<li>Visualization improves model understanding and communication.</li>
+<li>Dashboards and scorecards are essential during deployment for performance monitoring.</li>
+</ul>
+
+</div>
+</body>
+</html>

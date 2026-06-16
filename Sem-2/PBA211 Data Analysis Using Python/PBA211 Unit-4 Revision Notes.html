@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4: Data Manipulation</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 4: Data Manipulation</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Data Manipulation is the process of organizing, cleaning, filtering, transforming, and analyzing data to extract meaningful information. In Pandas, DataFrames are the primary structures used for data manipulation. This unit covers DataFrame creation, slicing, filtering, lambda functions, conditional operations, and business data analysis using CSV files.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>Data Manipulation</h2>
+
+<h3>Definition</h3>
+
+<p>Data Manipulation refers to modifying, organizing, cleaning, and transforming data to make it useful for analysis.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Clean raw data.</li>
+<li>Remove inconsistencies.</li>
+<li>Extract useful information.</li>
+<li>Prepare data for reporting.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Removing duplicate customer records before analysis.</p>
+
+<hr>
+
+<h1>Five Ways to Create a DataFrame</h1>
+
+<h2>1. From Dictionary</h2>
+
+<h3>Example</h3>
+
+<pre><code>import pandas as pd
+
+data = {
+    "Name":["Rahul","Priya"],
+    "Age":[21,22]
+}
+
+df = pd.DataFrame(data)</code></pre>
+
+<h3>Output</h3>
+
+<table>
+<tr>
+<th>Name</th>
+<th>Age</th>
+</tr>
+<tr>
+<td>Rahul</td>
+<td>21</td>
+</tr>
+<tr>
+<td>Priya</td>
+<td>22</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>2. From List</h2>
+
+<pre><code>data = [
+    ["Rahul",21],
+    ["Priya",22]
+]
+
+df = pd.DataFrame(data,
+columns=["Name","Age"])</code></pre>
+
+<hr>
+
+<h2>3. From NumPy Array</h2>
+
+<pre><code>import numpy as np
+
+arr = np.array([
+    [1,2],
+    [3,4]
+])
+
+df = pd.DataFrame(arr)</code></pre>
+
+<hr>
+
+<h2>4. From CSV File</h2>
+
+<pre><code>df = pd.read_csv("students.csv")</code></pre>
+
+<hr>
+
+<h2>5. From Excel File</h2>
+
+<pre><code>df = pd.read_excel("students.xlsx")</code></pre>
+
+<hr>
+
+<h1>DataFrame Structure</h1>
+
+<table>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Rows</td>
+<td>Records</td>
+</tr>
+<tr>
+<td>Columns</td>
+<td>Fields</td>
+</tr>
+<tr>
+<td>Index</td>
+<td>Row labels</td>
+</tr>
+<tr>
+<td>Values</td>
+<td>Actual data</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Slicing DataFrames</h1>
+
+<h2>Definition</h2>
+
+<p>Slicing means selecting a subset of rows or columns.</p>
+
+<h3>Selecting Columns</h3>
+
+<pre><code>df["Name"]</code></pre>
+
+<h3>Selecting Multiple Columns</h3>
+
+<pre><code>df[["Name","Age"]]</code></pre>
+
+<hr>
+
+<h2>Row Slicing</h2>
+
+<h3>Syntax</h3>
+
+<pre><code>df[start:end]</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>df[0:3]</code></pre>
+
+<p>Returns first three rows.</p>
+
+<hr>
+
+<h2>Using loc[]</h2>
+
+<h3>Definition</h3>
+
+<p>Label-based selection.</p>
+
+<h3>Example</h3>
+
+<pre><code>df.loc[0]</code></pre>
+
+<p>Returns first row.</p>
+
+<hr>
+
+<h2>Using iloc[]</h2>
+
+<h3>Definition</h3>
+
+<p>Position-based selection.</p>
+
+<h3>Example</h3>
+
+<pre><code>df.iloc[0]</code></pre>
+
+<p>Returns first row by index position.</p>
+
+<hr>
+
+<h1>Filtering DataFrames</h1>
+
+<h2>Definition</h2>
+
+<p>Filtering selects rows based on conditions.</p>
+
+<h3>Example</h3>
+
+<pre><code>df[df["Age"] &gt; 21]</code></pre>
+
+<h3>Output</h3>
+
+<p>Only records with Age greater than 21.</p>
+
+<hr>
+
+<h2>Multiple Conditions</h2>
+
+<h3>Example</h3>
+
+<pre><code>df[
+(df["Age"] &gt; 20)
+&amp;
+(df["City"] == "Mumbai")
+]</code></pre>
+
+<hr>
+
+<h1>Lambda Functions</h1>
+
+<h2>Definition</h2>
+
+<p>A Lambda Function is an anonymous single-line function.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>lambda arguments : expression</code></pre>
+
+<hr>
+
+<h2>Example</h2>
+
+<pre><code>square = lambda x : x*x
+
+print(square(5))</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>25</code></pre>
+
+<hr>
+
+<h2>Lambda with DataFrame</h2>
+
+<h3>Example</h3>
+
+<pre><code>df["Bonus"] = df["Salary"].apply(
+lambda x: x * 0.10
+)</code></pre>
+
+<h3>Result</h3>
+
+<p>Creates a Bonus column equal to 10% of Salary.</p>
+
+<hr>
+
+<h1>Run If and Else Scenarios</h1>
+
+<h2>Using if-else</h2>
+
+<h3>Example</h3>
+
+<pre><code>sales = 5000
+
+if sales &gt; 3000:
+    print("Target Achieved")
+else:
+    print("Target Not Achieved")</code></pre>
+
+<hr>
+
+<h2>Using Lambda with If-Else</h2>
+
+<h3>Example</h3>
+
+<pre><code>df["Status"] = df["Sales"].apply(
+lambda x:
+"High"
+if x &gt; 5000
+else "Low"
+)</code></pre>
+
+<hr>
+
+<h2>Conditional Flowchart</h2>
+
+<pre><code>Condition
+↓
+True?
+↓ Yes → Execute IF Block
+↓ No
+Execute ELSE Block</code></pre>
+
+<hr>
+
+<h1>Gather and Manipulate Data with Pandas</h1>
+
+<h2>Reading Data</h2>
+
+<pre><code>df = pd.read_csv("sales.csv")</code></pre>
+
+<hr>
+
+<h2>Display Records</h2>
+
+<h3>First Rows</h3>
+
+<pre><code>df.head()</code></pre>
+
+<h3>Last Rows</h3>
+
+<pre><code>df.tail()</code></pre>
+
+<hr>
+
+<h2>Dataset Information</h2>
+
+<pre><code>df.info()</code></pre>
+
+<p>Shows:</p>
+
+<ul>
+<li>Number of rows</li>
+<li>Number of columns</li>
+<li>Data types</li>
+</ul>
+
+<hr>
+
+<h2>Statistical Summary</h2>
+
+<pre><code>df.describe()</code></pre>
+
+<p>Provides:</p>
+
+<ul>
+<li>Mean</li>
+<li>Count</li>
+<li>Maximum</li>
+<li>Minimum</li>
+<li>Standard Deviation</li>
+</ul>
+
+<hr>
+
+<h1>Handling Missing Values</h1>
+
+<h2>Check Missing Values</h2>
+
+<pre><code>df.isnull().sum()</code></pre>
+
+<hr>
+
+<h2>Remove Missing Values</h2>
+
+<pre><code>df.dropna()</code></pre>
+
+<hr>
+
+<h2>Replace Missing Values</h2>
+
+<pre><code>df.fillna(0)</code></pre>
+
+<hr>
+
+<h1>Data Cleaning Operations</h1>
+
+<table>
+<tr>
+<th>Function</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>dropna()</td>
+<td>Remove missing values</td>
+</tr>
+<tr>
+<td>fillna()</td>
+<td>Replace missing values</td>
+</tr>
+<tr>
+<td>drop_duplicates()</td>
+<td>Remove duplicate records</td>
+</tr>
+<tr>
+<td>rename()</td>
+<td>Rename columns</td>
+</tr>
+<tr>
+<td>astype()</td>
+<td>Change data type</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Example</h2>
+
+<pre><code>df.drop_duplicates()</code></pre>
+
+<p>Removes duplicate rows.</p>
+
+<hr>
+
+<h1>Analyze Business Data from CSV Files</h1>
+
+<h2>Example Dataset</h2>
+
+<table>
+<tr>
+<th>Product</th>
+<th>Sales</th>
+</tr>
+<tr>
+<td>A</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>B</td>
+<td>2000</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1500</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Calculate Total Sales</h2>
+
+<pre><code>df["Sales"].sum()</code></pre>
+
+<hr>
+
+<h2>Calculate Average Sales</h2>
+
+<pre><code>df["Sales"].mean()</code></pre>
+
+<hr>
+
+<h2>Find Maximum Sales</h2>
+
+<pre><code>df["Sales"].max()</code></pre>
+
+<hr>
+
+<h2>Find Minimum Sales</h2>
+
+<pre><code>df["Sales"].min()</code></pre>
+
+<hr>
+
+<h1>Business Data Analysis Workflow</h1>
+
+<pre><code>Import CSV
+↓
+Create DataFrame
+↓
+Clean Data
+↓
+Handle Missing Values
+↓
+Filter Records
+↓
+Apply Calculations
+↓
+Generate Insights</code></pre>
+
+<hr>
+
+<h1>Common Pandas Functions</h1>
+
+<table>
+<tr>
+<th>Function</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>head()</td>
+<td>View first rows</td>
+</tr>
+<tr>
+<td>tail()</td>
+<td>View last rows</td>
+</tr>
+<tr>
+<td>info()</td>
+<td>Dataset information</td>
+</tr>
+<tr>
+<td>describe()</td>
+<td>Statistical summary</td>
+</tr>
+<tr>
+<td>sum()</td>
+<td>Total</td>
+</tr>
+<tr>
+<td>mean()</td>
+<td>Average</td>
+</tr>
+<tr>
+<td>max()</td>
+<td>Highest value</td>
+</tr>
+<tr>
+<td>min()</td>
+<td>Lowest value</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>DataFrame Operations Comparison</h1>
+
+<table>
+<tr>
+<th>Operation</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Slicing</td>
+<td>Select subset of data</td>
+</tr>
+<tr>
+<td>Filtering</td>
+<td>Select records by condition</td>
+</tr>
+<tr>
+<td>Lambda</td>
+<td>Short function</td>
+</tr>
+<tr>
+<td>loc[]</td>
+<td>Label-based selection</td>
+</tr>
+<tr>
+<td>iloc[]</td>
+<td>Position-based selection</td>
+</tr>
+<tr>
+<td>dropna()</td>
+<td>Remove missing values</td>
+</tr>
+<tr>
+<td>fillna()</td>
+<td>Replace missing values</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Data Manipulation</strong> – Organizing and transforming data.</li>
+<li><strong>DataFrame</strong> – Two-dimensional Pandas structure.</li>
+<li><strong>Slicing</strong> – Extracting part of data.</li>
+<li><strong>Filtering</strong> – Selecting records using conditions.</li>
+<li><strong>Lambda Function</strong> – Anonymous single-line function.</li>
+<li><strong>Missing Value</strong> – Empty or null data.</li>
+<li><strong>Data Cleaning</strong> – Removing errors and inconsistencies.</li>
+<li><strong>CSV File</strong> – Comma-separated values file.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Topic</th>
+<th>Key Point</th>
+</tr>
+<tr>
+<td>DataFrame</td>
+<td>Main Pandas structure</td>
+</tr>
+<tr>
+<td>Slicing</td>
+<td>Select rows/columns</td>
+</tr>
+<tr>
+<td>Filtering</td>
+<td>Condition-based selection</td>
+</tr>
+<tr>
+<td>Lambda</td>
+<td>Anonymous function</td>
+</tr>
+<tr>
+<td>loc[]</td>
+<td>Label-based access</td>
+</tr>
+<tr>
+<td>iloc[]</td>
+<td>Position-based access</td>
+</tr>
+<tr>
+<td>dropna()</td>
+<td>Remove null values</td>
+</tr>
+<tr>
+<td>fillna()</td>
+<td>Replace null values</td>
+</tr>
+<tr>
+<td>describe()</td>
+<td>Statistical summary</td>
+</tr>
+<tr>
+<td>info()</td>
+<td>Dataset details</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Common Exam Programs</h1>
+
+<h2>Create DataFrame</h2>
+
+<pre><code>import pandas as pd
+
+data = {
+    "Name":["Rahul","Priya"],
+    "Age":[21,22]
+}
+
+df = pd.DataFrame(data)
+print(df)</code></pre>
+
+<hr>
+
+<h2>Filter Records</h2>
+
+<pre><code>df[df["Age"] &gt; 21]</code></pre>
+
+<hr>
+
+<h2>Lambda Function</h2>
+
+<pre><code>square = lambda x: x*x
+
+print(square(6))</code></pre>
+
+<hr>
+
+<h2>Read CSV File</h2>
+
+<pre><code>import pandas as pd
+
+df = pd.read_csv("sales.csv")
+print(df.head())</code></pre>
+
+<hr>
+
+<h1>Frequently Asked Viva Questions</h1>
+
+<h3>What is a DataFrame?</h3>
+
+<p>A two-dimensional table-like structure used in Pandas.</p>
+
+<h3>Difference between loc[] and iloc[]?</h3>
+
+<ul>
+<li><code>loc[]</code> → Label-based indexing.</li>
+<li><code>iloc[]</code> → Position-based indexing.</li>
+</ul>
+
+<h3>Why use Lambda functions?</h3>
+
+<p>To create short and quick functions without defining them separately.</p>
+
+<h3>What is data cleaning?</h3>
+
+<p>The process of correcting or removing inaccurate and incomplete data.</p>
+
+<hr>
+
+<h1>Unit 4 Summary</h1>
+
+<p>Data manipulation is one of the most important steps in data analysis. Pandas provides powerful tools for creating DataFrames, slicing, filtering, cleaning, and analyzing business data. Mastering these operations helps transform raw data into meaningful insights for decision-making.</p>
+
+<h2>Important Exam Questions</h2>
+
+<ol>
+<li>Explain the five ways to create a DataFrame.</li>
+<li>What is Data Manipulation? Discuss its importance.</li>
+<li>Explain DataFrame slicing with examples.</li>
+<li>Differentiate <code>loc[]</code> and <code>iloc[]</code>.</li>
+<li>Explain DataFrame filtering with examples.</li>
+<li>What are Lambda Functions? Explain with examples.</li>
+<li>How do you handle missing values in Pandas?</li>
+<li>Explain data cleaning operations in Pandas.</li>
+<li>How can business data be analyzed using CSV files?</li>
+<li>Write short notes on <code>describe()</code> and <code>info()</code> functions.</li>
+</ol>
+
+</div>
+</body>
+</html>

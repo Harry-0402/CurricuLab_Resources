@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3: Visualization of Unstructured Data</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 3: Visualization of Unstructured Data</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Unstructured data refers to data that does not follow a predefined format or structure. Examples include text documents, emails, social media posts, chat conversations, customer reviews, images, audio, and videos. Since a large portion of business data is unstructured, effective visualization techniques are essential for extracting meaningful insights. This unit covers text data visualization, preprocessing, challenges, and conversation visualization.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>1. Introduction to Unstructured Data Visualization</h2>
+
+<h3>Definition</h3>
+
+<p>Unstructured Data Visualization is the graphical representation of information extracted from text, conversations, documents, and other non-tabular data sources.</p>
+
+<h3>Characteristics of Unstructured Data</h3>
+
+<ul>
+<li>No fixed format.</li>
+<li>Difficult to analyze directly.</li>
+<li>High volume and variety.</li>
+<li>Generated continuously.</li>
+</ul>
+
+<h3>Examples</h3>
+
+<ul>
+<li>Emails</li>
+<li>Social Media Posts</li>
+<li>Customer Reviews</li>
+<li>Chat Messages</li>
+<li>Blogs</li>
+<li>Audio Transcripts</li>
+</ul>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Reveals customer opinions.</li>
+<li>Identifies trends and sentiments.</li>
+<li>Supports business intelligence.</li>
+<li>Enhances decision-making.</li>
+</ul>
+
+<hr>
+
+<h1>2. Importance of Text Data Visualization</h1>
+
+<h2>Definition</h2>
+
+<p>Text data visualization transforms textual information into visual formats to simplify understanding.</p>
+
+<h3>Why It Is Important</h3>
+
+<ul>
+<li>Large amounts of text are difficult to read manually.</li>
+<li>Visualizations summarize complex information.</li>
+<li>Helps identify hidden patterns.</li>
+<li>Facilitates faster decision-making.</li>
+</ul>
+
+<h3>Business Applications</h3>
+
+<table>
+<tr>
+<th>Area</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Marketing</td>
+<td>Customer review analysis</td>
+</tr>
+<tr>
+<td>HR</td>
+<td>Employee feedback analysis</td>
+</tr>
+<tr>
+<td>Finance</td>
+<td>News sentiment analysis</td>
+</tr>
+<tr>
+<td>Customer Service</td>
+<td>Complaint trend analysis</td>
+</tr>
+<tr>
+<td>Social Media</td>
+<td>Brand sentiment monitoring</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+
+<p>Analyzing thousands of customer reviews to identify common complaints regarding product quality.</p>
+
+<hr>
+
+<h1>3. Challenges of Text Data Visualization</h1>
+
+<h2>Major Challenges</h2>
+
+<h3>A. Large Data Volume</h3>
+<p>Millions of text records can be difficult to process.</p>
+
+<h3>B. Data Complexity</h3>
+<p>Human language contains ambiguity and context.</p>
+
+<h3>C. Multiple Languages</h3>
+<p>Text may exist in different languages and formats.</p>
+
+<h3>D. Noise in Data</h3>
+<p>Includes:</p>
+<ul>
+<li>Spelling mistakes</li>
+<li>Emojis</li>
+<li>Abbreviations</li>
+<li>Irrelevant words</li>
+</ul>
+
+<h3>E. Dynamic Nature</h3>
+<p>Text data changes rapidly over time.</p>
+
+<hr>
+
+<h2>Challenge Summary</h2>
+
+<table>
+<tr>
+<th>Challenge</th>
+<th>Impact</th>
+</tr>
+<tr>
+<td>Large Volume</td>
+<td>Difficult analysis</td>
+</tr>
+<tr>
+<td>Ambiguity</td>
+<td>Interpretation issues</td>
+</tr>
+<tr>
+<td>Noise</td>
+<td>Reduced accuracy</td>
+</tr>
+<tr>
+<td>Multiple Languages</td>
+<td>Processing complexity</td>
+</tr>
+<tr>
+<td>Continuous Updates</td>
+<td>Frequent monitoring needed</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>4. Forms of Text Data</h1>
+
+<h2>Definition</h2>
+
+<p>Text data exists in multiple forms depending on its source.</p>
+
+<h3>Common Forms</h3>
+
+<h3>Structured Text</h3>
+<p>Text organized in predefined fields.</p>
+<p><strong>Example:</strong> Customer survey responses.</p>
+
+<hr>
+
+<h3>Semi-Structured Text</h3>
+<p>Partially organized text.</p>
+<p><strong>Example:</strong> XML and JSON documents.</p>
+
+<hr>
+
+<h3>Unstructured Text</h3>
+<p>Free-form text without predefined format.</p>
+<p><strong>Example:</strong> Emails and social media posts.</p>
+
+<hr>
+
+<h2>Sources of Text Data</h2>
+
+<table>
+<tr>
+<th>Source</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Social Media</td>
+<td>Twitter, Facebook Posts</td>
+</tr>
+<tr>
+<td>Customer Reviews</td>
+<td>Product Feedback</td>
+</tr>
+<tr>
+<td>Chat Applications</td>
+<td>WhatsApp, Messenger</td>
+</tr>
+<tr>
+<td>Emails</td>
+<td>Customer Queries</td>
+</tr>
+<tr>
+<td>Documents</td>
+<td>Reports and Articles</td>
+</tr>
+<tr>
+<td>Call Center Logs</td>
+<td>Service Records</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>5. Text Data Pre-processing Pipeline</h1>
+
+<h2>Definition</h2>
+
+<p>Pre-processing is the process of cleaning and preparing text data for analysis.</p>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Improves accuracy.</li>
+<li>Removes irrelevant information.</li>
+<li>Standardizes text.</li>
+</ul>
+
+<hr>
+
+<h2>Pre-processing Steps</h2>
+
+<h3>Step 1: Data Collection</h3>
+<p>Gather text data from various sources.</p>
+
+<h3>Step 2: Cleaning</h3>
+<p>Remove:</p>
+<ul>
+<li>Special characters</li>
+<li>Punctuation</li>
+<li>Extra spaces</li>
+</ul>
+
+<h3>Step 3: Tokenization</h3>
+<p>Break text into words or phrases.</p>
+<p><strong>Example:</strong></p>
+<p>"Data Visualization is useful"</p>
+<p>↓</p>
+<p>["Data", "Visualization", "is", "useful"]</p>
+
+<hr>
+
+<h3>Step 4: Stop Word Removal</h3>
+<p>Remove common words.</p>
+<p>Examples:</p>
+<ul>
+<li>is</li>
+<li>the</li>
+<li>a</li>
+<li>an</li>
+</ul>
+
+<hr>
+
+<h3>Step 5: Stemming/Lemmatization</h3>
+<p>Reduce words to root forms.</p>
+<p>Examples:</p>
+<ul>
+<li>Running → Run</li>
+<li>Studies → Study</li>
+</ul>
+
+<hr>
+
+<h3>Step 6: Feature Extraction</h3>
+<p>Convert text into numerical representations.</p>
+
+<hr>
+
+<h2>Pre-processing Pipeline Flowchart</h2>
+
+<pre><code>Collect Text
+↓
+Clean Data
+↓
+Tokenization
+↓
+Remove Stop Words
+↓
+Stemming/Lemmatization
+↓
+Feature Extraction
+↓
+Visualization</code></pre>
+
+<hr>
+
+<h1>6. Visualizing Text Data</h1>
+
+<h2>Definition</h2>
+
+<p>Visualizing text data involves converting textual information into visual representations for analysis.</p>
+
+<hr>
+
+<h2>Common Text Visualizations</h2>
+
+<h3>A. Word Cloud</h3>
+<p>Displays frequently occurring words.</p>
+
+<h3>Example</h3>
+<p>Customer reviews showing:</p>
+<ul>
+<li>Quality</li>
+<li>Service</li>
+<li>Price</li>
+</ul>
+<p>Words appearing more frequently are displayed larger.</p>
+
+<hr>
+
+<h3>B. Frequency Charts</h3>
+<p>Bar charts showing word occurrence counts.</p>
+
+<h3>Example</h3>
+<p>Top 10 most-used customer complaint terms.</p>
+
+<hr>
+
+<h3>C. Sentiment Analysis Charts</h3>
+<p>Displays:</p>
+<ul>
+<li>Positive Sentiment</li>
+<li>Neutral Sentiment</li>
+<li>Negative Sentiment</li>
+</ul>
+
+<h3>Example</h3>
+<p>Brand perception analysis.</p>
+
+<hr>
+
+<h3>D. Topic Visualization</h3>
+<p>Groups similar words into themes.</p>
+
+<h3>Example</h3>
+<p>Topics identified from product reviews.</p>
+
+<hr>
+
+<h3>E. Network Graphs</h3>
+<p>Show relationships among words or concepts.</p>
+
+<h3>Example</h3>
+<p>Connections between product features mentioned by customers.</p>
+
+<hr>
+
+<h2>Visualization Selection Table</h2>
+
+<table>
+<tr>
+<th>Visualization</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Word Cloud</td>
+<td>Frequent terms</td>
+</tr>
+<tr>
+<td>Bar Chart</td>
+<td>Word frequency</td>
+</tr>
+<tr>
+<td>Sentiment Chart</td>
+<td>Opinion analysis</td>
+</tr>
+<tr>
+<td>Topic Map</td>
+<td>Theme identification</td>
+</tr>
+<tr>
+<td>Network Graph</td>
+<td>Relationship analysis</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>7. Visualizing Conversations</h1>
+
+<h2>Definition</h2>
+
+<p>Conversation Visualization is the graphical representation of communication data such as chats, emails, discussions, and customer interactions.</p>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Understand communication patterns.</li>
+<li>Analyze customer behavior.</li>
+<li>Identify key participants.</li>
+<li>Detect trends and issues.</li>
+</ul>
+
+<hr>
+
+<h2>Sources of Conversation Data</h2>
+
+<ul>
+<li>Chatbots</li>
+<li>Customer Support Chats</li>
+<li>Social Media Discussions</li>
+<li>Email Exchanges</li>
+<li>Team Collaboration Platforms</li>
+</ul>
+
+<hr>
+
+<h2>Common Conversation Visualizations</h2>
+
+<h3>A. Conversation Flow Diagram</h3>
+<p>Shows message sequence and interaction flow.</p>
+
+<hr>
+
+<h3>B. Network Diagram</h3>
+<p>Displays communication relationships.</p>
+
+<hr>
+
+<h3>C. Timeline Visualization</h3>
+<p>Shows conversations over time.</p>
+
+<hr>
+
+<h3>D. Sentiment Timeline</h3>
+<p>Tracks emotional changes during conversations.</p>
+
+<hr>
+
+<h2>Example</h2>
+
+<p>Customer service conversations analyzed to identify common complaint categories and customer sentiment trends.</p>
+
+<hr>
+
+<h2>Conversation Analysis Flowchart</h2>
+
+<pre><code>Collect Conversations
+↓
+Pre-process Text
+↓
+Extract Insights
+↓
+Visualize Patterns
+↓
+Interpret Results</code></pre>
+
+<hr>
+
+<h1>Comparison Table</h1>
+
+<h2>Structured vs Unstructured Data Visualization</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Structured Data</th>
+<th>Unstructured Data</th>
+</tr>
+<tr>
+<td>Format</td>
+<td>Rows & Columns</td>
+<td>Free-form</td>
+</tr>
+<tr>
+<td>Analysis</td>
+<td>Easier</td>
+<td>More Complex</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>Sales Database</td>
+<td>Reviews, Emails</td>
+</tr>
+<tr>
+<td>Visualization</td>
+<td>Charts, Dashboards</td>
+<td>Word Clouds, Network Graphs</td>
+</tr>
+<tr>
+<td>Processing Effort</td>
+<td>Lower</td>
+<td>Higher</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Unstructured Data</strong> – Data without a predefined format.</li>
+<li><strong>Text Visualization</strong> – Visual representation of textual information.</li>
+<li><strong>Tokenization</strong> – Breaking text into smaller units.</li>
+<li><strong>Stop Words</strong> – Frequently occurring words with little analytical value.</li>
+<li><strong>Stemming</strong> – Reducing words to root form.</li>
+<li><strong>Lemmatization</strong> – Converting words into meaningful root forms.</li>
+<li><strong>Word Cloud</strong> – Visualization of frequently occurring words.</li>
+<li><strong>Sentiment Analysis</strong> – Determining emotional tone in text.</li>
+<li><strong>Network Graph</strong> – Visualization of relationships among entities.</li>
+<li><strong>Conversation Visualization</strong> – Visual analysis of communication patterns.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+<tr>
+<td>Unstructured Data</td>
+<td>Non-tabular data</td>
+</tr>
+<tr>
+<td>Text Visualization</td>
+<td>Visual representation of text</td>
+</tr>
+<tr>
+<td>Tokenization</td>
+<td>Splitting text into words</td>
+</tr>
+<tr>
+<td>Stop Word Removal</td>
+<td>Removing common words</td>
+</tr>
+<tr>
+<td>Word Cloud</td>
+<td>Frequency visualization</td>
+</tr>
+<tr>
+<td>Sentiment Analysis</td>
+<td>Opinion detection</td>
+</tr>
+<tr>
+<td>Topic Visualization</td>
+<td>Theme identification</td>
+</tr>
+<tr>
+<td>Network Graph</td>
+<td>Relationship mapping</td>
+</tr>
+<tr>
+<td>Conversation Analysis</td>
+<td>Communication insights</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Frequently Asked Exam Questions</h1>
+
+<ol>
+<li>What is unstructured data? Explain its characteristics.</li>
+<li>Why is text data visualization important?</li>
+<li>Discuss challenges in visualizing unstructured data.</li>
+<li>Explain different forms of text data.</li>
+<li>Describe the text preprocessing pipeline.</li>
+<li>Explain common techniques used for text visualization.</li>
+<li>What is conversation visualization? Discuss its applications.</li>
+</ol>
+
+<hr>
+
+<h1>5-Mark Revision Summary</h1>
+
+<ul>
+<li>Unstructured data includes text, emails, reviews, chats, and social media content.</li>
+<li>Text visualization converts large textual datasets into meaningful visual insights.</li>
+<li>Major challenges include volume, ambiguity, noise, and language diversity.</li>
+<li>Text preprocessing includes cleaning, tokenization, stop-word removal, and stemming.</li>
+<li>Common visualizations include word clouds, sentiment charts, topic maps, and network graphs.</li>
+<li>Conversation visualization helps analyze communication patterns and customer interactions.</li>
+</ul>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1: Introduction to Python</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 1: Introduction to Python</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Python is a high-level, interpreted, and easy-to-learn programming language widely used in data analysis, machine learning, web development, and automation. This unit introduces Python fundamentals including variables, data types, loops, conditional statements, tuples, and a practical mortgage calculator application.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>Variables</h2>
+
+<h3>Definition</h3>
+
+<p>A variable is a named memory location used to store data values.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>name = "John"
+age = 21</code></pre>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Stores data temporarily.</li>
+<li>Variable names are case-sensitive.</li>
+<li>Cannot start with a number.</li>
+<li>Improves code readability.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>student_name = "Rahul"
+marks = 85</code></pre>
+
+<hr>
+
+<h1>Numeric Data Types</h1>
+
+<h2>Integer (int)</h2>
+
+<h3>Definition</h3>
+
+<p>Stores whole numbers without decimal points.</p>
+
+<h3>Example</h3>
+
+<pre><code>age = 20</code></pre>
+
+<h3>Values</h3>
+
+<ul>
+<li>Positive: 10</li>
+<li>Negative: -15</li>
+<li>Zero: 0</li>
+</ul>
+
+<hr>
+
+<h2>Float</h2>
+
+<h3>Definition</h3>
+
+<p>Stores numbers containing decimal points.</p>
+
+<h3>Example</h3>
+
+<pre><code>salary = 25000.50</code></pre>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Used for mathematical calculations.</li>
+<li>Supports fractional values.</li>
+</ul>
+
+<hr>
+
+<h2>Integer vs Float</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Integer</th>
+<th>Float</th>
+</tr>
+<tr>
+<td>Decimal Point</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>25</td>
+<td>25.5</td>
+</tr>
+<tr>
+<td>Memory Usage</td>
+<td>Lower</td>
+<td>Higher</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Sequential Data Types</h1>
+
+<h2>String (str)</h2>
+
+<h3>Definition</h3>
+
+<p>A sequence of characters enclosed in quotes.</p>
+
+<h3>Example</h3>
+
+<pre><code>city = "Mumbai"</code></pre>
+
+<h3>Operations</h3>
+
+<pre><code>name = "Python"
+print(name.upper())</code></pre>
+
+<p>Output:</p>
+
+<pre><code>PYTHON</code></pre>
+
+<hr>
+
+<h2>List</h2>
+
+<h3>Definition</h3>
+
+<p>An ordered collection of multiple items.</p>
+
+<h3>Example</h3>
+
+<pre><code>fruits = ["Apple", "Mango", "Orange"]</code></pre>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Ordered</li>
+<li>Mutable (can be modified)</li>
+<li>Allows duplicate values</li>
+</ul>
+
+<h3>Common Operations</h3>
+
+<pre><code>fruits.append("Banana")</code></pre>
+
+<pre><code>fruits.remove("Apple")</code></pre>
+
+<hr>
+
+<h2>String vs List</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>String</th>
+<th>List</th>
+</tr>
+<tr>
+<td>Data Type</td>
+<td>Text</td>
+<td>Collection</td>
+</tr>
+<tr>
+<td>Mutable</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>"Python"</td>
+<td>[1,2,3]</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Definite Loops (For Loops)</h1>
+
+<h2>Definition</h2>
+
+<p>A for loop executes a block of code a fixed number of times.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>for i in range(5):
+    print(i)</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>0
+1
+2
+3
+4</code></pre>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Used when number of iterations is known.</li>
+<li>Easy to read and implement.</li>
+<li>Commonly used with lists and ranges.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>for fruit in fruits:
+    print(fruit)</code></pre>
+
+<hr>
+
+<h1>If-Elif-Else Statements</h1>
+
+<h2>Definition</h2>
+
+<p>Conditional statements used to make decisions.</p>
+
+<h3>Flowchart</h3>
+
+<pre><code>Condition
+↓
+True?
+↓ Yes → Execute Block
+↓ No
+Check Next Condition
+↓
+Else Block</code></pre>
+
+<hr>
+
+<h3>Syntax</h3>
+
+<pre><code>marks = 75
+
+if marks &gt;= 80:
+    print("Grade A")
+elif marks &gt;= 60:
+    print("Grade B")
+else:
+    print("Grade C")</code></pre>
+
+<hr>
+
+<h3>Example</h3>
+
+<p>Input:</p>
+
+<pre><code>age = 18</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Eligible to Vote</code></pre>
+
+<hr>
+
+<h1>Tuples</h1>
+
+<h2>Definition</h2>
+
+<p>A tuple is an ordered collection of items that cannot be modified after creation.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>student = ("Rahul", 21, "MBA")</code></pre>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Ordered</li>
+<li>Immutable</li>
+<li>Allows duplicates</li>
+<li>Faster than lists</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>colors = ("Red", "Blue", "Green")</code></pre>
+
+<hr>
+
+<h2>Tuple vs List</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Tuple</th>
+<th>List</th>
+</tr>
+<tr>
+<td>Mutable</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Brackets</td>
+<td>()</td>
+<td>[]</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Faster</td>
+<td>Slower</td>
+</tr>
+<tr>
+<td>Modification</td>
+<td>Not Allowed</td>
+<td>Allowed</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Build Mortgage Calculator with Python</h1>
+
+<h2>Definition</h2>
+
+<p>A Mortgage Calculator calculates monthly loan payments based on principal amount, interest rate, and loan duration.</p>
+
+<hr>
+
+<h2>Formula</h2>
+
+<h3>Monthly Payment Formula</h3>
+
+<p>[
+M = P \times \frac{r(1+r)^n}{(1+r)^n - 1}
+]</p>
+
+<p>Where:</p>
+
+<table>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>M</td>
+<td>Monthly Payment</td>
+</tr>
+<tr>
+<td>P</td>
+<td>Loan Amount</td>
+</tr>
+<tr>
+<td>r</td>
+<td>Monthly Interest Rate</td>
+</tr>
+<tr>
+<td>n</td>
+<td>Number of Payments</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Simple Python Example</h2>
+
+<pre><code>principal = 100000
+interest = 0.08 / 12
+years = 15
+
+payments = years * 12
+
+monthly_payment = (
+principal *
+(interest * (1 + interest) ** payments)
+/
+((1 + interest) ** payments - 1)
+)
+
+print(monthly_payment)</code></pre>
+
+<hr>
+
+<h2>Mortgage Calculator Process</h2>
+
+<pre><code>Input Loan Amount
+↓
+Input Interest Rate
+↓
+Input Loan Duration
+↓
+Calculate Monthly Payment
+↓
+Display Result</code></pre>
+
+<hr>
+
+<h1>Important Python Operators</h1>
+
+<h2>Arithmetic Operators</h2>
+
+<table>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>+</td>
+<td>Addition</td>
+<td>5+3</td>
+</tr>
+<tr>
+<td>-</td>
+<td>Subtraction</td>
+<td>5-3</td>
+</tr>
+<tr>
+<td>*</td>
+<td>Multiplication</td>
+<td>5*3</td>
+</tr>
+<tr>
+<td>/</td>
+<td>Division</td>
+<td>10/2</td>
+</tr>
+<tr>
+<td>%</td>
+<td>Modulus</td>
+<td>10%3</td>
+</tr>
+<tr>
+<td>**</td>
+<td>Power</td>
+<td>2**3</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Comparison Operators</h2>
+
+<table>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>==</td>
+<td>Equal</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>Not Equal</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>Greater Than</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>Less Than</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>Greater Than Equal</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>Less Than Equal</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Variable</strong> – Named storage location for data.</li>
+<li><strong>Integer</strong> – Whole number data type.</li>
+<li><strong>Float</strong> – Decimal number data type.</li>
+<li><strong>String</strong> – Sequence of characters.</li>
+<li><strong>List</strong> – Mutable collection of items.</li>
+<li><strong>Tuple</strong> – Immutable collection of items.</li>
+<li><strong>For Loop</strong> – Repeats code a fixed number of times.</li>
+<li><strong>Conditional Statement</strong> – Decision-making statement.</li>
+<li><strong>Mortgage Calculator</strong> – Program to calculate loan EMI.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Topic</th>
+<th>Key Point</th>
+</tr>
+<tr>
+<td>Variable</td>
+<td>Stores data</td>
+</tr>
+<tr>
+<td>Integer</td>
+<td>Whole number</td>
+</tr>
+<tr>
+<td>Float</td>
+<td>Decimal number</td>
+</tr>
+<tr>
+<td>String</td>
+<td>Text data</td>
+</tr>
+<tr>
+<td>List</td>
+<td>Mutable collection</td>
+</tr>
+<tr>
+<td>Tuple</td>
+<td>Immutable collection</td>
+</tr>
+<tr>
+<td>For Loop</td>
+<td>Fixed iterations</td>
+</tr>
+<tr>
+<td>If-Elif-Else</td>
+<td>Decision making</td>
+</tr>
+<tr>
+<td>Mortgage Calculator</td>
+<td>EMI calculation</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Common Exam Programs</h1>
+
+<h3>Program to Print Numbers 1–10</h3>
+
+<pre><code>for i in range(1,11):
+    print(i)</code></pre>
+
+<h3>Program to Check Even/Odd</h3>
+
+<pre><code>num = 10
+
+if num % 2 == 0:
+    print("Even")
+else:
+    print("Odd")</code></pre>
+
+<h3>Program Using Tuple</h3>
+
+<pre><code>student = ("Rahul", 21)
+
+print(student[0])</code></pre>
+
+<hr>
+
+<h1>Unit 1 Summary</h1>
+
+<p>Python provides simple and powerful tools for programming and data analysis. This unit introduced variables, numeric and sequential data types, loops, conditional statements, tuples, and a practical mortgage calculator application. These concepts form the foundation for advanced Python programming and data analysis.</p>
+
+<h2>Important Exam Questions</h2>
+
+<ol>
+<li>What are variables? Explain with examples.</li>
+<li>Differentiate Integer and Float data types.</li>
+<li>Explain String and List data types.</li>
+<li>Write a program using a For Loop.</li>
+<li>Explain If-Elif-Else statements with examples.</li>
+<li>Differentiate Tuple and List.</li>
+<li>Write a short note on Mortgage Calculator.</li>
+<li>Explain Python operators with examples.</li>
+</ol>
+
+</div>
+</body>
+</html>

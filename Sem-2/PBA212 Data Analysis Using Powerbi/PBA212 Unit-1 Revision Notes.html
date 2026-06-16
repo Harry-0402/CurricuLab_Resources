@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1: Power BI Introduction</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 1: Power BI Introduction</h1>
+
+<h2>Unit Overview</h2>
+<p>Power BI is a Business Intelligence (BI) and Data Visualization tool developed by Microsoft. It helps organizations collect, transform, analyze, and visualize data to support decision-making. This unit introduces BI concepts, Power BI products, architecture, workflow, and the evolution of Power BI.</p>
+
+<hr>
+
+<h2>Key Concepts</h2>
+
+<h3>Data Visualization</h3>
+
+<h3>Definition</h3>
+<p>Data Visualization is the graphical representation of data using charts, graphs, maps, and dashboards to make information easier to understand.</p>
+
+<h3>Key Points</h3>
+<ul>
+<li>Converts raw data into visual formats.</li>
+<li>Helps identify trends and patterns.</li>
+<li>Improves decision-making.</li>
+<li>Makes complex data easy to interpret.</li>
+</ul>
+
+<h3>Example</h3>
+<p>A sales dashboard showing monthly revenue trends using line charts.</p>
+
+<hr>
+
+<h3>Reporting</h3>
+
+<h3>Definition</h3>
+<p>Reporting is the process of organizing and presenting business data in a structured format for analysis and decision-making.</p>
+
+<h3>Key Points</h3>
+<ul>
+<li>Summarizes business performance.</li>
+<li>Can be daily, weekly, or monthly.</li>
+<li>Supports management decisions.</li>
+<li>Uses tables, charts, and KPIs.</li>
+</ul>
+
+<h3>Example</h3>
+<p>Monthly sales performance report for management review.</p>
+
+<hr>
+
+<h3>Business Intelligence (BI)</h3>
+
+<h3>Definition</h3>
+<p>Business Intelligence is a technology-driven process used to collect, analyze, and present business data for strategic decision-making.</p>
+
+<h3>Key Points</h3>
+<ul>
+<li>Converts data into actionable insights.</li>
+<li>Supports data-driven decisions.</li>
+<li>Uses reports, dashboards, and analytics.</li>
+<li>Improves business efficiency.</li>
+</ul>
+
+<h3>Example</h3>
+<p>Retail companies analyzing customer purchasing behavior.</p>
+
+<hr>
+
+<h3>Traditional BI vs Self-Service BI</h3>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Traditional BI</th>
+<th>Self-Service BI</th>
+</tr>
+<tr>
+<td>Users</td>
+<td>IT Team</td>
+<td>Business Users</td>
+</tr>
+<tr>
+<td>Report Creation</td>
+<td>IT Department</td>
+<td>End Users</td>
+</tr>
+<tr>
+<td>Flexibility</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Slower</td>
+<td>Faster</td>
+</tr>
+<tr>
+<td>Technical Knowledge</td>
+<td>Required</td>
+<td>Minimal</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+<p>Traditional BI requires IT to create reports, whereas Power BI allows managers to create reports themselves.</p>
+
+<hr>
+
+<h3>Cloud-Based BI</h3>
+
+<h3>Definition</h3>
+<p>Cloud-Based BI stores and processes data on cloud servers accessible through the internet.</p>
+
+<h3>Key Points</h3>
+<ul>
+<li>Accessible from anywhere.</li>
+<li>Lower infrastructure cost.</li>
+<li>Automatic updates.</li>
+<li>Easy collaboration.</li>
+</ul>
+
+<h3>Example</h3>
+<p>Using Power BI Service through a web browser.</p>
+
+<hr>
+
+<h3>On-Premise BI</h3>
+
+<h3>Definition</h3>
+<p>On-Premise BI stores data and BI systems within the organization's own infrastructure.</p>
+
+<h3>Key Points</h3>
+<ul>
+<li>Greater control over data.</li>
+<li>Higher setup cost.</li>
+<li>Requires internal maintenance.</li>
+<li>Suitable for sensitive data.</li>
+</ul>
+
+<h3>Example</h3>
+<p>A bank maintaining BI servers within its own data center.</p>
+
+<hr>
+
+<h2>Power BI Products</h2>
+
+<h3>Power BI Desktop</h3>
+
+<h3>Definition</h3>
+<p>A free desktop application used for data preparation, modeling, and report creation.</p>
+
+<h3>Key Components</h3>
+
+<table>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Power Query</td>
+<td>Data extraction and transformation</td>
+</tr>
+<tr>
+<td>Power Pivot</td>
+<td>Data modeling</td>
+</tr>
+<tr>
+<td>Power View</td>
+<td>Data visualization and reporting</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+<p>Creating an interactive sales report using Excel data.</p>
+
+<hr>
+
+<h3>Power BI Service</h3>
+
+<h3>Definition</h3>
+<p>A cloud-based platform used for publishing, sharing, and collaborating on reports and dashboards.</p>
+
+<h3>Key Points</h3>
+<ul>
+<li>Web-based.</li>
+<li>Dashboard creation.</li>
+<li>Data refresh scheduling.</li>
+<li>Report sharing.</li>
+</ul>
+
+<h3>Example</h3>
+<p>Sharing company performance dashboards with executives.</p>
+
+<hr>
+
+<h3>Power BI Mobile</h3>
+
+<h3>Definition</h3>
+<p>Mobile application for viewing and interacting with Power BI reports on smartphones and tablets.</p>
+
+<h3>Key Points</h3>
+<ul>
+<li>Real-time access.</li>
+<li>Touch-friendly interface.</li>
+<li>Supports alerts and notifications.</li>
+<li>Available on Android and iOS.</li>
+</ul>
+
+<h3>Example</h3>
+<p>A sales manager checking daily sales performance while traveling.</p>
+
+<hr>
+
+<h3>Power BI Report Server</h3>
+
+<h3>Definition</h3>
+<p>An on-premise report hosting platform for organizations that cannot use cloud services.</p>
+
+<h3>Key Points</h3>
+<ul>
+<li>Hosts reports internally.</li>
+<li>Suitable for secure environments.</li>
+<li>Supports Power BI and paginated reports.</li>
+<li>Provides centralized management.</li>
+</ul>
+
+<h3>Example</h3>
+<p>Government organizations hosting reports internally.</p>
+
+<hr>
+
+<h2>Flow of Work in Power BI Desktop</h2>
+
+<h3>Process Flowchart</h3>
+
+<pre><code>Data Sources
+↓
+Import Data
+↓
+Transform Data (Power Query)
+↓
+Create Data Model
+↓
+Create Visualizations
+↓
+Build Reports
+↓
+Publish to Power BI Service
+↓
+Share Dashboards</code></pre>
+
+<hr>
+
+<h2>Power BI Architecture</h2>
+
+<h3>Components</h3>
+
+<table>
+<tr>
+<th>Layer</th>
+<th>Function</th>
+</tr>
+<tr>
+<td>Data Sources</td>
+<td>Excel, SQL Server, Web, APIs</td>
+</tr>
+<tr>
+<td>Data Transformation</td>
+<td>Power Query</td>
+</tr>
+<tr>
+<td>Data Modeling</td>
+<td>Power Pivot</td>
+</tr>
+<tr>
+<td>Visualization</td>
+<td>Power View</td>
+</tr>
+<tr>
+<td>Cloud Services</td>
+<td>Power BI Service</td>
+</tr>
+<tr>
+<td>End Users</td>
+<td>Reports &amp; Dashboards</td>
+</tr>
+</table>
+
+<h3>Architecture Flow</h3>
+
+<pre><code>Data Sources
+↓
+Power Query
+↓
+Data Model
+↓
+Visualizations
+↓
+Power BI Service
+↓
+Users</code></pre>
+
+<hr>
+
+<h2>Brief History of Power BI</h2>
+
+<table>
+<tr>
+<th>Year</th>
+<th>Development</th>
+</tr>
+<tr>
+<td>2010</td>
+<td>Power Pivot introduced</td>
+</tr>
+<tr>
+<td>2013</td>
+<td>Power Query introduced</td>
+</tr>
+<tr>
+<td>2015</td>
+<td>Official launch of Power BI</td>
+</tr>
+<tr>
+<td>2016+</td>
+<td>Rapid cloud integration and AI features</td>
+</tr>
+<tr>
+<td>Present</td>
+<td>Leading BI and analytics platform</td>
+</tr>
+</table>
+
+<h3>Key Milestones</h3>
+<ul>
+<li>Started as Excel add-ins.</li>
+<li>Evolved into a complete BI ecosystem.</li>
+<li>Integrated with Microsoft Azure and Microsoft 365.</li>
+<li>Widely used across industries.</li>
+</ul>
+
+<hr>
+
+<h2>Important Definitions</h2>
+
+<ul>
+<li><strong>Data Visualization</strong> – Graphical presentation of data.</li>
+<li><strong>Business Intelligence (BI)</strong> – Process of converting data into useful information.</li>
+<li><strong>Dashboard</strong> – Collection of visual reports on a single screen.</li>
+<li><strong>Power Query</strong> – Tool for data transformation.</li>
+<li><strong>Power Pivot</strong> – Tool for data modeling.</li>
+<li><strong>Power BI Service</strong> – Cloud platform for report sharing.</li>
+<li><strong>Power BI Mobile</strong> – Mobile access to reports.</li>
+<li><strong>Report Server</strong> – On-premise report hosting solution.</li>
+</ul>
+
+<hr>
+
+<h2>Quick Revision Table</h2>
+
+<table>
+<tr>
+<th>Topic</th>
+<th>Key Idea</th>
+</tr>
+<tr>
+<td>BI</td>
+<td>Data-driven decision making</td>
+</tr>
+<tr>
+<td>Traditional BI</td>
+<td>IT-managed reporting</td>
+</tr>
+<tr>
+<td>Self-Service BI</td>
+<td>User-created reporting</td>
+</tr>
+<tr>
+<td>Power Query</td>
+<td>Data transformation</td>
+</tr>
+<tr>
+<td>Power Pivot</td>
+<td>Data modeling</td>
+</tr>
+<tr>
+<td>Power View</td>
+<td>Visualizations</td>
+</tr>
+<tr>
+<td>Power BI Service</td>
+<td>Cloud sharing</td>
+</tr>
+<tr>
+<td>Report Server</td>
+<td>On-premise reporting</td>
+</tr>
+<tr>
+<td>Mobile</td>
+<td>Access reports anywhere</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td>Visual business summary</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Exam-Oriented Short Notes</h2>
+
+<h3>What is Power BI?</h3>
+<p>Microsoft's Business Intelligence platform used for data analysis, visualization, reporting, and dashboard creation.</p>
+
+<h3>Advantages of Power BI</h3>
+<ul>
+<li>User-friendly interface</li>
+<li>Powerful visualizations</li>
+<li>Real-time analytics</li>
+<li>Cloud integration</li>
+<li>Cost-effective BI solution</li>
+</ul>
+
+<h3>Components of Power BI</h3>
+<ol>
+<li>Power BI Desktop</li>
+<li>Power BI Service</li>
+<li>Power BI Mobile</li>
+<li>Power BI Report Server</li>
+</ol>
+
+<h3>Difference Between Cloud BI and On-Premise BI</h3>
+<p>Cloud BI is hosted online and accessible anywhere, while On-Premise BI is hosted within the organization's infrastructure.</p>
+
+<hr>
+
+<h2>Unit 1 Summary</h2>
+
+<p>Power BI is a modern self-service Business Intelligence platform that enables users to transform data into meaningful insights. The unit covered BI fundamentals, Power BI products, architecture, workflow, cloud and on-premise BI, and the history of Power BI. Understanding these concepts forms the foundation for data transformation, modeling, DAX, and dashboard creation in later units.</p>
+
+<h3>Important Exam Questions</h3>
+
+<ol>
+<li>Explain Business Intelligence and its importance.</li>
+<li>Differentiate Traditional BI and Self-Service BI.</li>
+<li>Describe the components of Power BI.</li>
+<li>Explain the workflow of Power BI Desktop with a diagram.</li>
+<li>Write short notes on Power BI Service and Power BI Mobile.</li>
+<li>Explain Power BI Architecture.</li>
+<li>Discuss Cloud-Based BI and On-Premise BI.</li>
+</ol>
+
+</div>
+</body>
+</html>

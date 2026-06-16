@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5: Visualizations and Dashboards</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 5: Visualizations and Dashboards</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Visualizations are graphical representations of data that help users understand trends, patterns, comparisons, and insights quickly. Power BI provides a wide variety of charts and visual tools for effective data presentation. This unit covers different visualization types, their formatting, and dashboard creation, interaction, and sharing.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>Visualizing Data</h2>
+
+<h3>Definition</h3>
+
+<p>Data Visualization is the graphical presentation of data using charts, graphs, maps, tables, and dashboards.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Simplifies complex data.</li>
+<li>Improves understanding.</li>
+<li>Helps identify trends and patterns.</li>
+<li>Supports data-driven decisions.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Displaying monthly sales performance using a line chart.</p>
+
+<hr>
+
+<h2>Why Visualizations?</h2>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Easy interpretation of large datasets.</li>
+<li>Quick identification of trends.</li>
+<li>Better business insights.</li>
+<li>Improved communication.</li>
+<li>Faster decision-making.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Management can instantly identify declining sales regions through visual reports.</p>
+
+<hr>
+
+<h1>Visualization Types in Power BI</h1>
+
+<h2>Chart Selection Guide</h2>
+
+<table>
+<tr>
+<th>Requirement</th>
+<th>Best Visualization</th>
+</tr>
+<tr>
+<td>Compare values</td>
+<td>Bar Chart</td>
+</tr>
+<tr>
+<td>Show trends</td>
+<td>Line Chart</td>
+</tr>
+<tr>
+<td>Show proportions</td>
+<td>Pie Chart</td>
+</tr>
+<tr>
+<td>Compare categories</td>
+<td>Column Chart</td>
+</tr>
+<tr>
+<td>Show relationships</td>
+<td>Scatter Chart</td>
+</tr>
+<tr>
+<td>Detailed records</td>
+<td>Table</td>
+</tr>
+<tr>
+<td>Hierarchical analysis</td>
+<td>Matrix</td>
+</tr>
+<tr>
+<td>Progress tracking</td>
+<td>Waterfall Chart</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Bar and Column Charts</h1>
+
+<h2>Bar Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Compares values across categories using horizontal bars.</p>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Product comparison</li>
+<li>Regional comparison</li>
+<li>Performance analysis</li>
+</ul>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Product</th>
+<th>Sales</th>
+</tr>
+<tr>
+<td>A</td>
+<td>500</td>
+</tr>
+<tr>
+<td>B</td>
+<td>700</td>
+</tr>
+<tr>
+<td>C</td>
+<td>300</td>
+</tr>
+</table>
+
+<p>Displayed as horizontal bars.</p>
+
+<hr>
+
+<h2>Column Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Compares values using vertical columns.</p>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Time-based comparisons</li>
+<li>Category analysis</li>
+<li>Revenue comparison</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Monthly sales comparison.</p>
+
+<hr>
+
+<h1>Stacked Charts</h1>
+
+<h2>Stacked Bar Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Displays total values while showing contribution of different categories.</p>
+
+<h3>Example</h3>
+
+<pre><code>Sales
+↓
+Product A
+Product B
+Product C</code></pre>
+
+<p>within the same bar.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Shows composition and total value.</li>
+<li>Easy category comparison.</li>
+</ul>
+
+<hr>
+
+<h2>Stacked Column Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Vertical version of the stacked bar chart.</p>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Year-wise sales by region.</li>
+<li>Product contribution analysis.</li>
+</ul>
+
+<hr>
+
+<h1>Clustered Charts</h1>
+
+<h2>Clustered Bar Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Places multiple bars side by side for comparison.</p>
+
+<h3>Example</h3>
+
+<pre><code>2023 Sales vs 2024 Sales</code></pre>
+
+<p>for each product.</p>
+
+<hr>
+
+<h2>Clustered Column Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Displays grouped vertical columns for comparison.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Easy year-to-year comparison.</li>
+<li>Clear category analysis.</li>
+</ul>
+
+<hr>
+
+<h1>100% Stacked Charts</h1>
+
+<h2>100% Stacked Bar Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Shows percentage contribution rather than actual values.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Region</th>
+<th>Percentage</th>
+</tr>
+<tr>
+<td>North</td>
+<td>40%</td>
+</tr>
+<tr>
+<td>South</td>
+<td>35%</td>
+</tr>
+<tr>
+<td>West</td>
+<td>25%</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>100% Stacked Column Chart</h2>
+
+<h3>Purpose</h3>
+
+<p>Shows percentage distribution using vertical columns.</p>
+
+<h3>Use Case</h3>
+
+<p>Market share analysis.</p>
+
+<hr>
+
+<h1>Pie and Donut Charts</h1>
+
+<h2>Pie Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Represents parts of a whole using slices.</p>
+
+<h3>Best Used For</h3>
+
+<ul>
+<li>Percentage contribution.</li>
+<li>Market share analysis.</li>
+<li>Budget distribution.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Sales Contribution:</p>
+
+<ul>
+<li>Product A = 40%</li>
+<li>Product B = 35%</li>
+<li>Product C = 25%</li>
+</ul>
+
+<hr>
+
+<h2>Donut Chart</h2>
+
+<h3>Definition</h3>
+
+<p>A modified Pie Chart with a hole in the center.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Cleaner appearance.</li>
+<li>Better readability.</li>
+<li>Space for additional labels.</li>
+</ul>
+
+<hr>
+
+<h2>Pie vs Donut Chart</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Pie Chart</th>
+<th>Donut Chart</th>
+</tr>
+<tr>
+<td>Shape</td>
+<td>Full Circle</td>
+<td>Circle with Hole</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td>Moderate</td>
+<td>Better</td>
+</tr>
+<tr>
+<td>Additional Information</td>
+<td>Limited</td>
+<td>Possible</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Scatter Chart</h1>
+
+<h2>Definition</h2>
+
+<p>Shows relationships between two numerical variables.</p>
+
+<h3>Components</h3>
+
+<ul>
+<li>X-axis</li>
+<li>Y-axis</li>
+<li>Data Points</li>
+</ul>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Correlation analysis.</li>
+<li>Performance comparison.</li>
+<li>Trend identification.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Advertising Spend vs Sales Revenue</p>
+
+<hr>
+
+<h1>Table Visual</h1>
+
+<h2>Definition</h2>
+
+<p>Displays data in rows and columns.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Detailed information.</li>
+<li>Exact values.</li>
+<li>Easy reporting.</li>
+</ul>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Product</th>
+<th>Quantity</th>
+<th>Sales</th>
+</tr>
+<tr>
+<td>A</td>
+<td>20</td>
+<td>₹10,000</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Matrix Visualization</h1>
+
+<h2>Definition</h2>
+
+<p>Advanced table visualization supporting hierarchies and aggregation.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Drill-down analysis.</li>
+<li>Summarized reporting.</li>
+<li>Hierarchical views.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>Region
+↓
+State
+↓
+City
+
+Sales Totals</code></pre>
+
+<hr>
+
+<h1>Line and Area Charts</h1>
+
+<h2>Line Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Shows trends over time using connected data points.</p>
+
+<h3>Best Used For</h3>
+
+<ul>
+<li>Sales trends</li>
+<li>Growth analysis</li>
+<li>Forecasting</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Monthly Sales Trend</p>
+
+<pre><code>Jan → Feb → Mar → Apr</code></pre>
+
+<hr>
+
+<h2>Area Chart</h2>
+
+<h3>Definition</h3>
+
+<p>A line chart with the area below the line filled.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Shows volume and trends.</li>
+<li>Easy visualization of growth.</li>
+</ul>
+
+<hr>
+
+<h2>Stacked Area Chart</h2>
+
+<h3>Definition</h3>
+
+<p>Displays multiple categories as stacked areas.</p>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Contribution analysis.</li>
+<li>Market trend comparisons.</li>
+</ul>
+
+<hr>
+
+<h1>Combo Charts</h1>
+
+<h2>Definition</h2>
+
+<p>Combines multiple chart types into a single visual.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Compare different measures.</li>
+<li>Display trends and totals together.</li>
+</ul>
+
+<hr>
+
+<h2>Line and Stacked Column Chart</h2>
+
+<h3>Example</h3>
+
+<p>Columns → Sales Revenue</p>
+
+<p>Line → Profit Margin</p>
+
+<hr>
+
+<h2>Line and Clustered Column Chart</h2>
+
+<h3>Example</h3>
+
+<p>Columns → Monthly Sales</p>
+
+<p>Line → Growth Percentage</p>
+
+<hr>
+
+<h1>Ribbon Chart</h1>
+
+<h2>Definition</h2>
+
+<p>Shows ranking changes over time.</p>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Market share rankings.</li>
+<li>Product performance rankings.</li>
+<li>Competitive analysis.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Top-selling products by month.</p>
+
+<hr>
+
+<h1>Waterfall Chart</h1>
+
+<h2>Definition</h2>
+
+<p>Shows cumulative effects of positive and negative changes.</p>
+
+<h3>Example</h3>
+
+<pre><code>Revenue
+↓
+Expenses
+↓
+Taxes
+↓
+Net Profit</code></pre>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Financial analysis.</li>
+<li>Profitability analysis.</li>
+<li>Budget tracking.</li>
+</ul>
+
+<hr>
+
+<h1>Funnel Chart</h1>
+
+<h2>Definition</h2>
+
+<p>Displays stages in a process and shows drop-offs between stages.</p>
+
+<h3>Example</h3>
+
+<pre><code>Leads
+↓
+Qualified Leads
+↓
+Opportunities
+↓
+Customers</code></pre>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Sales pipeline analysis.</li>
+<li>Recruitment process tracking.</li>
+<li>Marketing conversion analysis.</li>
+</ul>
+
+<hr>
+
+<h1>Visualization Comparison Table</h1>
+
+<table>
+<tr>
+<th>Visualization</th>
+<th>Best For</th>
+</tr>
+<tr>
+<td>Bar Chart</td>
+<td>Category comparison</td>
+</tr>
+<tr>
+<td>Column Chart</td>
+<td>Time-based comparison</td>
+</tr>
+<tr>
+<td>Pie Chart</td>
+<td>Percentage contribution</td>
+</tr>
+<tr>
+<td>Donut Chart</td>
+<td>Part-to-whole analysis</td>
+</tr>
+<tr>
+<td>Scatter Chart</td>
+<td>Correlation analysis</td>
+</tr>
+<tr>
+<td>Table</td>
+<td>Detailed records</td>
+</tr>
+<tr>
+<td>Matrix</td>
+<td>Hierarchical reporting</td>
+</tr>
+<tr>
+<td>Line Chart</td>
+<td>Trends over time</td>
+</tr>
+<tr>
+<td>Area Chart</td>
+<td>Trend and volume</td>
+</tr>
+<tr>
+<td>Ribbon Chart</td>
+<td>Rank changes</td>
+</tr>
+<tr>
+<td>Waterfall Chart</td>
+<td>Financial impact</td>
+</tr>
+<tr>
+<td>Funnel Chart</td>
+<td>Process stages</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Creating Dashboards</h1>
+
+<h2>Definition</h2>
+
+<p>A Dashboard is a single-page visual interface displaying important business metrics and insights.</p>
+
+<h3>Features</h3>
+
+<ul>
+<li>Interactive visuals.</li>
+<li>Real-time monitoring.</li>
+<li>Consolidated reporting.</li>
+<li>Easy navigation.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Executive Sales Dashboard displaying:</p>
+
+<ul>
+<li>Revenue</li>
+<li>Profit</li>
+<li>Customers</li>
+<li>Regional Performance</li>
+</ul>
+
+<hr>
+
+<h1>Advantages of Dashboards</h1>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Quick decision-making.</li>
+<li>Real-time business monitoring.</li>
+<li>Improved productivity.</li>
+<li>Better communication.</li>
+<li>Centralized information.</li>
+</ul>
+
+<hr>
+
+<h1>Interacting with Dashboards</h1>
+
+<h2>Common Interactions</h2>
+
+<h3>Filtering</h3>
+
+<p>Select specific data.</p>
+
+<p>Example: View only West Region sales.</p>
+
+<h3>Slicers</h3>
+
+<p>Interactive filters for users.</p>
+
+<p>Example: Choose year, region, or product.</p>
+
+<h3>Drill-Down</h3>
+
+<p>Move from summary to detailed data.</p>
+
+<p>Example:</p>
+
+<pre><code>Country
+↓
+State
+↓
+City</code></pre>
+
+<h3>Cross-Filtering</h3>
+
+<p>Selecting one visual automatically filters others.</p>
+
+<hr>
+
+<h1>Formatting Dashboards</h1>
+
+<h2>Important Formatting Elements</h2>
+
+<table>
+<tr>
+<th>Element</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Theme</td>
+<td>Consistent appearance</td>
+</tr>
+<tr>
+<td>Colors</td>
+<td>Better readability</td>
+</tr>
+<tr>
+<td>Titles</td>
+<td>Clear understanding</td>
+</tr>
+<tr>
+<td>Labels</td>
+<td>Data identification</td>
+</tr>
+<tr>
+<td>Background</td>
+<td>Professional design</td>
+</tr>
+</table>
+
+<h3>Best Practices</h3>
+
+<ul>
+<li>Use consistent colors.</li>
+<li>Avoid clutter.</li>
+<li>Highlight KPIs.</li>
+<li>Maintain readability.</li>
+<li>Use proper alignment.</li>
+</ul>
+
+<hr>
+
+<h1>Sharing Dashboards</h1>
+
+<h2>Methods</h2>
+
+<h3>Power BI Service</h3>
+
+<p>Publish dashboard online.</p>
+
+<h3>Workspace Sharing</h3>
+
+<p>Share with teams.</p>
+
+<h3>App Publishing</h3>
+
+<p>Distribute reports across departments.</p>
+
+<h3>Export Options</h3>
+
+<ul>
+<li>PDF</li>
+<li>PowerPoint</li>
+<li>Excel</li>
+</ul>
+
+<hr>
+
+<h1>Dashboard Creation Process</h1>
+
+<pre><code>Import Data
+↓
+Transform Data
+↓
+Create Data Model
+↓
+Create DAX Measures
+↓
+Build Visualizations
+↓
+Arrange Dashboard Layout
+↓
+Format Dashboard
+↓
+Publish &amp; Share</code></pre>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Visualization</strong> – Graphical representation of data.</li>
+<li><strong>Dashboard</strong> – Single-page collection of visual reports.</li>
+<li><strong>Slicer</strong> – Interactive filtering tool.</li>
+<li><strong>Drill-Down</strong> – Navigation from summary to detail.</li>
+<li><strong>Scatter Chart</strong> – Relationship analysis chart.</li>
+<li><strong>Waterfall Chart</strong> – Shows cumulative changes.</li>
+<li><strong>Funnel Chart</strong> – Displays process stages.</li>
+<li><strong>Matrix</strong> – Hierarchical table visualization.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Topic</th>
+<th>Key Point</th>
+</tr>
+<tr>
+<td>Bar Chart</td>
+<td>Compare categories</td>
+</tr>
+<tr>
+<td>Column Chart</td>
+<td>Compare over time</td>
+</tr>
+<tr>
+<td>Pie Chart</td>
+<td>Show proportions</td>
+</tr>
+<tr>
+<td>Scatter Chart</td>
+<td>Analyze relationships</td>
+</tr>
+<tr>
+<td>Matrix</td>
+<td>Hierarchical data</td>
+</tr>
+<tr>
+<td>Line Chart</td>
+<td>Trend analysis</td>
+</tr>
+<tr>
+<td>Ribbon Chart</td>
+<td>Ranking changes</td>
+</tr>
+<tr>
+<td>Waterfall Chart</td>
+<td>Financial breakdown</td>
+</tr>
+<tr>
+<td>Funnel Chart</td>
+<td>Process stages</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td>Interactive summary page</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Unit 5 Summary</h1>
+
+<p>Visualizations are the core of Power BI reporting. Different chart types help present data effectively depending on the business requirement. Dashboards combine multiple visualizations into a single interactive view for monitoring and decision-making. Understanding chart selection, formatting, interactions, and sharing is essential for creating professional Power BI reports and dashboards.</p>
+
+<h2>Important Exam Questions</h2>
+
+<ol>
+<li>What is Data Visualization? Explain its importance.</li>
+<li>Differentiate Bar Chart and Column Chart.</li>
+<li>Explain Pie Chart and Donut Chart with examples.</li>
+<li>What is a Scatter Chart? Discuss its applications.</li>
+<li>Explain Matrix Visualization and Table Visualization.</li>
+<li>Differentiate Line Chart and Area Chart.</li>
+<li>Explain Waterfall Chart and Funnel Chart.</li>
+<li>What is a Dashboard? Explain its advantages.</li>
+<li>Discuss Dashboard Formatting and Sharing.</li>
+<li>Explain the process of creating a dashboard in Power BI.</li>
+</ol>
+
+</div>
+</body>
+</html>

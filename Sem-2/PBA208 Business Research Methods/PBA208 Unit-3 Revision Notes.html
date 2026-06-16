@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3: Sampling</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 3: Sampling</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Sampling is the process of selecting a subset of individuals or elements from a population to represent the whole population. It helps researchers save time, cost, and effort while obtaining reliable results. This unit covers sampling concepts, sampling designs, sample size determination, and data processing techniques.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>1. Concept of Sampling</h2>
+
+<h3>Definition</h3>
+
+<p>Sampling is the process of selecting a representative portion of a population for research purposes.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Population refers to the entire group under study.</li>
+<li>Sample is a subset of the population.</li>
+<li>Sampling helps reduce cost and time.</li>
+<li>Results from a sample are generalized to the population.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>A company surveys 500 customers out of 50,000 customers to measure satisfaction.</p>
+
+<hr>
+
+<h2>Population vs Sample</h2>
+
+<table>
+<tr>
+<th>Basis</th>
+<th>Population</th>
+<th>Sample</th>
+</tr>
+<tr>
+<td>Meaning</td>
+<td>Entire group</td>
+<td>Part of group</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>Large</td>
+<td>Smaller</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>High</td>
+<td>Lower</td>
+</tr>
+<tr>
+<td>Time Required</td>
+<td>More</td>
+<td>Less</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>All employees</td>
+<td>Selected employees</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>2. Sampling Design</h2>
+
+<h3>Definition</h3>
+
+<p>Sampling Design is a definite plan used to select sample units from a population.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Specifies how samples are selected.</li>
+<li>Ensures representativeness.</li>
+<li>Reduces selection bias.</li>
+<li>Improves research accuracy.</li>
+</ul>
+
+<h3>Components of Sampling Design</h3>
+
+<ol>
+<li>Define Population</li>
+<li>Determine Sampling Frame</li>
+<li>Select Sampling Technique</li>
+<li>Determine Sample Size</li>
+<li>Select Sample</li>
+</ol>
+
+<h3>Sampling Design Flowchart</h3>
+
+<pre><code>Define Population
+↓
+Prepare Sampling Frame
+↓
+Choose Sampling Method
+↓
+Determine Sample Size
+↓
+Select Respondents</code></pre>
+
+<hr>
+
+<h2>3. Types of Sampling Designs</h2>
+
+<h3>A. Probability Sampling</h3>
+
+<h3>Definition</h3>
+
+<p>Every member of the population has a known and equal chance of being selected.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Scientific method.</li>
+<li>Less bias.</li>
+<li>Higher reliability.</li>
+<li>Suitable for statistical analysis.</li>
+</ul>
+
+<h3>Types of Probability Sampling</h3>
+
+<h4>1. Simple Random Sampling</h4>
+
+<p>Every unit has an equal chance of selection.</p>
+
+<p><strong>Example:</strong> Lottery method.</p>
+
+<hr>
+
+<h4>2. Systematic Sampling</h4>
+
+<p>Selection at regular intervals.</p>
+
+<p>Formula:</p>
+
+<p><strong>Sampling Interval (k) = Population Size ÷ Sample Size</strong></p>
+
+<p><strong>Example:</strong> Selecting every 10th customer.</p>
+
+<hr>
+
+<h4>3. Stratified Sampling</h4>
+
+<p>Population divided into homogeneous groups (strata).</p>
+
+<p><strong>Example:</strong> Employees grouped by department.</p>
+
+<hr>
+
+<h4>4. Cluster Sampling</h4>
+
+<p>Population divided into clusters and selected randomly.</p>
+
+<p><strong>Example:</strong> Selecting certain cities for a survey.</p>
+
+<hr>
+
+<h3>B. Non-Probability Sampling</h3>
+
+<h3>Definition</h3>
+
+<p>Selection is based on researcher judgment rather than random selection.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Faster and cheaper.</li>
+<li>Greater risk of bias.</li>
+<li>Useful in exploratory studies.</li>
+</ul>
+
+<h3>Types of Non-Probability Sampling</h3>
+
+<h4>1. Convenience Sampling</h4>
+
+<p>Selecting easily available respondents.</p>
+
+<p><strong>Example:</strong> Surveying shoppers at a mall.</p>
+
+<hr>
+
+<h4>2. Judgment Sampling</h4>
+
+<p>Researcher selects respondents based on expertise.</p>
+
+<p><strong>Example:</strong> Interviewing industry experts.</p>
+
+<hr>
+
+<h4>3. Quota Sampling</h4>
+
+<p>Predefined quotas are established.</p>
+
+<p><strong>Example:</strong> 50 males and 50 females.</p>
+
+<hr>
+
+<h4>4. Snowball Sampling</h4>
+
+<p>Existing participants recruit additional participants.</p>
+
+<p><strong>Example:</strong> Research involving rare populations.</p>
+
+<hr>
+
+<h3>C. Mixed Sampling Design</h3>
+
+<h3>Definition</h3>
+
+<p>Combination of probability and non-probability sampling techniques.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Greater flexibility.</li>
+<li>Better representation.</li>
+<li>Improved accuracy.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Selecting departments randomly and then using convenience sampling within departments.</p>
+
+<hr>
+
+<h2>Comparison of Sampling Methods</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Probability Sampling</th>
+<th>Non-Probability Sampling</th>
+</tr>
+<tr>
+<td>Selection Method</td>
+<td>Random</td>
+<td>Non-random</td>
+</tr>
+<tr>
+<td>Bias</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Higher</td>
+<td>Lower</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>High</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>Statistical Analysis</td>
+<td>Suitable</td>
+<td>Limited</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Random Sampling</td>
+<td>Convenience Sampling</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>4. Sampling Frame</h2>
+
+<h3>Definition</h3>
+
+<p>A Sampling Frame is a complete list of all elements in the population from which a sample is selected.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Must be accurate and updated.</li>
+<li>Should include all population units.</li>
+<li>Essential for probability sampling.</li>
+</ul>
+
+<h3>Examples</h3>
+
+<ul>
+<li>Employee database</li>
+<li>Customer list</li>
+<li>Voter list</li>
+<li>Student records</li>
+</ul>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Ensures representativeness.</li>
+<li>Reduces sampling errors.</li>
+<li>Improves reliability.</li>
+</ul>
+
+<hr>
+
+<h2>5. Sample Size Determination</h2>
+
+<h3>Definition</h3>
+
+<p>Sample size refers to the number of observations selected from the population.</p>
+
+<h3>Factors Affecting Sample Size</h3>
+
+<ul>
+<li>Population size</li>
+<li>Research objectives</li>
+<li>Budget constraints</li>
+<li>Time availability</li>
+<li>Desired accuracy</li>
+<li>Population variability</li>
+</ul>
+
+<h3>General Guidelines</h3>
+
+<table>
+<tr>
+<th>Population Size</th>
+<th>Suggested Sample Size</th>
+</tr>
+<tr>
+<td>Small</td>
+<td>Larger proportion</td>
+</tr>
+<tr>
+<td>Large</td>
+<td>Smaller proportion often sufficient</td>
+</tr>
+<tr>
+<td>High Variability</td>
+<td>Larger sample needed</td>
+</tr>
+<tr>
+<td>Low Variability</td>
+<td>Smaller sample sufficient</td>
+</tr>
+</table>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Improves accuracy.</li>
+<li>Reduces sampling error.</li>
+<li>Enhances reliability.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>A survey of 400 customers from a population of 20,000 customers.</p>
+
+<hr>
+
+<h2>6. Data Processing</h2>
+
+<h3>Definition</h3>
+
+<p>Data Processing is the conversion of raw data into meaningful information for analysis.</p>
+
+<h3>Steps in Data Processing</h3>
+
+<pre><code>Data Collection
+↓
+Editing
+↓
+Coding
+↓
+Tabulation
+↓
+Analysis</code></pre>
+
+<hr>
+
+<h3>A. Editing</h3>
+
+<h4>Definition</h4>
+
+<p>Checking collected data for completeness, consistency, and accuracy.</p>
+
+<h4>Objectives</h4>
+
+<ul>
+<li>Remove errors.</li>
+<li>Identify missing values.</li>
+<li>Improve data quality.</li>
+</ul>
+
+<h4>Example</h4>
+
+<p>Checking questionnaires for unanswered questions.</p>
+
+<hr>
+
+<h3>B. Coding</h3>
+
+<h4>Definition</h4>
+
+<p>Assigning numerical or symbolic values to responses.</p>
+
+<h4>Example</h4>
+
+<table>
+<tr>
+<th>Response</th>
+<th>Code</th>
+</tr>
+<tr>
+<td>Yes</td>
+<td>1</td>
+</tr>
+<tr>
+<td>No</td>
+<td>0</td>
+</tr>
+</table>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Simplifies analysis.</li>
+<li>Facilitates computer processing.</li>
+</ul>
+
+<hr>
+
+<h3>C. Tabulation</h3>
+
+<h4>Definition</h4>
+
+<p>Arranging data systematically in rows and columns.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Satisfaction Level</th>
+<th>Frequency</th>
+</tr>
+<tr>
+<td>Very Satisfied</td>
+<td>50</td>
+</tr>
+<tr>
+<td>Satisfied</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Neutral</td>
+<td>30</td>
+</tr>
+<tr>
+<td>Dissatisfied</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Very Dissatisfied</td>
+<td>5</td>
+</tr>
+</table>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Easy interpretation.</li>
+<li>Supports statistical analysis.</li>
+</ul>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Population</strong> – Entire group under study.</li>
+<li><strong>Sample</strong> – Subset of a population.</li>
+<li><strong>Sampling</strong> – Process of selecting a sample.</li>
+<li><strong>Sampling Design</strong> – Plan for selecting respondents.</li>
+<li><strong>Probability Sampling</strong> – Random selection method.</li>
+<li><strong>Non-Probability Sampling</strong> – Judgment-based selection method.</li>
+<li><strong>Sampling Frame</strong> – List of population elements.</li>
+<li><strong>Sample Size</strong> – Number of units selected.</li>
+<li><strong>Editing</strong> – Checking data accuracy.</li>
+<li><strong>Coding</strong> – Assigning symbols or numbers.</li>
+<li><strong>Tabulation</strong> – Organizing data into tables.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+<tr>
+<td>Population</td>
+<td>Entire group</td>
+</tr>
+<tr>
+<td>Sample</td>
+<td>Selected subgroup</td>
+</tr>
+<tr>
+<td>Sampling</td>
+<td>Selection process</td>
+</tr>
+<tr>
+<td>Probability Sampling</td>
+<td>Random selection</td>
+</tr>
+<tr>
+<td>Non-Probability Sampling</td>
+<td>Judgment-based selection</td>
+</tr>
+<tr>
+<td>Sampling Frame</td>
+<td>Population list</td>
+</tr>
+<tr>
+<td>Sample Size</td>
+<td>Number of observations</td>
+</tr>
+<tr>
+<td>Editing</td>
+<td>Error checking</td>
+</tr>
+<tr>
+<td>Coding</td>
+<td>Assigning values</td>
+</tr>
+<tr>
+<td>Tabulation</td>
+<td>Data arrangement</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Frequently Asked Exam Questions</h1>
+
+<ol>
+<li>Define sampling and explain its importance.</li>
+<li>What is sampling design? Discuss its components.</li>
+<li>Explain probability and non-probability sampling techniques.</li>
+<li>Differentiate between probability and non-probability sampling.</li>
+<li>What is a sampling frame?</li>
+<li>Explain factors affecting sample size determination.</li>
+<li>Discuss editing, coding, and tabulation in data processing.</li>
+</ol>
+
+<hr>
+
+<h1>5-Mark Revision Summary</h1>
+
+<ul>
+<li>Sampling selects a representative subset from a population.</li>
+<li>Sampling design provides a systematic method for selection.</li>
+<li>Probability sampling uses random selection and provides reliable results.</li>
+<li>Non-probability sampling is faster but more prone to bias.</li>
+<li>Sampling frame is the list from which samples are selected.</li>
+<li>Sample size depends on accuracy requirements, budget, and population characteristics.</li>
+<li>Data processing includes editing, coding, and tabulation before analysis.</li>
+</ul>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5: Analytical Techniques</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 5: Analytical Techniques</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Analytical techniques are statistical methods used to analyze research data and make informed decisions. This unit covers parametric and non-parametric tests, ANOVA, correlation and regression, chi-square test, tests for normality, run test, and advanced techniques such as factor analysis, determinant analysis, and conjoint analysis.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>1. Parametric vs Non-Parametric Tests</h2>
+
+<h3>Parametric Tests</h3>
+
+<h4>Definition</h4>
+<p>Statistical tests that assume data follows a specific distribution (usually normal distribution).</p>
+
+<h4>Characteristics</h4>
+<ul>
+<li>Uses interval or ratio data.</li>
+<li>Assumes normality.</li>
+<li>More powerful when assumptions are satisfied.</li>
+</ul>
+
+<h4>Examples</h4>
+<ul>
+<li>Z-Test</li>
+<li>t-Test</li>
+<li>ANOVA</li>
+<li>Pearson Correlation</li>
+</ul>
+
+<hr>
+
+<h3>Non-Parametric Tests</h3>
+
+<h4>Definition</h4>
+<p>Statistical tests that do not require assumptions about population distribution.</p>
+
+<h4>Characteristics</h4>
+<ul>
+<li>Suitable for ordinal or nominal data.</li>
+<li>Useful when normality assumptions are violated.</li>
+<li>Simpler but generally less powerful.</li>
+</ul>
+
+<h4>Examples</h4>
+<ul>
+<li>Chi-square Test</li>
+<li>Run Test</li>
+<li>Sign Test</li>
+<li>Mann-Whitney U Test</li>
+</ul>
+
+<hr>
+
+<h2>Parametric vs Non-Parametric</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Parametric</th>
+<th>Non-Parametric</th>
+</tr>
+<tr>
+<td>Distribution Assumption</td>
+<td>Required</td>
+<td>Not Required</td>
+</tr>
+<tr>
+<td>Data Type</td>
+<td>Interval/Ratio</td>
+<td>Nominal/Ordinal</td>
+</tr>
+<tr>
+<td>Accuracy</td>
+<td>Higher</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Higher</td>
+<td>Lower</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>ANOVA, t-Test</td>
+<td>Chi-square, Run Test</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>2. ANOVA (Analysis of Variance)</h1>
+
+<h2>Definition</h2>
+
+<p>ANOVA is a statistical technique used to compare the means of three or more groups.</p>
+
+<h3>Purpose</h3>
+<ul>
+<li>Determine whether significant differences exist among group means.</li>
+<li>Reduce the need for multiple t-tests.</li>
+</ul>
+
+<h3>Hypotheses</h3>
+
+<h4>Null Hypothesis (H₀)</h4>
+<p>All group means are equal.</p>
+
+<h4>Alternative Hypothesis (H₁)</h4>
+<p>At least one group mean differs.</p>
+
+<hr>
+
+<h3>ANOVA Procedure</h3>
+
+<pre><code>State Hypotheses
+↓
+Calculate Variance
+↓
+Compute F-Ratio
+↓
+Compare with Critical Value
+↓
+Decision</code></pre>
+
+<hr>
+
+<h3>F-Ratio Formula</h3>
+
+<p>[
+F=\frac{\text{Variance Between Groups}}{\text{Variance Within Groups}}
+]</p>
+
+<h3>Example</h3>
+<p>Comparing sales performance across three different sales regions.</p>
+
+<hr>
+
+<h1>3. Correlation</h1>
+
+<h2>Definition</h2>
+
+<p>Correlation measures the strength and direction of the relationship between two variables.</p>
+
+<h3>Types of Correlation</h3>
+
+<h4>Positive Correlation</h4>
+<p>Both variables move in the same direction.</p>
+<p><strong>Example:</strong> Income and spending.</p>
+
+<hr>
+
+<h4>Negative Correlation</h4>
+<p>Variables move in opposite directions.</p>
+<p><strong>Example:</strong> Price and demand.</p>
+
+<hr>
+
+<h4>Zero Correlation</h4>
+<p>No relationship exists.</p>
+
+<hr>
+
+<h2>Correlation Coefficient (r)</h2>
+
+<p>[
+-1 \leq r \leq +1
+]</p>
+
+<table>
+<tr>
+<th>Value</th>
+<th>Interpretation</th>
+</tr>
+<tr>
+<td>+1</td>
+<td>Perfect Positive</td>
+</tr>
+<tr>
+<td>0</td>
+<td>No Correlation</td>
+</tr>
+<tr>
+<td>-1</td>
+<td>Perfect Negative</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+<p>Relationship between advertising expenditure and sales revenue.</p>
+
+<hr>
+
+<h1>4. Regression Analysis</h1>
+
+<h2>Definition</h2>
+
+<p>Regression determines the impact of one variable on another and helps make predictions.</p>
+
+<h3>Purpose</h3>
+<ul>
+<li>Predict future outcomes.</li>
+<li>Measure influence of independent variables.</li>
+</ul>
+
+<h3>Simple Regression Equation</h3>
+
+<p>[
+Y = a + bX
+]</p>
+
+<p>Where:</p>
+<ul>
+<li>Y = Dependent Variable</li>
+<li>X = Independent Variable</li>
+<li>a = Intercept</li>
+<li>b = Regression Coefficient</li>
+</ul>
+
+<h3>Example</h3>
+<p>Predicting sales based on advertising expenditure.</p>
+
+<hr>
+
+<h2>Correlation vs Regression</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Correlation</th>
+<th>Regression</th>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Measure relationship</td>
+<td>Predict relationship</td>
+</tr>
+<tr>
+<td>Variable Dependency</td>
+<td>No distinction</td>
+<td>Independent & Dependent variables</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Correlation Coefficient</td>
+<td>Regression Equation</td>
+</tr>
+<tr>
+<td>Prediction</td>
+<td>Not Possible</td>
+<td>Possible</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>5. Chi-Square Test (χ²)</h1>
+
+<h2>Definition</h2>
+
+<p>Chi-square is a non-parametric test used to examine relationships between categorical variables.</p>
+
+<h3>Applications</h3>
+<ul>
+<li>Test independence.</li>
+<li>Test goodness of fit.</li>
+<li>Analyze categorical data.</li>
+</ul>
+
+<h3>Formula</h3>
+
+<p>[
+\chi^2=\sum \frac{(O-E)^2}{E}
+]</p>
+
+<p>Where:</p>
+<ul>
+<li>O = Observed Frequency</li>
+<li>E = Expected Frequency</li>
+</ul>
+
+<h3>Example</h3>
+<p>Determining whether gender influences product preference.</p>
+
+<hr>
+
+<h2>Conditions for Chi-Square Test</h2>
+<ul>
+<li>Data should be categorical.</li>
+<li>Observations should be independent.</li>
+<li>Expected frequencies should be adequate.</li>
+</ul>
+
+<hr>
+
+<h1>6. Non-Parametric Tests for Normality</h1>
+
+<h2>Definition</h2>
+
+<p>These tests determine whether data follows a normal distribution.</p>
+
+<h3>Importance</h3>
+<ul>
+<li>Helps choose appropriate statistical tests.</li>
+<li>Supports research validity.</li>
+</ul>
+
+<h3>Common Tests</h3>
+<ul>
+<li>Kolmogorov-Smirnov Test</li>
+<li>Shapiro-Wilk Test</li>
+</ul>
+
+<h3>Interpretation</h3>
+
+<table>
+<tr>
+<th>Result</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>Significant</td>
+<td>Data not normally distributed</td>
+</tr>
+<tr>
+<td>Not Significant</td>
+<td>Data normally distributed</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>7. Run Test</h1>
+
+<h2>Definition</h2>
+
+<p>Run Test is a non-parametric test used to determine randomness in a sequence of observations.</p>
+
+<h3>Purpose</h3>
+<ul>
+<li>Check randomness.</li>
+<li>Detect patterns or trends.</li>
+</ul>
+
+<h3>Applications</h3>
+<ul>
+<li>Quality control.</li>
+<li>Financial data analysis.</li>
+<li>Market research.</li>
+</ul>
+
+<h3>Example</h3>
+<p>Testing whether customer arrivals occur randomly throughout the day.</p>
+
+<hr>
+
+<h1>8. Advanced Data Analysis Techniques</h1>
+
+<hr>
+
+<h2>A. Factor Analysis</h2>
+
+<h3>Definition</h3>
+
+<p>Factor Analysis is used to reduce a large number of variables into a smaller number of underlying factors.</p>
+
+<h3>Objectives</h3>
+<ul>
+<li>Data reduction.</li>
+<li>Identify hidden dimensions.</li>
+<li>Simplify analysis.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Reducing 20 customer satisfaction variables into factors such as:</p>
+<ul>
+<li>Service Quality</li>
+<li>Price Perception</li>
+<li>Brand Image</li>
+</ul>
+
+<h3>Factor Analysis Flowchart</h3>
+
+<pre><code>Many Variables
+↓
+Identify Correlations
+↓
+Extract Factors
+↓
+Interpret Factors</code></pre>
+
+<hr>
+
+<h2>B. Determinant Analysis</h2>
+
+<h3>Definition</h3>
+
+<p>Determinant Analysis examines whether variables are sufficiently correlated for advanced statistical analysis.</p>
+
+<h3>Importance</h3>
+<ul>
+<li>Used before factor analysis.</li>
+<li>Checks suitability of data matrix.</li>
+<li>Helps identify multicollinearity issues.</li>
+</ul>
+
+<h3>Interpretation</h3>
+<ul>
+<li>Determinant close to 0 → High multicollinearity.</li>
+<li>Larger determinant → Better suitability.</li>
+</ul>
+
+<hr>
+
+<h2>C. Conjoint Analysis</h2>
+
+<h3>Definition</h3>
+
+<p>Conjoint Analysis is a technique used to determine how consumers value different attributes of a product or service.</p>
+
+<h3>Purpose</h3>
+<ul>
+<li>Understand customer preferences.</li>
+<li>Support product design.</li>
+<li>Assist pricing decisions.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>A smartphone buyer evaluates:</p>
+<ul>
+<li>Price</li>
+<li>Camera Quality</li>
+<li>Battery Life</li>
+<li>Storage Capacity</li>
+</ul>
+
+<p>Conjoint analysis identifies which attribute is most important.</p>
+
+<hr>
+
+<h2>Conjoint Analysis Process</h2>
+
+<pre><code>Identify Attributes
+↓
+Create Product Profiles
+↓
+Collect Customer Ratings
+↓
+Analyze Preferences
+↓
+Determine Attribute Importance</code></pre>
+
+<hr>
+
+<h1>Important Formulae</h1>
+
+<table>
+<tr>
+<th>Formula</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>(F=\frac{Variance\ Between}{Variance\ Within})</td>
+<td>ANOVA</td>
+</tr>
+<tr>
+<td>(Y=a+bX)</td>
+<td>Regression</td>
+</tr>
+<tr>
+<td>(\chi^2=\sum \frac{(O-E)^2}{E})</td>
+<td>Chi-Square Test</td>
+</tr>
+<tr>
+<td>(-1 \leq r \leq +1)</td>
+<td>Correlation Coefficient Range</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Parametric Test</strong> – Statistical test based on distribution assumptions.</li>
+<li><strong>Non-Parametric Test</strong> – Statistical test without distribution assumptions.</li>
+<li><strong>ANOVA</strong> – Compares means of multiple groups.</li>
+<li><strong>Correlation</strong> – Measures strength and direction of relationship.</li>
+<li><strong>Regression</strong> – Predicts dependent variable using independent variable.</li>
+<li><strong>Chi-Square Test</strong> – Tests association between categorical variables.</li>
+<li><strong>Normality Test</strong> – Determines whether data follows normal distribution.</li>
+<li><strong>Run Test</strong> – Tests randomness of observations.</li>
+<li><strong>Factor Analysis</strong> – Reduces variables into factors.</li>
+<li><strong>Conjoint Analysis</strong> – Measures customer preference for product attributes.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Technique</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>ANOVA</td>
+<td>Compare multiple means</td>
+</tr>
+<tr>
+<td>Correlation</td>
+<td>Measure relationship</td>
+</tr>
+<tr>
+<td>Regression</td>
+<td>Prediction</td>
+</tr>
+<tr>
+<td>Chi-Square</td>
+<td>Association of categorical variables</td>
+</tr>
+<tr>
+<td>Run Test</td>
+<td>Test randomness</td>
+</tr>
+<tr>
+<td>Factor Analysis</td>
+<td>Variable reduction</td>
+</tr>
+<tr>
+<td>Conjoint Analysis</td>
+<td>Preference measurement</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Frequently Asked Exam Questions</h1>
+
+<ol>
+<li>Differentiate between parametric and non-parametric tests.</li>
+<li>Explain ANOVA and its applications.</li>
+<li>Define correlation and discuss its types.</li>
+<li>Explain regression analysis with an example.</li>
+<li>Discuss the Chi-square test and its applications.</li>
+<li>What is a Run Test?</li>
+<li>Explain factor analysis and its significance.</li>
+<li>What is conjoint analysis? Explain its business applications.</li>
+</ol>
+
+</div>
+</body>
+</html>

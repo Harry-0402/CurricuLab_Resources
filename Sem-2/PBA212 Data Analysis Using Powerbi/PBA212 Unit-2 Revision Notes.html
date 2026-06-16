@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Power Query</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 2: Power Query</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Power Query is the data transformation and preparation engine in Power BI. It allows users to connect to multiple data sources, clean data, transform data, and prepare it for analysis. This unit focuses on Query Editor, data transformation techniques, filtering, column operations, and data reshaping tools such as Pivot and Unpivot.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>Data Transformation</h2>
+
+<h3>Definition</h3>
+
+<p>Data Transformation is the process of converting raw data into a clean, structured, and usable format for analysis.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Improves data quality.</li>
+<li>Removes errors and inconsistencies.</li>
+<li>Standardizes data formats.</li>
+<li>Makes data analysis easier.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Converting date formats from DD/MM/YYYY to MM/DD/YYYY.</p>
+
+<hr>
+
+<h2>Benefits of Data Transformation</h2>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Improves accuracy of reports.</li>
+<li>Removes duplicate records.</li>
+<li>Enhances data consistency.</li>
+<li>Saves analysis time.</li>
+<li>Supports better decision-making.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Cleaning customer records before creating sales reports.</p>
+
+<hr>
+
+<h2>Shape or Transform Data Using Power Query</h2>
+
+<h3>Definition</h3>
+
+<p>Shaping data means modifying the structure, format, or content of data before loading it into Power BI.</p>
+
+<h3>Common Transformations</h3>
+
+<ul>
+<li>Remove unnecessary columns.</li>
+<li>Rename columns.</li>
+<li>Change data types.</li>
+<li>Split or merge columns.</li>
+<li>Filter records.</li>
+<li>Pivot and Unpivot data.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Splitting a "Full Name" column into First Name and Last Name.</p>
+
+<hr>
+
+<h1>Power Query / Query Editor Overview</h1>
+
+<h3>Definition</h3>
+
+<p>Query Editor is the workspace used to clean and transform data before loading it into Power BI.</p>
+
+<h3>Functions</h3>
+
+<ul>
+<li>Data cleaning</li>
+<li>Data transformation</li>
+<li>Data shaping</li>
+<li>Data preparation</li>
+</ul>
+
+<hr>
+
+<h1>Query Editor User Interface</h1>
+
+<h2>Main Components</h2>
+
+<table>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Ribbon</td>
+<td>Contains commands and tools</td>
+</tr>
+<tr>
+<td>Queries Pane</td>
+<td>Displays all queries</td>
+</tr>
+<tr>
+<td>Data View/Results Pane</td>
+<td>Shows data preview</td>
+</tr>
+<tr>
+<td>Query Settings Pane</td>
+<td>Displays applied steps</td>
+</tr>
+<tr>
+<td>Formula Bar</td>
+<td>Shows M language formulas</td>
+</tr>
+</table>
+
+<h2>Ribbon Tabs</h2>
+
+<h3>Home Tab</h3>
+
+<p>Used for:</p>
+
+<ul>
+<li>Importing data</li>
+<li>Refreshing data</li>
+<li>Closing and applying changes</li>
+</ul>
+
+<h3>Transform Tab</h3>
+
+<p>Used for:</p>
+
+<ul>
+<li>Data formatting</li>
+<li>Splitting columns</li>
+<li>Replacing values</li>
+</ul>
+
+<h3>Add Column Tab</h3>
+
+<p>Used for:</p>
+
+<ul>
+<li>Custom columns</li>
+<li>Conditional columns</li>
+<li>Index columns</li>
+</ul>
+
+<h3>View Tab</h3>
+
+<p>Used for:</p>
+
+<ul>
+<li>Formula bar visibility</li>
+<li>Query dependencies</li>
+<li>Layout settings</li>
+</ul>
+
+<hr>
+
+<h2>Queries Pane</h2>
+
+<h3>Definition</h3>
+
+<p>Displays all imported tables and queries.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Helps manage multiple datasets.</li>
+<li>Allows easy switching between queries.</li>
+<li>Supports renaming queries.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Sales, Customer, and Product tables shown as separate queries.</p>
+
+<hr>
+
+<h2>Data View / Results Pane</h2>
+
+<h3>Definition</h3>
+
+<p>Displays preview of transformed data.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Shows current data status.</li>
+<li>Allows quick validation.</li>
+<li>Reflects applied transformations.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Viewing filtered customer records after applying a filter.</p>
+
+<hr>
+
+<h2>Query Settings Pane</h2>
+
+<h3>Definition</h3>
+
+<p>Shows all transformation steps applied to data.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Tracks every modification.</li>
+<li>Allows editing of previous steps.</li>
+<li>Helps in troubleshooting.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Source → Changed Type → Filtered Rows → Renamed Columns.</p>
+
+<hr>
+
+<h2>Formula Bar</h2>
+
+<h3>Definition</h3>
+
+<p>Displays Power Query M language expressions.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Shows underlying transformation code.</li>
+<li>Can be edited manually.</li>
+<li>Supports advanced transformations.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>= Table.RemoveColumns(Source,{"Column1"})</code></pre>
+
+<hr>
+
+<h1>Saving the Work</h1>
+
+<h3>Process Flowchart</h3>
+
+<pre><code>Import Data
+↓
+Apply Transformations
+↓
+Review Data
+↓
+Close & Apply
+↓
+Load into Power BI Model</code></pre>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Changes are stored as steps.</li>
+<li>Original source data remains unchanged.</li>
+<li>Transformations are repeatable.</li>
+</ul>
+
+<hr>
+
+<h1>Data Types</h1>
+
+<h3>Definition</h3>
+
+<p>A data type defines the kind of value stored in a column.</p>
+
+<h2>Common Data Types</h2>
+
+<table>
+<tr>
+<th>Data Type</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Whole Number</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Decimal Number</td>
+<td>99.95</td>
+</tr>
+<tr>
+<td>Text</td>
+<td>Mumbai</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>10-Jan-2025</td>
+</tr>
+<tr>
+<td>Date/Time</td>
+<td>10-Jan-2025 10:30 AM</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>True / False</td>
+</tr>
+</table>
+
+<h2>Changing Data Types</h2>
+
+<h3>Steps</h3>
+
+<ol>
+<li>Select column.</li>
+<li>Choose Data Type.</li>
+<li>Select appropriate type.</li>
+<li>Confirm conversion.</li>
+</ol>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Ensures accurate calculations.</li>
+<li>Improves report performance.</li>
+<li>Prevents data errors.</li>
+</ul>
+
+<hr>
+
+<h1>Filtering Data in Power Query</h1>
+
+<h2>Auto Filter / Basic Filtering</h2>
+
+<h3>Definition</h3>
+
+<p>Allows users to display only required records.</p>
+
+<h3>Example</h3>
+
+<p>Show only sales above ₹50,000.</p>
+
+<hr>
+
+<h2>Text Filters</h2>
+
+<h3>Common Options</h3>
+
+<ul>
+<li>Equals</li>
+<li>Does Not Equal</li>
+<li>Begins With</li>
+<li>Ends With</li>
+<li>Contains</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Filter cities containing "Mumbai".</p>
+
+<hr>
+
+<h2>Number Filters</h2>
+
+<h3>Common Options</h3>
+
+<ul>
+<li>Greater Than</li>
+<li>Less Than</li>
+<li>Between</li>
+<li>Equals</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Display products costing more than ₹1,000.</p>
+
+<hr>
+
+<h2>Date Filters</h2>
+
+<h3>Common Options</h3>
+
+<ul>
+<li>Before</li>
+<li>After</li>
+<li>Between</li>
+<li>This Month</li>
+<li>Last Year</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Show orders placed in 2024 only.</p>
+
+<hr>
+
+<h2>Filter Multiple Columns</h2>
+
+<h3>Purpose</h3>
+
+<p>Apply conditions on more than one column simultaneously.</p>
+
+<h3>Example</h3>
+
+<p>Sales &gt; ₹50,000 AND Region = West.</p>
+
+<hr>
+
+<h1>Column Operations</h1>
+
+<h2>Remove Columns</h2>
+
+<h3>Definition</h3>
+
+<p>Deletes unnecessary columns from a dataset.</p>
+
+<h3>Example</h3>
+
+<p>Removing internal employee IDs from customer reports.</p>
+
+<hr>
+
+<h2>Remove Other Columns</h2>
+
+<h3>Definition</h3>
+
+<p>Keeps only selected columns and removes all others.</p>
+
+<h3>Example</h3>
+
+<p>Retaining Customer Name and Sales Amount only.</p>
+
+<hr>
+
+<h2>Name / Rename Column</h2>
+
+<h3>Purpose</h3>
+
+<p>Makes column names meaningful and readable.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Original</th>
+<th>Renamed</th>
+</tr>
+<tr>
+<td>Cust_ID</td>
+<td>Customer ID</td>
+</tr>
+<tr>
+<td>Amt</td>
+<td>Sales Amount</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Reorder Columns</h2>
+
+<h3>Definition</h3>
+
+<p>Changes the display sequence of columns.</p>
+
+<h3>Example</h3>
+
+<p>Customer Name before Customer ID.</p>
+
+<hr>
+
+<h2>Sort Columns</h2>
+
+<h3>Types</h3>
+
+<ul>
+<li>Ascending (A-Z)</li>
+<li>Descending (Z-A)</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Sort products by highest sales.</p>
+
+<hr>
+
+<h1>Add Column Operations</h1>
+
+<h2>Add Column</h2>
+
+<h3>Definition</h3>
+
+<p>Creates a new column from existing data.</p>
+
+<h3>Example</h3>
+
+<p>Profit = Sales − Cost.</p>
+
+<hr>
+
+<h2>Custom Column</h2>
+
+<h3>Definition</h3>
+
+<p>Creates user-defined calculations.</p>
+
+<h3>Example</h3>
+
+<pre><code>Commission = Sales × 5%</code></pre>
+
+<hr>
+
+<h1>Split Columns</h1>
+
+<h3>Definition</h3>
+
+<p>Divides one column into multiple columns.</p>
+
+<h3>Methods</h3>
+
+<ul>
+<li>By delimiter</li>
+<li>By fixed number of characters</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Mumbai-Maharashtra → Mumbai | Maharashtra</p>
+
+<hr>
+
+<h1>Merge Columns</h1>
+
+<h3>Definition</h3>
+
+<p>Combines multiple columns into a single column.</p>
+
+<h3>Example</h3>
+
+<pre><code>First Name + Last Name
+↓
+Full Name</code></pre>
+
+<hr>
+
+<h1>Pivot Columns</h1>
+
+<h3>Definition</h3>
+
+<p>Converts row values into column headers.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Product</th>
+<th>Sales</th>
+</tr>
+<tr>
+<td>A</td>
+<td>100</td>
+</tr>
+<tr>
+<td>B</td>
+<td>200</td>
+</tr>
+</table>
+
+<p>becomes</p>
+
+<table>
+<tr>
+<th>A</th>
+<th>B</th>
+</tr>
+<tr>
+<td>100</td>
+<td>200</td>
+</tr>
+</table>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Better reporting.</li>
+<li>Easy comparison.</li>
+</ul>
+
+<hr>
+
+<h1>Unpivot Columns</h1>
+
+<h3>Definition</h3>
+
+<p>Converts columns into rows.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Jan</th>
+<th>Feb</th>
+</tr>
+<tr>
+<td>100</td>
+<td>200</td>
+</tr>
+</table>
+
+<p>becomes</p>
+
+<table>
+<tr>
+<th>Month</th>
+<th>Sales</th>
+</tr>
+<tr>
+<td>Jan</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Feb</td>
+<td>200</td>
+</tr>
+</table>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Suitable for analysis.</li>
+<li>Improves data modeling.</li>
+</ul>
+
+<hr>
+
+<h1>Transpose Columns</h1>
+
+<h3>Definition</h3>
+
+<p>Converts rows into columns and columns into rows.</p>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>A</th>
+<th>B</th>
+</tr>
+<tr>
+<td>100</td>
+<td>200</td>
+</tr>
+</table>
+
+<p>becomes</p>
+
+<table>
+<tr>
+<th>A</th>
+<td>100</td>
+</tr>
+<tr>
+<th>B</th>
+<td>200</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Comparison Table</h1>
+
+<table>
+<tr>
+<th>Operation</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Filter</td>
+<td>Select specific records</td>
+</tr>
+<tr>
+<td>Sort</td>
+<td>Arrange records</td>
+</tr>
+<tr>
+<td>Split</td>
+<td>Divide column</td>
+</tr>
+<tr>
+<td>Merge</td>
+<td>Combine columns</td>
+</tr>
+<tr>
+<td>Pivot</td>
+<td>Rows to columns</td>
+</tr>
+<tr>
+<td>Unpivot</td>
+<td>Columns to rows</td>
+</tr>
+<tr>
+<td>Transpose</td>
+<td>Swap rows and columns</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Power Query</strong> – Tool used for data extraction and transformation.</li>
+<li><strong>Query Editor</strong> – Workspace for data cleaning and shaping.</li>
+<li><strong>Data Transformation</strong> – Converting raw data into usable format.</li>
+<li><strong>Pivot</strong> – Converting rows into columns.</li>
+<li><strong>Unpivot</strong> – Converting columns into rows.</li>
+<li><strong>Transpose</strong> – Swapping rows and columns.</li>
+<li><strong>Custom Column</strong> – User-created calculated column.</li>
+<li><strong>Filter</strong> – Selecting specific records.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Flowchart</h1>
+
+<pre><code>Data Source
+↓
+Import Data
+↓
+Query Editor
+↓
+Transform Data
+↓
+Apply Filters
+↓
+Modify Columns
+↓
+Pivot/Unpivot
+↓
+Close & Apply
+↓
+Data Model</code></pre>
+
+<hr>
+
+<h1>Unit 2 Summary</h1>
+
+<p>Power Query is the backbone of data preparation in Power BI. It provides powerful tools for cleaning, transforming, filtering, reshaping, and preparing data before analysis. Mastering Query Editor operations such as filtering, column management, Pivot, Unpivot, and data type handling is essential for building accurate reports and dashboards.</p>
+
+<h2>Important Exam Questions</h2>
+
+<ol>
+<li>What is Power Query? Explain its importance.</li>
+<li>Explain the Query Editor interface with suitable diagram.</li>
+<li>Discuss different types of data transformation.</li>
+<li>Explain data types and their significance.</li>
+<li>Differentiate Pivot and Unpivot operations.</li>
+<li>Explain Split Column and Merge Column with examples.</li>
+<li>Write short notes on Query Settings Pane and Formula Bar.</li>
+<li>Explain various filtering options available in Power Query.</li>
+</ol>
+
+</div>
+</body>
+</html>

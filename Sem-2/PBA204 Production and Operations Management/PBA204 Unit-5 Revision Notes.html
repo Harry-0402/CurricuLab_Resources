@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5: Quality Management and Lean Production Systems</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 5: Quality Management and Lean Production Systems</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Quality is a critical factor for customer satisfaction and business success. Organizations use inspection techniques, Statistical Quality Control (SQC), Six Sigma, Lean Production Systems, Toyota Production System (TPS), Just-In-Time (JIT), Kanban, and Theory of Constraints (TOC) to improve quality, reduce waste, and increase productivity. This unit also includes control chart numericals frequently asked in examinations.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>1. Inspection</h2>
+
+<h3>Definition</h3>
+
+<p>Inspection is the process of checking products or services to ensure they meet specified standards and requirements.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Detect defects.</li>
+<li>Maintain quality standards.</li>
+<li>Reduce customer complaints.</li>
+<li>Ensure product reliability.</li>
+<li>Improve customer satisfaction.</li>
+</ul>
+
+<h3>Types of Inspection</h3>
+
+<table>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Incoming Inspection</td>
+<td>Raw materials inspection</td>
+</tr>
+<tr>
+<td>In-Process Inspection</td>
+<td>During production</td>
+</tr>
+<tr>
+<td>Final Inspection</td>
+<td>Before delivery</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>2. 100% Inspection</h1>
+
+<h3>Definition</h3>
+
+<p>Every item produced is inspected.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Detects all defective items.</li>
+<li>High quality assurance.</li>
+<li>Suitable for critical products.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Expensive.</li>
+<li>Time-consuming.</li>
+<li>Human errors possible.</li>
+</ul>
+
+<h3>Examples</h3>
+
+<ul>
+<li>Aircraft components.</li>
+<li>Medical devices.</li>
+<li>Nuclear equipment.</li>
+</ul>
+
+<hr>
+
+<h1>3. Sample Inspection</h1>
+
+<h3>Definition</h3>
+
+<p>Only a selected sample from a lot is inspected.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Lower cost.</li>
+<li>Faster inspection.</li>
+<li>Practical for large lots.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Some defects may remain undetected.</li>
+<li>Sampling risk exists.</li>
+</ul>
+
+<h3>Examples</h3>
+
+<ul>
+<li>Food products.</li>
+<li>Consumer goods.</li>
+<li>Textile industries.</li>
+</ul>
+
+<hr>
+
+<h1>Comparison: 100% vs Sample Inspection</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>100% Inspection</th>
+<th>Sample Inspection</th>
+</tr>
+<tr>
+<td>Cost</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Accuracy</td>
+<td>Very High</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>Suitability</td>
+<td>Critical Products</td>
+<td>Mass Production</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>4. Operating Characteristic (OC) Curve</h1>
+
+<h3>Definition</h3>
+
+<p>An OC Curve shows the probability of accepting a lot for different quality levels.</p>
+
+<h3>Purpose</h3>
+
+<ul>
+<li>Evaluates sampling plans.</li>
+<li>Measures inspection effectiveness.</li>
+<li>Balances producer and consumer risks.</li>
+</ul>
+
+<h3>Key Terms</h3>
+
+<h4>Producer's Risk (α)</h4>
+<p>Good quality lot rejected.</p>
+
+<h4>Consumer's Risk (β)</h4>
+<p>Poor quality lot accepted.</p>
+
+<h3>Interpretation</h3>
+
+<ul>
+<li>Steeper OC Curve = Better discrimination.</li>
+<li>Flatter OC Curve = Less accurate sampling plan.</li>
+</ul>
+
+<hr>
+
+<h1>5. Statistical Quality Control (SQC)</h1>
+
+<h3>Definition</h3>
+
+<p>Statistical Quality Control uses statistical methods to monitor and control product quality.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Detect variations.</li>
+<li>Maintain process stability.</li>
+<li>Reduce defects.</li>
+<li>Improve productivity.</li>
+</ul>
+
+<h3>Components</h3>
+
+<pre><code>Statistical Quality Control
+↓
+Process Control
++
+Acceptance Sampling</code></pre>
+
+<hr>
+
+<h1>6. Control Charts</h1>
+
+<h3>Definition</h3>
+
+<p>Control Charts are graphical tools used to monitor process variation over time.</p>
+
+<h3>Components</h3>
+
+<table>
+<tr>
+<th>Component</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>UCL</td>
+<td>Upper Control Limit</td>
+</tr>
+<tr>
+<td>CL</td>
+<td>Central Line</td>
+</tr>
+<tr>
+<td>LCL</td>
+<td>Lower Control Limit</td>
+</tr>
+</table>
+
+<h3>Interpretation</h3>
+
+<ul>
+<li>Points within limits → Process in control.</li>
+<li>Points outside limits → Process out of control.</li>
+</ul>
+
+<hr>
+
+<h1>Variables Control Charts</h1>
+
+<p>Used when measurements are numerical.</p>
+
+<h2>7. X̄ (Mean) Chart</h2>
+
+<h3>Purpose</h3>
+
+<p>Monitors process average.</p>
+
+<h3>Formula</h3>
+
+<p>[ UCL = \bar{X} + A_2\bar{R} ]</p>
+<p>[ CL = \bar{X} ]</p>
+<p>[ LCL = \bar{X} - A_2\bar{R} ]</p>
+
+<h3>Example</h3>
+
+<p>Used to monitor bottle filling quantity.</p>
+
+<hr>
+
+<h2>8. R Chart</h2>
+
+<h3>Purpose</h3>
+
+<p>Monitors process variability.</p>
+
+<h3>Formula</h3>
+
+<p>[ UCL = D_4\bar{R} ]</p>
+<p>[ CL = \bar{R} ]</p>
+<p>[ LCL = D_3\bar{R} ]</p>
+
+<h3>Example</h3>
+
+<p>Monitoring variation in product dimensions.</p>
+
+<hr>
+
+<h1>Attribute Control Charts</h1>
+
+<p>Used when data is counted rather than measured.</p>
+
+<hr>
+
+<h2>9. p Chart</h2>
+
+<h3>Purpose</h3>
+
+<p>Monitors proportion of defective items.</p>
+
+<h3>Formula</h3>
+
+<p>[ p = \frac{\text{Defectives}}{\text{Sample Size}} ]</p>
+
+<p>[ UCL = p + 3\sqrt{\frac{p(1-p)}{n}} ]</p>
+
+<p>[ LCL = p - 3\sqrt{\frac{p(1-p)}{n}} ]</p>
+
+<h3>Example</h3>
+
+<p>Monitoring defective mobile phones.</p>
+
+<hr>
+
+<h2>10. np Chart</h2>
+
+<h3>Purpose</h3>
+
+<p>Monitors number of defectives.</p>
+
+<h3>Formula</h3>
+
+<p>[ UCL = np + 3\sqrt{np(1-p)} ]</p>
+
+<p>[ LCL = np - 3\sqrt{np(1-p)} ]</p>
+
+<h3>Example</h3>
+
+<p>Defective products in a fixed sample size.</p>
+
+<hr>
+
+<h2>11. c Chart</h2>
+
+<h3>Purpose</h3>
+
+<p>Monitors number of defects per unit.</p>
+
+<h3>Formula</h3>
+
+<p>[ UCL = c + 3\sqrt{c} ]</p>
+
+<p>[ LCL = c - 3\sqrt{c} ]</p>
+
+<h3>Example</h3>
+
+<p>Number of scratches on metal sheets.</p>
+
+<hr>
+
+<h2>12. n Chart</h2>
+
+<h3>Purpose</h3>
+
+<p>Used for monitoring sample size variations.</p>
+
+<h3>Example</h3>
+
+<p>Quality inspection where sample size changes regularly.</p>
+
+<hr>
+
+<h1>Control Chart Summary</h1>
+
+<table>
+<tr>
+<th>Chart</th>
+<th>Used For</th>
+</tr>
+<tr>
+<td>X̄ Chart</td>
+<td>Process Average</td>
+</tr>
+<tr>
+<td>R Chart</td>
+<td>Process Variation</td>
+</tr>
+<tr>
+<td>p Chart</td>
+<td>Fraction Defective</td>
+</tr>
+<tr>
+<td>np Chart</td>
+<td>Number Defective</td>
+</tr>
+<tr>
+<td>c Chart</td>
+<td>Number of Defects</td>
+</tr>
+<tr>
+<td>n Chart</td>
+<td>Sample Size Monitoring</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Numerical Concept</h1>
+
+<h3>Example (p Chart)</h3>
+
+<p>Defective items = 20</p>
+<p>Sample Size = 200</p>
+
+<p>[ p=\frac{20}{200}=0.10 ]</p>
+
+<p>This value is used to calculate UCL and LCL.</p>
+
+<p><strong>Exam Tip:</strong> Remember chart formulas and identify whether data is measured (X̄, R) or counted (p, np, c).</p>
+
+<hr>
+
+<h1>13. Six Sigma</h1>
+
+<h3>Definition</h3>
+
+<p>Six Sigma is a quality improvement methodology aimed at reducing defects and process variation.</p>
+
+<h3>Goal</h3>
+
+<p>Only <strong>3.4 defects per million opportunities (DPMO).</strong></p>
+
+<h3>DMAIC Methodology</h3>
+
+<pre><code>Define
+↓
+Measure
+↓
+Analyze
+↓
+Improve
+↓
+Control</code></pre>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Improved quality.</li>
+<li>Reduced defects.</li>
+<li>Lower costs.</li>
+<li>Increased customer satisfaction.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Reducing defects in smartphone manufacturing.</p>
+
+<hr>
+
+<h1>14. Lean Production System</h1>
+
+<h3>Definition</h3>
+
+<p>Lean Production is a philosophy focused on eliminating waste while maximizing customer value.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Reduce waste.</li>
+<li>Improve efficiency.</li>
+<li>Lower costs.</li>
+<li>Increase customer value.</li>
+</ul>
+
+<h3>Seven Wastes (Muda)</h3>
+
+<table>
+<tr>
+<th>Waste</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>Overproduction</td>
+<td>Producing more than needed</td>
+</tr>
+<tr>
+<td>Waiting</td>
+<td>Idle time</td>
+</tr>
+<tr>
+<td>Transportation</td>
+<td>Unnecessary movement</td>
+</tr>
+<tr>
+<td>Overprocessing</td>
+<td>Extra work</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Excess stock</td>
+</tr>
+<tr>
+<td>Motion</td>
+<td>Unnecessary worker movement</td>
+</tr>
+<tr>
+<td>Defects</td>
+<td>Rework and scrap</td>
+</tr>
+</table>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Faster production.</li>
+<li>Reduced inventory.</li>
+<li>Improved quality.</li>
+<li>Better productivity.</li>
+</ul>
+
+<hr>
+
+<h1>15. Toyota Production System (TPS)</h1>
+
+<h3>Definition</h3>
+
+<p>Toyota Production System is a manufacturing philosophy developed by Toyota focusing on waste elimination and continuous improvement.</p>
+
+<h3>Pillars of TPS</h3>
+
+<pre><code>Toyota Production System
+↓
+Just-In-Time (JIT)
++
+Jidoka (Built-in Quality)</code></pre>
+
+<h3>Principles</h3>
+
+<ul>
+<li>Continuous improvement (Kaizen).</li>
+<li>Respect for people.</li>
+<li>Waste elimination.</li>
+<li>Quality at source.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Toyota automobile production system.</p>
+
+<hr>
+
+<h1>16. Just-In-Time (JIT)</h1>
+
+<h3>Definition</h3>
+
+<p>JIT is a production system where materials arrive exactly when needed.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Reduce inventory.</li>
+<li>Eliminate waste.</li>
+<li>Improve cash flow.</li>
+<li>Increase efficiency.</li>
+</ul>
+
+<h3>Process Flow</h3>
+
+<pre><code>Supplier
+↓
+Production
+↓
+Customer</code></pre>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Lower inventory cost.</li>
+<li>Reduced storage requirements.</li>
+<li>Improved quality.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Supply disruptions affect production.</li>
+<li>Requires accurate planning.</li>
+</ul>
+
+<hr>
+
+<h1>17. Kanban</h1>
+
+<h3>Definition</h3>
+
+<p>Kanban is a visual scheduling system used to control material flow in JIT systems.</p>
+
+<h3>Meaning</h3>
+
+<p>Kanban = "Visual Signal" or "Card"</p>
+
+<h3>Process</h3>
+
+<pre><code>Customer Demand
+↓
+Kanban Signal
+↓
+Production
+↓
+Replenishment</code></pre>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Reduces inventory.</li>
+<li>Improves workflow.</li>
+<li>Enhances communication.</li>
+<li>Prevents overproduction.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Color-coded cards used in assembly lines.</p>
+
+<hr>
+
+<h1>18. Theory of Constraints (TOC)</h1>
+
+<h3>Definition</h3>
+
+<p>TOC is a management philosophy developed by Eliyahu M. Goldratt that focuses on identifying and managing bottlenecks.</p>
+
+<h3>Core Idea</h3>
+
+<p>A system is only as strong as its weakest constraint.</p>
+
+<h3>Five Focusing Steps</h3>
+
+<pre><code>Identify Constraint
+↓
+Exploit Constraint
+↓
+Subordinate Other Activities
+↓
+Elevate Constraint
+↓
+Repeat Process</code></pre>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Improves throughput.</li>
+<li>Reduces bottlenecks.</li>
+<li>Enhances productivity.</li>
+<li>Better resource utilization.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Increasing capacity at the slowest machine in a production line.</p>
+
+<hr>
+
+<h1>Comparison Table</h1>
+
+<table>
+<tr>
+<th>Concept</th>
+<th>Main Focus</th>
+</tr>
+<tr>
+<td>SQC</td>
+<td>Statistical Process Control</td>
+</tr>
+<tr>
+<td>Six Sigma</td>
+<td>Defect Reduction</td>
+</tr>
+<tr>
+<td>Lean</td>
+<td>Waste Elimination</td>
+</tr>
+<tr>
+<td>TPS</td>
+<td>Lean Manufacturing System</td>
+</tr>
+<tr>
+<td>JIT</td>
+<td>Inventory Reduction</td>
+</tr>
+<tr>
+<td>Kanban</td>
+<td>Visual Control</td>
+</tr>
+<tr>
+<td>TOC</td>
+<td>Bottleneck Management</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Inspection</strong> – Checking products against standards.</li>
+<li><strong>100% Inspection</strong> – Every item is inspected.</li>
+<li><strong>Sample Inspection</strong> – Only selected items are inspected.</li>
+<li><strong>OC Curve</strong> – Probability of lot acceptance.</li>
+<li><strong>SQC</strong> – Statistical methods for quality control.</li>
+<li><strong>Control Chart</strong> – Graph used to monitor process performance.</li>
+<li><strong>Six Sigma</strong> – Methodology for reducing defects.</li>
+<li><strong>Lean Production</strong> – Elimination of waste.</li>
+<li><strong>TPS</strong> – Toyota's production philosophy.</li>
+<li><strong>JIT</strong> – Materials arrive only when needed.</li>
+<li><strong>Kanban</strong> – Visual control system.</li>
+<li><strong>TOC</strong> – Managing system constraints.</li>
+</ul>
+
+<hr>
+
+<h1>Important Formulae</h1>
+
+<table>
+<tr>
+<th>Formula</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>(p = \frac{\text{Defectives}}{\text{Sample Size}})</td>
+<td>Fraction defective</td>
+</tr>
+<tr>
+<td>(UCL = p + 3\sqrt{\frac{p(1-p)}{n}})</td>
+<td>p Chart UCL</td>
+</tr>
+<tr>
+<td>(LCL = p - 3\sqrt{\frac{p(1-p)}{n}})</td>
+<td>p Chart LCL</td>
+</tr>
+<tr>
+<td>(UCL = c + 3\sqrt{c})</td>
+<td>c Chart UCL</td>
+</tr>
+<tr>
+<td>(LCL = c - 3\sqrt{c})</td>
+<td>c Chart LCL</td>
+</tr>
+<tr>
+<td>(UCL = D_4\bar{R})</td>
+<td>R Chart UCL</td>
+</tr>
+<tr>
+<td>(LCL = D_3\bar{R})</td>
+<td>R Chart LCL</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Quick Revision Summary</h1>
+
+<p>✓ Inspection can be 100% or sample-based.</p>
+
+<p>✓ OC Curves evaluate acceptance sampling plans.</p>
+
+<p>✓ SQC uses statistical methods to control quality.</p>
+
+<p>✓ Control Charts monitor process performance.</p>
+
+<p>✓ X̄ and R Charts are for measurable data.</p>
+
+<p>✓ p, np, and c Charts are for attribute data.</p>
+
+<p>✓ Six Sigma aims for <strong>3.4 defects per million opportunities</strong>.</p>
+
+<p>✓ Lean Production focuses on eliminating waste.</p>
+
+<p>✓ TPS is based on JIT and Jidoka.</p>
+
+<p>✓ JIT reduces inventory by producing only when needed.</p>
+
+<p>✓ Kanban uses visual signals to control workflow.</p>
+
+<p>✓ TOC focuses on identifying and removing bottlenecks.</p>
+
+</div>
+</body>
+</html>

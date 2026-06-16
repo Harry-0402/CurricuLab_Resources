@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3: Facilities Location & Layout</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 3: Facilities Location & Layout</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Facilities Location and Layout are critical decisions in Operations Management because they directly affect production costs, efficiency, customer service, and profitability. A good location ensures easy access to resources and markets, while an effective layout ensures smooth workflow, reduced material handling, and better utilization of resources.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>1. Facilities Location</h2>
+
+<h3>Definition</h3>
+
+<p>Facilities Location refers to selecting the most suitable geographical place for setting up a plant, office, warehouse, or service facility.</p>
+
+<h3>Strategic Importance of Location</h3>
+
+<ul>
+<li>Influences operating costs.</li>
+<li>Affects transportation expenses.</li>
+<li>Impacts customer service levels.</li>
+<li>Determines availability of labor and raw materials.</li>
+<li>Influences future business growth.</li>
+<li>Provides competitive advantage.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>An automobile manufacturer may choose a location near suppliers to reduce transportation costs.</p>
+
+<hr>
+
+<h2>2. Objectives of Facility Location</h2>
+
+<h3>Key Objectives</h3>
+
+<ul>
+<li>Minimize total operating cost.</li>
+<li>Ensure smooth supply of raw materials.</li>
+<li>Provide easy market access.</li>
+<li>Obtain skilled workforce.</li>
+<li>Facilitate future expansion.</li>
+<li>Improve customer service.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>A warehouse located near major highways ensures faster product delivery.</p>
+
+<hr>
+
+<h1>3. Factors Affecting Facility Location</h1>
+
+<h2>A. Primary Factors</h2>
+
+<h3>1. Availability of Raw Materials</h3>
+
+<ul>
+<li>Important for manufacturing industries.</li>
+<li>Reduces transportation cost.</li>
+<li>Ensures continuous production.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Sugar factories are usually located near sugarcane-producing regions.</p>
+
+<hr>
+
+<h3>2. Market Proximity</h3>
+
+<ul>
+<li>Reduces delivery time.</li>
+<li>Improves customer service.</li>
+<li>Lowers distribution costs.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Fast-food outlets are located near densely populated areas.</p>
+
+<hr>
+
+<h3>3. Availability of Labor</h3>
+
+<ul>
+<li>Skilled and unskilled workforce.</li>
+<li>Labor cost considerations.</li>
+<li>Industrial relations environment.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>IT companies establish offices where skilled software professionals are available.</p>
+
+<hr>
+
+<h3>4. Transportation Facilities</h3>
+
+<ul>
+<li>Road, rail, air, and sea connectivity.</li>
+<li>Reduces logistics cost.</li>
+<li>Ensures timely supply.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Ports attract export-oriented industries.</p>
+
+<hr>
+
+<h3>5. Utilities and Infrastructure</h3>
+
+<ul>
+<li>Electricity.</li>
+<li>Water supply.</li>
+<li>Internet connectivity.</li>
+<li>Communication facilities.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Manufacturing plants require uninterrupted power supply.</p>
+
+<hr>
+
+<h3>6. Government Policies</h3>
+
+<ul>
+<li>Tax benefits.</li>
+<li>Subsidies.</li>
+<li>Environmental regulations.</li>
+<li>Industrial development policies.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Special Economic Zones (SEZs) offer incentives to industries.</p>
+
+<hr>
+
+<h3>7. Community and Environmental Factors</h3>
+
+<ul>
+<li>Local community support.</li>
+<li>Environmental regulations.</li>
+<li>Quality of life.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Industries must comply with pollution control norms.</p>
+
+<hr>
+
+<h1>4. Installation of Facilities</h1>
+
+<h3>Definition</h3>
+
+<p>Facility installation involves setting up and arranging equipment, machinery, and support systems at the selected location.</p>
+
+<h3>Steps in Facility Installation</h3>
+
+<pre><code>Site Selection
+↓
+Plant Design
+↓
+Equipment Selection
+↓
+Installation
+↓
+Testing
+↓
+Start Operations</code></pre>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Ensure smooth production.</li>
+<li>Reduce setup problems.</li>
+<li>Optimize resource utilization.</li>
+<li>Improve operational efficiency.</li>
+</ul>
+
+<hr>
+
+<h1>5. Single Location Decision</h1>
+
+<h3>Definition</h3>
+
+<p>A decision involving the selection of one facility location for business operations.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Simpler management.</li>
+<li>Lower coordination requirements.</li>
+<li>Easier supervision.</li>
+<li>Limited market reach.</li>
+</ul>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Better control.</li>
+<li>Lower administrative cost.</li>
+<li>Simplified communication.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>A local bakery operating from a single manufacturing facility.</p>
+
+<hr>
+
+<h1>6. Multi-Location Decision</h1>
+
+<h3>Definition</h3>
+
+<p>A decision involving multiple facilities across different locations.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Wider market coverage.</li>
+<li>Better customer service.</li>
+<li>Increased flexibility.</li>
+<li>Complex management.</li>
+</ul>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Reduced delivery time.</li>
+<li>Increased market penetration.</li>
+<li>Risk diversification.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Higher investment.</li>
+<li>Coordination challenges.</li>
+<li>Increased operating costs.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>A multinational company operating factories in several countries.</p>
+
+<hr>
+
+<h1>Comparison: Single vs Multi-Location</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Single Location</th>
+<th>Multi-Location</th>
+</tr>
+<tr>
+<td>Investment</td>
+<td>Lower</td>
+<td>Higher</td>
+</tr>
+<tr>
+<td>Control</td>
+<td>Easier</td>
+<td>Difficult</td>
+</tr>
+<tr>
+<td>Market Reach</td>
+<td>Limited</td>
+<td>Wide</td>
+</tr>
+<tr>
+<td>Risk</td>
+<td>Higher Concentration</td>
+<td>Distributed</td>
+</tr>
+<tr>
+<td>Coordination</td>
+<td>Simple</td>
+<td>Complex</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>7. Facilities Layout</h1>
+
+<h3>Definition</h3>
+
+<p>Facilities Layout is the physical arrangement of machines, departments, workstations, storage areas, and equipment within a facility.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Smooth workflow.</li>
+<li>Reduce material handling.</li>
+<li>Utilize space effectively.</li>
+<li>Increase productivity.</li>
+<li>Improve safety.</li>
+<li>Minimize delays.</li>
+</ul>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Lowers production costs.</li>
+<li>Improves quality.</li>
+<li>Reduces congestion.</li>
+<li>Enhances employee morale.</li>
+<li>Supports future expansion.</li>
+</ul>
+
+<hr>
+
+<h1>Principles of Good Layout</h1>
+
+<h3>1. Integration Principle</h3>
+<p>All resources should work together efficiently.</p>
+
+<h3>2. Minimum Movement Principle</h3>
+<p>Reduce unnecessary movement of materials and workers.</p>
+
+<h3>3. Smooth Flow Principle</h3>
+<p>Ensure continuous workflow.</p>
+
+<h3>4. Space Utilization Principle</h3>
+<p>Use available space effectively.</p>
+
+<h3>5. Safety Principle</h3>
+<p>Provide a safe working environment.</p>
+
+<h3>6. Flexibility Principle</h3>
+<p>Allow future modifications and expansion.</p>
+
+<hr>
+
+<h1>Types of Facilities Layout</h1>
+
+<h2>1. Product Layout (Line Layout)</h2>
+
+<h3>Definition</h3>
+
+<p>Machines and equipment are arranged according to the sequence of operations.</p>
+
+<h3>Flow</h3>
+
+<pre><code>Raw Material
+↓
+Operation 1
+↓
+Operation 2
+↓
+Operation 3
+↓
+Finished Product</code></pre>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Continuous workflow.</li>
+<li>High production volume.</li>
+<li>Standardized products.</li>
+</ul>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>High productivity.</li>
+<li>Low material handling cost.</li>
+<li>Simple supervision.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Less flexibility.</li>
+<li>Breakdown affects entire line.</li>
+<li>High initial investment.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Automobile assembly lines.</p>
+
+<hr>
+
+<h2>2. Process Layout (Functional Layout)</h2>
+
+<h3>Definition</h3>
+
+<p>Similar machines or functions are grouped together.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Suitable for varied products.</li>
+<li>High flexibility.</li>
+<li>Specialized departments.</li>
+</ul>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Flexible operations.</li>
+<li>Better machine utilization.</li>
+<li>Suitable for customized products.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Higher material handling cost.</li>
+<li>Complex scheduling.</li>
+<li>Longer production time.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Hospitals where departments are grouped by function.</p>
+
+<hr>
+
+<h2>3. Fixed Position Layout</h2>
+
+<h3>Definition</h3>
+
+<p>The product remains at one location while resources move to it.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Used for large products.</li>
+<li>Product does not move.</li>
+<li>Equipment and workers move.</li>
+</ul>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Minimal product movement.</li>
+<li>Suitable for large projects.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Difficult supervision.</li>
+<li>High coordination requirements.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Shipbuilding and aircraft manufacturing.</p>
+
+<hr>
+
+<h2>4. Cellular Layout</h2>
+
+<h3>Definition</h3>
+
+<p>Machines are grouped into cells to process similar products.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Combines product and process layouts.</li>
+<li>Reduces movement.</li>
+<li>Improves flexibility.</li>
+</ul>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Faster production.</li>
+<li>Reduced inventory.</li>
+<li>Better quality control.</li>
+</ul>
+
+<h3>Disadvantages</h3>
+
+<ul>
+<li>Requires careful planning.</li>
+<li>Equipment duplication may occur.</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Electronics manufacturing units.</p>
+
+<hr>
+
+<h1>Comparison of Layout Types</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Product Layout</th>
+<th>Process Layout</th>
+<th>Fixed Position Layout</th>
+<th>Cellular Layout</th>
+</tr>
+<tr>
+<td>Product Variety</td>
+<td>Low</td>
+<td>High</td>
+<td>High</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>Volume</td>
+<td>High</td>
+<td>Low</td>
+<td>Low</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Flexibility</td>
+<td>Low</td>
+<td>High</td>
+<td>High</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>Material Movement</td>
+<td>Low</td>
+<td>High</td>
+<td>Very Low</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Car Assembly</td>
+<td>Hospital</td>
+<td>Shipbuilding</td>
+<td>Electronics</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Facility Location</strong> – Selection of the best geographical site for operations.</li>
+<li><strong>Facility Layout</strong> – Physical arrangement of resources within a facility.</li>
+<li><strong>Single Location</strong> – Business operates from one facility.</li>
+<li><strong>Multi-Location</strong> – Business operates from multiple facilities.</li>
+<li><strong>Product Layout</strong> – Arrangement according to operation sequence.</li>
+<li><strong>Process Layout</strong> – Arrangement by function.</li>
+<li><strong>Fixed Position Layout</strong> – Product remains stationary.</li>
+<li><strong>Cellular Layout</strong> – Machines grouped into manufacturing cells.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Summary</h1>
+
+<p>✓ Facility location affects cost, service, and profitability.</p>
+
+<p>✓ Major location factors include raw materials, market, labor, transportation, infrastructure, and government policies.</p>
+
+<p>✓ Single-location facilities are easier to manage but have limited reach.</p>
+
+<p>✓ Multi-location facilities provide wider market coverage but increase complexity.</p>
+
+<p>✓ Facility layout improves workflow and resource utilization.</p>
+
+<p>✓ Principles of layout include integration, minimum movement, smooth flow, flexibility, and safety.</p>
+
+<p>✓ Main layouts:</p>
+
+<ul>
+<li>Product Layout → Assembly Lines</li>
+<li>Process Layout → Functional Departments</li>
+<li>Fixed Position Layout → Large Projects</li>
+<li>Cellular Layout → Manufacturing Cells</li>
+</ul>
+
+<p>✓ Good layouts reduce cost, increase productivity, and improve operational efficiency.</p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4: Data Analysis</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 4: Data Analysis</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Data Analysis is the process of examining, organizing, and interpreting collected data to draw meaningful conclusions and support decision-making. This unit covers univariate, bivariate, and multivariate analysis, along with hypothesis testing, types of errors, and steps involved in hypothesis testing.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>1. Univariate Analysis</h2>
+
+<h3>Definition</h3>
+
+<p>Univariate Analysis involves the analysis of a single variable at a time.</p>
+
+<h3>Purpose</h3>
+
+<ul>
+<li>Describe data characteristics.</li>
+<li>Summarize information.</li>
+<li>Understand distribution patterns.</li>
+</ul>
+
+<h3>Common Techniques</h3>
+
+<h4>Measures of Central Tendency</h4>
+
+<table>
+<tr>
+<th>Measure</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>Mean</td>
+<td>Arithmetic average</td>
+</tr>
+<tr>
+<td>Median</td>
+<td>Middle value</td>
+</tr>
+<tr>
+<td>Mode</td>
+<td>Most frequent value</td>
+</tr>
+</table>
+
+<h4>Measures of Dispersion</h4>
+
+<table>
+<tr>
+<th>Measure</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>Range</td>
+<td>Difference between highest and lowest values</td>
+</tr>
+<tr>
+<td>Variance</td>
+<td>Average squared deviation</td>
+</tr>
+<tr>
+<td>Standard Deviation</td>
+<td>Spread of observations around mean</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+
+<p>Analyzing employee salaries using mean, median, and standard deviation.</p>
+
+<hr>
+
+<h2>2. Bivariate Analysis</h2>
+
+<h3>Definition</h3>
+
+<p>Bivariate Analysis examines the relationship between two variables.</p>
+
+<h3>Purpose</h3>
+
+<ul>
+<li>Determine association.</li>
+<li>Compare variables.</li>
+<li>Test relationships.</li>
+</ul>
+
+<h3>Common Techniques</h3>
+
+<ul>
+<li>Correlation</li>
+<li>Simple Regression</li>
+<li>Cross-tabulation</li>
+<li>Chi-square Test</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Studying the relationship between advertising expenditure and sales.</p>
+
+<hr>
+
+<h2>Univariate vs Bivariate Analysis</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Univariate</th>
+<th>Bivariate</th>
+</tr>
+<tr>
+<td>Variables</td>
+<td>One</td>
+<td>Two</td>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Description</td>
+<td>Relationship</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Salary distribution</td>
+<td>Salary vs Experience</td>
+</tr>
+<tr>
+<td>Methods</td>
+<td>Mean, Median</td>
+<td>Correlation, Regression</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>3. Multivariate Analysis</h2>
+
+<h3>Definition</h3>
+
+<p>Multivariate Analysis examines relationships among three or more variables simultaneously.</p>
+
+<h3>Purpose</h3>
+
+<ul>
+<li>Understand complex relationships.</li>
+<li>Improve prediction accuracy.</li>
+<li>Identify hidden patterns.</li>
+</ul>
+
+<h3>Common Techniques</h3>
+
+<ul>
+<li>Multiple Regression</li>
+<li>Factor Analysis</li>
+<li>Cluster Analysis</li>
+<li>Discriminant Analysis</li>
+<li>Conjoint Analysis</li>
+</ul>
+
+<h3>Example</h3>
+
+<p>Analyzing customer satisfaction based on service quality, price, location, and brand image simultaneously.</p>
+
+<hr>
+
+<h2>Comparison of Analysis Types</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Univariate</th>
+<th>Bivariate</th>
+<th>Multivariate</th>
+</tr>
+<tr>
+<td>Variables</td>
+<td>1</td>
+<td>2</td>
+<td>3 or more</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Low</td>
+<td>Moderate</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Description</td>
+<td>Relationship</td>
+<td>Multiple relationships</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Age distribution</td>
+<td>Age vs Income</td>
+<td>Age, Income, Education</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>4. Hypothesis Testing</h1>
+
+<h2>Definition</h2>
+
+<p>Hypothesis Testing is a statistical procedure used to determine whether a hypothesis about a population is supported by sample data.</p>
+
+<h3>Objectives</h3>
+
+<ul>
+<li>Make decisions based on data.</li>
+<li>Test assumptions scientifically.</li>
+<li>Reduce uncertainty.</li>
+</ul>
+
+<hr>
+
+<h2>Basic Concepts</h2>
+
+<h3>Null Hypothesis (H₀)</h3>
+
+<p>A statement indicating no significant difference or relationship exists.</p>
+
+<p><strong>Example:</strong></p>
+
+<p>H₀: Training has no effect on employee performance.</p>
+
+<hr>
+
+<h3>Alternative Hypothesis (H₁)</h3>
+
+<p>A statement indicating a significant difference or relationship exists.</p>
+
+<p><strong>Example:</strong></p>
+
+<p>H₁: Training improves employee performance.</p>
+
+<hr>
+
+<h3>Level of Significance (α)</h3>
+
+<p>Probability of rejecting a true null hypothesis.</p>
+
+<p>Common values:</p>
+
+<ul>
+<li>0.05 (5%)</li>
+<li>0.01 (1%)</li>
+</ul>
+
+<hr>
+
+<h3>Test Statistic</h3>
+
+<p>A numerical value calculated from sample data used for decision-making.</p>
+
+<p>Examples:</p>
+
+<ul>
+<li>Z-test</li>
+<li>t-test</li>
+<li>F-test</li>
+<li>Chi-square test</li>
+</ul>
+
+<hr>
+
+<h2>Types of Errors in Hypothesis Testing</h2>
+
+<h3>Type I Error (α Error)</h3>
+
+<h3>Definition</h3>
+
+<p>Rejecting a true null hypothesis.</p>
+
+<h3>Example</h3>
+
+<p>Concluding that a new marketing campaign increased sales when it actually did not.</p>
+
+<hr>
+
+<h3>Type II Error (β Error)</h3>
+
+<h3>Definition</h3>
+
+<p>Failing to reject a false null hypothesis.</p>
+
+<h3>Example</h3>
+
+<p>Concluding that a marketing campaign has no impact when it actually increases sales.</p>
+
+<hr>
+
+<h2>Error Comparison Table</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Type I Error</th>
+<th>Type II Error</th>
+</tr>
+<tr>
+<td>Symbol</td>
+<td>α</td>
+<td>β</td>
+</tr>
+<tr>
+<td>Meaning</td>
+<td>Reject true H₀</td>
+<td>Accept false H₀</td>
+</tr>
+<tr>
+<td>Consequence</td>
+<td>False positive</td>
+<td>False negative</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Detecting effect when none exists</td>
+<td>Missing an actual effect</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Hypothesis Testing Process</h2>
+
+<h3>Step 1: Formulate Hypotheses</h3>
+<ul>
+<li>State H₀</li>
+<li>State H₁</li>
+</ul>
+
+<h3>Step 2: Select Significance Level</h3>
+<p>Usually 5% (0.05)</p>
+
+<h3>Step 3: Choose Appropriate Test</h3>
+<p>Examples:</p>
+<ul>
+<li>t-test</li>
+<li>Z-test</li>
+<li>Chi-square test</li>
+<li>ANOVA</li>
+</ul>
+
+<h3>Step 4: Collect Data</h3>
+<p>Obtain sample observations.</p>
+
+<h3>Step 5: Calculate Test Statistic</h3>
+<p>Apply the selected statistical formula.</p>
+
+<h3>Step 6: Compare with Critical Value or P-value</h3>
+<p>Determine statistical significance.</p>
+
+<h3>Step 7: Make Decision</h3>
+<ul>
+<li>Reject H₀</li>
+<li>Fail to Reject H₀</li>
+</ul>
+
+<h3>Step 8: Draw Conclusion</h3>
+<p>Interpret findings in business terms.</p>
+
+<hr>
+
+<h2>Hypothesis Testing Flowchart</h2>
+
+<pre><code>State Hypotheses
+↓
+Choose Significance Level
+↓
+Select Statistical Test
+↓
+Collect Data
+↓
+Compute Test Statistic
+↓
+Compare with Critical Value / P-value
+↓
+Decision
+↓
+Conclusion</code></pre>
+
+<hr>
+
+<h1>Important Formulae</h1>
+
+<h2>Mean</h2>
+
+<p>[
+\bar{X}=\frac{\sum X}{N}
+]</p>
+
+<p><strong>Purpose:</strong> Average value of observations.</p>
+
+<hr>
+
+<h2>Range</h2>
+
+<p>[
+Range = Highest\ Value - Lowest\ Value
+]</p>
+
+<p><strong>Purpose:</strong> Measures spread of data.</p>
+
+<hr>
+
+<h2>Variance</h2>
+
+<p>[
+\sigma^2=\frac{\sum (X-\bar{X})^2}{N}
+]</p>
+
+<p><strong>Purpose:</strong> Measures variability.</p>
+
+<hr>
+
+<h2>Standard Deviation</h2>
+
+<p>[
+\sigma=\sqrt{\sigma^2}
+]</p>
+
+<p><strong>Purpose:</strong> Measures dispersion around mean.</p>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Data Analysis</strong> – Process of interpreting collected data.</li>
+<li><strong>Univariate Analysis</strong> – Analysis of one variable.</li>
+<li><strong>Bivariate Analysis</strong> – Analysis of two variables.</li>
+<li><strong>Multivariate Analysis</strong> – Analysis of multiple variables.</li>
+<li><strong>Hypothesis</strong> – Testable statement about variables.</li>
+<li><strong>Null Hypothesis (H₀)</strong> – No relationship or difference exists.</li>
+<li><strong>Alternative Hypothesis (H₁)</strong> – Relationship or difference exists.</li>
+<li><strong>Significance Level</strong> – Probability of Type I error.</li>
+<li><strong>Type I Error</strong> – Rejecting a true null hypothesis.</li>
+<li><strong>Type II Error</strong> – Accepting a false null hypothesis.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Concept</th>
+<th>Key Idea</th>
+</tr>
+<tr>
+<td>Univariate Analysis</td>
+<td>One variable</td>
+</tr>
+<tr>
+<td>Bivariate Analysis</td>
+<td>Two variables</td>
+</tr>
+<tr>
+<td>Multivariate Analysis</td>
+<td>Multiple variables</td>
+</tr>
+<tr>
+<td>H₀</td>
+<td>No effect/relationship</td>
+</tr>
+<tr>
+<td>H₁</td>
+<td>Effect/relationship exists</td>
+</tr>
+<tr>
+<td>Type I Error</td>
+<td>False positive</td>
+</tr>
+<tr>
+<td>Type II Error</td>
+<td>False negative</td>
+</tr>
+<tr>
+<td>Mean</td>
+<td>Average</td>
+</tr>
+<tr>
+<td>Variance</td>
+<td>Data variability</td>
+</tr>
+<tr>
+<td>Standard Deviation</td>
+<td>Spread around mean</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Frequently Asked Exam Questions</h1>
+
+<ol>
+<li>Define data analysis and explain its importance.</li>
+<li>Differentiate between univariate, bivariate, and multivariate analysis.</li>
+<li>Explain the concept of hypothesis testing.</li>
+<li>What are Type I and Type II errors?</li>
+<li>Discuss the steps involved in hypothesis testing.</li>
+<li>Explain measures of central tendency and dispersion.</li>
+<li>Compare null and alternative hypotheses.</li>
+</ol>
+
+<hr>
+
+<h1>5-Mark Revision Summary</h1>
+
+<ul>
+<li>Data analysis converts raw data into meaningful information.</li>
+<li>Univariate analysis studies one variable, bivariate studies two, and multivariate studies multiple variables.</li>
+<li>Hypothesis testing helps make statistical decisions.</li>
+<li>Null hypothesis assumes no relationship; alternative hypothesis assumes a relationship.</li>
+<li>Type I error means rejecting a true null hypothesis.</li>
+<li>Type II error means accepting a false null hypothesis.</li>
+<li>Statistical tests help determine whether results are significant.</li>
+</ul>
+
+</div>
+</body>
+</html>

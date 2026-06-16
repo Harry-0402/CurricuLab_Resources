@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2: Advanced Python</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 2: Advanced Python</h1>
+
+<h2>Unit Overview</h2>
+
+<p>This unit introduces advanced Python programming concepts including functions, while loops, dictionaries, sets, slicing techniques, file handling, and CSV data analysis. These concepts are essential for building reusable programs and performing data analysis tasks efficiently.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>Creating Custom Functions</h2>
+
+<h3>Definition</h3>
+
+<p>A function is a reusable block of code designed to perform a specific task.</p>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Reduces code repetition.</li>
+<li>Improves readability.</li>
+<li>Makes debugging easier.</li>
+<li>Supports modular programming.</li>
+</ul>
+
+<h3>Syntax</h3>
+
+<pre><code>def function_name():
+    statements</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>def greet():
+    print("Welcome to Python")
+
+greet()</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>Welcome to Python</code></pre>
+
+<hr>
+
+<h2>Functions with Parameters</h2>
+
+<h3>Example</h3>
+
+<pre><code>def add(a, b):
+    return a + b
+
+result = add(10, 20)
+print(result)</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>30</code></pre>
+
+<hr>
+
+<h2>Types of Functions</h2>
+
+<table>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Built-in Functions</td>
+<td>Predefined functions like print(), len()</td>
+</tr>
+<tr>
+<td>User-Defined Functions</td>
+<td>Created by programmers</td>
+</tr>
+<tr>
+<td>Lambda Functions</td>
+<td>Anonymous single-line functions</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Indefinite Loops (While Loops)</h1>
+
+<h2>Definition</h2>
+
+<p>A while loop executes as long as a specified condition remains True.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>while condition:
+    statements</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>count = 1
+
+while count &lt;= 5:
+    print(count)
+    count += 1</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>1
+2
+3
+4
+5</code></pre>
+
+<hr>
+
+<h2>For Loop vs While Loop</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>For Loop</th>
+<th>While Loop</th>
+</tr>
+<tr>
+<td>Iterations Known</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Condition Based</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Usage</td>
+<td>Fixed repetitions</td>
+<td>Unknown repetitions</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Dictionary Data Type</h1>
+
+<h2>Definition</h2>
+
+<p>A Dictionary stores data as key-value pairs.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>student = {
+    "name": "Rahul",
+    "age": 21,
+    "course": "MBA"
+}</code></pre>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Mutable</li>
+<li>Stores key-value pairs</li>
+<li>Fast data retrieval</li>
+<li>Keys must be unique</li>
+</ul>
+
+<h3>Accessing Values</h3>
+
+<pre><code>print(student["name"])</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>Rahul</code></pre>
+
+<hr>
+
+<h2>Common Dictionary Operations</h2>
+
+<h3>Add Item</h3>
+
+<pre><code>student["city"] = "Nashik"</code></pre>
+
+<h3>Update Item</h3>
+
+<pre><code>student["age"] = 22</code></pre>
+
+<h3>Delete Item</h3>
+
+<pre><code>del student["city"]</code></pre>
+
+<hr>
+
+<h1>Set Data Type</h1>
+
+<h2>Definition</h2>
+
+<p>A Set is an unordered collection of unique elements.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>numbers = {1, 2, 3, 4}</code></pre>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>No duplicate values.</li>
+<li>Unordered.</li>
+<li>Mutable.</li>
+<li>Fast membership testing.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>numbers.add(5)</code></pre>
+
+<hr>
+
+<h2>List vs Tuple vs Set</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>List</th>
+<th>Tuple</th>
+<th>Set</th>
+</tr>
+<tr>
+<td>Ordered</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Mutable</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Duplicates Allowed</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Brackets</td>
+<td>[]</td>
+<td>()</td>
+<td>{}</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Slicing Data Types</h1>
+
+<h2>Definition</h2>
+
+<p>Slicing extracts a portion of data from strings, lists, or tuples.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>sequence[start:end:step]</code></pre>
+
+<hr>
+
+<h2>String Slicing</h2>
+
+<h3>Example</h3>
+
+<pre><code>name = "PYTHON"
+
+print(name[0:3])</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>PYT</code></pre>
+
+<hr>
+
+<h2>List Slicing</h2>
+
+<h3>Example</h3>
+
+<pre><code>numbers = [10,20,30,40,50]
+
+print(numbers[1:4])</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>[20,30,40]</code></pre>
+
+<hr>
+
+<h2>Negative Indexing</h2>
+
+<h3>Example</h3>
+
+<pre><code>name = "Python"
+
+print(name[-1])</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>n</code></pre>
+
+<hr>
+
+<h1>Reading Text Files with Python</h1>
+
+<h2>Definition</h2>
+
+<p>File handling allows reading and writing data stored in files.</p>
+
+<h3>Opening a File</h3>
+
+<pre><code>file = open("data.txt","r")</code></pre>
+
+<h3>Reading Entire File</h3>
+
+<pre><code>content = file.read()
+print(content)</code></pre>
+
+<h3>Closing File</h3>
+
+<pre><code>file.close()</code></pre>
+
+<hr>
+
+<h2>Recommended Method</h2>
+
+<pre><code>with open("data.txt","r") as file:
+    content = file.read()
+    print(content)</code></pre>
+
+<h3>Advantage</h3>
+
+<p>Automatically closes the file.</p>
+
+<hr>
+
+<h1>Reading CSV Files</h1>
+
+<h2>Definition</h2>
+
+<p>CSV (Comma Separated Values) files store tabular data.</p>
+
+<h3>Example CSV</h3>
+
+<pre><code>Name,Age,City
+Rahul,21,Nashik
+Priya,22,Mumbai</code></pre>
+
+<hr>
+
+<h2>Reading CSV Using Pandas</h2>
+
+<pre><code>import pandas as pd
+
+df = pd.read_csv("students.csv")
+
+print(df)</code></pre>
+
+<hr>
+
+<h1>Analyze Data from Text Files</h1>
+
+<h2>Example</h2>
+
+<p>Suppose a file contains:</p>
+
+<pre><code>100
+200
+300
+400</code></pre>
+
+<h3>Program</h3>
+
+<pre><code>with open("sales.txt","r") as file:
+    total = 0
+
+    for line in file:
+        total += int(line)
+
+print(total)</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>1000</code></pre>
+
+<hr>
+
+<h1>Analyze Data from CSV Files</h1>
+
+<h2>Example</h2>
+
+<pre><code>import pandas as pd
+
+sales = pd.read_csv("sales.csv")
+
+print(sales["Amount"].sum())</code></pre>
+
+<h3>Purpose</h3>
+
+<p>Calculates total sales from CSV data.</p>
+
+<hr>
+
+<h1>Exception Handling (Important for File Operations)</h1>
+
+<h2>Definition</h2>
+
+<p>Exception handling prevents programs from crashing due to errors.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>try:
+    statements
+except:
+    error handling</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>try:
+    file = open("data.txt")
+except:
+    print("File not found")</code></pre>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>Function</strong> – Reusable block of code.</li>
+<li><strong>Parameter</strong> – Value passed into a function.</li>
+<li><strong>While Loop</strong> – Repeats while a condition is true.</li>
+<li><strong>Dictionary</strong> – Collection of key-value pairs.</li>
+<li><strong>Set</strong> – Collection of unique elements.</li>
+<li><strong>Slicing</strong> – Extracting part of a sequence.</li>
+<li><strong>Text File</strong> – File containing plain text.</li>
+<li><strong>CSV File</strong> – File storing tabular data.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Flowchart</h1>
+
+<pre><code>Input Data
+↓
+Create Functions
+↓
+Apply Loops
+↓
+Store Data in Dictionary/Set
+↓
+Read Text/CSV Files
+↓
+Analyze Data
+↓
+Generate Output</code></pre>
+
+<hr>
+
+<h1>Common Exam Programs</h1>
+
+<h2>Program Using Function</h2>
+
+<pre><code>def square(num):
+    return num * num
+
+print(square(5))</code></pre>
+
+<hr>
+
+<h2>Program Using While Loop</h2>
+
+<pre><code>num = 1
+
+while num &lt;= 5:
+    print(num)
+    num += 1</code></pre>
+
+<hr>
+
+<h2>Program Using Dictionary</h2>
+
+<pre><code>student = {
+    "Name":"Rahul",
+    "Age":21
+}
+
+print(student["Name"])</code></pre>
+
+<hr>
+
+<h2>Program to Read a File</h2>
+
+<pre><code>with open("sample.txt","r") as file:
+    print(file.read())</code></pre>
+
+<hr>
+
+<h1>Frequently Asked Viva Questions</h1>
+
+<h3>What is the difference between a function and a method?</h3>
+
+<ul>
+<li>Function is independent.</li>
+<li>Method belongs to an object.</li>
+</ul>
+
+<h3>Why are dictionaries faster than lists for searching?</h3>
+
+<ul>
+<li>Dictionaries use keys and hashing.</li>
+</ul>
+
+<h3>What is the advantage of sets?</h3>
+
+<ul>
+<li>Automatically removes duplicates.</li>
+</ul>
+
+<h3>What is slicing?</h3>
+
+<ul>
+<li>Extracting a subset of data from a sequence.</li>
+</ul>
+
+<hr>
+
+<h1>Unit 2 Summary</h1>
+
+<p>Advanced Python concepts improve program efficiency and flexibility. Functions enable code reuse, while loops support condition-based repetition, dictionaries and sets provide powerful data storage structures, and file handling allows reading and analyzing text and CSV data. These concepts form the foundation for NumPy, Pandas, and data analytics in later units.</p>
+
+<h2>Important Exam Questions</h2>
+
+<ol>
+<li>Define functions and explain their advantages.</li>
+<li>Differentiate For Loop and While Loop.</li>
+<li>Explain Dictionary with suitable examples.</li>
+<li>Explain Set data type and its characteristics.</li>
+<li>What is slicing? Explain with examples.</li>
+<li>Write a Python program to read a text file.</li>
+<li>Explain how CSV files are read in Python.</li>
+<li>Write short notes on exception handling.</li>
+<li>Differentiate List, Tuple, and Set.</li>
+<li>Explain analysis of text and CSV files using Python.</li>
+</ol>
+
+</div>
+</body>
+</html>

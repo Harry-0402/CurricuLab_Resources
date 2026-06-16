@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5: Data Extraction & Analysis</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 5: Data Extraction & Analysis</h1>
+
+<h2>Unit Overview</h2>
+
+<p>Data Extraction and Analysis involve collecting data from different sources, processing it, and generating meaningful insights. Python provides powerful libraries such as Pandas, Requests, and Matplotlib to extract live data from APIs, visualize data, merge datasets, perform grouping operations, and analyze financial information. This unit focuses on practical data analytics techniques widely used in business and finance.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>Getting Live Data from APIs</h2>
+
+<h3>Definition</h3>
+
+<p>API (Application Programming Interface) allows applications to communicate and exchange data over the internet.</p>
+
+<h3>Importance</h3>
+
+<ul>
+<li>Access real-time data.</li>
+<li>Automate data collection.</li>
+<li>Eliminate manual data entry.</li>
+<li>Integrate multiple systems.</li>
+</ul>
+
+<h3>Examples</h3>
+
+<ul>
+<li>Weather Data API</li>
+<li>Stock Market API</li>
+<li>Currency Exchange API</li>
+<li>Social Media API</li>
+</ul>
+
+<hr>
+
+<h2>API Workflow</h2>
+
+<pre><code>Send Request
+↓
+API Server
+↓
+Receive Response
+↓
+Extract Data
+↓
+Analyze Data</code></pre>
+
+<hr>
+
+<h2>Using Requests Library</h2>
+
+<h3>Import Library</h3>
+
+<pre><code>import requests</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>import requests
+
+response = requests.get(
+"https://api.example.com/data"
+)
+
+print(response.status_code)</code></pre>
+
+<h3>Output</h3>
+
+<pre><code>200</code></pre>
+
+<p>(200 indicates successful request.)</p>
+
+<hr>
+
+<h2>Working with JSON Data</h2>
+
+<h3>Definition</h3>
+
+<p>JSON (JavaScript Object Notation) is the most common API response format.</p>
+
+<h3>Example JSON</h3>
+
+<pre><code>{
+  "name":"Rahul",
+  "age":21
+}</code></pre>
+
+<h3>Reading JSON</h3>
+
+<pre><code>data = response.json()
+
+print(data)</code></pre>
+
+<hr>
+
+<h1>Plot Data with Matplotlib</h1>
+
+<h2>Definition</h2>
+
+<p>Matplotlib is a Python library used for creating graphs and charts.</p>
+
+<h3>Import</h3>
+
+<pre><code>import matplotlib.pyplot as plt</code></pre>
+
+<h3>Advantages</h3>
+
+<ul>
+<li>Easy visualization.</li>
+<li>Supports multiple chart types.</li>
+<li>Helps identify trends.</li>
+<li>Widely used in analytics.</li>
+</ul>
+
+<hr>
+
+<h1>Line Chart</h1>
+
+<h2>Example</h2>
+
+<pre><code>import matplotlib.pyplot as plt
+
+x = [1,2,3,4]
+y = [10,20,30,40]
+
+plt.plot(x,y)
+plt.show()</code></pre>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Trend analysis</li>
+<li>Sales growth analysis</li>
+<li>Time-series data</li>
+</ul>
+
+<hr>
+
+<h1>Bar Chart</h1>
+
+<h2>Example</h2>
+
+<pre><code>products = ["A","B","C"]
+sales = [100,200,150]
+
+plt.bar(products,sales)
+plt.show()</code></pre>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Product comparison</li>
+<li>Performance analysis</li>
+<li>Revenue comparison</li>
+</ul>
+
+<hr>
+
+<h1>Pie Chart</h1>
+
+<h2>Example</h2>
+
+<pre><code>sizes = [40,35,25]
+
+plt.pie(sizes)
+plt.show()</code></pre>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Market share</li>
+<li>Budget allocation</li>
+<li>Percentage contribution</li>
+</ul>
+
+<hr>
+
+<h1>Common Matplotlib Functions</h1>
+
+<table>
+<tr>
+<th>Function</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>plot()</td>
+<td>Line graph</td>
+</tr>
+<tr>
+<td>bar()</td>
+<td>Bar chart</td>
+</tr>
+<tr>
+<td>pie()</td>
+<td>Pie chart</td>
+</tr>
+<tr>
+<td>xlabel()</td>
+<td>X-axis label</td>
+</tr>
+<tr>
+<td>ylabel()</td>
+<td>Y-axis label</td>
+</tr>
+<tr>
+<td>title()</td>
+<td>Chart title</td>
+</tr>
+<tr>
+<td>show()</td>
+<td>Display chart</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Merge Data</h1>
+
+<h2>Definition</h2>
+
+<p>Merging combines datasets based on common columns.</p>
+
+<h3>Example Tables</h3>
+
+<h3>Customers</h3>
+
+<table>
+<tr>
+<th>ID</th>
+<th>Name</th>
+</tr>
+<tr>
+<td>1</td>
+<td>Rahul</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Priya</td>
+</tr>
+</table>
+
+<h3>Orders</h3>
+
+<table>
+<tr>
+<th>ID</th>
+<th>Amount</th>
+</tr>
+<tr>
+<td>1</td>
+<td>5000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>7000</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Merge Syntax</h2>
+
+<pre><code>merged = pd.merge(
+customers,
+orders,
+on="ID"
+)</code></pre>
+
+<h3>Output</h3>
+
+<table>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Amount</th>
+</tr>
+<tr>
+<td>1</td>
+<td>Rahul</td>
+<td>5000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Priya</td>
+<td>7000</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Types of Merge</h1>
+
+<table>
+<tr>
+<th>Merge Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Inner Join</td>
+<td>Common records only</td>
+</tr>
+<tr>
+<td>Left Join</td>
+<td>All left table records</td>
+</tr>
+<tr>
+<td>Right Join</td>
+<td>All right table records</td>
+</tr>
+<tr>
+<td>Outer Join</td>
+<td>All records from both tables</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Concatenate Data</h1>
+
+<h2>Definition</h2>
+
+<p>Concatenation joins DataFrames either vertically or horizontally.</p>
+
+<h3>Example</h3>
+
+<pre><code>combined = pd.concat(
+[df1, df2]
+)</code></pre>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Combine datasets quickly.</li>
+<li>Useful for monthly reports.</li>
+<li>Easy data integration.</li>
+</ul>
+
+<hr>
+
+<h2>Merge vs Concatenate</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Merge</th>
+<th>Concatenate</th>
+</tr>
+<tr>
+<td>Based on Key</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Combines Related Data</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Adds Rows/Columns</td>
+<td>Limited</td>
+<td>Yes</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>GroupBy in Pandas</h1>
+
+<h2>Definition</h2>
+
+<p>GroupBy groups data based on categories and performs aggregate calculations.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>df.groupby("Column")</code></pre>
+
+<hr>
+
+<h2>Example Dataset</h2>
+
+<table>
+<tr>
+<th>Region</th>
+<th>Sales</th>
+</tr>
+<tr>
+<td>North</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>North</td>
+<td>2000</td>
+</tr>
+<tr>
+<td>South</td>
+<td>1500</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Calculate Total Sales by Region</h2>
+
+<pre><code>df.groupby("Region")["Sales"].sum()</code></pre>
+
+<h3>Output</h3>
+
+<table>
+<tr>
+<th>Region</th>
+<th>Total Sales</th>
+</tr>
+<tr>
+<td>North</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>South</td>
+<td>1500</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Common GroupBy Functions</h1>
+
+<table>
+<tr>
+<th>Function</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>sum()</td>
+<td>Total</td>
+</tr>
+<tr>
+<td>mean()</td>
+<td>Average</td>
+</tr>
+<tr>
+<td>max()</td>
+<td>Highest value</td>
+</tr>
+<tr>
+<td>min()</td>
+<td>Lowest value</td>
+</tr>
+<tr>
+<td>count()</td>
+<td>Count records</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>GroupBy Example</h2>
+
+<pre><code>df.groupby(
+"Department"
+)["Salary"].mean()</code></pre>
+
+<p>Calculates average salary department-wise.</p>
+
+<hr>
+
+<h1>Logic in Finance with Pandas</h1>
+
+<h2>Definition</h2>
+
+<p>Pandas is widely used for financial calculations and business analysis.</p>
+
+<h3>Applications</h3>
+
+<ul>
+<li>Profit analysis</li>
+<li>Revenue analysis</li>
+<li>Expense tracking</li>
+<li>Budget planning</li>
+<li>Investment analysis</li>
+</ul>
+
+<hr>
+
+<h1>Financial Calculations</h1>
+
+<h2>Total Revenue</h2>
+
+<pre><code>df["Revenue"].sum()</code></pre>
+
+<hr>
+
+<h2>Average Revenue</h2>
+
+<pre><code>df["Revenue"].mean()</code></pre>
+
+<hr>
+
+<h2>Profit Calculation</h2>
+
+<pre><code>df["Profit"] = (
+df["Revenue"]
+-
+df["Cost"]
+)</code></pre>
+
+<hr>
+
+<h2>Profit Margin</h2>
+
+<pre><code>df["Profit Margin"] = (
+df["Profit"]
+/
+df["Revenue"]
+) * 100</code></pre>
+
+<hr>
+
+<h3>Example</h3>
+
+<table>
+<tr>
+<th>Revenue</th>
+<th>Cost</th>
+<th>Profit</th>
+</tr>
+<tr>
+<td>10000</td>
+<td>7000</td>
+<td>3000</td>
+</tr>
+</table>
+
+<p>Profit Margin:</p>
+
+<pre><code>30%</code></pre>
+
+<hr>
+
+<h1>Financial Analysis Workflow</h1>
+
+<pre><code>Collect Data
+↓
+Import into Pandas
+↓
+Clean Data
+↓
+Calculate Revenue
+↓
+Calculate Profit
+↓
+Group &amp; Analyze
+↓
+Visualize Results
+↓
+Business Decisions</code></pre>
+
+<hr>
+
+<h1>Data Analysis Process</h1>
+
+<pre><code>Data Collection
+↓
+Data Cleaning
+↓
+Data Transformation
+↓
+Data Analysis
+↓
+Visualization
+↓
+Decision Making</code></pre>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>API</strong> – Interface for exchanging data between applications.</li>
+<li><strong>JSON</strong> – Lightweight data format used by APIs.</li>
+<li><strong>Matplotlib</strong> – Python visualization library.</li>
+<li><strong>Merge</strong> – Combine datasets using common keys.</li>
+<li><strong>Concatenate</strong> – Join datasets together.</li>
+<li><strong>GroupBy</strong> – Group data and perform calculations.</li>
+<li><strong>Revenue</strong> – Total income generated.</li>
+<li><strong>Profit</strong> – Revenue minus Cost.</li>
+</ul>
+
+<hr>
+
+<h1>Important Formulae</h1>
+
+<table>
+<tr>
+<th>Formula</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>Profit = Revenue − Cost</td>
+<td>Calculate profit</td>
+</tr>
+<tr>
+<td>Profit Margin = (Profit / Revenue) × 100</td>
+<td>Profitability</td>
+</tr>
+<tr>
+<td>Average = Sum / Count</td>
+<td>Mean value</td>
+</tr>
+<tr>
+<td>Total Sales = SUM(Sales)</td>
+<td>Revenue calculation</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Topic</th>
+<th>Key Point</th>
+</tr>
+<tr>
+<td>API</td>
+<td>Live data source</td>
+</tr>
+<tr>
+<td>JSON</td>
+<td>API response format</td>
+</tr>
+<tr>
+<td>Matplotlib</td>
+<td>Visualization library</td>
+</tr>
+<tr>
+<td>Merge</td>
+<td>Combine related tables</td>
+</tr>
+<tr>
+<td>Concatenate</td>
+<td>Join datasets</td>
+</tr>
+<tr>
+<td>GroupBy</td>
+<td>Category-wise analysis</td>
+</tr>
+<tr>
+<td>Revenue</td>
+<td>Total earnings</td>
+</tr>
+<tr>
+<td>Profit</td>
+<td>Revenue − Cost</td>
+</tr>
+<tr>
+<td>Profit Margin</td>
+<td>Profit percentage</td>
+</tr>
+<tr>
+<td>Financial Analysis</td>
+<td>Business decision support</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Common Exam Programs</h1>
+
+<h2>API Request</h2>
+
+<pre><code>import requests
+
+response = requests.get(
+"https://api.example.com"
+)
+
+print(response.status_code)</code></pre>
+
+<hr>
+
+<h2>Line Chart</h2>
+
+<pre><code>import matplotlib.pyplot as plt
+
+plt.plot([1,2,3],[10,20,30])
+plt.show()</code></pre>
+
+<hr>
+
+<h2>Merge DataFrames</h2>
+
+<pre><code>merged = pd.merge(
+df1,
+df2,
+on="ID"
+)</code></pre>
+
+<hr>
+
+<h2>GroupBy Example</h2>
+
+<pre><code>df.groupby(
+"Region"
+)["Sales"].sum()</code></pre>
+
+<hr>
+
+<h1>Frequently Asked Viva Questions</h1>
+
+<h3>What is an API?</h3>
+
+<p>A mechanism that allows software applications to communicate and exchange data.</p>
+
+<h3>What is JSON?</h3>
+
+<p>A lightweight format used to store and exchange data.</p>
+
+<h3>Difference between Merge and Concatenate?</h3>
+
+<ul>
+<li>Merge combines data using common keys.</li>
+<li>Concatenate joins DataFrames without keys.</li>
+</ul>
+
+<h3>Why is GroupBy important?</h3>
+
+<p>It helps summarize and analyze data category-wise.</p>
+
+<hr>
+
+<h1>Unit 5 Summary</h1>
+
+<p>Data extraction and analysis are the final stages of the data analytics process. APIs provide live data, Matplotlib creates visualizations, Pandas enables merging and grouping of data, and financial analysis techniques help businesses make informed decisions. Mastering these concepts is essential for practical data analytics applications.</p>
+
+<h2>Important Exam Questions</h2>
+
+<ol>
+<li>What is an API? Explain its role in data extraction.</li>
+<li>Explain JSON and API responses.</li>
+<li>What is Matplotlib? Discuss its features.</li>
+<li>Write programs for Line Chart, Bar Chart, and Pie Chart.</li>
+<li>Differentiate Merge and Concatenate.</li>
+<li>Explain various types of joins in Pandas.</li>
+<li>What is GroupBy? Explain with examples.</li>
+<li>Discuss financial analysis using Pandas.</li>
+<li>Explain the data analysis workflow.</li>
+<li>Write short notes on Revenue, Profit, and Profit Margin.</li>
+</ol>
+
+</div>
+</body>
+</html>

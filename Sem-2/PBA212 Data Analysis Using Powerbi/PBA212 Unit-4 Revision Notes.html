@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4: DAX (Data Analysis Expressions)</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  color: #1f2937;
+  line-height: 1.6;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a1a; color: #e5e7eb; }
+}
+.message-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+@media (prefers-color-scheme: dark) {
+  .message-content { background: #2d2d2d; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+}
+h1, h2, h3 { margin-top: 32px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }
+h1, h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+@media (prefers-color-scheme: dark) { h1, h2 { border-bottom-color: #404040; } }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+th { background: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: #6b7280; }
+@media (prefers-color-scheme: dark) {
+  th, td { border-color: #404040; }
+  th { background: #1f2937; color: #9ca3af; }
+}
+pre { background: #1f2937; color: #f9fafb; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 16px 0; }
+code { font-family: 'Courier New', Consolas, monospace; font-size: 14px; background: #f3f4f6; padding: 3px 6px; border-radius: 4px; color: #ef4444; }
+pre code { background: none; padding: 0; color: inherit; }
+@media (prefers-color-scheme: dark) {
+  code { background: #374151; color: #fca5a5; }
+  pre { background: #000000; border: 1px solid #404040; }
+}
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 30px 0;
+}
+@media (prefers-color-scheme: dark) {
+  hr { border-top-color: #404040; }
+}
+</style>
+</head>
+<body>
+<div class="message-content">
+
+<h1>Unit 4: DAX (Data Analysis Expressions)</h1>
+
+<h2>Unit Overview</h2>
+
+<p>DAX (Data Analysis Expressions) is the formula language used in Power BI for performing calculations, creating measures, calculated columns, and advanced data analysis. DAX helps users derive insights, perform aggregations, filter data, and create dynamic reports. This unit covers DAX basics, calculated columns, measures, operators, and important DAX functions.</p>
+
+<hr>
+
+<h1>Key Concepts</h1>
+
+<h2>What is DAX?</h2>
+
+<h3>Definition</h3>
+
+<p>DAX (Data Analysis Expressions) is a collection of functions, operators, and constants used to create formulas in Power BI.</p>
+
+<h3>Key Points</h3>
+
+<ul>
+<li>Used for data analysis and calculations.</li>
+<li>Similar to Excel formulas.</li>
+<li>Supports dynamic reporting.</li>
+<li>Works with data models.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>Total Sales = SUM(Sales[Amount])</code></pre>
+
+<p>This formula calculates total sales.</p>
+
+<hr>
+
+<h1>Calculated Column</h1>
+
+<h2>Definition</h2>
+
+<p>A Calculated Column is a new column created using a DAX formula.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Calculated row by row.</li>
+<li>Stored in the data model.</li>
+<li>Increases model size.</li>
+<li>Computed during data refresh.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>Profit = Sales[Revenue] - Sales[Cost]</code></pre>
+
+<h3>Output</h3>
+
+<table>
+<tr>
+<th>Revenue</th>
+<th>Cost</th>
+<th>Profit</th>
+</tr>
+<tr>
+<td>5000</td>
+<td>3000</td>
+<td>2000</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Measures</h1>
+
+<h2>Definition</h2>
+
+<p>A Measure is a dynamic calculation evaluated during report interaction.</p>
+
+<h3>Characteristics</h3>
+
+<ul>
+<li>Not physically stored.</li>
+<li>Calculated when required.</li>
+<li>Improves performance.</li>
+<li>Used in visuals and dashboards.</li>
+</ul>
+
+<h3>Example</h3>
+
+<pre><code>Total Revenue = SUM(Sales[Revenue])</code></pre>
+
+<hr>
+
+<h1>Calculated Columns vs Measures</h1>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Calculated Column</th>
+<th>Measure</th>
+</tr>
+<tr>
+<td>Storage</td>
+<td>Stored in model</td>
+<td>Not stored</td>
+</tr>
+<tr>
+<td>Calculation</td>
+<td>During refresh</td>
+<td>During report execution</td>
+</tr>
+<tr>
+<td>Memory Usage</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Slower</td>
+<td>Faster</td>
+</tr>
+<tr>
+<td>Usage</td>
+<td>Row-level calculations</td>
+<td>Aggregated calculations</td>
+</tr>
+</table>
+
+<h3>Exam Tip</h3>
+
+<p>Use <strong>Calculated Columns</strong> for row-wise computations and <strong>Measures</strong> for dynamic aggregations.</p>
+
+<hr>
+
+<h1>DAX Table and Column Name Syntax</h1>
+
+<h2>Basic Syntax</h2>
+
+<pre><code>TableName[ColumnName]</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>Sales[Amount]</code></pre>
+
+<h3>Rules</h3>
+
+<ul>
+<li>Table names come before column names.</li>
+<li>Square brackets are mandatory for columns.</li>
+<li>Names are case-insensitive.</li>
+</ul>
+
+<hr>
+
+<h1>Creating Calculated Columns</h1>
+
+<h2>Steps</h2>
+
+<pre><code>Data View
+↓
+Select Table
+↓
+New Column
+↓
+Enter DAX Formula
+↓
+Press Enter</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>Profit Margin = (Sales[Profit] / Sales[Revenue]) * 100</code></pre>
+
+<hr>
+
+<h1>Creating Measures</h1>
+
+<h2>Steps</h2>
+
+<pre><code>Modeling Tab
+↓
+New Measure
+↓
+Enter Formula
+↓
+Press Enter</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>Average Sales = AVERAGE(Sales[Amount])</code></pre>
+
+<hr>
+
+<h1>DAX Syntax & Operators</h1>
+
+<h2>Definition</h2>
+
+<p>Operators are symbols used to perform calculations and comparisons in DAX formulas.</p>
+
+<hr>
+
+<h1>Types of DAX Operators</h1>
+
+<h2>1. Arithmetic Operators</h2>
+
+<table>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>+</td>
+<td>Addition</td>
+<td>5 + 3</td>
+</tr>
+<tr>
+<td>-</td>
+<td>Subtraction</td>
+<td>10 - 2</td>
+</tr>
+<tr>
+<td>*</td>
+<td>Multiplication</td>
+<td>5 * 4</td>
+</tr>
+<tr>
+<td>/</td>
+<td>Division</td>
+<td>20 / 5</td>
+</tr>
+<tr>
+<td>^</td>
+<td>Power</td>
+<td>2 ^ 3</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+
+<pre><code>Profit = Revenue - Cost</code></pre>
+
+<hr>
+
+<h2>2. Comparison Operators</h2>
+
+<table>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>=</td>
+<td>Equal To</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>Not Equal To</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>Greater Than</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>Less Than</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>Greater Than or Equal To</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>Less Than or Equal To</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+
+<pre><code>Sales[Amount] &gt; 10000</code></pre>
+
+<hr>
+
+<h2>3. Text Concatenation Operator</h2>
+
+<h3>Operator</h3>
+
+<pre><code>&amp;</code></pre>
+
+<h3>Purpose</h3>
+
+<p>Combines text values.</p>
+
+<h3>Example</h3>
+
+<pre><code>Full Name = Customer[First Name] &amp; " " &amp; Customer[Last Name]</code></pre>
+
+<p>Output:</p>
+
+<p>John Smith</p>
+
+<hr>
+
+<h2>4. Logical Operators</h2>
+
+<table>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>AND</td>
+</tr>
+<tr>
+<td>||</td>
+<td>OR</td>
+</tr>
+<tr>
+<td>NOT</td>
+<td>Negation</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+
+<pre><code>Sales &gt; 1000 &amp;&amp; Region = "West"</code></pre>
+
+<hr>
+
+<h1>DAX Functions</h1>
+
+<h2>Definition</h2>
+
+<p>Functions are predefined formulas used to perform calculations and operations.</p>
+
+<hr>
+
+<h1>Types of DAX Functions</h1>
+
+<ol>
+<li>Date and Time Functions</li>
+<li>Text Functions</li>
+<li>Logical Functions</li>
+<li>Math & Statistical Functions</li>
+<li>Filter Functions</li>
+</ol>
+
+<hr>
+
+<h1>Date and Time Functions</h1>
+
+<h2>TODAY()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns current date.</p>
+
+<h3>Example</h3>
+
+<pre><code>TODAY()</code></pre>
+
+<p>Output:</p>
+
+<p>10-Jan-2025 (example)</p>
+
+<hr>
+
+<h2>NOW()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns current date and time.</p>
+
+<h3>Example</h3>
+
+<pre><code>NOW()</code></pre>
+
+<hr>
+
+<h2>YEAR()</h2>
+
+<h3>Purpose</h3>
+
+<p>Extracts year from a date.</p>
+
+<h3>Example</h3>
+
+<pre><code>YEAR(Sales[Order Date])</code></pre>
+
+<hr>
+
+<h2>MONTH()</h2>
+
+<h3>Purpose</h3>
+
+<p>Extracts month number.</p>
+
+<h3>Example</h3>
+
+<pre><code>MONTH(Sales[Order Date])</code></pre>
+
+<hr>
+
+<h1>Text Functions</h1>
+
+<h2>LEN()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns number of characters.</p>
+
+<h3>Example</h3>
+
+<pre><code>LEN("Power BI")</code></pre>
+
+<p>Output:</p>
+
+<p>8</p>
+
+<hr>
+
+<h2>LEFT()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns characters from left side.</p>
+
+<h3>Example</h3>
+
+<pre><code>LEFT("Power BI",5)</code></pre>
+
+<p>Output:</p>
+
+<p>Power</p>
+
+<hr>
+
+<h2>RIGHT()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns characters from right side.</p>
+
+<h3>Example</h3>
+
+<pre><code>RIGHT("Power BI",2)</code></pre>
+
+<p>Output:</p>
+
+<p>BI</p>
+
+<hr>
+
+<h2>UPPER()</h2>
+
+<h3>Purpose</h3>
+
+<p>Converts text to uppercase.</p>
+
+<h3>Example</h3>
+
+<pre><code>UPPER("power bi")</code></pre>
+
+<p>Output:</p>
+
+<p>POWER BI</p>
+
+<hr>
+
+<h1>Logical Functions</h1>
+
+<h2>IF()</h2>
+
+<h3>Purpose</h3>
+
+<p>Performs conditional testing.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>IF(condition, true_result, false_result)</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>IF(Sales[Amount] &gt; 5000, "High", "Low")</code></pre>
+
+<hr>
+
+<h2>AND()</h2>
+
+<h3>Purpose</h3>
+
+<p>Checks multiple conditions.</p>
+
+<h3>Example</h3>
+
+<pre><code>AND(Sales[Amount] &gt; 1000, Sales[Amount] &lt; 5000)</code></pre>
+
+<hr>
+
+<h2>OR()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns TRUE if any condition is true.</p>
+
+<h3>Example</h3>
+
+<pre><code>OR(Sales[Amount] &gt; 10000, Sales[Region]="West")</code></pre>
+
+<hr>
+
+<h1>Math & Statistical Functions</h1>
+
+<h2>SUM()</h2>
+
+<h3>Purpose</h3>
+
+<p>Adds all values in a column.</p>
+
+<h3>Example</h3>
+
+<pre><code>SUM(Sales[Amount])</code></pre>
+
+<hr>
+
+<h2>AVERAGE()</h2>
+
+<h3>Purpose</h3>
+
+<p>Calculates average value.</p>
+
+<h3>Example</h3>
+
+<pre><code>AVERAGE(Sales[Amount])</code></pre>
+
+<hr>
+
+<h2>MAX()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns highest value.</p>
+
+<h3>Example</h3>
+
+<pre><code>MAX(Sales[Amount])</code></pre>
+
+<hr>
+
+<h2>MIN()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns smallest value.</p>
+
+<h3>Example</h3>
+
+<pre><code>MIN(Sales[Amount])</code></pre>
+
+<hr>
+
+<h2>COUNT()</h2>
+
+<h3>Purpose</h3>
+
+<p>Counts rows containing values.</p>
+
+<h3>Example</h3>
+
+<pre><code>COUNT(Sales[Amount])</code></pre>
+
+<hr>
+
+<h1>Filter Functions</h1>
+
+<h2>CALCULATE()</h2>
+
+<h3>Definition</h3>
+
+<p>Most powerful DAX function used to modify filter context.</p>
+
+<h3>Syntax</h3>
+
+<pre><code>CALCULATE(Expression, Filter)</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>West Sales =
+CALCULATE(
+SUM(Sales[Amount]),
+Sales[Region]="West"
+)</code></pre>
+
+<hr>
+
+<h2>FILTER()</h2>
+
+<h3>Purpose</h3>
+
+<p>Returns a filtered table.</p>
+
+<h3>Example</h3>
+
+<pre><code>FILTER(Sales, Sales[Amount] &gt; 1000)</code></pre>
+
+<hr>
+
+<h2>ALL()</h2>
+
+<h3>Purpose</h3>
+
+<p>Removes filters from a table or column.</p>
+
+<h3>Example</h3>
+
+<pre><code>ALL(Sales)</code></pre>
+
+<p>Used for grand total calculations.</p>
+
+<hr>
+
+<h1>Important DAX Formulae</h1>
+
+<table>
+<tr>
+<th>Formula</th>
+<th>Purpose</th>
+</tr>
+<tr>
+<td>SUM()</td>
+<td>Total values</td>
+</tr>
+<tr>
+<td>AVERAGE()</td>
+<td>Average calculation</td>
+</tr>
+<tr>
+<td>COUNT()</td>
+<td>Count records</td>
+</tr>
+<tr>
+<td>MAX()</td>
+<td>Highest value</td>
+</tr>
+<tr>
+<td>MIN()</td>
+<td>Lowest value</td>
+</tr>
+<tr>
+<td>IF()</td>
+<td>Conditional logic</td>
+</tr>
+<tr>
+<td>CALCULATE()</td>
+<td>Modify filter context</td>
+</tr>
+<tr>
+<td>FILTER()</td>
+<td>Create filtered tables</td>
+</tr>
+<tr>
+<td>TODAY()</td>
+<td>Current date</td>
+</tr>
+<tr>
+<td>YEAR()</td>
+<td>Extract year</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>DAX Workflow</h1>
+
+<pre><code>Import Data
+↓
+Create Data Model
+↓
+Create Calculated Columns
+↓
+Create Measures
+↓
+Apply Functions
+↓
+Build Visualizations
+↓
+Generate Insights</code></pre>
+
+<hr>
+
+<h1>Important Definitions</h1>
+
+<ul>
+<li><strong>DAX</strong> – Formula language used in Power BI.</li>
+<li><strong>Calculated Column</strong> – Row-by-row calculated field.</li>
+<li><strong>Measure</strong> – Dynamic calculation evaluated at runtime.</li>
+<li><strong>Operator</strong> – Symbol used in formulas.</li>
+<li><strong>Function</strong> – Predefined formula for calculations.</li>
+<li><strong>Filter Context</strong> – Data subset used in calculations.</li>
+<li><strong>CALCULATE()</strong> – Function that modifies filter context.</li>
+<li><strong>FILTER()</strong> – Function used to filter tables.</li>
+</ul>
+
+<hr>
+
+<h1>Quick Revision Table</h1>
+
+<table>
+<tr>
+<th>Topic</th>
+<th>Key Point</th>
+</tr>
+<tr>
+<td>DAX</td>
+<td>Formula language of Power BI</td>
+</tr>
+<tr>
+<td>Calculated Column</td>
+<td>Stored in model</td>
+</tr>
+<tr>
+<td>Measure</td>
+<td>Dynamic calculation</td>
+</tr>
+<tr>
+<td>SUM()</td>
+<td>Total values</td>
+</tr>
+<tr>
+<td>AVERAGE()</td>
+<td>Average value</td>
+</tr>
+<tr>
+<td>IF()</td>
+<td>Conditional logic</td>
+</tr>
+<tr>
+<td>CALCULATE()</td>
+<td>Most important DAX function</td>
+</tr>
+<tr>
+<td>FILTER()</td>
+<td>Creates filtered tables</td>
+</tr>
+<tr>
+<td>TODAY()</td>
+<td>Current date</td>
+</tr>
+<tr>
+<td>ALL()</td>
+<td>Removes filters</td>
+</tr>
+</table>
+
+<hr>
+
+<h1>Unit 4 Summary</h1>
+
+<p>DAX is the analytical engine of Power BI. It enables users to create calculated columns, measures, and advanced business calculations. Understanding operators, syntax, and commonly used DAX functions such as SUM, AVERAGE, IF, CALCULATE, and FILTER is essential for developing interactive and intelligent Power BI reports.</p>
+
+<h2>Important Exam Questions</h2>
+
+<ol>
+<li>What is DAX? Explain its significance in Power BI.</li>
+<li>Differentiate Calculated Columns and Measures.</li>
+<li>Explain DAX syntax with examples.</li>
+<li>Discuss various types of DAX operators.</li>
+<li>Explain Date and Time functions in DAX.</li>
+<li>Write short notes on Text Functions.</li>
+<li>Explain Logical Functions with examples.</li>
+<li>Describe Math & Statistical Functions in DAX.</li>
+<li>Explain CALCULATE() and FILTER() functions.</li>
+<li>Write short notes on Filter Context and ALL() function.</li>
+</ol>
+
+</div>
+</body>
+</html>
